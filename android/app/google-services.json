@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "8943271955",
+    "project_id": "ishapp-a1422",
+    "storage_bucket": "ishapp-a1422.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8943271955:android:036fe980ed437d0ea63fe6",
+        "android_client_info": {
+          "package_name": "ulut.kg.ishapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8943271955-c38pb5rcuajbjvo9oraoh5pghshkoame.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtsU7pwXDPx1sAP2NmZyX8PjkqKqKPLMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8943271955-c38pb5rcuajbjvo9oraoh5pghshkoame.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ishapp/constants/constants.dart';
-import 'package:ishapp/screens/phone_number_screen.dart';
-import 'package:ishapp/screens/sign_up_screen.dart';
-import 'package:ishapp/widgets/app_logo.dart';
-import 'package:ishapp/widgets/cicle_button.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 
@@ -14,121 +11,121 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _username_controller = TextEditingController();
+  final _password_controller = TextEditingController();
+  bool _obscureText = true;
+
+  void _show_hide_password() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        decoration: BoxDecoration(
-           image: DecorationImage(
-             image: AssetImage("assets/images/background_image.jpg"),
-             fit: BoxFit.fill,
-             repeat: ImageRepeat.repeatY
-           ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-             begin: Alignment.bottomRight, 
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("sign_in".tr()),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: <Widget>[
+            Text("sign_in".tr(),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
 
-             colors: [
-               Theme.of(context).primaryColor,
-               Colors.black.withOpacity(.5)
-             ]
-           )
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              /// App logo
-              AppLogo(),
-              SizedBox(height: 10),
-
-              /// App name
-              Text(APP_NAME,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold,
-                  color: Colors.white)),
-              SizedBox(height: 20),
-
-              Text("Welcome Back",
-                  textAlign: TextAlign.center, style: TextStyle(fontSize: 18,
-                  color: Colors.white)),
-              SizedBox(height: 5),
-              Text("Match with people around you",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-              SizedBox(height: 22),
-
-              /// Sign in with Phone Number
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: DefaultButton(
-                    child: Text("Sign in with Phone Number",
-                        style: TextStyle(fontSize: 18)),
-                    onPressed: () {
-                        /// Go to phone number screen
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => PhoneNumberScreen()));
+            /// Form
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  /// Fullname field
+                  TextFormField(
+                    controller: _username_controller,
+                    decoration: InputDecoration(
+                        labelText: "username".tr(),
+                        hintText: "enter_yout_username".tr(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: SvgIcon("assets/icons/user_icon.svg"),
+                        )),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
                     },
                   ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              Text("OR",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.grey)),
-
-              SizedBox(height: 5),
-
-              Text("Sign in with social apps",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.white60)),
-
-              SizedBox(height: 10),
-
-              /// Social login 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  /// Login with facebook
-                  GestureDetector(
-                    child: cicleButton(
-                      bgColor: Colors.white,
-                      padding: 20,
-                      icon: SvgIcon("assets/icons/facebook_icon.svg",
-                          width: 30, height: 30, 
-                          color: Colors.blue),
-                    ),
-                    onTap: () {
-                        /// Go to sing up screen - for demo
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SignUpScreen()));
+                  SizedBox(height: 20),
+                  /// School field
+                  TextFormField(
+                    controller: _password_controller,
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
+                        labelText: "password".tr(),
+                        hintText: "enter_your_password".tr(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: SvgIcon("assets/icons/password.svg"),
+                        ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                      ),
+                    validator: (school) {
+                      if (school.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      else if (school.length <5) {
+                        return "password_must_at_least_5_chars".tr();
+                      }
+                      return null;
                     },
-                  ),
-
-                  /// Login with google
-                  GestureDetector(
-                    child: cicleButton(
-                      bgColor: Colors.white,
-                      padding: 13,
-                      icon: SvgPicture.asset("assets/icons/google_icon.svg",
-                          width: 25, height: 25),
                     ),
-                    onTap: () {
-                        /// Go to sing up screen - for demo
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SignUpScreen()));
-                    },
+                  SizedBox(height: 20),
+                  /// Sign In button
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: DefaultButton(
+                      child: Text("sign_in".tr(), style: TextStyle(fontSize: 18)),
+                      onPressed: () {
+                        /// Validate form
+                         if (_formKey.currentState.validate()) {
+                           /// Remove previous screens
+                           Navigator.of(context)
+                               .popUntil((route) => route.isFirst);
+
+                           /// Go to home screen - for demo
+                           Navigator.of(context)
+                               .pushNamed(Routes.home);
+                         }
+                         else{
+                           return;
+                         }
+                      },
+                    ),
                   ),
                 ],
-              )
-
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );

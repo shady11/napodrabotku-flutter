@@ -41,14 +41,14 @@ class _DislikedProfilesScreenState extends State<DislikedProfilesScreen> {
 
         /// Matches
         Expanded(
-          child: UsersGrid(children: getDemoUsers().map((user) {
+          child: UsersGrid(children: getDemoVacancies().map((vacancy) {
               /// Return User Card
               return GestureDetector(
-                child: ProfileCard(user: user),
+                child: ProfileCard(vacancy: vacancy),
                 onTap: () {
                   /// Go to profile screen
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ProfileScreen(user: user)));
+//                  Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (context) => ProfileScreen(user: user)));
                 },
               );
           }).toList()),

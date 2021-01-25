@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/widgets/show_like_or_dislike.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'badge.dart';
 import 'default_card_border.dart';
+import 'package:ishapp/utils/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   /// User object
-  final User user;
+  final Vacancy vacancy;
   /// Screen to be checked
   final String page;
   /// Swiper position
   final SwiperPosition position;
 
-  ProfileCard({this.page, this.position, @required this.user});
+  ProfileCard({this.page, this.position, @required this.vacancy});
 
   @override
   Widget build(BuildContext context) {
@@ -30,26 +33,26 @@ class ProfileCard extends StatelessWidget {
             margin: EdgeInsets.all(0),
             shape: defaultCardBorder(),
             child: Container(
-              decoration: BoxDecoration(
-                /// User profile image
-                image: DecorationImage(
-                    image: AssetImage(user.userPhotoLink),
-                    fit: BoxFit.cover),
-              ),
+//              decoration: BoxDecoration(
+//                /// User profile image
+//                image: DecorationImage(
+//                    image: AssetImage(user.userPhotoLink),
+//                    fit: BoxFit.cover),
+//              ),
               child: Container(
                 /// BoxDecoration to make user info visible
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      begin: Alignment.bottomRight,
+                      begin: Alignment.topCenter,
                       colors: [
                         Theme.of(context).primaryColor,
-                        Colors.transparent
+                        Colors.grey,
                       ]),
                 ),
 
                 /// User info container
                 child: Container(
-                  alignment: Alignment.bottomLeft,
+                  alignment: Alignment.center,
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -59,14 +62,16 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              user.userFullname,
-                              style: TextStyle(
-                                  fontSize: this.page == 'discover' ? 20 : 18,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            child: Center(
+                              child: Text(
+                                vacancy.company_name,
+                                style: TextStyle(
+                                    fontSize: this.page == 'discover' ? 20 : 18,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ],
@@ -75,24 +80,42 @@ class ProfileCard extends StatelessWidget {
                       /// User education
                       Row(
                         children: [
-                          SvgIcon("assets/icons/university_icon.svg",
-                              color: Colors.white, width: 20, height: 20),
                           SizedBox(width: 5),
                           Expanded(
-                            child: Text(
-                              user.userSchool,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
+                            child: Center(
+                              child: Text(
+                                vacancy.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 3),
-
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(width: 5),
+                          Expanded(
+                            child: Center(
+                              child: Text(vacancy.experience ==null ? "without_experience".tr() :"experience".tr()+
+                                vacancy.experience + "year".tr(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
                       /// User job title
                       Row(
                         children: [
@@ -101,7 +124,7 @@ class ProfileCard extends StatelessWidget {
                           SizedBox(width: 5),
                           Expanded(
                             child: Text(
-                              user.jobTitle,
+                              vacancy.description,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -125,21 +148,25 @@ class ProfileCard extends StatelessWidget {
 
           /// User location distance
           Positioned(
-            top: 10,
-            left: this.page == 'discover' ? 8 : 5,
-            child: Badge(
-                icon: this.page == 'discover'
-                    ? SvgIcon("assets/icons/location_point_icon.svg",
-                        color: Colors.white, width: 15, height: 15)
-                    : null,
-                text: user.userDistance),
+            right: MediaQuery.of(context).size.width * 0.3,
+//            top: MediaQuery.of(context).size.height * 0.01,
+            left: MediaQuery.of(context).size.width * 0.3,
+            child: Column(
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage(vacancy.company_logo_image),
+                        fit: BoxFit.fill
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-
-          /// Show Like or Dislike
-          this.page == 'discover' 
-          ? ShowLikeOrDislike(position: position) 
-          : Container(width: 0, height: 0),
-
         ],
       ),
     );

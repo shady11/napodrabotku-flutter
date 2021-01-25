@@ -1,39 +1,71 @@
 import 'dart:io';
-
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:ishapp/screens/sign_in_screen.dart';
-
+import 'package:ishapp/routes/route_generator.dart';
+import 'package:ishapp/routes/routes.dart';
+import 'package:ishapp/screens/start_screen.dart';
+import 'package:ishapp/utils/themebloc/theme_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/constants.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      child: MyApp(),
+      supportedLocales: [
+        Locale('ky', 'KG'),
+        Locale('ru', 'RU'),
+      ],
+      path: 'assets/languages',
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: APP_NAME,
-      debugShowCheckedModeBanner: false,
-      home: SignInScreen(),
-      theme: ThemeData(
-        primaryColor: Colors.orange[300],
-        scaffoldBackgroundColor: Colors.white,
-        inputDecorationTheme: InputDecorationTheme(
-            errorStyle: TextStyle(fontSize: 16),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
-            )),
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: Platform.isIOS ? 0 : 4.0,
-          iconTheme: IconThemeData(color: Colors.black),
-          brightness: Brightness.light,
-          textTheme: TextTheme(
-            headline6: TextStyle(color: Colors.grey, fontSize: 18),
-          ),
-        ),
+    return BlocProvider(
+      create: (context) => ThemeBloc(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: _buildWithTheme,
       ),
     );
+  }
+
+  Widget _buildWithTheme(BuildContext context, ThemeState state) {
+    return MaterialApp(
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: child,
+          );
+        },
+        title: 'ISHAPP',
+        initialRoute: Routes.splash,
+        onGenerateRoute: RouteGenerator.generateRoute,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          EasyLocalization.of(context).delegate,
+        ],
+        supportedLocales: EasyLocalization.of(context).supportedLocales,
+        locale: EasyLocalization.of(context).locale,
+        debugShowCheckedModeBanner: false,
+        theme: state.themeData,
+    );
+  }
+
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }

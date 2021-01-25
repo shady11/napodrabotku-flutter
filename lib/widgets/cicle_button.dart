@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget cicleButton({
+Widget CircleButton({
   @required Widget icon,
   @required bgColor,
   double padding

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/profile_screen.dart';
+import 'package:ishapp/utils/constants.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 
 import 'cicle_button.dart';
@@ -20,8 +21,8 @@ class SwipeButtons extends StatelessWidget {
       children: [
         /// Rewind profiles
         GestureDetector(
-          child: cicleButton(
-              bgColor: Colors.white,
+          child: CircleButton(
+              bgColor: kColorPrimary,
               padding: 8,
               icon: Icon(Icons.restore, size: 22, color: Colors.grey)),
           onTap: () {
@@ -33,8 +34,8 @@ class SwipeButtons extends StatelessWidget {
 
         /// Swipe left and reject user
         GestureDetector(
-          child: cicleButton(
-              bgColor: Colors.white,
+          child: CircleButton(
+              bgColor: kColorPrimary,
               padding: 8,
               icon: Icon(Icons.close, size: 35, color: Colors.grey)),
           onTap: () {
@@ -47,8 +48,8 @@ class SwipeButtons extends StatelessWidget {
 
         /// Swipe right and like user
         GestureDetector(
-          child: cicleButton(
-              bgColor: Colors.white,
+          child: CircleButton(
+              bgColor: kColorPrimary,
               padding: 8,
               icon: Icon(Icons.favorite_border,
                   size: 35, color: Theme.of(context).primaryColor)),
@@ -87,8 +88,8 @@ class SwipeButtons extends StatelessWidget {
 
         /// Go to user profile
         GestureDetector(
-          child: cicleButton(
-              bgColor: Colors.white,
+          child: CircleButton(
+              bgColor: kColorPrimary,
               padding: 8,
               icon: Icon(Icons.remove_red_eye, size: 22, color: Colors.grey)),
           onTap: () {

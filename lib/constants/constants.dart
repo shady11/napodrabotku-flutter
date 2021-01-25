@@ -1,4 +1,4 @@
 /// CONSTANT VARIABLES ///
 
-const APP_NAME = "Dating App UI";
+const APP_NAME = "ISH APP";
 

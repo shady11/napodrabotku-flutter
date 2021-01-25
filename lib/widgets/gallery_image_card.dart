@@ -19,7 +19,7 @@ class GalleryImageCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          child: cicleButton(
+          child: CircleButton(
             bgColor: Theme.of(context).primaryColor,
             icon: Icon(Icons.add, color: Colors.white),
             padding: 1.0

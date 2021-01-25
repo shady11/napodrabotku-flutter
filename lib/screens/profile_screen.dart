@@ -9,7 +9,7 @@ import 'chat_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   /// Get user object
-  final User user;
+  User user = currentUserDemo;
 
   ProfileScreen({@required this.user});
 

@@ -1,5 +1,6 @@
 
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/datas/vacancy.dart';
 
 
  /// CURRENT SINGNED USER DEMO [currentUserDemo]
@@ -67,6 +68,54 @@ List<User> getDemoUsers() {
       userSchool: "University of California",
       jobTitle: "Physical scientist",
       userDistance: "35km",
+    ),
+  ];
+}
+List<Vacancy> getDemoVacancies() {
+  /// User list
+  return [
+    Vacancy(
+      company_name: "Rachel, 25",
+      company_logo_image: "assets/images/demo_users/woman_02.jpg",
+      name: "Massachusetts Institute of Technology",
+      description: "Management analyst",
+    ),
+
+    Vacancy(
+      company_name: "Nicole, 27",
+      company_logo_image: "assets/images/demo_users/woman_03.jpg",
+      name: "Stanford University",
+      description: "Psychologist",
+    ),
+
+    Vacancy(
+      company_name: "Angela, 24",
+      company_logo_image: "assets/images/demo_users/woman_04.jpg",
+      name: "University of Cambridge",
+      description: "Engineer",
+    ),
+
+    Vacancy(
+      company_name: "ZenSoft",
+      company_logo_image: "assets/images/demo_users/zensoft_logo.png",
+      name: "Java разработчик",
+      description: "- Spring Boot",
+      experience: "2-5"
+    ),
+
+    Vacancy(
+      company_name: "MadDevs",
+      company_logo_image: "assets/images/demo_users/maddevs.png",
+      name: "Python developer",
+      description: "- Flask framework",
+      experience: "2-5"
+    ),
+    Vacancy(
+      company_name: "UlutSoft",
+      company_logo_image: "assets/images/demo_users/logo_new2.png",
+      name: "Django разработчик",
+      description: " - Django framework",
+      experience: "2-5"
     ),
   ];
 }

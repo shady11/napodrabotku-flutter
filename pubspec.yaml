@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^0.6.7+21
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,6 +40,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  easy_localization: ^2.3.2
+  shared_preferences: ^0.5.6
+  flutter_bloc: ^4.0.0
+  equatable: ^1.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -55,7 +60,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    # Demo user images
+    - assets/languages/
     - assets/images/demo_users/
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -73,17 +78,17 @@ flutter_icons:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: NunitoSans
+      fonts:
+          - asset: assets/fonts/NunitoSans-Light.ttf
+            weight: 300
+          - asset: assets/fonts/NunitoSans-Regular.ttf
+            weight: 400
+          - asset: assets/fonts/NunitoSans-SemiBold.ttf
+            weight: 500
+          - asset: assets/fonts/NunitoSans-Bold.ttf
+            weight: 700
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/chat_screen.dart';
@@ -27,7 +29,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                   color: Theme.of(context).primaryColor, width: 30, height: 30),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Conversations",
+                child: Text("chat".tr(),
                     style: TextStyle(
                         fontSize: 20,
                         color: Theme.of(context).primaryColor,

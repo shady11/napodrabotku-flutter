@@ -1,6 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/constants/constants.dart';
 import 'package:ishapp/tabs/conversations_tab.dart';
 import 'package:ishapp/tabs/discover_tab.dart';
@@ -70,26 +71,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: _tabCurrentIndex == 0
                     ? Theme.of(context).primaryColor
                     : null),
-              title: Text("Discover")),
+              title: Text("search".tr())),
             BottomNavigationBarItem(
-                icon: SvgIcon("assets/icons/heart_icon.svg",
+                icon: SvgIcon("assets/icons/like.svg",
                     color: _tabCurrentIndex == 1
                         ? Theme.of(context).primaryColor
                         : null),
-                title: Text("Matches")),
+                title: Text("matches".tr())),
             BottomNavigationBarItem(
                 icon: SvgIcon("assets/icons/message_icon.svg",
                     width: 27, height: 27,
                     color: _tabCurrentIndex == 2
                         ? Theme.of(context).primaryColor
                         : null),
-                title: Text("Conversations")),
+                title: Text("chat".tr())),
             BottomNavigationBarItem(
                 icon: SvgIcon("assets/icons/user_icon.svg",
                     color: _tabCurrentIndex == 3
                         ? Theme.of(context).primaryColor
                         : null),
-                title: Text("Profile")),
+                title: Text("profile".tr())),
           ]),
       body: PageView(
         controller: _pageController,
