@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/screens/disliked_profile_screen.dart';
 import 'package:ishapp/screens/profile_likes_screen.dart';
 import 'package:ishapp/screens/profile_visits_screen.dart';
@@ -24,9 +26,9 @@ class ProfileStatisticsCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: SvgIcon("assets/icons/heart_icon.svg",
+            leading: SvgIcon("assets/icons/like.svg",
                 width: 22, height: 22, color: Theme.of(context).primaryColor),
-            title: Text("LIKES", style: _textStyle),
+            title: Text("likeds".tr(), style: _textStyle),
             trailing: Badge(text: "125"),
             onTap: () {
               /// Go to profile likes screen ()
@@ -38,7 +40,7 @@ class ProfileStatisticsCard extends StatelessWidget {
           ListTile(
             leading: SvgIcon("assets/icons/eye_icon.svg",
                 width: 31, height: 31, color: Theme.of(context).primaryColor),
-            title: Text("VISITS", style: _textStyle),
+            title: Text("visit".tr(), style: _textStyle),
             trailing: Badge(text: "238"),
             onTap: () {
               /// Go to profile visits screen
@@ -47,7 +49,7 @@ class ProfileStatisticsCard extends StatelessWidget {
             },
           ),
           Divider(height: 0),
-          ListTile(
+          /*ListTile(
             leading: SvgIcon("assets/icons/close_icon.svg",
                 width: 25, height: 25, color: Theme.of(context).primaryColor),
             title: Text("DISLIKED PROFILES", style: _textStyle),
@@ -57,7 +59,7 @@ class ProfileStatisticsCard extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(
                  builder: (context) => DislikedProfilesScreen()));
             },
-          ),
+          ),*/
         ],
       ),
     );

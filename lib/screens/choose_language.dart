@@ -83,7 +83,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                 Prefs.setString(Prefs.LANGUAGE, 'ru');
                                 EasyLocalization.of(context).locale =
                                 EasyLocalization.of(context).supportedLocales[1];
-                                Navigator.of(context).popAndPushNamed(Routes.signin);
+                                Navigator.of(context).popAndPushNamed(Routes.start);
                               },
                               text: 'Русский',
                             ),
@@ -96,7 +96,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                 Prefs.setString(Prefs.LANGUAGE, 'ky');
                                 EasyLocalization.of(context).locale =
                                 EasyLocalization.of(context).supportedLocales[0];
-                                Navigator.of(context).popAndPushNamed(Routes.signin);
+                                Navigator.of(context).popAndPushNamed(Routes.start);
                               },
                               text: 'Кыргызча',
                             ),

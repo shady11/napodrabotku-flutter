@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/widgets/svg_icon.dart';
 
 import 'default_card_border.dart';
@@ -21,13 +23,13 @@ class AppSectionCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Aplication",
+            child: Text("application".tr(),
                 style: TextStyle(fontSize: 20, color: Colors.grey),
                 textAlign: TextAlign.left),
           ),
           ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text("About us", style: _textStyle),
+            title: Text("about_us".tr(), style: _textStyle),
             onTap: () {
               /// Go to About us
 
@@ -35,17 +37,8 @@ class AppSectionCard extends StatelessWidget {
           ),
           Divider(height: 0),
           ListTile(
-            leading: SvgIcon("assets/icons/facebook_icon.svg",
-                width: 22, height: 22),
-            title: Text("Like our facebook page", style: _textStyle),
-            onTap: () {
-              /// Open facebook page
-            },
-          ),
-          Divider(height: 0),
-          ListTile(
             leading: Icon(Icons.share),
-            title: Text("Share with friends", style: _textStyle),
+            title: Text("share_with_friends".tr(), style: _textStyle),
             onTap: () {
               /// Share app
             },
@@ -53,17 +46,8 @@ class AppSectionCard extends StatelessWidget {
           Divider(height: 0),
           ListTile(
             leading:
-                SvgIcon("assets/icons/star_icon.svg", width: 22, height: 22),
-            title: Text("Rate on Play Store", style: _textStyle),
-            onTap: () async {
-              /// Go to play store
-            },
-          ),
-          Divider(height: 0),
-          ListTile(
-            leading:
                 SvgIcon("assets/icons/lock_icon.svg", width: 22, height: 22),
-            title: Text("Privacy Policy", style: _textStyle),
+            title: Text("privacy_policy".tr(), style: _textStyle),
             onTap: () async {
               /// Go to privacy policy
             },

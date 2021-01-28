@@ -2,13 +2,12 @@
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/vacancy.dart';
 
-
  /// CURRENT SINGNED USER DEMO [currentUserDemo]
  User currentUserDemo = User(
-  userFullname: "Deborah, 25",
-  userPhotoLink: "assets/images/demo_users/woman_05.jpg",
-  userSchool: "University of Oxford",
-  jobTitle: "Computer programmer",
+  userFullname: "UlutSoft",
+  userPhotoLink: "assets/images/demo_users/logo_new2.png",
+  userSchool: "Бишкек Чехова 28",
+  jobTitle: "Software for your business",
   userDistance: "0km",
 );
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -111,8 +112,8 @@ class _SignInScreenState extends State<SignInScreen> {
                            /// Remove previous screens
                            Navigator.of(context)
                                .popUntil((route) => route.isFirst);
-
-                           /// Go to home screen - for demo
+                           User user = new User();
+                           user.login(_username_controller.text, _password_controller.text);
                            Navigator.of(context)
                                .pushNamed(Routes.home);
                          }

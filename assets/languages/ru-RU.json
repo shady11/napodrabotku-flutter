@@ -29,5 +29,17 @@
   "write_your_linked_link": "Вводите ссылку на линекдин",
   "profile_photo": "Фото профиля",
   "please_fill_this_field": "Пополните",
-  "password_must_at_least_5_chars": "Пароль должен быть не меньше 5 символов"
+  "password_must_at_least_5_chars": "Пароль должен быть не меньше 5 символов",
+  "view": "Посмотреть",
+  "edit": "Редактировать",
+  "visit": "Просмотренные",
+  "likeds": "Понравилось",
+  "application": "Приложение",
+  "about_us": "О нас",
+  "share_with_friends": "Поделиться",
+  "privacy_policy": "Политика конфиденциальности",
+  "name": "Имя",
+  "enter_your_name": "Вводите имя",
+  "surname": "Фамилия",
+  "enter_your_surname": "Вводите фамилию"
 }

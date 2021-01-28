@@ -29,5 +29,17 @@
   "write_your_linked_link": "Вводите ссылку на линекдин",
   "profile_photo": "Колдонуучунун сүрөтү",
   "please_fill_this_field": "Толтуруңуз",
-  "password_must_at_least_5_chars": "Сыр сөз 5 символдон кем эмес болуусу шарт"
+  "password_must_at_least_5_chars": "Сыр сөз 5 символдон кем эмес болуусу шарт",
+  "view": "Көрүү",
+  "edit": "Өзгөртүү",
+  "visit": "Көрүлгөндөр",
+  "likeds": "Жаккандар",
+  "application": "Тиркеме",
+  "about_us": "Биз жөнүнүдө",
+  "share_with_friends": "Бөлүшүү",
+  "privacy_policy": "Купуялык саясаты",
+  "name": "Ысымы",
+  "enter_your_name": "Ысымыңызды жазыңыз",
+  "surname": "Аты-жөнү",
+  "enter_your_surname": "Аты-жөнүңүздү жазыңыз"
 }

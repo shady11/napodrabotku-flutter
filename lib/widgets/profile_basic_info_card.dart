@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/datas/demo_users.dart';
+import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/screens/edit_profile_screen.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -30,7 +33,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     radius: 40,
                     backgroundImage: AssetImage(
-                      "assets/images/demo_users/woman_05.jpg"),
+                      "assets/images/demo_users/logo_new2.png"),
                   ),
                 ),
 
@@ -41,7 +44,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Deborah, 25",
+                      "UlutSoft",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -55,7 +58,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                         SvgIcon("assets/icons/location_point_icon.svg",
                             color: Colors.white),
                         SizedBox(width: 5),
-                        Text("New York, United States",
+                        Text("Бишкек ул. Чехова 28",
                             style: TextStyle(color: Colors.white))
                       ],
                     )
@@ -76,7 +79,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28)),
                       icon: Icon(Icons.remove_red_eye),
-                      label: Text("View"),
+                      label: Text("view".tr(),style: TextStyle(fontSize: 13)),
                       textColor: Colors.white,
                       onPressed: () {
                         /// Go to profile screen
@@ -94,7 +97,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       icon: Icon(Icons.edit),
                       textColor: Theme.of(context).primaryColor,
                       color: Colors.white,
-                      label: Text("Edit"),
+                      label: Text("edit".tr(), style: TextStyle(fontSize: 13)),
                       onPressed: () {
                         /// Go to edit profile screen
                         Navigator.push(context, MaterialPageRoute(

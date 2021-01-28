@@ -30,8 +30,6 @@ class ProfileScreen extends StatelessWidget {
                       dotIncreasedColor: Theme.of(context).primaryColor,
                       images: [
                         AssetImage(user.userPhotoLink),
-                        AssetImage(user.userPhotoLink),
-                        AssetImage(user.userPhotoLink),
                       ]),
                 ),
 
@@ -53,14 +51,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
 
-                          /// Location distance
-                          Badge(
-                              icon: SvgIcon(
-                                  "assets/icons/location_point_icon.svg",
-                                  color: Colors.white,
-                                  width: 15,
-                                  height: 15),
-                              text: "${user.userDistance} away")
                         ],
                       ),
 
@@ -72,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                               width: 24,
                               height: 24),
-                          title: "New York, United States"),
+                          title: user.userSchool),
 
                       SizedBox(height: 5),
 
@@ -86,13 +76,13 @@ class ProfileScreen extends StatelessWidget {
 
                       SizedBox(height: 5),
 
-                      /// Education
-                      _rowProfileInfo(context,
-                          icon: SvgIcon("assets/icons/university_icon.svg",
-                              color: Theme.of(context).primaryColor,
-                              width: 28,
-                              height: 28),
-                          title: user.userSchool),
+//                      /// Education
+//                      _rowProfileInfo(context,
+//                          icon: SvgIcon("assets/icons/university_icon.svg",
+//                              color: Theme.of(context).primaryColor,
+//                              width: 28,
+//                              height: 28),
+//                          title: user.userSchool),
 
                       Divider(),
 

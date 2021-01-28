@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/routes/routes.dart';
 
 import 'package:ishapp/widgets/default_button.dart';
@@ -22,6 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _username_controller = TextEditingController();
   final _name_controller = TextEditingController();
+  final _surnname_controller = TextEditingController();
   final _email_controller = TextEditingController();
   final _phone_number_controller = TextEditingController();
   final _password_controller = TextEditingController();
@@ -234,14 +236,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (school.isEmpty) {
                         return "please_fill_this_field".tr();
                       }
-                      else if(_password_confirm_controller.text != _password_controller){
+                      else if(_password_confirm_controller.text != _password_controller.text){
                         return "passwords_dont_satisfy".tr();
                       }
                       return null;
                     },
                   ),
                   SizedBox(height: 20),
-                  /// School field
+                  TextFormField(
+                    controller: _name_controller,
+                    decoration: InputDecoration(
+                        labelText: "name".tr(),
+                        hintText: "enter_your_name".tr(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: SvgIcon("assets/icons/name.svg"),
+                        )),
+                    validator: (school) {
+                      if (school.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _surnname_controller,
+                    decoration: InputDecoration(
+                        labelText: "surname".tr(),
+                        hintText: "enter_your_surname".tr(),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(9.0),
+                          child: SvgIcon("assets/icons/identification.svg"),
+                        )),
+                    validator: (school) {
+//                      if (school.isEmpty) {
+//                        return "please_fill_this_field".tr();
+//                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _email_controller,
                     decoration: InputDecoration(
@@ -253,9 +290,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: SvgIcon("assets/icons/email.svg"),
                         )),
                     validator: (school) {
-//                      if (school.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
+                      if (school.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
                       return null;
                     },
                   ),
@@ -313,7 +350,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                            Navigator.of(context)
                                .popUntil((route) => route.isFirst);
 
-                           /// Go to home screen - for demo
+                           User user = new User();
+                           user.username = _username_controller.text;
+                           user.password = _password_controller.text;
+                           user.email = _email_controller.text;
+                           user.phone_number = _phone_number_controller.text;
+                           user.linked_link = _linked_link_controller.text;
+                           user.name = _name_controller.text;
+                           user.surname = _surnname_controller.text;
+
+                           if(_imageFile != null)
+                             user.uploadImage1(File(_imageFile.path));
+                           else
+                             user.uploadImage1(null);
+
                            Navigator.pushReplacementNamed(context, Routes.home);
                          }
                          else{
