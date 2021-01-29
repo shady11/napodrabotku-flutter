@@ -41,5 +41,18 @@
   "name": "Имя",
   "enter_your_name": "Вводите имя",
   "surname": "Фамилия",
-  "enter_your_surname": "Вводите фамилию"
+  "enter_your_surname": "Вводите фамилию",
+  "job_type": "Вид работы",
+  "select_job_type": "Выбирать",
+  "job_types": "Вид работ",
+  "vacancy_type": "Вид",
+  "select_vacancy_type": "Выбирать",
+  "vacancy_types": "Вид",
+  "busyness": "Занятость",
+  "select_busyness": "Выбирать",
+  "busynesses": "Занятость",
+  "schedule": "График",
+  "select_schedule": "Выбирать",
+  "schedules": "График",
+  "cancel": "Отмена"
 }

@@ -13,6 +13,8 @@ import 'package:ishapp/widgets/svg_icon.dart';
 
 import 'home_screen.dart';
 
+enum is_company { Company, User}
+
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -82,7 +84,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  @override
+
+  is_company company = is_company.Company;
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -118,6 +122,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             SizedBox(height: 22),
 
+            Container(
+              height: MediaQuery.of(context).size.height *0.15,
+              width: MediaQuery.of(context).size.width *1,
+              child: Column(
+                children: [
+                  ListTile(
+                    title: const Text('Работадатель'),
+                    leading: Radio(
+                      value: is_company.Company,
+                      groupValue: company,
+                      onChanged: (is_company value) {
+                        setState(() {
+                          company = value;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Работник'),
+                    leading: Radio(
+                      value: is_company.User,
+                      groupValue: company,
+                      onChanged: (is_company value) {
+                        setState(() {
+                          company = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
             /// Form
             Form(
               key: _formKey,
@@ -346,29 +382,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Text("sign_up".tr(), style: TextStyle(fontSize: 18)),
                       onPressed: () {
                         /// Validate form
-                         if (_formKey.currentState.validate()) {
-                           Navigator.of(context)
-                               .popUntil((route) => route.isFirst);
-
-                           User user = new User();
-                           user.username = _username_controller.text;
-                           user.password = _password_controller.text;
-                           user.email = _email_controller.text;
-                           user.phone_number = _phone_number_controller.text;
-                           user.linked_link = _linked_link_controller.text;
-                           user.name = _name_controller.text;
-                           user.surname = _surnname_controller.text;
-
-                           if(_imageFile != null)
-                             user.uploadImage1(File(_imageFile.path));
-                           else
-                             user.uploadImage1(null);
-
-                           Navigator.pushReplacementNamed(context, Routes.home);
-                         }
-                         else{
-                           return;
-                         }
+//                         if (_formKey.currentState.validate()) {
+//                           Navigator.of(context)
+//                               .popUntil((route) => route.isFirst);
+//
+//                           User user = new User();
+//                           user.username = _username_controller.text;
+//                           user.password = _password_controller.text;
+//                           user.email = _email_controller.text;
+//                           user.phone_number = _phone_number_controller.text;
+//                           user.linked_link = _linked_link_controller.text;
+//                           user.name = _name_controller.text;
+//                           user.surname = _surnname_controller.text;
+//
+//                           if(_imageFile != null)
+//                             user.uploadImage1(File(_imageFile.path));
+//                           else
+//                             user.uploadImage1(null);
+//
+//                           Navigator.pushReplacementNamed(context, Routes.home);
+//                         }
+//                         else{
+//                           return;
+//                         }
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.of(context)
+                            .pushNamed(Routes.home);
 
                         /// Remove previous screens
                       },

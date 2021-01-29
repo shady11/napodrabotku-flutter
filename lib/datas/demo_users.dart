@@ -23,47 +23,47 @@ List<User> getDemoUsers() {
   /// User list
   return [
      User(
-      userFullname: "Carolyn, 20",
-      userPhotoLink: "assets/images/demo_users/woman_01.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "Harvard University",
       jobTitle: "Dentist",
       userDistance: "10km",
     ),
     User(
-      userFullname: "Rachel, 25",
-      userPhotoLink: "assets/images/demo_users/woman_02.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "Massachusetts Institute of Technology",
       jobTitle: "Management analyst",
       userDistance: "15km",
     ),
 
     User(
-      userFullname: "Nicole, 27",
-      userPhotoLink: "assets/images/demo_users/woman_03.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "Stanford University",
       jobTitle: "Psychologist",
       userDistance: "20km",
     ),
 
     User(
-      userFullname: "Angela, 24",
-      userPhotoLink: "assets/images/demo_users/woman_04.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "University of Cambridge",
       jobTitle: "Engineer",
       userDistance: "25km",
     ),
 
     User(
-      userFullname: "Deborah, 25",
-      userPhotoLink: "assets/images/demo_users/woman_05.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "University of Oxford",
       jobTitle: "Computer programmer",
       userDistance: "30km",
     ),
 
     User(
-      userFullname: "Jennifer, 25",
-      userPhotoLink: "assets/images/demo_users/woman_06.jpg",
+      userFullname: "UlutSoft",
+      userPhotoLink: "assets/images/demo_users/logo_new2.png",
       userSchool: "University of California",
       jobTitle: "Physical scientist",
       userDistance: "35km",
@@ -74,23 +74,23 @@ List<Vacancy> getDemoVacancies() {
   /// User list
   return [
     Vacancy(
-      company_name: "Rachel, 25",
-      company_logo_image: "assets/images/demo_users/woman_02.jpg",
-      name: "Massachusetts Institute of Technology",
+      company_name: "UlutSoft",
+      company_logo_image: "assets/images/demo_users/logo_new2.png",
+      name: "Swift разраотчик",
       description: "Management analyst",
     ),
 
     Vacancy(
-      company_name: "Nicole, 27",
-      company_logo_image: "assets/images/demo_users/woman_03.jpg",
-      name: "Stanford University",
+      company_name: "UlutSoft",
+      company_logo_image: "assets/images/demo_users/logo_new2.png",
+      name: "Python разраотчик",
       description: "Psychologist",
     ),
 
     Vacancy(
-      company_name: "Angela, 24",
-      company_logo_image: "assets/images/demo_users/woman_04.jpg",
-      name: "University of Cambridge",
+      company_name: "UlutSoft",
+      company_logo_image: "assets/images/demo_users/logo_new2.png",
+      name: "Php разраотчик",
       description: "Engineer",
     ),
 

@@ -58,11 +58,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(
-                        Icons.work,
-                        color: kColorPink,
-                        size: 48,
-                      ),
                       Text.rich(
                         TextSpan(
                           children: [

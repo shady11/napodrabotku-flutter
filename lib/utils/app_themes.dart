@@ -57,7 +57,7 @@ final appThemeData = {
     buttonColor: Color(0xff253676),
     focusColor: Color(0xff253676),
     cursorColor: Color(0xff253676),
-    splashColor: kColorPrimaryDark,
+    splashColor: Color(0xff253676),
 //    unselectedWidgetColor: Colors.white,
     textSelectionHandleColor: Colors.white,
   ),

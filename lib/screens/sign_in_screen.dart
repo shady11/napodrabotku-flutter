@@ -47,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: _username_controller,
                     decoration: InputDecoration(
                         labelText: "username".tr(),
-                        hintText: "enter_yout_username".tr(),
+                        hintText: "enter_your_username".tr(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -108,18 +108,22 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Text("sign_in".tr(), style: TextStyle(fontSize: 18)),
                       onPressed: () {
                         /// Validate form
-                         if (_formKey.currentState.validate()) {
-                           /// Remove previous screens
-                           Navigator.of(context)
+//                         if (_formKey.currentState.validate()) {
+//                           /// Remove previous screens
+//                           Navigator.of(context)
+//                               .popUntil((route) => route.isFirst);
+//                           User user = new User();
+//                           user.login(_username_controller.text, _password_controller.text);
+//                           Navigator.of(context)
+//                               .pushNamed(Routes.home);
+//                         }
+//                         else{
+//                           return;
+//                         }
+                        Navigator.of(context)
                                .popUntil((route) => route.isFirst);
-                           User user = new User();
-                           user.login(_username_controller.text, _password_controller.text);
-                           Navigator.of(context)
+                        Navigator.of(context)
                                .pushNamed(Routes.home);
-                         }
-                         else{
-                           return;
-                         }
                       },
                     ),
                   ),

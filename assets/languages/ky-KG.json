@@ -41,5 +41,18 @@
   "name": "Ысымы",
   "enter_your_name": "Ысымыңызды жазыңыз",
   "surname": "Аты-жөнү",
-  "enter_your_surname": "Аты-жөнүңүздү жазыңыз"
+  "enter_your_surname": "Аты-жөнүңүздү жазыңыз",
+  "job_type": "Иш түрү",
+  "select_job_type": "Тандоо",
+  "job_types": "Жумуш түрү",
+  "vacancy_type": "Түрү",
+  "select_vacancy_type": "Тандоо",
+  "vacancy_types": "Түрлөрү",
+  "busyness": "Занятость",
+  "select_busyness": "Тандоо",
+  "busynesses": "Занятость",
+  "schedule": "График",
+  "select_schedule": "Тандоо",
+  "schedules": "График",
+  "cancel": "Жокко чыгаруу"
 }
