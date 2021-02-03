@@ -12,9 +12,7 @@ import 'package:ishapp/datas/vacancy.dart';
 );
 
 const DEMO_PROFILE_BIO =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper\n'
-    '😍👜👢👗🌷🍔🧁️🍟🍕❤️️ convallis nulla in cursus. '
-    'Proin id accumsan felis. Aenean malesuada vitae ligula ac bibendum.';
+    'UlutSoft is a company that can solve your business problems. We really love our Kyrgyz language, prove of this is our AI that can have a conversation in our mother language. It is not complete yet, but we are moving towards it with confidence!';
 
 
 /// DEMO PROFILES - [getDemoUsers] ///

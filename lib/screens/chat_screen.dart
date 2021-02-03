@@ -1,5 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/chat_message.dart';
@@ -56,12 +58,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       width: 20, height: 20, 
                       color: Theme.of(context).primaryColor),
                       SizedBox(width: 5),
-                      Text("Delete conversation"),
+                      Text("delete_conversation".tr()),
                     ],
               )),
 
               /// Undo Match
-              PopupMenuItem(
+              /*PopupMenuItem(
                   value: "undo_match",
                   child: Row(
                     children: <Widget>[
@@ -70,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       SizedBox(width: 5),
                       Text("Undo Match")
                     ],
-                  )),
+                  )),*/
             ],
             onSelected: (val) {
               /// Control selected value
@@ -91,14 +93,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   isUserSender: true,
                   userPhotoLink: "assets/images/man.jpg",
                   textMessage: "Здравствуйте, можно телеграм вашего hr manager?",
-                  timeAgo: "3 min ago",
+                  timeAgo: "3" + "min_ago".tr(),
                 ),
 
                 ChatMessage(
                   isUserSender: false,
                   userPhotoLink: widget.user.userPhotoLink,
                   textMessage: "Добрый день. @Username",
-                  timeAgo: "1 min ago",
+                  timeAgo: "1" + "min_ago".tr(),
                 ),
 
                 /// Current user
@@ -106,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   isUserSender: true,
                   userPhotoLink: "assets/images/man.jpg",
                   textMessage: "Спасибо",
-                  timeAgo: "0 min ago",
+                  timeAgo: "1" + "min_ago".tr(),
                 ),
 
                 ChatMessage(
@@ -114,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   isImage: false,
                   userPhotoLink: widget.user.userPhotoLink,
                   textMessage: 'Не за что',
-                  timeAgo: "0 min ago",
+                  timeAgo: "0" + "min_ago".tr(),
                 ),
               ],
             ),
@@ -135,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   minLines: 1,
                   maxLines: 4,
                   decoration: InputDecoration(
-                      hintText: "Type a message", border: InputBorder.none),
+                      hintText: "write".tr(), border: InputBorder.none),
 
                   onChanged: (text) {
                     setState(() {

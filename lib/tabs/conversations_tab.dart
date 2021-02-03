@@ -60,7 +60,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                   ),
                   title: Text(user.userFullname.split(",")[0],
                       style: TextStyle(fontSize: 18)),
-                  subtitle: Text("Hi, how are you?\n$index min ago"),
+                  subtitle: Text("Не за что\n$index" + "min_ago".tr()),
                   trailing: !_isReadNotifDemo[index] ? Badge(text: "2") : null,
                   onTap: () {
                     /// Go to chat screen

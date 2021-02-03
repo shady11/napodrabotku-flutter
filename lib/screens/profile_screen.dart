@@ -1,7 +1,10 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/badge.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 
@@ -21,16 +24,16 @@ class ProfileScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                /// Carousel Profile images
-                AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: Carousel(
-                      autoplay: false,
-                      dotBgColor: Colors.transparent,
-                      dotIncreasedColor: Theme.of(context).primaryColor,
-                      images: [
-                        AssetImage(user.userPhotoLink),
-                      ]),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(user.userPhotoLink, width: MediaQuery.of(context).size.width * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.3,)
+                    ),
+                  ),
                 ),
 
                 /// Profile details
@@ -56,26 +59,6 @@ class ProfileScreen extends StatelessWidget {
 
                       SizedBox(height: 5),
 
-                      /// Home location
-                      _rowProfileInfo(context,
-                          icon: SvgIcon("assets/icons/location_point_icon.svg",
-                              color: Theme.of(context).primaryColor,
-                              width: 24,
-                              height: 24),
-                          title: user.userSchool),
-
-                      SizedBox(height: 5),
-
-                      /// Job title
-                      _rowProfileInfo(context,
-                          icon: SvgIcon("assets/icons/job_bag_icon.svg",
-                              color: Theme.of(context).primaryColor,
-                              width: 24,
-                              height: 24),
-                          title: user.jobTitle),
-
-                      SizedBox(height: 5),
-
 //                      /// Education
 //                      _rowProfileInfo(context,
 //                          icon: SvgIcon("assets/icons/university_icon.svg",
@@ -90,7 +73,8 @@ class ProfileScreen extends StatelessWidget {
                       Text('Bio',
                           style: TextStyle(
                               fontSize: 18,
-                              color: Theme.of(context).primaryColor)),
+                              color: Colors.black)),
+                      SizedBox(height: 10,),
                       Text(DEMO_PROFILE_BIO,
                           style: TextStyle(fontSize: 18, color: Colors.grey)),
                     ],
@@ -114,9 +98,8 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: SvgIcon("assets/icons/message_icon.svg",
-            color: Colors.white, width: 30, height: 30),
+        backgroundColor: kColorPrimary,
+        child: Icon(Boxicons.bx_message_rounded,  size: 40,),
         onPressed: () {
           /// Go to chat screen
           Navigator.of(context).push(MaterialPageRoute(

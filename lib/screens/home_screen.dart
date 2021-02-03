@@ -64,7 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
 //              })
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: ClipRRect(
+    borderRadius: BorderRadius.only(
+    topLeft: Radius.circular(25),
+    topRight: Radius.circular(25),
+    ),
+        child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: Platform.isIOS ? 0 : 8,
           currentIndex: _tabCurrentIndex,
@@ -111,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? kColorPrimary
                     : Colors.grey),)),
           ]),
+      ),
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),

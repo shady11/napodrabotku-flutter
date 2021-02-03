@@ -395,7 +395,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return ProfileCard();
+                    return ProfileCard(vacancy: vacancies[x],);
                   }));
                 },
                 child: ProfileCard(
@@ -495,7 +495,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     color: Colors.white,
                     textColor: kColorPrimary,
                     onPressed: () {
-                      Navigator.of(context).popAndPushNamed(Routes.signup);
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
                     },
                     text: 'day'.tr(),
                   ),
@@ -504,7 +504,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     color: Colors.white,
                     textColor: kColorPrimary,
                     onPressed: () {
-                      Navigator.of(context).popAndPushNamed(Routes.signup);
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
                     },
                     text: 'week'.tr(),
                   ),
@@ -513,7 +513,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     color: Colors.white,
                     textColor: kColorPrimary,
                     onPressed: () {
-                      Navigator.of(context).popAndPushNamed(Routes.signup);
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
                     },
                     text: 'month'.tr(),
                   ),
