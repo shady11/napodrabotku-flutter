@@ -90,14 +90,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 ChatMessage(
                   isUserSender: true,
                   userPhotoLink: "assets/images/man.jpg",
-                  textMessage: "Hi, how are you?",
-                  timeAgo: "0 min ago",
+                  textMessage: "Здравствуйте, можно телеграм вашего hr manager?",
+                  timeAgo: "3 min ago",
                 ),
 
                 ChatMessage(
                   isUserSender: false,
                   userPhotoLink: widget.user.userPhotoLink,
-                  textMessage: "Fine, thanks. You?",
+                  textMessage: "Добрый день. @Username",
                   timeAgo: "1 min ago",
                 ),
 
@@ -105,16 +105,16 @@ class _ChatScreenState extends State<ChatScreen> {
                 ChatMessage(
                   isUserSender: true,
                   userPhotoLink: "assets/images/man.jpg",
-                  textMessage: "Great. Can you send me your picture now?",
+                  textMessage: "Спасибо",
                   timeAgo: "0 min ago",
                 ),
 
                 ChatMessage(
                   isUserSender: false,
-                  isImage: true,
+                  isImage: false,
                   userPhotoLink: widget.user.userPhotoLink,
-                  imageLink: widget.user.userPhotoLink,
-                  timeAgo: "1 min ago",
+                  textMessage: 'Не за что',
+                  timeAgo: "0 min ago",
                 ),
               ],
             ),

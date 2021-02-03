@@ -26,7 +26,7 @@ final appThemeData = {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: kColorDarkBlue,
-          fontFamily: 'Nunito',
+          fontFamily: 'GT Eesti Pro',
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -44,7 +44,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'Nunito',
+    fontFamily: 'GT Eesti Pro',
     cardTheme: CardTheme(
       elevation: 0,
       color: Color(0xffEBF2F5),
@@ -53,11 +53,11 @@ final appThemeData = {
         //side: BorderSide(width: 1, color: Colors.grey[200]),
       ),
     ),
-    bottomAppBarColor: Color(0xff253676),
-    buttonColor: Color(0xff253676),
-    focusColor: Color(0xff253676),
-    cursorColor: Color(0xff253676),
-    splashColor: Color(0xff253676),
+    bottomAppBarColor: Color(0xffE02C52),
+    buttonColor: Color(0xffE02C52),
+    focusColor: Color(0xffE02C52),
+    cursorColor: Color(0xffE02C52),
+    splashColor: Color(0xffE02C52),
 //    unselectedWidgetColor: Colors.white,
     textSelectionHandleColor: Colors.white,
   ),
@@ -78,7 +78,7 @@ final appThemeData = {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
-          fontFamily: 'Nunito',
+          fontFamily: 'GT Eesti Pro',
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -99,7 +99,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'Nunito',
+    fontFamily: 'GT Eesti Pro',
     cardTheme: CardTheme(
       elevation: 2,
       shape: RoundedRectangleBorder(

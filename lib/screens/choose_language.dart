@@ -5,11 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/routes/routes.dart';
+import 'package:ishapp/utils/constants.dart';
 
 class ChooseLanguageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColorBlue,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
@@ -30,18 +32,24 @@ class ChooseLanguageScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Text(
-                          'Добро пожаловать!',
+                          'ishtapp',
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: 40,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.italic
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Center(
                         child: Text(
-                          'Выберите язык приложения',
+                          'Тил тандаңыз',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -51,24 +59,13 @@ class ChooseLanguageScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Text(
-                          'Кош келиңиздер!',
+                          'Выберите язык приложения',
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: 16,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Тиркеменин тилин тандаңыз',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       SizedBox(
                         height: 20,
@@ -79,19 +76,8 @@ class ChooseLanguageScreen extends StatelessWidget {
                           children: <Widget>[
                             CustomButton(
                               padding: EdgeInsets.all(20),
-                              onPressed: () {
-                                Prefs.setString(Prefs.LANGUAGE, 'ru');
-                                EasyLocalization.of(context).locale =
-                                EasyLocalization.of(context).supportedLocales[1];
-                                Navigator.of(context).popAndPushNamed(Routes.start);
-                              },
-                              text: 'Русский',
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            CustomButton(
-                              padding: EdgeInsets.all(20),
+                              color: Colors.white,
+                              textColor: kColorBlue,
                               onPressed: () {
                                 Prefs.setString(Prefs.LANGUAGE, 'ky');
                                 EasyLocalization.of(context).locale =
@@ -99,6 +85,21 @@ class ChooseLanguageScreen extends StatelessWidget {
                                 Navigator.of(context).popAndPushNamed(Routes.start);
                               },
                               text: 'Кыргызча',
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            CustomButton(
+                              padding: EdgeInsets.all(20),
+                              color: Colors.white,
+                              textColor: kColorBlue,
+                              onPressed: () {
+                                Prefs.setString(Prefs.LANGUAGE, 'ru');
+                                EasyLocalization.of(context).locale =
+                                EasyLocalization.of(context).supportedLocales[1];
+                                Navigator.of(context).popAndPushNamed(Routes.start);
+                              },
+                              text: 'Русский',
                             ),
                           ],
                         ),

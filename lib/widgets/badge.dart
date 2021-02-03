@@ -12,13 +12,13 @@ class Badge extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).primaryColor, //.withAlpha(85),
-          borderRadius: BorderRadius.circular(15.0)),
-      padding: const EdgeInsets.all(6.0),
+          borderRadius: BorderRadius.circular(20.0)),
+      padding: const EdgeInsets.all(5.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           icon ?? Container(width: 0, height: 0),
-          icon != null ? SizedBox(width: 5) : Container(width: 0, height: 0),
+          icon != null ? SizedBox(width: 10) : Container(width: 0, height: 0),
           Text(text ?? "", style: TextStyle(color: Colors.white)),
         ],
       ));

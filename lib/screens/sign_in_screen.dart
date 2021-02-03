@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/widgets/cicle_button.dart';
+import 'package:ishapp/utils/constants.dart';
+import 'package:ishapp/components/custom_button.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -27,32 +32,43 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("sign_in".tr()),
+        title: Text("sign_in_title".tr()),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            Text("sign_in".tr(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            Align(
+
+              alignment: Alignment.topLeft,
+              child: Text("sign_in".tr(),
+                  style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+            ),
+            SizedBox(height: 40),
 
             /// Form
             Form(
               key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   /// Fullname field
+                  Align(
+                    widthFactor: 10,
+                    heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
-                        labelText: "username".tr(),
-                        hintText: "enter_your_username".tr(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: SvgIcon("assets/icons/user_icon.svg"),
-                        )),
+                      filled: true,
+                      fillColor: Colors.grey[200]
+                    ),
                     validator: (name) {
                       // Basic validation
                       if (name.isEmpty) {
@@ -62,18 +78,22 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                   ),
                   SizedBox(height: 20),
-                  /// School field
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
                   TextFormField(
-                    controller: _password_controller,
                     obscureText: _obscureText,
+                    controller: _password_controller,
                     decoration: InputDecoration(
-                        labelText: "password".tr(),
-                        hintText: "enter_your_password".tr(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: SvgIcon("assets/icons/password.svg"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
                         ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
@@ -89,23 +109,31 @@ class _SignInScreenState extends State<SignInScreen> {
                           });
                         },
                       ),
-                      ),
-                    validator: (school) {
-                      if (school.isEmpty) {
+                    ),
+                    validator: (password) {
+                      // Basic validation
+                      if (password.isEmpty) {
                         return "please_fill_this_field".tr();
                       }
-                      else if (school.length <5) {
+                      else if (password.length <5) {
                         return "password_must_at_least_5_chars".tr();
                       }
                       return null;
                     },
-                    ),
-                  SizedBox(height: 20),
+                  ),
+                  SizedBox(height: 10,),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text('forgot_password'.tr())
+                  ),
+                  SizedBox(height: 30),
                   /// Sign In button
                   SizedBox(
                     width: double.maxFinite,
-                    child: DefaultButton(
-                      child: Text("sign_in".tr(), style: TextStyle(fontSize: 18)),
+                    child: CustomButton(
+                      padding: EdgeInsets.all(15),
+                      color: kColorPrimary,
+                      textColor: Colors.white,
                       onPressed: () {
                         /// Validate form
 //                         if (_formKey.currentState.validate()) {
@@ -121,10 +149,78 @@ class _SignInScreenState extends State<SignInScreen> {
 //                           return;
 //                         }
                         Navigator.of(context)
-                               .popUntil((route) => route.isFirst);
+                            .popUntil((route) => route.isFirst);
                         Navigator.of(context)
-                               .pushNamed(Routes.home);
+                            .pushNamed(Routes.home);
                       },
+                      text: 'sign_in'.tr(),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+
+                  Text("sign_in_with_social_apps".tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18, color: Colors.black45)),
+
+                  SizedBox(height: 10),
+
+                  /// Social login
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      /// Login with google
+                      GestureDetector(
+                        child: CircleButton(
+                            bgColor: Colors.white,
+                            padding: 13,
+                            icon: Icon(Boxicons.bxl_google)
+//                    icon: SvgPicture.asset("assets/icons/google_icon.svg",
+//                        width: 20, height: 20, color: kColorPrimary,),
+                        ),
+                        onTap: () {
+                          /// Go to sing up screen - for demo
+                          Navigator.pushNamed(context, Routes.signup);
+                        },
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      /// Login with facebook
+                      GestureDetector(
+                        child: CircleButton(
+                            bgColor: Colors.white,
+                            padding: 13,
+                            icon: Icon(Boxicons.bxl_facebook)
+//                    icon: SvgIcon("assets/icons/facebook_icon.svg",
+//                        width: 20, height: 20,
+//                        color: kColorPrimary),
+                        ),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(Routes.signup);
+                        },
+                      ),
+                    ],
+                  ),
+                  SafeArea(
+                    bottom: true,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("dont_have_account".tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18, color: Colors.black45)),
+                        CustomButton(
+                          padding: EdgeInsets.all(10),
+                          color: Colors.transparent,
+                          textColor: kColorPrimary,
+                          onPressed: () {
+                            Navigator.of(context).popAndPushNamed(Routes.signup);
+                          },
+                          text: 'sign_up'.tr(),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/chat_screen.dart';
+import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/badge.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 
@@ -24,15 +25,14 @@ class _ConversationsTabState extends State<ConversationsTab> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgIcon("assets/icons/message_icon.svg",
-                  color: Theme.of(context).primaryColor, width: 30, height: 30),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("chat".tr(),
+                child: Text("sms".tr(),
                     style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.black,
                         fontWeight: FontWeight.w600)),
               )
             ],
@@ -51,17 +51,17 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
               return Container(
                 color: !_isReadNotifDemo[index]
-                    ? Theme.of(context).primaryColor.withAlpha(40)
+                    ? kColorPrimary.withAlpha(40)
                     : null,
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Colors.white,
                     backgroundImage: AssetImage(user.userPhotoLink),
                   ),
                   title: Text(user.userFullname.split(",")[0],
                       style: TextStyle(fontSize: 18)),
                   subtitle: Text("Hi, how are you?\n$index min ago"),
-                  trailing: !_isReadNotifDemo[index] ? Badge(text: "New") : null,
+                  trailing: !_isReadNotifDemo[index] ? Badge(text: "2") : null,
                   onTap: () {
                     /// Go to chat screen
                     Navigator.of(context).push(MaterialPageRoute(

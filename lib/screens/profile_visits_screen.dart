@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/profile_card.dart';
@@ -15,29 +17,12 @@ class _ProfileVisitsScreenState extends State<ProfileVisitsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Visits"),
+        title: Text("visit".tr()),
       ),
       body: Column(
       children: [
         /// Title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              SvgIcon("assets/icons/eye_icon.svg",
-                  width: 32, height: 32,
-                  color: Theme.of(context).primaryColor),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Users who visited you",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600)),
-              )
-            ],
-          ),
-        ),
+        SizedBox(height: 20,),
 
         /// Matches
         Expanded(

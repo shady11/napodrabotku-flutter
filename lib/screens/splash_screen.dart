@@ -48,36 +48,17 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    height:150,
-                    child: Image.asset(
-                      'assets/images/app_logo.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'ISH',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'APP',
-                              style: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 32,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'ishtapp',
+                        style: TextStyle(
+                            fontSize: 40,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.italic
                         ),
                       ),
                     ],
@@ -85,18 +66,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            Container(
-              width: 150,
-              height: 2,
-              child: LinearProgressIndicator(
-                backgroundColor: kColorBlue,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            )
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/profile_card.dart';
@@ -15,29 +17,13 @@ class _ProfileLikesScreenState extends State<ProfileLikesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Likes"),
+        title: Text("likeds".tr()),
       ),
       body: Column(
       children: [
         /// Title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              SvgIcon("assets/icons/heart_icon.svg",
-                  color: Theme.of(context).primaryColor),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Users who liked you",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600)),
-              )
-            ],
-          ),
-        ),
 
+        SizedBox(height: 20),
         /// Matches
         Expanded(
           child: UsersGrid(children: getDemoVacancies().map((vacancy) {

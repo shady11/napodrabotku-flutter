@@ -46,6 +46,8 @@ dev_dependencies:
   shared_preferences: ^0.5.6
   flutter_bloc: ^4.0.0
   equatable: ^1.2.0
+  flutter_boxicons: ^2.0.2
+  multiselect_formfield: ^0.1.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -81,15 +83,15 @@ flutter_icons:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: NunitoSans
+    - family: GT Eesti Pro
       fonts:
-          - asset: assets/fonts/NunitoSans-Light.ttf
+          - asset: assets/fonts/GTEestiProDisplay-Light.ttf
             weight: 300
-          - asset: assets/fonts/NunitoSans-Regular.ttf
+          - asset: assets/fonts/GTEestiProDisplay-Regular.ttf
             weight: 400
-          - asset: assets/fonts/NunitoSans-SemiBold.ttf
+          - asset: assets/fonts/GTEestiProDisplay-Medium.ttf
             weight: 500
-          - asset: assets/fonts/NunitoSans-Bold.ttf
+          - asset: assets/fonts/GTEestiProDisplay-Bold.ttf
             weight: 700
 
   # For details regarding fonts from package dependencies,

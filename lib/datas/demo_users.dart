@@ -30,44 +30,22 @@ List<User> getDemoUsers() {
       userDistance: "10km",
     ),
     User(
-      userFullname: "UlutSoft",
-      userPhotoLink: "assets/images/demo_users/logo_new2.png",
+      userFullname: "MadDevs",
+      userPhotoLink: "assets/images/demo_users/maddevs.png",
       userSchool: "Massachusetts Institute of Technology",
       jobTitle: "Management analyst",
       userDistance: "15km",
     ),
 
     User(
-      userFullname: "UlutSoft",
-      userPhotoLink: "assets/images/demo_users/logo_new2.png",
+      userFullname: "ZenSoft",
+      userPhotoLink: "assets/images/demo_users/zensoft_logo.png",
       userSchool: "Stanford University",
       jobTitle: "Psychologist",
       userDistance: "20km",
     ),
 
-    User(
-      userFullname: "UlutSoft",
-      userPhotoLink: "assets/images/demo_users/logo_new2.png",
-      userSchool: "University of Cambridge",
-      jobTitle: "Engineer",
-      userDistance: "25km",
-    ),
 
-    User(
-      userFullname: "UlutSoft",
-      userPhotoLink: "assets/images/demo_users/logo_new2.png",
-      userSchool: "University of Oxford",
-      jobTitle: "Computer programmer",
-      userDistance: "30km",
-    ),
-
-    User(
-      userFullname: "UlutSoft",
-      userPhotoLink: "assets/images/demo_users/logo_new2.png",
-      userSchool: "University of California",
-      jobTitle: "Physical scientist",
-      userDistance: "35km",
-    ),
   ];
 }
 List<Vacancy> getDemoVacancies() {

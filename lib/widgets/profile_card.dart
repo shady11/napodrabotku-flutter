@@ -6,6 +6,8 @@ import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:ishapp/components/custom_button.dart';
+import 'package:ishapp/routes/routes.dart';
 import 'badge.dart';
 import 'default_card_border.dart';
 import 'package:ishapp/utils/constants.dart';
@@ -22,75 +24,47 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(9.0),
-      child: Stack(
-        children: [
-          /// User Card
-          Card(
-            clipBehavior: Clip.antiAlias,
-            elevation: 4.0,
-            margin: EdgeInsets.all(0),
-            shape: defaultCardBorder(),
-            child: Container(
-//              decoration: BoxDecoration(
-//                /// User profile image
-//                image: DecorationImage(
-//                    image: AssetImage(user.userPhotoLink),
-//                    fit: BoxFit.cover),
-//              ),
-              child: Container(
-                /// BoxDecoration to make user info visible
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      colors: [
-                        Theme.of(context).primaryColor,
-                        Colors.grey,
-                      ]),
-                ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.5,
+      child: Padding(
+        padding: const EdgeInsets.all(9.0),
+        child: Stack(
+          children: [
+            /// User Card
 
-                /// User info container
-                child: Container(
+            Card(
+              clipBehavior: Clip.antiAlias,
+              elevation: 4.0,
+              margin: EdgeInsets.all(0),
+              shape: defaultCardBorder(),
+              child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       /// User fullname
                       Row(
                         children: [
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                vacancy.company_name,
-                                style: TextStyle(
-                                    fontSize: this.page == 'discover' ? 20 : 18,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(vacancy.company_logo_image, width: MediaQuery.of(context).size.width * 0.18,
+                                  height: MediaQuery.of(context).size.height * 0.09,)
                             ),
                           ),
-                        ],
-                      ),
-
-                      /// User education
-                      Row(
-                        children: [
-                          SizedBox(width: 5),
+                          SizedBox(width: 20),
                           Expanded(
-                            child: Center(
-                              child: Text(
-                                vacancy.name,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            child: RichText(
+                              text: TextSpan(text: vacancy.company_name + '\n',
+                                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
+                                children: <TextSpan>[
+                                  TextSpan(text: 'Бишкек', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                ],
                               ),
                             ),
                           ),
@@ -98,76 +72,91 @@ class ProfileCard extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: Center(
-                              child: Text(vacancy.experience ==null ? "without_experience".tr() :"experience".tr()+
-                                vacancy.experience + "year".tr(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[500],
+                                borderRadius: BorderRadius.circular(8)
                             ),
+                            child: Text('Полная занятость', style: TextStyle(color: Colors.black87),),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Text('45000 - 70000', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[500],
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Text('Гибкий график', style: TextStyle(color: Colors.black87),),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Text('По собеседованию', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[500]),),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
                       /// User job title
-                      Row(
-                        children: [
-                          SvgIcon("assets/icons/job_bag_icon.svg",
-                              color: Colors.white, width: 17, height: 17),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              vacancy.description,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(text: vacancy.name + '\n\n',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(text: 'sdfg,sd,gfposdf,o,dsfgsdfgsdfgsdfgsdfg sdfgsdfgsdf dgfsdfgsdfgsdfgs sdgfsdfgs sdgfsd fgsdg sdfgsdfgsdfg', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                            ],
                           ),
-                        ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomButton(
+                              padding: EdgeInsets.all(5),
+                              color: Colors.grey[200],
+                              textColor: kColorPrimary,
+                              onPressed: () {
+//                                Navigator.of(context).pop();
+                              },
+                              text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
+                            ),
+                            CustomButton(
+                              padding: EdgeInsets.all(5),
+                              color: kColorPrimary,
+                              textColor: Colors.white,
+                              onPressed: () {
+
+//                                Navigator.of(context).pop();
+                              },
+                              text: 'submit'.tr(),
+                            ),
+                          ],
+                        ),
                       ),
 
                       this.page == 'discover'
-                          ? SizedBox(height: 70)
+                          ? SizedBox(height: 20)
                           : Container(width: 0, height: 0),
                     ],
                   ),
-                ),
               ),
             ),
-          ),
-
-          /// User location distance
-          Positioned(
-            right: MediaQuery.of(context).size.width * 0.3,
-//            top: MediaQuery.of(context).size.height * 0.01,
-            left: MediaQuery.of(context).size.width * 0.3,
-            child: Column(
-              children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage(vacancy.company_logo_image),
-                        fit: BoxFit.fill
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

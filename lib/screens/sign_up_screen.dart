@@ -10,6 +10,8 @@ import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/show_scaffold_msg.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/utils/constants.dart';
+import 'package:ishapp/components/custom_button.dart';
 
 import 'home_screen.dart';
 
@@ -90,20 +92,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("sign_up".tr()),
+        title: Text("sign_up_title".tr()),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
         child: Column(
           children: <Widget>[
-            Text("create_account".tr(),
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("create_account".tr(),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
+            ),
             SizedBox(height: 20),
 
             /// Profile photo
             GestureDetector(
               child: _imageFile == null ? CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: kColorPrimary,
                 radius: 50,
                 child: SvgIcon("assets/icons/camera_icon.svg",
                     width: 40, height: 40, color: Colors.white),
@@ -118,41 +123,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
               },
             ),
             SizedBox(height: 10),
-            Text("profile_photo".tr(), textAlign: TextAlign.center),
 
             SizedBox(height: 22),
-
-            Container(
-              height: MediaQuery.of(context).size.height *0.15,
-              width: MediaQuery.of(context).size.width *1,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: const Text('Работадатель'),
-                    leading: Radio(
-                      value: is_company.Company,
-                      groupValue: company,
-                      onChanged: (is_company value) {
-                        setState(() {
-                          company = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('Работник'),
-                    leading: Radio(
-                      value: is_company.User,
-                      groupValue: company,
-                      onChanged: (is_company value) {
-                        setState(() {
-                          company = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Radio(
+                  value: is_company.Company,
+                  groupValue: company,
+                  activeColor: Colors.grey,
+                  onChanged: (is_company value) {
+                    setState(() {
+                      company = value;
+                    });
+                  },
+                ),
+                Text('Работадатель', style: TextStyle(color: Colors.black)),
+                Radio(
+                  value: is_company.User,
+                  groupValue: company,
+                  activeColor: Colors.grey,
+                  onChanged: (is_company value) {
+                    setState(() {
+                      company = value;
+                    });
+                  },
+                ),
+                Text('Работник', style: TextStyle(color: Colors.black))
+              ],
             ),
             /// Form
             Form(
@@ -160,16 +158,232 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 children: <Widget>[
                   /// Fullname field
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
-                        labelText: "username".tr(),
-                        hintText: "enter_your_username".tr(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: SvgIcon("assets/icons/user_icon.svg"),
-                        )),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    obscureText: _obscureText,
+                    controller: _password_controller,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('password_confirm'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _password_confirm_controller,
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      else if(_password_confirm_controller.text != _password_controller.text) {
+                        return "passwords_dont_satisfy".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _name_controller,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('surname'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _surnname_controller,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('email'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _email_controller,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('phone_number'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _phone_number_controller,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                    validator: (name) {
+                      // Basic validation
+                      if (name.isEmpty) {
+                        return "please_fill_this_field".tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('linked_link'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                  TextFormField(
+                    controller: _linked_link_controller,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
                     validator: (name) {
                       // Basic validation
                       if (name.isEmpty) {
@@ -180,206 +394,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   SizedBox(height: 20),
 
-                  /// Birthday card
-//                  Card(
-//                      clipBehavior: Clip.antiAlias,
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(28),
-//                          side: BorderSide(color: Colors.grey[350])),
-//                      child: ListTile(
-//                        leading: SvgIcon("assets/icons/calendar_icon.svg"),
-//                        title: Text(_birthday,
-//                            style: TextStyle(color: Colors.grey)),
-//                        trailing: Icon(Icons.arrow_drop_down),
-//                        onTap: () {
-//                          /// Select birthday
-//                          _showDataPicker();
-//                        },
-//                      )),
-//                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: _password_controller,
-                    obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      labelText: "password".tr(),
-                      hintText: "enter_your_password".tr(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(9.0),
-                        child: SvgIcon("assets/icons/password.svg"),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    ),
-                    validator: (school) {
-                      if (school.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      else if (school.length <5) {
-                        return "password_must_at_least_5_chars".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _password_confirm_controller,
-                    obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      labelText: "password_confirm".tr(),
-                      hintText: "confirm_your_password".tr(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(9.0),
-                        child: SvgIcon("assets/icons/password.svg"),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    ),
-                    onChanged: (confirm_password){
-                      if(confirm_password != _password_controller.text){
-                        return "passwords_dont_satisfy".tr();
-                      }
-                    },
-                    validator: (school) {
-                      if (school.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      else if(_password_confirm_controller.text != _password_controller.text){
-                        return "passwords_dont_satisfy".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _name_controller,
-                    decoration: InputDecoration(
-                        labelText: "name".tr(),
-                        hintText: "enter_your_name".tr(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: SvgIcon("assets/icons/name.svg"),
-                        )),
-                    validator: (school) {
-                      if (school.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _surnname_controller,
-                    decoration: InputDecoration(
-                        labelText: "surname".tr(),
-                        hintText: "enter_your_surname".tr(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: SvgIcon("assets/icons/identification.svg"),
-                        )),
-                    validator: (school) {
-//                      if (school.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: _email_controller,
-                    decoration: InputDecoration(
-                        labelText: "email".tr(),
-                        hintText: "enter_your_email".tr(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(9.0),
-                          child: SvgIcon("assets/icons/email.svg"),
-                        )),
-                    validator: (school) {
-                      if (school.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-
-                  /// Job title field
-                  TextFormField(
-                    controller: _phone_number_controller,
-                    decoration: InputDecoration(
-                        labelText: "phone_number".tr(),
-                        hintText: "enter_your_phone_number".tr(),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: SvgIcon("assets/icons/phone-book.svg"),
-                        )),
-                    validator: (job) {
-//                      if (job.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-
-                  /// Bio field
-                  TextFormField(
-                    controller: _linked_link_controller,
-                    decoration: InputDecoration(
-                      labelText: "linked_link".tr(),
-                      hintText: "write_your_linked_link".tr(),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: SvgIcon("assets/icons/linkedin.svg"),
-                      ),
-                    ),
-                    validator: (bio) {
-//                      if (bio.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-
                   /// Sign Up button
                   SizedBox(
                     width: double.maxFinite,
-                    child: DefaultButton(
-                      child: Text("sign_up".tr(), style: TextStyle(fontSize: 18)),
+                    child: CustomButton(
+                      padding: EdgeInsets.all(15),
+                      color: kColorPrimary,
+                      textColor: Colors.white,
                       onPressed: () {
                         /// Validate form
 //                         if (_formKey.currentState.validate()) {
@@ -412,6 +433,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                         /// Remove previous screens
                       },
+                      text: 'create'.tr(),
                     ),
                   ),
                 ],

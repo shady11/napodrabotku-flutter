@@ -11,10 +11,10 @@ class UsersGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
-      crossAxisCount: 2,
-      childAspectRatio: 250 / 320,
-      mainAxisSpacing: 0,
-      crossAxisSpacing: 0,
+      crossAxisCount: 1,
+      childAspectRatio: 2.3 / 2,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
       children: children
   );
  } 
