@@ -72,5 +72,9 @@
   "sms": "Каттар",
   "min_ago": " мүнөт мурун",
   "write": "Жазуу...",
-  "delete_conversation": "Өчүрүү"
+  "delete_conversation": "Өчүрүү",
+  "language": "Тил",
+  "language_settings": "Тил",
+  "kyrgyz": "Кыргызча",
+  "russian": "Орусча"
 }

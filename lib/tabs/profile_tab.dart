@@ -4,6 +4,7 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishapp/components/custom_button.dart';
 
 import 'package:ishapp/datas/demo_users.dart';
+import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/screens/edit_profile_screen.dart';
 import 'package:ishapp/screens/profile_likes_screen.dart';
 import 'package:ishapp/screens/profile_screen.dart';
@@ -178,6 +179,12 @@ class ProfileTab extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ListTile(
+                title: Text("language".tr(), style: _textStyle),
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.change_language);
+                },
+              ),
               ListTile(
                 title: Text("about_us".tr(), style: _textStyle),
                 onTap: () {

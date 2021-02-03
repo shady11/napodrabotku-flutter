@@ -72,5 +72,9 @@
   "sms": "Сообщения",
   "min_ago": " мин. назад",
   "write": "Написать...",
-  "delete_conversation": "Удалить чат"
+  "delete_conversation": "Удалить чат",
+  "language": "Язык",
+  "language_settings": "Настройки языка",
+  "kyrgyz": "Кыргызский",
+  "russian": "Русский"
 }

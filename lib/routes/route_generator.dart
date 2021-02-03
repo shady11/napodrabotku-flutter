@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ishapp/routes/routes.dart';
+import 'package:ishapp/screens/change_language_screen.dart';
 import 'package:ishapp/screens/home_screen.dart';
 import 'package:ishapp/screens/sign_in_screen.dart';
 import 'package:ishapp/screens/sign_up_screen.dart';
@@ -31,6 +32,9 @@ class RouteGenerator {
 
       case Routes.home:
         return CupertinoPageRoute(builder: (_) => HomeScreen());
+
+        case Routes.change_language:
+        return CupertinoPageRoute(builder: (_) => ChangeLanguageScreen());
 
       case Routes.error:
         return _errorRoute();
