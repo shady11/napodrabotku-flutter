@@ -11,6 +11,8 @@ import 'package:ishapp/routes/routes.dart';
 import 'badge.dart';
 import 'default_card_border.dart';
 import 'package:ishapp/utils/constants.dart';
+import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/constants/configs.dart';
 
 class ProfileCard extends StatelessWidget {
   /// User object
@@ -55,7 +57,7 @@ class ProfileCard extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(vacancy.company_logo_image, width: 60,
+                                child: Image.network(API_IP+ API_GET_PROFILE_IMAGE + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
                                   height: 60,)
                             ),
                           ),

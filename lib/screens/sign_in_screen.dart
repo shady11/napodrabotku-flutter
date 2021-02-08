@@ -171,23 +171,18 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
-                        /// Validate form
-//                         if (_formKey.currentState.validate()) {
-//                           /// Remove previous screens
-//                           Navigator.of(context)
-//                               .popUntil((route) => route.isFirst);
-//                           User user = new User();
-//                           user.login(_username_controller.text, _password_controller.text);
-//                           Navigator.of(context)
-//                               .pushNamed(Routes.home);
-//                         }
-//                         else{
-//                           return;
-//                         }
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.of(context)
-                            .pushNamed(Routes.home);
+                         if (_formKey.currentState.validate()) {
+                           /// Remove previous screens
+                           Navigator.of(context)
+                               .popUntil((route) => route.isFirst);
+                           User user = new User();
+                           user.login(_username_controller.text, _password_controller.text);
+                           Navigator.of(context)
+                               .pushNamed(Routes.home);
+                         }
+                         else{
+                           return 'Bum-shakalaka';
+                         }
                       },
                       text: 'sign_in'.tr(),
                     ),

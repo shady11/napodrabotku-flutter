@@ -5,8 +5,8 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/widgets/badge.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/constants/configs.dart';
 
 import 'chat_screen.dart';
 
@@ -25,13 +25,13 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(50),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(user.userPhotoLink, width: MediaQuery.of(context).size.width * 0.5,
-                          height: MediaQuery.of(context).size.height * 0.3,)
+                        child: Image.network(API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: MediaQuery.of(context).size.width * 0.4,
+                          height: MediaQuery.of(context).size.height * 0.2,)
                     ),
                   ),
                 ),

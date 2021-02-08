@@ -6,6 +6,8 @@ import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/chat_message.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/constants/configs.dart';
 
 class ChatScreen extends StatefulWidget {
   /// Get user object
@@ -31,7 +33,8 @@ class _ChatScreenState extends State<ChatScreen> {
           child: ListTile(
             contentPadding: const EdgeInsets.only(left: 0),
             leading: CircleAvatar(
-              backgroundImage: AssetImage(widget.user.userPhotoLink),
+              backgroundImage: NetworkImage(
+                  API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
             ),
             title: Text(widget.user.userFullname,
                 style: TextStyle(fontSize: 18)),

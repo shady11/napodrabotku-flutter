@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/screens/edit_profile_screen.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -32,8 +33,8 @@ class ProfileBasicInfoCard extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
                     radius: 40,
-                    backgroundImage: AssetImage(
-                      "assets/images/demo_users/logo_new2.png"),
+                    backgroundImage: NetworkImage(
+                        API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
                   ),
                 ),
 

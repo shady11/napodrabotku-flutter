@@ -12,7 +12,7 @@ import 'package:ishapp/tabs/discover_tab.dart';
 import 'package:ishapp/tabs/matches_tab.dart';
 import 'package:ishapp/tabs/profile_tab.dart';
 import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/datas/vacancy.dart';
 
 import 'notifications_screen.dart';
 
@@ -42,6 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
   List _vacancy_types;
   List _busynesses;
   List _schedules;
+
+  getJobTypeList(){
+
+  }
 
 
   openFilterDialog(context) {

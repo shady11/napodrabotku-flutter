@@ -20,14 +20,6 @@ class DiscoverTab extends StatefulWidget {
   _DiscoverTabState createState() => _DiscoverTabState();
 }
 
-class JobType {
-  int id;
-  String name;
-
-  JobType({this.id, this.name});
-
-
-}
 class _DiscoverTabState extends State<DiscoverTab> {
   // Variables
   final _swipeKey = GlobalKey<SwipeStackState>();
@@ -143,7 +135,11 @@ class _DiscoverTabState extends State<DiscoverTab> {
   List _schedules;
 
 
+
+
   openFilterDialog(context) {
+
+
     showDialog(
         context: context,
         builder: (BuildContext context) {

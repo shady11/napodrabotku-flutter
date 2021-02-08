@@ -16,6 +16,8 @@ import 'package:ishapp/widgets/badge.dart';
 import 'package:ishapp/widgets/profile_basic_info_card.dart';
 import 'package:ishapp/widgets/profile_statistics_card.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/constants/configs.dart';
 
 class ProfileTab extends StatelessWidget {
  
@@ -48,8 +50,8 @@ class ProfileTab extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColor,
                       radius: 60,
-                      backgroundImage: AssetImage(
-                          "assets/images/demo_users/logo_new2.png"),
+                      backgroundImage: NetworkImage(
+                          API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
                     ),
                   ),
                 ),
