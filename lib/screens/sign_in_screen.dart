@@ -31,11 +31,47 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: Container(
+        color: Colors.white,
+        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("dont_have_account".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, color: Colors.black45)),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: InkWell(
+                child: Text(
+                    'sign_up'.tr(),
+                    style:  TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 18
+                    )
+                ),
+                onTap: (){
+                  Navigator.of(context).popAndPushNamed(Routes.signup);
+                },
+              ),
+            ),
+//            CustomButton(
+//              padding: EdgeInsets.all(10),
+//              color: Colors.transparent,
+//              textColor: kColorPrimary,
+//              onPressed: () {
+//                Navigator.of(context).popAndPushNamed(Routes.signup);
+//              },
+//              text: 'sign_up'.tr(),
+//            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text("sign_in_title".tr()),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(30),
         child: Column(
           children: <Widget>[
             Align(
@@ -57,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     widthFactor: 10,
                     heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
@@ -82,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     obscureText: _obscureText,
                     controller: _password_controller,
@@ -121,7 +157,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 20,),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text('forgot_password'.tr())
@@ -156,13 +192,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: 'sign_in'.tr(),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                   Text("sign_in_with_social_apps".tr(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.black45)),
+                      style: TextStyle(fontSize: 16, color: Colors.black45)),
 
-                  SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   /// Social login
                   Row(
@@ -191,7 +227,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: CircleButton(
                             bgColor: Colors.white,
                             padding: 13,
-                            icon: Icon(Boxicons.bxl_facebook)
+                            icon: Icon(Boxicons.bxl_facebook_circle)
 //                    icon: SvgIcon("assets/icons/facebook_icon.svg",
 //                        width: 20, height: 20,
 //                        color: kColorPrimary),
@@ -202,26 +238,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                       ),
                     ],
-                  ),
-                  SafeArea(
-                    bottom: true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("dont_have_account".tr(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18, color: Colors.black45)),
-                        CustomButton(
-                          padding: EdgeInsets.all(10),
-                          color: Colors.transparent,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Navigator.of(context).popAndPushNamed(Routes.signup);
-                          },
-                          text: 'sign_up'.tr(),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),

@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             child: child,
           );
         },
-        title: 'ISHAPP',
+        title: 'ISHTAPP',
         initialRoute: Routes.splash,
         onGenerateRoute: RouteGenerator.generateRoute,
         localizationsDelegates: [

@@ -162,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
@@ -187,7 +187,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     obscureText: _obscureText,
                     controller: _password_controller,
@@ -228,7 +228,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('password_confirm'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('password_confirm'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _password_confirm_controller,
                     obscureText: _obscureText,
@@ -269,10 +269,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   SizedBox(height: 20),
                   Align(
-                      widthFactor: 10,
+//                      widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
@@ -297,7 +297,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('surname'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('surname'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _surnname_controller,
                     decoration: InputDecoration(
@@ -322,7 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('email'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('email'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _email_controller,
                     decoration: InputDecoration(
@@ -347,7 +347,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('phone_number'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('phone_number'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _phone_number_controller,
                     decoration: InputDecoration(
@@ -372,7 +372,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('linked_link'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)),
+                      child: Text('linked_link'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _linked_link_controller,
                     decoration: InputDecoration(

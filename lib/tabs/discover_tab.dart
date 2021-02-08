@@ -364,10 +364,10 @@ class _DiscoverTabState extends State<DiscoverTab> {
     List<Vacancy> vacancies = getDemoVacancies();
     List<Widget> cardList = new List();
 
-    for (int x = 0; x < vacancies.length; x++) {
+    for (int x = 0; x < 5; x++) {
       cardList.add(
         Positioned(
-          bottom: 40+(x*15.0),
+          bottom: 5+(x*15.0),
           child: Draggable(
               onDragEnd: (drag) {
                 print("============================================");
@@ -375,13 +375,13 @@ class _DiscoverTabState extends State<DiscoverTab> {
                 print(drag.offset.dx);
                 print("============================================");
 
-                if(drag.offset.dx < -150){
-                  removeCards(x);
-                }
-
-                if(drag.offset.dx > 150){
-                  removeCards(x);
-                }
+//                if(drag.offset.dx < -200){
+//                  removeCards(x);
+//                }
+//
+//                if(drag.offset.dx > 200){
+//                  removeCards(x);
+//                }
               },
               childWhenDragging: Container(),
               feedback: GestureDetector(
@@ -389,7 +389,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   print("Hello All");
                 },
                 child: ProfileCard(
-                    page: 'discover',  vacancy: vacancies[x]),
+                    page: 'discover',  vacancy: vacancies[x], index: 4-x,),
               ),
               child: GestureDetector(
                 onTap: () {
@@ -399,7 +399,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   }));
                 },
                 child: ProfileCard(
-                    page: 'discover',  vacancy: vacancies[x]),
+                    page: 'discover',  vacancy: vacancies[x], index: 4-x,),
               )),
         ),
       );
@@ -410,10 +410,42 @@ class _DiscoverTabState extends State<DiscoverTab> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.loose,
+      alignment: Alignment.topCenter,
+      fit: StackFit.expand,
       children: [
         /// User card list
-
+        /*Container(
+            margin: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.lerp(new Alignment(-1.0, -1), new Alignment(1, -1), 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    child: Text(
+                      'ishtapp',
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.italic
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 18,),
+                  GestureDetector(
+                    child: CircleButton(
+                        bgColor: Colors.transparent,
+                        padding: 12,
+                        icon: Icon(Boxicons.bx_filter, color: Colors.white, size: 35,)
+                    ),
+                    onTap: () {
+                      openFilterDialog(context);
+                    },
+                  ),
+                ],
+              ),
+            )),*/
         /*Align(
           alignment: Alignment.center,
           child: Container(
@@ -447,50 +479,20 @@ class _DiscoverTabState extends State<DiscoverTab> {
         ),
 
         /// Filter button
-        Container(
-            margin: const EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    child: Text(
-                      'ishtapp',
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.italic
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 18,),
-                  GestureDetector(
-                    child: CircleButton(
-//                        bgColor: Colors.white,
-                        padding: 12,
-                        icon: Icon(Boxicons.bx_filter, color: Colors.white, size: 35,)
-                    ),
-                    onTap: () {
-                      openFilterDialog(context);
-                    },
-                  ),
-                ],
-              ),
-            )),
 
         /// Swipe buttons
         Container(
-          margin: const EdgeInsets.only(bottom: 20),
+//          margin: const EdgeInsets.only(bottom: 20),
+          padding: EdgeInsets.all(20),
           child: Align(
-              alignment: Alignment.lerp(new Alignment(-1.0, -0.80), new Alignment(1, -0.80), 20),
+              alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
               widthFactor: MediaQuery.of(context).size.width * 1,
               heightFactor: MediaQuery.of(context).size.height * 0.4,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.25,
                     padding: EdgeInsets.all(2),
                     color: Colors.white,
                     textColor: kColorPrimary,
@@ -500,6 +502,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     text: 'day'.tr(),
                   ),
                   CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     padding: EdgeInsets.all(2),
                     color: Colors.white,
                     textColor: kColorPrimary,
@@ -509,6 +512,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                     text: 'week'.tr(),
                   ),
                   CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     padding: EdgeInsets.all(2),
                     color: Colors.white,
                     textColor: kColorPrimary,

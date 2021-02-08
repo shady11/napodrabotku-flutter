@@ -17,18 +17,19 @@ class ProfileCard extends StatelessWidget {
   final Vacancy vacancy;
   /// Screen to be checked
   final String page;
+  final int index;
   /// Swiper position
   final SwiperPosition position;
 
-  ProfileCard({this.page, this.position, @required this.vacancy});
+  ProfileCard({this.page, this.position, @required this.vacancy, this.index});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width:  MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.5,
+      width: index == 0 ?  MediaQuery.of(context).size.width * 1: (index == 1 ?  MediaQuery.of(context).size.width * 0.95:(index == 2 ?  MediaQuery.of(context).size.width * 0.9:(index == 3 ?  MediaQuery.of(context).size.width * 0.85:MediaQuery.of(context).size.width * 0.8))),
+      height: MediaQuery.of(context).size.height * 0.6,
       child: Padding(
-        padding: const EdgeInsets.all(9.0),
+        padding: const EdgeInsets.all(20),
         child: Stack(
           children: [
             /// User Card
@@ -36,11 +37,12 @@ class ProfileCard extends StatelessWidget {
             Card(
               clipBehavior: Clip.antiAlias,
               elevation: 4.0,
+              color: Colors.white,
               margin: EdgeInsets.all(0),
               shape: defaultCardBorder(),
               child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,15 +55,15 @@ class ProfileCard extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(vacancy.company_logo_image, width: MediaQuery.of(context).size.width * 0.18,
-                                  height: MediaQuery.of(context).size.height * 0.09,)
+                                child: Image.asset(vacancy.company_logo_image, width: 60,
+                                  height: 60,)
                             ),
                           ),
                           SizedBox(width: 20),
                           Expanded(
                             child: RichText(
                               text: TextSpan(text: vacancy.company_name + '\n',
-                                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
                                 children: <TextSpan>[
                                   TextSpan(text: 'Бишкек', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                                 ],
@@ -75,9 +77,9 @@ class ProfileCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Colors.grey[500],
+                                color: Color(0xffF2F2F5),
                                 borderRadius: BorderRadius.circular(8)
                             ),
                             child: Text('Полная занятость', style: TextStyle(color: Colors.black87),),
@@ -92,9 +94,9 @@ class ProfileCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                                color: Colors.grey[500],
+                                color: Color(0xffF2F2F5),
                                 borderRadius: BorderRadius.circular(8)
                             ),
                             child: Text('Гибкий график', style: TextStyle(color: Colors.black87),),
@@ -104,28 +106,27 @@ class ProfileCard extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8)
                             ),
-                            child: Text('По собеседованию', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[500]),),
+                            child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 15),
                       /// User job title
-                      Expanded(
+                      Text(vacancy.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
+                      SizedBox(height: 10),
+                      page =='discover' ? Expanded(
                         child: RichText(
-                          text: TextSpan(text: vacancy.name + '\n\n',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                            children: <TextSpan>[
-                              TextSpan(text: 'sdfg,sd,gfposdf,o,dsfgsdfgsdfgsdfgsdfg sdfgsdfgsdf dgfsdfgsdfgsdfgs sdgfsdfgs sdgfsd fgsdg sdfgsdfgsdfg', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
-                            ],
-                          ),
+                          text: TextSpan(text: 'Требования :\n- опыт работы в Банке или МКК желателен (кредитным специалистом)\n- знание ПК,\n- знание кыргызского и русского языка,\n- целеустремленность, стрессоустойчивость\nТел: 0995 511 511', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                         ),
-                      ),
+                      ) : SizedBox(),
+                      SizedBox(height: 20),
                       SizedBox(
                         width: double.maxFinite,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CustomButton(
+                              width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: Colors.grey[200],
                               textColor: kColorPrimary,
@@ -135,6 +136,7 @@ class ProfileCard extends StatelessWidget {
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
                             CustomButton(
+                              width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: kColorPrimary,
                               textColor: Colors.white,
@@ -149,7 +151,7 @@ class ProfileCard extends StatelessWidget {
                       ),
 
                       this.page == 'discover'
-                          ? SizedBox(height: 20)
+                          ? SizedBox(height: 0)
                           : Container(width: 0, height: 0),
                     ],
                   ),

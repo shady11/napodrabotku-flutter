@@ -21,24 +21,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// Title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("sms".tr(),
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600)),
-              )
-            ],
-          ),
-        ),
-
+        SizedBox(height: 20,),
         /// Conversations
         Expanded(
           child: ListView.separated(
@@ -50,18 +33,19 @@ class _ConversationsTabState extends State<ConversationsTab> {
               final User user = getDemoUsers()[index];
 
               return Container(
-                color: !_isReadNotifDemo[index]
-                    ? kColorPrimary.withAlpha(40)
-                    : null,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+//                color: !_isReadNotifDemo[index]
+//                    ? kColorPrimary.withAlpha(40)
+//                    : null,
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.white,
                     backgroundImage: AssetImage(user.userPhotoLink),
                   ),
                   title: Text(user.userFullname.split(",")[0],
-                      style: TextStyle(fontSize: 18)),
+                      style: TextStyle(fontSize: 18, color: Colors.black)),
                   subtitle: Text("Не за что\n$index" + "min_ago".tr()),
-                  trailing: !_isReadNotifDemo[index] ? Badge(text: "2") : null,
+                  trailing: !_isReadNotifDemo[index] ? Badge(text: "10") : null,
                   onTap: () {
                     /// Go to chat screen
                     Navigator.of(context).push(MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ishapp/utils/constants.dart';
 
 class ChatMessage extends StatelessWidget {
   // Variables
@@ -20,17 +21,17 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// User profile photo
-    final _userProfilePhoto = CircleAvatar(
-      backgroundColor: Theme.of(context).primaryColor,
-      backgroundImage: AssetImage(userPhotoLink),
-    );
+//    final _userProfilePhoto = CircleAvatar(
+//      backgroundColor: Theme.of(context).primaryColor,
+//      backgroundImage: AssetImage(userPhotoLink),
+//    );
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: <Widget>[
           /// User receiver photo Left
-          !isUserSender ? _userProfilePhoto : Container(width: 0, height: 0),
+//          !isUserSender ? _userProfilePhoto : Container(width: 0, height: 0),
 
           SizedBox(width: 10),
 
@@ -50,30 +51,13 @@ class ChatMessage extends StatelessWidget {
                         /// Color for receiver
                         ? Colors.grey.withAlpha(70)
                         /// Color for sender
-                        : Theme.of(context).primaryColor,
+                        : kColorPrimary,
                       borderRadius: BorderRadius.circular(25)),
-                  child: isImage
-                  ?
-                  /// Image
-                  Card(
-                      semanticContainer: true,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      margin: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                          width: 200,
-                          height: 200,
-                          child: Image.asset(imageLink)),
-                    )
-
-                  /// Text message
-                  : Text(textMessage ?? "",
+                  child: Text(textMessage ?? "",
                       style: TextStyle(
                         fontSize: 18,
                         color: isUserSender ? Colors.white : Colors.black),
-                        textAlign: TextAlign.center,
+//                        textAlign: TextAlign.center,
                     ),
                 ),
 
@@ -82,14 +66,14 @@ class ChatMessage extends StatelessWidget {
                 /// Message time ago
                 Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Text(timeAgo)),
+                    child: Text(timeAgo, style: TextStyle(color: Colors.grey),)),
               ],
             ),
           ),
           SizedBox(width: 10),
 
           /// Current User photo right
-          isUserSender ? _userProfilePhoto : Container(width: 0, height: 0),
+//          isUserSender ? _userProfilePhoto : Container(width: 0, height: 0),
         ],
       ),
     );

@@ -33,22 +33,6 @@ class ProfileTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("profile".tr(),
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w600)),
-                )
-              ],
-            ),
-          ),
           /// Basic profile info
           Container(
             padding: const EdgeInsets.all(10.0),
@@ -109,8 +93,8 @@ class ProfileTab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      height: 40,
                       child: CustomButton(
+                        height: 50.0,
                         padding: EdgeInsets.all(10),
                         color: kColorPrimary,
                         textColor: Colors.white,
@@ -121,10 +105,10 @@ class ProfileTab extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 40,
                       child: CustomButton(
+                        height: 50.0,
                         padding: EdgeInsets.all(10),
-                        color: Colors.grey[300],
+                        color: Color(0xffF2F2F5),
                         textColor: kColorPrimary,
                         onPressed: () {
 //                          Navigator.of(context).pop();
@@ -142,7 +126,15 @@ class ProfileTab extends StatelessWidget {
           Column(
             children: [
               ListTile(
-                leading: Icon(Boxicons.bx_like, size: 25, color: kColorPrimary,),
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  child: Icon(Boxicons.bx_like, size: 25, color: kColorPrimary,),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF2F2F5),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                ),
                 title: Text("likeds".tr(), style: _textStyle),
                 trailing: Text('22', style: TextStyle(color: Colors.grey[400]),),
                 onTap: () {

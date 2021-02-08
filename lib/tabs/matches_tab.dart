@@ -18,22 +18,6 @@ class _MatchesTabState extends State<MatchesTab> {
     return Column(
       children: [
         /// Title
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("matches".tr(),
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600)),
-              )
-            ],
-          ),
-        ),
 
         /// Matches
         Expanded(

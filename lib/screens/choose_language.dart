@@ -75,7 +75,8 @@ class ChooseLanguageScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CustomButton(
-                              padding: EdgeInsets.all(20),
+                              height:50.0,
+                              padding: EdgeInsets.all(10),
                               color: Colors.white,
                               textColor: kColorBlue,
                               onPressed: () {
@@ -90,7 +91,8 @@ class ChooseLanguageScreen extends StatelessWidget {
                               height: 20,
                             ),
                             CustomButton(
-                              padding: EdgeInsets.all(20),
+                              height:50.0,
+                              padding: EdgeInsets.all(10),
                               color: Colors.white,
                               textColor: kColorBlue,
                               onPressed: () {

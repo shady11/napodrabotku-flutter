@@ -26,7 +26,7 @@ final appThemeData = {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: kColorDarkBlue,
-          fontFamily: 'GT Eesti Pro',
+          fontFamily: 'GTEestiProDisplay',
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -44,7 +44,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'GT Eesti Pro',
+    fontFamily: 'GTEestiProDisplay',
     cardTheme: CardTheme(
       elevation: 0,
       color: Color(0xffEBF2F5),
@@ -57,7 +57,8 @@ final appThemeData = {
     buttonColor: Color(0xffE02C52),
     focusColor: Color(0xffE02C52),
     cursorColor: Color(0xffE02C52),
-    splashColor: Color(0xffE02C52),
+    hoverColor: Color(0xffE02C52).withOpacity(0.75),
+    splashColor: Colors.transparent,
 //    unselectedWidgetColor: Colors.white,
     textSelectionHandleColor: Colors.white,
   ),
@@ -78,7 +79,7 @@ final appThemeData = {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
-          fontFamily: 'GT Eesti Pro',
+          fontFamily: 'GTEestiProDisplay',
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -99,7 +100,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'GT Eesti Pro',
+    fontFamily: 'GTEestiProDisplay',
     cardTheme: CardTheme(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -118,7 +119,7 @@ final appThemeData = {
     buttonColor:Colors.lightBlue,
     focusColor: Colors.white,
     cursorColor: Colors.white,
-    splashColor: Colors.grey[700],
+    splashColor: Colors.transparent,
 //    unselectedWidgetColor: Colors.transparent,
     textSelectionHandleColor: Colors.black54,
   ),
