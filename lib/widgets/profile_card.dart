@@ -57,17 +57,17 @@ class ProfileCard extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.network(API_IP+ API_GET_PROFILE_IMAGE + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
+                                child: Image.network(API_IP+ API_GET_COMPANY_AVATAR + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
                                   height: 60,)
                             ),
                           ),
                           SizedBox(width: 20),
                           Expanded(
                             child: RichText(
-                              text: TextSpan(text: vacancy.company_name + '\n',
+                              text: TextSpan(text: vacancy.company_name.toString() + '\n',
                                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
                                 children: <TextSpan>[
-                                  TextSpan(text: 'Бишкек', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                  TextSpan(text: vacancy.address, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                                 ],
                               ),
                             ),
@@ -84,11 +84,11 @@ class ProfileCard extends StatelessWidget {
                                 color: Color(0xffF2F2F5),
                                 borderRadius: BorderRadius.circular(8)
                             ),
-                            child: Text('Полная занятость', style: TextStyle(color: Colors.black87),),
+                            child: Text(vacancy.type.toString(), style: TextStyle(color: Colors.black87),),
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
-                            child: Text('45000 - 70000', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
+                            child: Text(vacancy.salary, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
                       ),
@@ -101,7 +101,7 @@ class ProfileCard extends StatelessWidget {
                                 color: Color(0xffF2F2F5),
                                 borderRadius: BorderRadius.circular(8)
                             ),
-                            child: Text('Гибкий график', style: TextStyle(color: Colors.black87),),
+                            child: Text(vacancy.schedule.toString(), style: TextStyle(color: Colors.black87),),
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
@@ -118,7 +118,7 @@ class ProfileCard extends StatelessWidget {
                       SizedBox(height: 10),
                       page =='discover' ? Expanded(
                         child: RichText(
-                          text: TextSpan(text: 'Требования :\n- опыт работы в Банке или МКК желателен (кредитным специалистом)\n- знание ПК,\n- знание кыргызского и русского языка,\n- целеустремленность, стрессоустойчивость\nТел: 0995 511 511', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                          text: TextSpan(text: vacancy.description, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),

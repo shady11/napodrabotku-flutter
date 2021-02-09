@@ -19,6 +19,7 @@ class User {
   String email;
   String linked_link;
   String phone_number;
+  bool is_company;
   final String userFullname;
   final String userPhotoLink;
   final String userSchool;
@@ -39,7 +40,7 @@ class User {
   void uploadImage1(_image) async {
 
     // string to uri
-    var uri = Uri.parse(API_IP+'api/auth/register/');
+    var uri = Uri.parse(API_IP+API_REGISTER);
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -52,6 +53,7 @@ class User {
     request.fields["email"] = this.email;
     request.fields["linked_link"] = this.linked_link;
     request.fields["phone_number"] = this.phone_number;
+    request.fields["is_company"] = this.is_company.toString();
 
     // open a byteStream
     if(_image != null) {
@@ -133,7 +135,7 @@ class User {
   Future<void> _authenticate(
       String username, String password) async {
     final url =
-        API_IP+'api/auth/login/';
+        API_IP+API_LOGIN;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.post(

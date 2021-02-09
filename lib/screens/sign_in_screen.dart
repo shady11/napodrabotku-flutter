@@ -151,9 +151,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       if (password.isEmpty) {
                         return "please_fill_this_field".tr();
                       }
-                      else if (password.length <5) {
-                        return "password_must_at_least_5_chars".tr();
-                      }
+//                      else if (password.length <5) {
+//                        return "password_must_at_least_5_chars".tr();
+//                      }
                       return null;
                     },
                   ),

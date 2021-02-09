@@ -336,9 +336,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (name) {
                       // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
+//                      if (name.isEmpty) {
+//                        return "please_fill_this_field".tr();
+//                      }
                       return null;
                     },
                   ),
@@ -361,9 +361,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (name) {
                       // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
+//                      if (name.isEmpty) {
+//                        return "please_fill_this_field".tr();
+//                      }
                       return null;
                     },
                   ),
@@ -386,9 +386,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (name) {
                       // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
+//                      if (name.isEmpty) {
+//                        return "please_fill_this_field".tr();
+//                      }
                       return null;
                     },
                   ),
@@ -403,33 +403,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       textColor: Colors.white,
                       onPressed: () {
                         /// Validate form
-//                         if (_formKey.currentState.validate()) {
-//                           Navigator.of(context)
-//                               .popUntil((route) => route.isFirst);
-//
-//                           User user = new User();
-//                           user.username = _username_controller.text;
-//                           user.password = _password_controller.text;
-//                           user.email = _email_controller.text;
-//                           user.phone_number = _phone_number_controller.text;
-//                           user.linked_link = _linked_link_controller.text;
-//                           user.name = _name_controller.text;
-//                           user.surname = _surnname_controller.text;
-//
-//                           if(_imageFile != null)
-//                             user.uploadImage1(File(_imageFile.path));
-//                           else
-//                             user.uploadImage1(null);
-//
-//                           Navigator.pushReplacementNamed(context, Routes.home);
-//                         }
-//                         else{
-//                           return;
-//                         }
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.of(context)
-                            .pushNamed(Routes.home);
+                         if (_formKey.currentState.validate()) {
+                           Navigator.of(context)
+                               .popUntil((route) => route.isFirst);
+
+                           User user = new User();
+                           user.username = _username_controller.text;
+                           user.password = _password_controller.text;
+                           user.email = _email_controller.text;
+                           user.phone_number = _phone_number_controller.text;
+                           user.linked_link = _linked_link_controller.text;
+                           user.name = _name_controller.text;
+                           user.surname = _surnname_controller.text;
+                           user.is_company = company == is_company.Company;
+
+                           if(_imageFile != null)
+                             user.uploadImage1(File(_imageFile.path));
+                           else
+                             user.uploadImage1(null);
+
+                           Navigator.pushReplacementNamed(context, Routes.home);
+                         }
+                         else{
+                           return;
+                         }
+//                        Navigator.of(context)
+//                            .popUntil((route) => route.isFirst);
+//                        Navigator.of(context)
+//                            .pushNamed(Routes.home);
 
                         /// Remove previous screens
                       },

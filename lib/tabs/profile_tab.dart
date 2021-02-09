@@ -48,17 +48,17 @@ class ProfileTab extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: kColorPrimary,
                       radius: 60,
-                      backgroundImage: NetworkImage(
-                          API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
+                      backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                          API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                     ),
                   ),
                 ),
                 SizedBox(height: 15),
                 Center(
                   child: Text(
-                    "UlutSoft",
+                    Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.USERNAME): 'guest_user'.tr(),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class ProfileTab extends StatelessWidget {
           ),
           SizedBox(height: 10),
           /// Profile Statistics Card
-          Column(
+          Prefs.getString(Prefs.TOKEN) != null ? Column(
             children: [
               ListTile(
                 leading: Container(
@@ -167,7 +167,7 @@ class ProfileTab extends StatelessWidget {
             },
           ),*/
             ],
-          ),
+          ): Container(),
           SizedBox(height: 20),
           /// App Section Card
           Column(
@@ -192,11 +192,29 @@ class ProfileTab extends StatelessWidget {
                   /// Share app
                 },
               ),
-              Divider(height: 0),
               ListTile(
                 title: Text("privacy_policy".tr(), style: _textStyle),
                 onTap: () async {
                   /// Go to privacy policy
+                },
+              ),
+              Prefs.getString(Prefs.TOKEN) != null ? ListTile(
+                title: Text("logout".tr(), style: TextStyle(fontSize: 18),),
+                onTap: () async {
+                  Prefs.setString(Prefs.USERNAME, null);
+                  Prefs.setString(Prefs.PROFILEIMAGE, null);
+                  Prefs.setString(Prefs.PASSWORD, null);
+                  Prefs.setString(Prefs.TOKEN, null);
+                  Navigator.of(context)
+                      .popUntil((route) => route.isFirst);
+                  Navigator.pushReplacementNamed(context, Routes.start);
+                },
+              ): ListTile(
+                title: Text("sign_in".tr(), style: TextStyle(fontSize: 18),),
+                onTap: () async {
+                  Navigator.of(context)
+                      .popUntil((route) => route.isFirst);
+                  Navigator.pushReplacementNamed(context, Routes.start);
                 },
               ),
             ],

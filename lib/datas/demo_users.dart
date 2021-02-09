@@ -49,48 +49,5 @@ List<User> getDemoUsers() {
 List<Vacancy> getDemoVacancies() {
   /// User list
   return [
-    Vacancy(
-      company_name: "UlutSoft",
-      company_logo_image: "assets/images/demo_users/logo_new2.png",
-      name: "Swift разраотчик",
-      description: "Management analyst",
-    ),
-
-    Vacancy(
-      company_name: "UlutSoft",
-      company_logo_image: "assets/images/demo_users/logo_new2.png",
-      name: "Python разраотчик",
-      description: "Psychologist",
-    ),
-
-    Vacancy(
-      company_name: "UlutSoft",
-      company_logo_image: "assets/images/demo_users/logo_new2.png",
-      name: "Php разраотчик",
-      description: "Engineer",
-    ),
-
-    Vacancy(
-      company_name: "ZenSoft",
-      company_logo_image: "assets/images/demo_users/zensoft_logo.png",
-      name: "Java разработчик",
-      description: "- Spring Boot",
-      experience: "2-5"
-    ),
-
-    Vacancy(
-      company_name: "MadDevs",
-      company_logo_image: "assets/images/demo_users/maddevs.png",
-      name: "Python developer",
-      description: "- Flask framework",
-      experience: "2-5"
-    ),
-    Vacancy(
-      company_name: "UlutSoft",
-      company_logo_image: "assets/images/demo_users/logo_new2.png",
-      name: "Django разработчик",
-      description: " - Django framework",
-      experience: "2-5"
-    ),
   ];
 }

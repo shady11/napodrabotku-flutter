@@ -76,5 +76,7 @@
   "language": "Тил",
   "language_settings": "Тил",
   "kyrgyz": "Кыргызча",
-  "russian": "Орусча"
+  "russian": "Орусча",
+  "logout": "Чыгуу",
+  "guest_user": "Конок"
 }

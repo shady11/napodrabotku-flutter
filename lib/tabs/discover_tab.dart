@@ -16,6 +16,21 @@ import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/multi_select_chip.dart';
 
 class DiscoverTab extends StatefulWidget {
+  int limit;
+  int offset;
+  List job_type_ids;
+  List schedule_ids;
+  List busyness_ids;
+  List vacancy_type_ids;
+
+  DiscoverTab(
+      {this.limit,
+      this.offset,
+      this.job_type_ids,
+      this.schedule_ids,
+      this.busyness_ids,
+      this.vacancy_type_ids});
+
   @override
   _DiscoverTabState createState() => _DiscoverTabState();
 }
@@ -29,318 +44,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
   List<String> selectedBusynessChoices = List();
   List<String> selectedScheduleChoices = List();
 
-  final jobTypeList = [JobType(id: 1, name: 'Удаленно'), JobType(id: 2, name: 'В офис'), ];
-  List<JobType> _selectedJobTypes = [];
-  List<String> vacancyTypeList = ['Программист', 'Ментор', 'Водитель'];
-  List<String> busynessList = ['Полный рабочий день', 'На пол ставку'];
-  List<String> scheduleList = ['Будни', 'Гибкий'];
-
   List<Widget> cardList = new List();
 
-  /*_showJobTypeDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("job_types".tr()),
-            content: MultiSelectChip(
-              jobTypeList,
-              onSelectionChanged: (selectedList) {
-                setState(() {
-                  selectedJobTypeChoices = selectedList;
-                });
-              },
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("ok".tr()),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        });
-  }*/
-  _showVacancyTypeDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("vacancy_types".tr()),
-            content: MultiSelectChip(
-              vacancyTypeList,
-              onSelectionChanged: (selectedList) {
-                setState(() {
-                  selectedVacancyTypeChoices = selectedList;
-                });
-              },
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("ok".tr()),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        });
-  }
-  _showBusynessDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("busynesses".tr()),
-            content: MultiSelectChip(
-              busynessList,
-              onSelectionChanged: (selectedList) {
-                setState(() {
-                  selectedBusynessChoices = selectedList;
-                });
-              },
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("ok".tr()),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        });
-  }
-  _showScheduleDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("schedules".tr()),
-            content: MultiSelectChip(
-              scheduleList,
-              onSelectionChanged: (selectedList) {
-                setState(() {
-                  selectedScheduleChoices = selectedList;
-                });
-              },
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("ok".tr()),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        });
-  }
-  List _job_types;
-  List _vacancy_types;
-  List _busynesses;
-  List _schedules;
-
-
-
-
-  openFilterDialog(context) {
-
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                        child: Text('search_filter'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)
-                    ),
-                    SizedBox(height: 30,),
-                    /// Form
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text('job_types'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: [
-                              {
-                                "display": "Удаленно",
-                                "value": "1",
-                              },
-                              {
-                                "display": "В офис",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
-                            okButtonLabel: 'search'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _job_types,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _job_types = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text('vacancy_types'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: [
-                              {
-                                "display": "Программист",
-                                "value": "1",
-                              },
-                              {
-                                "display": "Водитель",
-                                "value": "2",
-                              },
-                              {
-                                "display": "Учитель",
-                                "value": "3",
-                              },
-                              {
-                                "display": "Доктор",
-                                "value": "4",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _vacancy_types,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _vacancy_types = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text('busynesses'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: [
-                              {
-                                "display": "На пол ставку",
-                                "value": "1",
-                              },
-                              {
-                                "display": "Полный день",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _busynesses,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _busynesses = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text('schedules'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: [
-                              {
-                                "display": "Гибкий",
-                                "value": "1",
-                              },
-                              {
-                                "display": "По будням",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _schedules,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _schedules = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 30),
-
-                          /// Sign In button
-                          SizedBox(
-                            width: double.maxFinite,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomButton(
-                                  padding: EdgeInsets.all(15),
-                                  color: Colors.grey[200],
-                                  textColor: kColorPrimary,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'cancel'.tr(),
-                                ),
-                                CustomButton(
-                                  padding: EdgeInsets.all(15),
-                                  color: kColorPrimary,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'search'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
   void removeCards(index) {
     setState(() {
       cardList.removeAt(index);
@@ -348,22 +53,29 @@ class _DiscoverTabState extends State<DiscoverTab> {
   }
 
   @override
-  initState(){
-    cardList = _generateCards();
-    _job_types = [];
-    _busynesses = [];
-    _schedules = [];
-    _vacancy_types = [];
+  initState() {
+    super.initState();
+    _generateCards().then((value) {
+      cardList = value;
+    });
   }
 
-  List<Widget> _generateCards() {
-    List<Vacancy> vacancies = getDemoVacancies();
-    List<Widget> cardList = new List();
+  getget(){
+    setState(() {
+      _generateCards().then((value) {
+        cardList = value;
+      });
+    });
+  }
 
-    for (int x = 0; x < 5; x++) {
-      cardList.add(
+  Future<List<Widget>> _generateCards() async{
+    List<Vacancy> vacancies = await Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids);
+    List<Widget> cardList1 = new List();
+
+    for (int x = 0; x < vacancies.length; x++) {
+      cardList1.add(
         Positioned(
-          bottom: 5+(x*15.0),
+          bottom: 5 + (x * 15.0),
           child: Draggable(
               onDragEnd: (drag) {
                 print("============================================");
@@ -385,26 +97,40 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   print("Hello All");
                 },
                 child: ProfileCard(
-                    page: 'discover',  vacancy: vacancies[x], index: 4-x,),
+                  page: 'discover',
+                  vacancy: vacancies[x],
+                  index: vacancies.length - x,
+                ),
               ),
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return ProfileCard(vacancy: vacancies[x],);
+                    return ProfileCard(
+                      vacancy: vacancies[x],
+                    );
                   }));
                 },
                 child: ProfileCard(
-                    page: 'discover',  vacancy: vacancies[x], index: 4-x,),
+                  page: 'discover',
+                  vacancy: vacancies[x],
+                  index: vacancies.length - x,
+                ),
               )),
         ),
       );
     }
-    return cardList;
+    setState(() {
+      cardList =cardList1;
+    });
+    return cardList1;
   }
 
   @override
   Widget build(BuildContext context) {
+//    if(cardList.length==0){
+//      getget();
+//    }
     return Stack(
       alignment: Alignment.topCenter,
       fit: StackFit.expand,
@@ -481,44 +207,45 @@ class _DiscoverTabState extends State<DiscoverTab> {
 //          margin: const EdgeInsets.only(bottom: 20),
           padding: EdgeInsets.all(20),
           child: Align(
-              alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
-              widthFactor: MediaQuery.of(context).size.width * 1,
-              heightFactor: MediaQuery.of(context).size.height * 0.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
+            alignment: Alignment.lerp(
+                new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
+            widthFactor: MediaQuery.of(context).size.width * 1,
+            heightFactor: MediaQuery.of(context).size.height * 0.4,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomButton(
+                  width: MediaQuery.of(context).size.width * 0.25,
+                  padding: EdgeInsets.all(2),
+                  color: Colors.white,
+                  textColor: kColorPrimary,
+                  onPressed: () {
 //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                    },
-                    text: 'day'.tr(),
-                  ),
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
+                  },
+                  text: 'day'.tr(),
+                ),
+                CustomButton(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  padding: EdgeInsets.all(2),
+                  color: Colors.white,
+                  textColor: kColorPrimary,
+                  onPressed: () {
 //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                    },
-                    text: 'week'.tr(),
-                  ),
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
+                  },
+                  text: 'week'.tr(),
+                ),
+                CustomButton(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  padding: EdgeInsets.all(2),
+                  color: Colors.white,
+                  textColor: kColorPrimary,
+                  onPressed: () {
 //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                    },
-                    text: 'month'.tr(),
-                  ),
-                ],
-              ),
+                  },
+                  text: 'month'.tr(),
+                ),
+              ],
+            ),
           ),
         ),
       ],

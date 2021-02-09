@@ -32,20 +32,24 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> selectedBusynessChoices = List();
   List<String> selectedScheduleChoices = List();
 
-  final jobTypeList = [JobType(id: 1, name: 'Удаленно'), JobType(id: 2, name: 'В офис'), ];
+  List<dynamic> jobTypeList = [];
   List<JobType> _selectedJobTypes = [];
-  List<String> vacancyTypeList = ['Программист', 'Ментор', 'Водитель'];
-  List<String> busynessList = ['Полный рабочий день', 'На пол ставку'];
-  List<String> scheduleList = ['Будни', 'Гибкий'];
+  List<dynamic> vacancyTypeList = [];
+  List<dynamic> busynessList = [];
+  List<dynamic> scheduleList = [];
 
-  List _job_types;
-  List _vacancy_types;
-  List _busynesses;
-  List _schedules;
-
-  getJobTypeList(){
-
+  List<int> _job_types;
+  List<int> _vacancy_types;
+  List<int> _busynesses;
+  List<int> _schedules;
+  
+  getLists() async{
+    jobTypeList = await Vacancy.getLists('job_type');
+    vacancyTypeList = await Vacancy.getLists('vacancy_type');
+    busynessList = await Vacancy.getLists('busyness');
+    scheduleList = await Vacancy.getLists('schedule');
   }
+  
 
 
   openFilterDialog(context) {
@@ -80,18 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return 'select_one_or_more'.tr();
                               }
                             },
-                            dataSource: [
-                              {
-                                "display": "Удаленно",
-                                "value": "1",
-                              },
-                              {
-                                "display": "В офис",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
+                            dataSource: jobTypeList,
+                            textField: 'name',
+                            valueField: 'id',
                             okButtonLabel: 'search'.tr(),
                             cancelButtonLabel: 'cancel'.tr(),
                             // required: true,
@@ -113,26 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return 'select_one_or_more'.tr();
                               }
                             },
-                            dataSource: [
-                              {
-                                "display": "Программист",
-                                "value": "1",
-                              },
-                              {
-                                "display": "Водитель",
-                                "value": "2",
-                              },
-                              {
-                                "display": "Учитель",
-                                "value": "3",
-                              },
-                              {
-                                "display": "Доктор",
-                                "value": "4",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
+                            dataSource: vacancyTypeList,
+                            textField: 'name',
+                            valueField: 'id',
                             okButtonLabel: 'ok'.tr(),
                             cancelButtonLabel: 'cancel'.tr(),
                             // required: true,
@@ -154,18 +132,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return 'select_one_or_more'.tr();
                               }
                             },
-                            dataSource: [
-                              {
-                                "display": "На пол ставку",
-                                "value": "1",
-                              },
-                              {
-                                "display": "Полный день",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
+                            dataSource: busynessList,
+                            textField: 'name',
+                            valueField: 'id',
                             okButtonLabel: 'ok'.tr(),
                             cancelButtonLabel: 'cancel'.tr(),
                             // required: true,
@@ -187,18 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return 'select_one_or_more'.tr();
                               }
                             },
-                            dataSource: [
-                              {
-                                "display": "Гибкий",
-                                "value": "1",
-                              },
-                              {
-                                "display": "По будням",
-                                "value": "2",
-                              },
-                            ],
-                            textField: 'display',
-                            valueField: 'value',
+                            dataSource: scheduleList,
+                            textField: 'name',
+                            valueField: 'id',
                             okButtonLabel: 'ok'.tr(),
                             cancelButtonLabel: 'cancel'.tr(),
                             // required: true,
@@ -339,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     buildSome(context);
+    getLists();
   }
 
   @override
@@ -423,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
-        children: [DiscoverTab(), MatchesTab(), ConversationsTab(), ProfileTab()],
+        children: [DiscoverTab(limit: 10, offset: 0,), MatchesTab(), ConversationsTab(), ProfileTab()],
       ),
     );
   }

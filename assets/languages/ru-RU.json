@@ -76,5 +76,7 @@
   "language": "Язык",
   "language_settings": "Настройки языка",
   "kyrgyz": "Кыргызский",
-  "russian": "Русский"
+  "russian": "Русский",
+  "logout": "Выход",
+  "guest_user": "Гость"
 }
