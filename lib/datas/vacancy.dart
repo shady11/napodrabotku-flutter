@@ -2,6 +2,8 @@ import 'package:ishapp/constants/configs.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:ishapp/datas/pref_manager.dart';
+
 class Vacancy {
   int id;
   String company_name;
@@ -10,10 +12,10 @@ class Vacancy {
   String description;
   String address;
   String salary;
-  int busyness;
-  int schedule;
-  int job_type;
-  int type;
+  String busyness;
+  String schedule;
+  String job_type;
+  String type;
   int company;
 
   Vacancy(
@@ -60,17 +62,17 @@ class Vacancy {
   static Future<List<Vacancy>> getVacancyList(
     int limit,
     int offset,
-    List<int> job_type_ids,
-    List<int> schedule_ids,
-    List<int> busyness_ids,
-    List<int> vacancy_type_ids,
+    List job_type_ids,
+    List schedule_ids,
+    List busyness_ids,
+    List vacancy_type_ids,
   ) async {
     final url = API_IP + API_VACANCY_LIST;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.post(url,
           headers: headers,
-          body: json.encode({'limit': limit, 'offset': offset}));
+          body: json.encode({'limit': limit, 'offset': offset, 'type_ids': vacancy_type_ids}));
       print(response.body);
       List<Vacancy> result_list = [];
       for(var i in json.decode(utf8.decode(response.bodyBytes))){
@@ -92,7 +94,7 @@ class Vacancy {
       ) async {
     final url = API_IP + API_VACANCY_USER_LIST;
     try {
-      Map<String, String> headers = {"Content-type": "application/json"};
+      Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
       final response = await http.post(url,
           headers: headers,
           body: json.encode({'limit': limit, 'offset': offset, 'type': type}));

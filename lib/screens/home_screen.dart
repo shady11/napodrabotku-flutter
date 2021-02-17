@@ -37,17 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> vacancyTypeList = [];
   List<dynamic> busynessList = [];
   List<dynamic> scheduleList = [];
+  List<dynamic> regionList = [];
 
-  List<int> _job_types;
-  List<int> _vacancy_types;
-  List<int> _busynesses;
-  List<int> _schedules;
-  
+  List _job_types;
+  List _vacancy_types;
+  List _busynesses;
+  List _schedules;
+  List _regions;
+
   getLists() async{
     jobTypeList = await Vacancy.getLists('job_type');
     vacancyTypeList = await Vacancy.getLists('vacancy_type');
     busynessList = await Vacancy.getLists('busyness');
     scheduleList = await Vacancy.getLists('schedule');
+    regionList = await Vacancy.getLists('region');
   }
   
 
@@ -78,6 +81,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <Widget>[
                           MultiSelectFormField(
                             autovalidate: false,
+                            title: Text('regions'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            validator: (value) {
+                              if (value == null || value.length == 0) {
+                                return 'select_one_or_more'.tr();
+                              }
+                            },
+                            dataSource: regionList,
+                            textField: 'name',
+                            valueField: 'id',
+                            okButtonLabel: 'ok'.tr(),
+                            cancelButtonLabel: 'cancel'.tr(),
+                            // required: true,
+                            hintWidget: Text('select_one_or_more'.tr()),
+                            initialValue: _regions,
+                            onSaved: (value) {
+                              if (value == null) return;
+                              setState(() {
+                                _regions = value;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          MultiSelectFormField(
+                            autovalidate: false,
                             title: Text('job_types'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
                             validator: (value) {
                               if (value == null || value.length == 0) {
@@ -87,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             dataSource: jobTypeList,
                             textField: 'name',
                             valueField: 'id',
-                            okButtonLabel: 'search'.tr(),
+                            okButtonLabel: 'ok'.tr(),
                             cancelButtonLabel: 'cancel'.tr(),
                             // required: true,
                             hintWidget: Text('select_one_or_more'.tr()),
@@ -195,6 +222,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
+                                    _pageController.animateToPage(3,
+                                        duration: Duration(microseconds: 1), curve: Curves.ease);
+                                    _pageController.animateToPage(0,
+                                        duration: Duration(microseconds: 500), curve: Curves.ease);
                                     Navigator.of(context).pop();
                                   },
                                   text: 'search'.tr(),
@@ -384,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
-        children: [DiscoverTab(limit: 10, offset: 0,), MatchesTab(), ConversationsTab(), ProfileTab()],
+        children: [DiscoverTab(limit: 10, offset: 0, job_type_ids: _job_types, busyness_ids: _busynesses, vacancy_type_ids: _vacancy_types,), MatchesTab(), ConversationsTab(), ProfileTab()],
       ),
     );
   }

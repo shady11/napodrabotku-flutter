@@ -17,41 +17,48 @@ class _MatchesTabState extends State<MatchesTab> {
 
   List<Vacancy> vacancyList = new List<Vacancy>();
 
-
   getget(){
-
+    Vacancy.getVacancyListByType(10, 0, 'LIKED').then((value) {
+      setState(() {
+        vacancyList = value;
+      });
+    });
   }
   @override
   void initState() {
-    Vacancy.getVacancyListByType(10, 0, 'LIKED').then((value) {
-      vacancyList = value;
-    });
     super.initState();
+    getget();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        /// Title
-
-        /// Matches
-        Expanded(
-          child: UsersGrid(
-
-              children: vacancyList.map((vacancy) {
-              /// Return User Card
-              return GestureDetector(
-                child: ProfileCard(vacancy: vacancy),
-                onTap: () {
-                  /// Go to profile screen
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: vacancyList.length!=0 ? Column(
+        children: [
+          Expanded(
+            child: UsersGrid(
+                children: vacancyList.map((vacancy) {
+                /// Return User Card
+                return GestureDetector(
+                  child: ProfileCard(vacancy: vacancy),
+                  onTap: () {
+                    /// Go to profile screen
 //                  Navigator.of(context).push(MaterialPageRoute(
 //                    builder: (context) => ProfileScreen(user: user)));
-                },
-              );
-          }).toList()),
-        )
-      ],
+                  },
+                );
+            }).toList()),
+          )
+        ],
+      ) : Center(
+        heightFactor: 20,
+        widthFactor: 20,
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+          strokeWidth: 10,
+        ),
+      ),
     );
   }
 }

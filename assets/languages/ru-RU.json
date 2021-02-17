@@ -78,5 +78,7 @@
   "kyrgyz": "Кыргызский",
   "russian": "Русский",
   "logout": "Выход",
-  "guest_user": "Гость"
+  "guest_user": "Гость",
+  "ok": "Хорошо",
+  "regions": "Регионы"
 }

@@ -48,6 +48,7 @@ dev_dependencies:
   equatable: ^1.2.0
   flutter_boxicons: ^2.0.2
   multiselect_formfield: ^0.1.5
+  flutter_staggered_animations: ^0.1.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

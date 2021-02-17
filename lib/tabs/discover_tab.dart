@@ -196,8 +196,16 @@ class _DiscoverTabState extends State<DiscoverTab> {
             ),
           ),
         ),*/
+        cardList.length !=0?
         Container(
           child: Stack(alignment: Alignment.center, children: cardList),
+        ): Center(
+          heightFactor: 20,
+          widthFactor: 20,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeWidth: 10,
+          ),
         ),
 
         /// Filter button
