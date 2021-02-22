@@ -53,14 +53,14 @@ class ProfileCard extends StatelessWidget {
                       /// User fullname
                       Row(
                         children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.network(API_IP+ API_GET_COMPANY_AVATAR + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
-                                  height: 60,)
-                            ),
-                          ),
+//                          Align(
+//                            alignment: Alignment.topLeft,
+//                            child: ClipRRect(
+//                                borderRadius: BorderRadius.circular(20),
+//                                child: Image.network(API_IP+ API_GET_COMPANY_AVATAR + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
+//                                  height: 60,)
+//                            ),
+//                          ),
                           SizedBox(width: 20),
                           Expanded(
                             child: RichText(
@@ -75,7 +75,7 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 10),
-                      Row(
+                      index==null||index <=2 ?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
@@ -91,8 +91,8 @@ class ProfileCard extends StatelessWidget {
                             child: Text(vacancy.salary, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
-                      ),
-                      Row(
+                      ): Container(),
+                      index==null||index <=2 ?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
@@ -111,7 +111,7 @@ class ProfileCard extends StatelessWidget {
                             child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
                           ),
                         ],
-                      ),
+                      ):Container(),
                       SizedBox(height: 15),
                       /// User job title
                       Text(vacancy.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
@@ -122,7 +122,7 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
-                      SizedBox(
+                      index==null||index <=2 ?SizedBox(
                         width: double.maxFinite,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -150,7 +150,7 @@ class ProfileCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
+                      ):Container(),
 
                       this.page == 'discover'
                           ? SizedBox(height: 0)

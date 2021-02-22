@@ -94,10 +94,35 @@ class Vacancy {
       ) async {
     final url = API_IP + API_VACANCY_USER_LIST;
     try {
+      Map<String, String> headers = {"Content-type": "application/json", "Authorization": '616bcc21ca95a4d1367ef5b6870f50e8c865205f'};
+      final response = await http.post(url,
+          headers: headers,
+          body: json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
+      print(response.body);
+      List<Vacancy> result_list = [];
+      for(var i in json.decode(utf8.decode(response.bodyBytes))){
+
+        Vacancy model= Vacancy.fromJson(i);
+        result_list.add(model);
+      }
+
+      return result_list;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<List<Vacancy>> saveVacancyUser(
+      int user_id,
+      int vacancy_id,
+      String type,
+      ) async {
+    final url = API_IP + API_VACANCY_USER_SAVE;
+    try {
       Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
       final response = await http.post(url,
           headers: headers,
-          body: json.encode({'limit': limit, 'offset': offset, 'type': type}));
+          body: json.encode({'user_id': user_id, 'vacancy_id': vacancy_id, 'type': type}));
       print(response.body);
       List<Vacancy> result_list = [];
       for(var i in json.decode(utf8.decode(response.bodyBytes))){

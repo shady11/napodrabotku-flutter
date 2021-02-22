@@ -36,34 +36,42 @@ class DiscoverTab extends StatefulWidget {
 }
 
 class _DiscoverTabState extends State<DiscoverTab> {
-  // Variables
-  final _swipeKey = GlobalKey<SwipeStackState>();
-  final _formKey = GlobalKey<FormState>();
   List<String> selectedJobTypeChoices = List();
   List<String> selectedVacancyTypeChoices = List();
   List<String> selectedBusynessChoices = List();
   List<String> selectedScheduleChoices = List();
+  List<Vacancy> vacancies = new List();
 
   List<Widget> cardList = new List();
 
-  void removeCards(index) {
+  void removeCards(index, String type) {
+    if(type == 'left'){
+
+    }
+    else{
+
+    }
     setState(() {
-      cardList.removeAt(index);
+      var some = vacancies.last;
+      vacancies.removeAt(index);
+      vacancies.insert(0, some);
     });
   }
 
   @override
   initState() {
     super.initState();
-    _generateCards().then((value) {
-      cardList = value;
+    Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids).then((value) {
+      setState(() {
+        vacancies = value;
+      });
     });
   }
 
   getget(){
     setState(() {
-      _generateCards().then((value) {
-        cardList = value;
+      Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids).then((value) {
+        vacancies = value;
       });
     });
   }
@@ -75,7 +83,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
     for (int x = 0; x < vacancies.length; x++) {
       cardList1.add(
         Positioned(
-          bottom: 5 + (x * 15.0),
+          width: MediaQuery.of(context).size.width * 1,
+          bottom: 5+(x * 15.0),
           child: Draggable(
               onDragEnd: (drag) {
                 print("============================================");
@@ -83,13 +92,13 @@ class _DiscoverTabState extends State<DiscoverTab> {
                 print(drag.offset.dx);
                 print("============================================");
 
-//                if(drag.offset.dx < -200){
-//                  removeCards(x);
-//                }
-//
-//                if(drag.offset.dx > 200){
-//                  removeCards(x);
-//                }
+                if(drag.offset.dx < -200){
+                  removeCards(x, 'left');
+                }
+
+                if(drag.offset.dx > 200){
+                  removeCards(x, 'right');
+                }
               },
               childWhenDragging: Container(),
               feedback: GestureDetector(
@@ -116,7 +125,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   vacancy: vacancies[x],
                   index: vacancies.length - x,
                 ),
-              )),
+              )
+          ),
         ),
       );
     }
@@ -128,7 +138,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
 
   @override
   Widget build(BuildContext context) {
-//    if(cardList.length==0){
+//    if(vacancies.length==0){
 //      getget();
 //    }
     return Stack(
@@ -196,9 +206,57 @@ class _DiscoverTabState extends State<DiscoverTab> {
             ),
           ),
         ),*/
-        cardList.length !=0?
+        vacancies.length !=0?
         Container(
-          child: Stack(alignment: Alignment.center, children: cardList),
+          child: Stack(alignment: Alignment.center, children: [
+            for (int x = 0; x < vacancies.length; x++)
+              Positioned(
+                bottom: 5+(x * 15.0),
+                child: Draggable(
+                    onDragEnd: (drag) {
+                      print("============================================");
+                      print(drag.offset.dy);
+                      print(drag.offset.dx);
+                      print("============================================");
+
+                      if(drag.offset.dx < -200){
+                        removeCards(x, 'left');
+                      }
+
+                      if(drag.offset.dx > 200){
+                        removeCards(x, 'right');
+                      }
+                    },
+                    childWhenDragging: Container(),
+                    feedback: GestureDetector(
+                      onTap: () {
+                        print("Hello All");
+                      },
+                      child: ProfileCard(
+                        page: 'discover',
+                        vacancy: vacancies[x],
+                        index: vacancies.length - x,
+                      ),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (BuildContext context) {
+                          return ProfileCard(
+                            vacancy: vacancies[x],
+                          );
+                        }));
+                      },
+                      child: ProfileCard(
+                        page: 'discover',
+                        vacancy: vacancies[x],
+                        index: vacancies.length - x,
+                      ),
+                    )
+                ),
+              ),
+
+          ]),
         ): Center(
           heightFactor: 20,
           widthFactor: 20,

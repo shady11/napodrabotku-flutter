@@ -179,6 +179,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.11"
+  flutter_redux:
+    dependency: "direct dev"
+    description:
+      name: flutter_redux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   flutter_staggered_animations:
     dependency: "direct dev"
     description:
@@ -198,6 +205,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tindercard:
+    dependency: "direct dev"
+    description:
+      name: flutter_tindercard
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -392,6 +406,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.3.3"
+  redux:
+    dependency: "direct dev"
+    description:
+      name: redux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0+3"
   shared_preferences:
     dependency: "direct dev"
     description:

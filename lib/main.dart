@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +11,7 @@ import 'package:ishapp/screens/start_screen.dart';
 import 'package:ishapp/utils/themebloc/theme_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/constants.dart';
+import 'datas/app_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +28,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final Store<AppState> store;
+
+
+  MyApp({this.store});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
