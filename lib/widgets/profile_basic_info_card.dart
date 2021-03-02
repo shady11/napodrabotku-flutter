@@ -86,7 +86,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                         /// Go to profile screen
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => ProfileScreen(
-                            user: currentUserDemo
+//                            user: currentUserDemo
                           )));
                       }),
                 ),

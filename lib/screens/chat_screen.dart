@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
               /// Go to profile screen
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => ProfileScreen(
-                    user: widget.user,
+//                    user: widget.user,
               )));
           },
         ),

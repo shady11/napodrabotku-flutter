@@ -50,8 +50,12 @@ dev_dependencies:
   multiselect_formfield: ^0.1.5
   flutter_staggered_animations: ^0.1.2
   flutter_tindercard: ^0.2.0
-  redux: ^4.0.0+3
-  flutter_redux: ^0.7.0
+  redux: ^3.0.0
+  flutter_redux: ^0.5.0
+  redux_dev_tools: ^0.4.0
+  flutter_redux_dev_tools: ^0.3.0
+  redux_api_middleware: ^0.1.9
+  redux_thunk: ^0.2.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

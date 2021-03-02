@@ -1,320 +1,197 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishapp/components/custom_button.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:multiselect_formfield/multiselect_formfield.dart';
-
-import 'package:ishapp/datas/demo_users.dart';
+import 'package:ishapp/datas/RSAA.dart';
+import 'package:ishapp/datas/app_state.dart';
+import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishapp/datas/vacancy_screen.dart';
+import 'package:ishapp/datas/app_state.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/widgets/cicle_button.dart';
 import 'package:ishapp/widgets/profile_card.dart';
-import 'package:ishapp/widgets/swipe_buttons.dart';
-import 'package:swipe_stack/swipe_stack.dart';
-import 'package:ishapp/widgets/default_button.dart';
-import 'package:ishapp/widgets/multi_select_chip.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+
 
 class DiscoverTab extends StatefulWidget {
-  int limit;
-  int offset;
-  List job_type_ids;
-  List schedule_ids;
-  List busyness_ids;
-  List vacancy_type_ids;
-
-  DiscoverTab(
-      {this.limit,
-      this.offset,
-      this.job_type_ids,
-      this.schedule_ids,
-      this.busyness_ids,
-      this.vacancy_type_ids});
-
   @override
   _DiscoverTabState createState() => _DiscoverTabState();
 }
 
 class _DiscoverTabState extends State<DiscoverTab> {
-  List<String> selectedJobTypeChoices = List();
-  List<String> selectedVacancyTypeChoices = List();
-  List<String> selectedBusynessChoices = List();
-  List<String> selectedScheduleChoices = List();
-  List<Vacancy> vacancies = new List();
-
-  List<Widget> cardList = new List();
-
-  void removeCards(index, String type) {
-    if(type == 'left'){
-
-    }
-    else{
-
-    }
-    setState(() {
-      var some = vacancies.last;
-      vacancies.removeAt(index);
-      vacancies.insert(0, some);
-    });
+  void handleInitialBuild(VacanciesScreenProps props) {
+    props.getVacancies();
   }
+  int button = 0;
 
-  @override
-  initState() {
-    super.initState();
-    Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids).then((value) {
-      setState(() {
-        vacancies = value;
-      });
-    });
-  }
-
-  getget(){
-    setState(() {
-      Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids).then((value) {
-        vacancies = value;
-      });
-    });
-  }
-
-  Future<List<Widget>> _generateCards() async{
-    List<Vacancy> vacancies = await Vacancy.getVacancyList(widget.limit, widget.offset, widget.job_type_ids, widget.schedule_ids, widget.busyness_ids, widget.vacancy_type_ids);
-    List<Widget> cardList1 = new List();
-
-    for (int x = 0; x < vacancies.length; x++) {
-      cardList1.add(
-        Positioned(
-          width: MediaQuery.of(context).size.width * 1,
-          bottom: 5+(x * 15.0),
-          child: Draggable(
-              onDragEnd: (drag) {
-                print("============================================");
-                print(drag.offset.dy);
-                print(drag.offset.dx);
-                print("============================================");
-
-                if(drag.offset.dx < -200){
-                  removeCards(x, 'left');
-                }
-
-                if(drag.offset.dx > 200){
-                  removeCards(x, 'right');
-                }
-              },
-              childWhenDragging: Container(),
-              feedback: GestureDetector(
-                onTap: () {
-                  print("Hello All");
-                },
-                child: ProfileCard(
-                  page: 'discover',
-                  vacancy: vacancies[x],
-                  index: vacancies.length - x,
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return ProfileCard(
-                      vacancy: vacancies[x],
-                    );
-                  }));
-                },
-                child: ProfileCard(
-                  page: 'discover',
-                  vacancy: vacancies[x],
-                  index: vacancies.length - x,
-                ),
-              )
-          ),
-        ),
-      );
-    }
-    setState(() {
-      cardList =cardList1;
-    });
-    return cardList1;
+  void removeCards({String type, int vacancy_id, props, context}) {
+    Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
+    print(props.listResponse.data);
+    StoreProvider.of<AppState>(context).state.vacancy.list.data.removeLast();
+//    props.getVacancies();
   }
 
   @override
   Widget build(BuildContext context) {
-//    if(vacancies.length==0){
-//      getget();
-//    }
-    return Stack(
-      alignment: Alignment.topCenter,
-      fit: StackFit.expand,
-      children: [
-        /// User card list
-        /*Container(
-            margin: const EdgeInsets.all(10),
+    return StoreConnector<AppState, VacanciesScreenProps>(
+      converter: (store) => mapStateToProps(store),
+      onInitialBuild: (props) => this.handleInitialBuild(props),
+      builder: (context, props) {
+        List<Vacancy> data = props.listResponse.data;
+        bool loading = props.listResponse.loading;
+
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+          );
+        } else {
+          body = Stack(
+              alignment: Alignment.topCenter,
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  child: Stack(alignment: Alignment.center, children: [
+                    for (int x = 0; x < data.length; x++)
+                      Positioned(
+                        bottom: 5 + (x * 15.0),
+                        child: Draggable(
+                            onDragEnd: (drag) {
+                              print(
+                                  "============================================");
+                              print(drag.offset.dy);
+                              print(drag.offset.dx);
+                              print(
+                                  "============================================");
+                              if (drag.offset.dx < -200) {
+                                removeCards(props: props, type: "DISLIKED", vacancy_id: data[x].id, context: context);
+                              }
+                              if (drag.offset.dx > 200) {
+                                removeCards(props: props, type: "LIKED", vacancy_id: data[x].id, context: context);
+                              }
+                            },
+                            childWhenDragging: Container(),
+                            feedback: GestureDetector(
+                              onTap: () {
+                                print("Hello All");
+                              },
+                              child: ProfileCard(
+                                page: 'discover',
+                                vacancy: data[x],
+                                index: data.length - x,
+                              ),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return ProfileCard(
+                                        vacancy: data[x],
+                                      );
+                                    }));
+                              },
+                              child: ProfileCard(
+                                page: 'discover',
+                                vacancy: data[x],
+                                index: data.length - x,
+                              ),
+                            )),
+                      ),
+                  ]),
+                ),
+              ]);
+        }
+
+        return Stack(children: [
+          body,
+          Container(
+//          margin: const EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.all(20),
             child: Align(
-              alignment: Alignment.lerp(new Alignment(-1.0, -1), new Alignment(1, -1), 20),
+              alignment: Alignment.lerp(
+                  new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
+              widthFactor: MediaQuery.of(context).size.width * 1,
+              heightFactor: MediaQuery.of(context).size.height * 0.4,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    child: Text(
-                      'ishtapp',
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.italic
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 18,),
-                  GestureDetector(
-                    child: CircleButton(
-                        bgColor: Colors.transparent,
-                        padding: 12,
-                        icon: Icon(Boxicons.bx_filter, color: Colors.white, size: 35,)
-                    ),
-                    onTap: () {
-                      openFilterDialog(context);
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(setTimeFilter(type: StoreProvider.of<AppState>(context).state.vacancy.type=='day' ?'all':'day' ));
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(getVacancies());
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
+//                      setState(() {
+//                        button == 1? button =0:button=1;
+//                      });
                     },
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type=='day' ?'all'.tr():'day'.tr(),
+                  ),
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(setTimeFilter(type:  StoreProvider.of<AppState>(context).state.vacancy.type=='week' ?'all':'week'));
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(getVacancies());
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
+//                      setState(() {
+//                        button == 2? button =0:button=2;
+//                      });
+                    },
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type=='week' ?'all'.tr():'week'.tr(),
+                  ),
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(setTimeFilter(type: StoreProvider.of<AppState>(context).state.vacancy.type=='month' ?'all':'month'));
+                      StoreProvider.of<AppState>(context)
+                          .dispatch(getVacancies());
+//                      Navigator.of(context).popAndPushNamed(Routes.signup);
+                      setState(() {
+                        button == 3? button =0:button=3;
+                      });
+                    },
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type=='month' ?'all'.tr():'month'.tr(),
                   ),
                 ],
               ),
-            )),*/
-        /*Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: SwipeStack(
-              key: _swipeKey,
-              children: getDemoVacancies().map((vacancy) {
-                return SwiperItem(
-                    builder: (SwiperPosition position, double progress) {
-                  /// Return User Card
-                  return ProfileCard(
-                      page: 'discover', position: position, vacancy: vacancy);
-                });
-              }).toList(),
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-              historyCount: getDemoUsers().length,
-              translationInterval: 6,
-              scaleInterval: 0.5,
-              stackFrom: StackFrom.None,
-              onEnd: () => debugPrint("onEnd"),
-              onSwipe: (int index, SwiperPosition position) =>
-                  debugPrint("onSwipe $index $position"),
-              onRewind: (int index, SwiperPosition position) =>
-                  debugPrint("onRewind $index $position"),
             ),
           ),
-        ),*/
-        vacancies.length !=0?
-        Container(
-          child: Stack(alignment: Alignment.center, children: [
-            for (int x = 0; x < vacancies.length; x++)
-              Positioned(
-                bottom: 5+(x * 15.0),
-                child: Draggable(
-                    onDragEnd: (drag) {
-                      print("============================================");
-                      print(drag.offset.dy);
-                      print(drag.offset.dx);
-                      print("============================================");
-
-                      if(drag.offset.dx < -200){
-                        removeCards(x, 'left');
-                      }
-
-                      if(drag.offset.dx > 200){
-                        removeCards(x, 'right');
-                      }
-                    },
-                    childWhenDragging: Container(),
-                    feedback: GestureDetector(
-                      onTap: () {
-                        print("Hello All");
-                      },
-                      child: ProfileCard(
-                        page: 'discover',
-                        vacancy: vacancies[x],
-                        index: vacancies.length - x,
-                      ),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (BuildContext context) {
-                          return ProfileCard(
-                            vacancy: vacancies[x],
-                          );
-                        }));
-                      },
-                      child: ProfileCard(
-                        page: 'discover',
-                        vacancy: vacancies[x],
-                        index: vacancies.length - x,
-                      ),
-                    )
-                ),
-              ),
-
-          ]),
-        ): Center(
-          heightFactor: 20,
-          widthFactor: 20,
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            strokeWidth: 10,
-          ),
-        ),
-
-        /// Filter button
-
-        /// Swipe buttons
-        Container(
-//          margin: const EdgeInsets.only(bottom: 20),
-          padding: EdgeInsets.all(20),
-          child: Align(
-            alignment: Alignment.lerp(
-                new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
-            widthFactor: MediaQuery.of(context).size.width * 1,
-            heightFactor: MediaQuery.of(context).size.height * 0.4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CustomButton(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  padding: EdgeInsets.all(2),
-                  color: Colors.white,
-                  textColor: kColorPrimary,
-                  onPressed: () {
-//                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                  },
-                  text: 'day'.tr(),
-                ),
-                CustomButton(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  padding: EdgeInsets.all(2),
-                  color: Colors.white,
-                  textColor: kColorPrimary,
-                  onPressed: () {
-//                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                  },
-                  text: 'week'.tr(),
-                ),
-                CustomButton(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  padding: EdgeInsets.all(2),
-                  color: Colors.white,
-                  textColor: kColorPrimary,
-                  onPressed: () {
-//                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                  },
-                  text: 'month'.tr(),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+        ]);
+      },
     );
   }
+}
+class VacanciesScreenProps {
+  final Function getVacancies;
+  final Function deleteItem;
+  final ListVacancysState listResponse;
+
+  VacanciesScreenProps({
+    this.getVacancies,
+    this.listResponse,
+    this.deleteItem
+  });
+}
+
+VacanciesScreenProps mapStateToProps(Store<AppState> store) {
+  return VacanciesScreenProps(
+    listResponse: store.state.vacancy.list,
+    getVacancies: () => store.dispatch(getVacancies()),
+    deleteItem: () => store.dispatch(deleteItem1()),
+  );
 }

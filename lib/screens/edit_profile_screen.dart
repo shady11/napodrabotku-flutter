@@ -161,7 +161,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           /// Save changes and go to profile screen
           Navigator.push(context, MaterialPageRoute(
             builder: (context) => ProfileScreen(
-              user: currentUserDemo
+//              user: currentUserDemo
             )));
         },
       ),

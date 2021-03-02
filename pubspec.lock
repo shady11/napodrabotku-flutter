@@ -185,7 +185,14 @@ packages:
       name: flutter_redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.5.4"
+  flutter_redux_dev_tools:
+    dependency: "direct dev"
+    description:
+      name: flutter_redux_dev_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   flutter_staggered_animations:
     dependency: "direct dev"
     description:
@@ -412,7 +419,28 @@ packages:
       name: redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0+3"
+    version: "3.0.0"
+  redux_api_middleware:
+    dependency: "direct dev"
+    description:
+      name: redux_api_middleware
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.9"
+  redux_dev_tools:
+    dependency: "direct dev"
+    description:
+      name: redux_dev_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
+  redux_thunk:
+    dependency: "direct dev"
+    description:
+      name: redux_thunk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   shared_preferences:
     dependency: "direct dev"
     description:

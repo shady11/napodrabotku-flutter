@@ -105,7 +105,7 @@ class SwipeButtons extends StatelessWidget {
             /// Visit profile
             /// Go to profile screen
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProfileScreen(user: user)));
+                builder: (context) => ProfileScreen()));
           },
         ),
       ],

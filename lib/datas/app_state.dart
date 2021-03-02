@@ -1,15 +1,29 @@
+import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/vacancy.dart';
 
-class AppState{
-  List<Vacancy> vacancyList = new List<Vacancy>();
-  List<Vacancy> likedVacancyList = new List<Vacancy>();
-  List<Vacancy> submittedVacancyList = new List<Vacancy>();
+class AppState {
+  VacancyState vacancy;
+  UserState user;
 
-  AppState({this.vacancyList, this.likedVacancyList});
+  AppState(
+      {this.user, this.vacancy});
 
   AppState.fromAppState(AppState another) {
-    vacancyList = another.vacancyList;
-    likedVacancyList = another.likedVacancyList;
-    submittedVacancyList = another.submittedVacancyList;
+    vacancy = another.vacancy;
+    user = another.user;
+  }
+
+  factory AppState.initial() => AppState(
+    vacancy: VacancyState.initial(),
+    user: UserState.initial()
+  );
+
+  AppState copyWith({
+    VacancyState vacancy, UserState user
+  }) {
+    return AppState(
+      vacancy: vacancy ?? this.vacancy,
+      user: user??this.user
+    );
   }
 }

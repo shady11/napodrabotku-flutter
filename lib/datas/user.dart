@@ -28,14 +28,38 @@ class User {
   List<UserEducation> user_educations;
   List<UserExperience> user_experiences;
 
-  // Constructor
-  User({
-    this.userFullname,
-    this.userPhotoLink,
-    this.userSchool,
-    this.jobTitle,
-    this.userDistance
-  });
+
+  User(
+      {this.id,
+      this.token,
+      this.username,
+      this.password,
+      this.name,
+      this.surname,
+      this.image,
+      this.email,
+      this.linked_link,
+      this.phone_number,
+      this.is_company,
+      this.userFullname,
+      this.userPhotoLink,
+      this.userSchool,
+      this.jobTitle,
+      this.userDistance,
+      this.user_educations,
+      this.user_experiences});
+
+  factory User.fromJson(Map<String, dynamic> json) => new User(
+    id: json["id"],
+    username: json["name"],
+    name: json["description"],
+    surname: json["address"],
+    image: json['salary'],
+    email: json['company'],
+    linked_link: json['company_name'],
+    phone_number: json['busyness'],
+    is_company: json['schedule'],
+  );
 
   void uploadImage1(_image) async {
 
@@ -46,14 +70,15 @@ class User {
     var request = new http.MultipartRequest("POST", uri);
 
     // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
-    request.fields["username"] = this.username;
+    request.fields["login"] = this.username;
     request.fields["password"] = this.password;
     request.fields["name"] = this.name;
-    request.fields["surname"] = this.surname;
+    request.fields["lastname"] = this.surname;
     request.fields["email"] = this.email;
     request.fields["linked_link"] = this.linked_link;
+    request.fields["active"] = '1';
     request.fields["phone_number"] = this.phone_number;
-    request.fields["is_company"] = this.is_company.toString();
+    request.fields["type"] = this.is_company?'COMPANY':'USER';
 
     // open a byteStream
     if(_image != null) {
@@ -62,17 +87,10 @@ class User {
       // get file length
       var length = await _image.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
-      var multipartFile = new http.MultipartFile('image', stream, length, filename: basename(_image.path));
+      var multipartFile = new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
       // add file to multipart
       request.files.add(multipartFile);
 
-      // getting a directory path for saving
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
-
-      // copy the file to a new path
-      await _image.copy('$appDocPath/profile.png');
-      Prefs.setString(Prefs.PROFILEIMAGE, '$appDocPath/profile.png');
     }
 
 
@@ -81,6 +99,13 @@ class User {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
+        var response = json.decode(value);
+        Prefs.setString('username', username);
+        Prefs.setString('password', password);
+        Prefs.setString(Prefs.USERNAME, username);
+        Prefs.setString(Prefs.PASSWORD, password);
+        Prefs.setString(Prefs.TOKEN, response["token"]);
+        Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
       });
 
     }).catchError((e) {
@@ -90,7 +115,7 @@ class User {
 
   Future<void> register() async {
     final url =
-        API_IP+'api/auth/register/';
+        API_IP+API_REGISTER;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.post(
@@ -160,6 +185,7 @@ class User {
         Prefs.setString(Prefs.USERNAME, username);
         Prefs.setString(Prefs.PASSWORD, password);
         Prefs.setString(Prefs.TOKEN, responseData["token"]);
+        Prefs.setString(Prefs.PROFILEIMAGE, responseData["avatar"]);
       }
     }
     catch (error) {
@@ -282,6 +308,36 @@ class User {
       throw error;
     }
   }
+}
+
+class UserState {
+  UserDetailState user;
+
+  UserState({
+    this.user,
+  });
+
+  factory UserState.initial() => UserState(
+    user: UserDetailState.initial(),
+  );
+}
+
+class UserDetailState {
+  dynamic error;
+  bool loading;
+  User data;
+
+  UserDetailState({
+    this.error,
+    this.loading,
+    this.data,
+  });
+
+  factory UserDetailState.initial() => UserDetailState(
+    error: null,
+    loading: false,
+    data: new User(),
+  );
 }
 
 class UserEducation{

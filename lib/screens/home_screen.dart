@@ -2,7 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:ishapp/datas/RSAA.dart';
+import 'package:ishapp/datas/app_state.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:ishapp/widgets/cicle_button.dart';
 import 'package:ishapp/components/custom_button.dart';
@@ -16,7 +21,6 @@ import 'package:ishapp/datas/vacancy.dart';
 
 import 'notifications_screen.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
 
@@ -25,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final _formKey = GlobalKey<FormState>();
   List<String> selectedJobTypeChoices = List();
   List<String> selectedVacancyTypeChoices = List();
@@ -39,21 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> scheduleList = [];
   List<dynamic> regionList = [];
 
-  List _job_types;
-  List _vacancy_types;
-  List _busynesses;
-  List _schedules;
-  List _regions;
+  List _job_types = [];
+  List _vacancy_types = [];
+  List _busynesses = [];
+  List _schedules = [];
+  List _regions = [];
 
-  getLists() async{
+  getLists() async {
     jobTypeList = await Vacancy.getLists('job_type');
     vacancyTypeList = await Vacancy.getLists('vacancy_type');
     busynessList = await Vacancy.getLists('busyness');
     scheduleList = await Vacancy.getLists('schedule');
     regionList = await Vacancy.getLists('region');
   }
-  
-
 
   openFilterDialog(context) {
     showDialog(
@@ -63,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: ListView(
@@ -71,9 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Align(
                         alignment: Alignment.center,
-                        child: Text('search_filter'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),)
+                        child: Text(
+                          'search_filter'.tr(),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        )),
+                    SizedBox(
+                      height: 30,
                     ),
-                    SizedBox(height: 30,),
+
                     /// Form
                     Form(
                       key: _formKey,
@@ -81,7 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <Widget>[
                           MultiSelectFormField(
                             autovalidate: false,
-                            title: Text('regions'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            title: Text(
+                              'regions'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                             validator: (value) {
                               if (value == null || value.length == 0) {
                                 return 'select_one_or_more'.tr();
@@ -102,10 +118,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                           ),
-                          SizedBox(height: 20),
+//                          SizedBox(height: 20),
                           MultiSelectFormField(
                             autovalidate: false,
-                            title: Text('job_types'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            title: Text(
+                              'job_types'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                             validator: (value) {
                               if (value == null || value.length == 0) {
                                 return 'select_one_or_more'.tr();
@@ -126,10 +148,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                           ),
-                          SizedBox(height: 20),
+//                          SizedBox(height: 20),
                           MultiSelectFormField(
                             autovalidate: false,
-                            title: Text('vacancy_types'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            title: Text(
+                              'vacancy_types'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                             validator: (value) {
                               if (value == null || value.length == 0) {
                                 return 'select_one_or_more'.tr();
@@ -150,10 +178,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                           ),
-                          SizedBox(height: 20),
+//                          SizedBox(height: 20),
                           MultiSelectFormField(
                             autovalidate: false,
-                            title: Text('busynesses'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            title: Text(
+                              'busynesses'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                             validator: (value) {
                               if (value == null || value.length == 0) {
                                 return 'select_one_or_more'.tr();
@@ -174,10 +208,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                           ),
-                          SizedBox(height: 20),
+//                          SizedBox(height: 20),
                           MultiSelectFormField(
                             autovalidate: false,
-                            title: Text('schedules'.tr(), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),),
+                            title: Text(
+                              'schedules'.tr(),
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
                             validator: (value) {
                               if (value == null || value.length == 0) {
                                 return 'select_one_or_more'.tr();
@@ -207,7 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 CustomButton(
-                                  width:MediaQuery.of(context).size.width * 0.3,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
                                   padding: EdgeInsets.all(10),
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
@@ -217,16 +258,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   text: 'cancel'.tr(),
                                 ),
                                 CustomButton(
-                                  width:MediaQuery.of(context).size.width * 0.3,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    _pageController.animateToPage(3,
-                                        duration: Duration(microseconds: 1), curve: Curves.ease);
-                                    _pageController.animateToPage(0,
-                                        duration: Duration(microseconds: 500), curve: Curves.ease);
+                                    StoreProvider.of<AppState>(context)
+                                      .dispatch(setFilter(
+                                        schedule_ids: _schedules,
+                                        busyness_ids: _busynesses,
+                                        region_ids: _regions,
+                                        vacancy_type_ids: _vacancy_types,
+                                        job_type_ids: _job_types
+                                    ));
+                                    StoreProvider.of<AppState>(context)
+                                        .dispatch(getVacancies());
                                     Navigator.of(context).pop();
+                                    _nextTab(0);
                                   },
                                   text: 'search'.tr(),
                                 ),
@@ -243,44 +292,48 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+
   // Variables
   final _pageController = new PageController();
   int _tabCurrentIndex = 0;
+  var discoverPage = DiscoverTab();
 
   // Tab navigation
   void _nextTab(int tabIndex) {
     // Update tab index
     setState(() => _tabCurrentIndex = tabIndex);
-
     // Update page index
     _pageController.animateToPage(tabIndex,
         duration: Duration(microseconds: 500), curve: Curves.ease);
   }
 
-  List<Widget> app_bar_titles=[];
+  List<Widget> app_bar_titles = [];
 
-  buildSome(BuildContext context){
+  buildSome(BuildContext context) {
     app_bar_titles = [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('ishtapp'.tr(),
+          Text(
+            'ishtapp'.tr(),
             style: TextStyle(
                 fontSize: 40,
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
-                fontStyle: FontStyle.italic
-            ),
+                fontStyle: FontStyle.italic),
           ),
           GestureDetector(
             child: CircleButton(
                 bgColor: Colors.transparent,
                 padding: 12,
-                icon: Icon(Boxicons.bx_filter, color: Colors.white, size: 35,)
-            ),
+                icon: Icon(
+                  Boxicons.bx_filter,
+                  color: Colors.white,
+                  size: 35,
+                )),
             onTap: () {
-              openFilterDialog( context);
+              openFilterDialog(context);
             },
           ),
         ],
@@ -293,8 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.white,
-                  fontWeight: FontWeight.w600)
-          ),
+                  fontWeight: FontWeight.w600)),
         ],
       ),
       Row(
@@ -305,8 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
-                  fontWeight: FontWeight.w600)
-          ),
+                  fontWeight: FontWeight.w600)),
         ],
       ),
       Row(
@@ -317,14 +368,13 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
-                  fontWeight: FontWeight.w600)
-          ),
+                  fontWeight: FontWeight.w600)),
         ],
       ),
     ];
   }
-  bool is_profile = false;
 
+  bool is_profile = false;
 
   @override
   void initState() {
@@ -360,62 +410,86 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       bottomNavigationBar: ClipRRect(
-    borderRadius: BorderRadius.only(
-    topLeft: Radius.circular(25),
-    topRight: Radius.circular(25),
-    ),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
         child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          elevation: Platform.isIOS ? 0 : 8,
-          currentIndex: _tabCurrentIndex,
-          onTap: (index) {
-            _nextTab(index);
-            if(index == 3 || index == 2){
-              setState(() {
-                is_profile =true;
-              });
-            }
-            else {
-              setState(() {
-                is_profile =false;
-              });
-            }
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Boxicons.bx_search, color: _tabCurrentIndex == 0
-                  ? kColorPrimary
-                  : null,),
-              title: Text("search".tr(), style: TextStyle(color: _tabCurrentIndex == 0
-                  ? kColorPrimary
-                  : Colors.grey),)),
-            BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_like, color: _tabCurrentIndex == 1
-                    ? kColorPrimary
-                    : null,),
-                title: Text("matches".tr(), style: TextStyle(color: _tabCurrentIndex == 1
-                    ? kColorPrimary
-                    : Colors.grey),)),
-            BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_comment_detail, color: _tabCurrentIndex == 2
-                  ? kColorPrimary
-                  : null,),
-                title: Text("chat".tr(), style: TextStyle(color: _tabCurrentIndex == 2
-                    ? kColorPrimary
-                    : Colors.grey),)),
-            BottomNavigationBarItem(
-                icon: Icon(Boxicons.bx_user, color: _tabCurrentIndex == 3
-                    ? kColorPrimary
-                    : null,),
-                title: Text("profile".tr(), style: TextStyle(color: _tabCurrentIndex == 3
-                    ? kColorPrimary
-                    : Colors.grey),)),
-          ]),
+            type: BottomNavigationBarType.fixed,
+            elevation: Platform.isIOS ? 0 : 8,
+            currentIndex: _tabCurrentIndex,
+            onTap: (index) {
+              _nextTab(index);
+              if (index == 3 || index == 2) {
+                setState(() {
+                  is_profile = true;
+                });
+              } else {
+                setState(() {
+                  is_profile = false;
+                });
+              }
+            },
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_search,
+                    color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "search".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 0
+                            ? kColorPrimary
+                            : Colors.grey),
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_like,
+                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "matches".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 1
+                            ? kColorPrimary
+                            : Colors.grey),
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_comment_detail,
+                    color: _tabCurrentIndex == 2 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "chat".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 2
+                            ? kColorPrimary
+                            : Colors.grey),
+                  )),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_user,
+                    color: _tabCurrentIndex == 3 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "profile".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 3
+                            ? kColorPrimary
+                            : Colors.grey),
+                  )),
+            ]),
       ),
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
-        children: [DiscoverTab(limit: 10, offset: 0, job_type_ids: _job_types, busyness_ids: _busynesses, vacancy_type_ids: _vacancy_types,), MatchesTab(), ConversationsTab(), ProfileTab()],
+        children: [
+          DiscoverTab(),
+          MatchesTab(),
+          ConversationsTab(),
+          ProfileTab()
+        ],
       ),
     );
   }

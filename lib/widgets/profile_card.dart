@@ -88,7 +88,7 @@ class ProfileCard extends StatelessWidget {
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
-                            child: Text(vacancy.salary, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
+                            child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
                       ): Container(),
@@ -127,7 +127,7 @@ class ProfileCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            CustomButton(
+                            page =='discover' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: Colors.grey[200],
@@ -137,7 +137,7 @@ class ProfileCard extends StatelessWidget {
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
-                            CustomButton(
+                            page =='discover' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: kColorPrimary,

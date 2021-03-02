@@ -51,7 +51,7 @@ class ProfileTab extends StatelessWidget {
                       backgroundColor: kColorPrimary,
                       radius: 60,
                       backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
-                          API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
+                          SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                     ),
                   ),
                 ),
@@ -101,7 +101,7 @@ class ProfileTab extends StatelessWidget {
                         color: kColorPrimary,
                         textColor: Colors.white,
                         onPressed: () {
-//                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamed(Routes.user_details);
                         },
                         text: 'view'.tr(),
                       ),
@@ -113,7 +113,7 @@ class ProfileTab extends StatelessWidget {
                         color: Color(0xffF2F2F5),
                         textColor: kColorPrimary,
                         onPressed: () {
-//                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamed(Routes.user_edit);
                         },
                         text: 'edit'.tr(),
                       ),
@@ -137,7 +137,7 @@ class ProfileTab extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)
                   ),
                 ),
-                title: Text("likeds".tr(), style: _textStyle),
+                title: Text("matches".tr(), style: _textStyle),
                 trailing: Text('22', style: TextStyle(color: Colors.grey[400]),),
                 onTap: () {
                   /// Go to profile likes screen ()
@@ -184,12 +184,6 @@ class ProfileTab extends StatelessWidget {
                 onTap: () {
                   /// Go to About us
 
-                },
-              ),
-              ListTile(
-                title: Text("share_with_friends".tr(), style: _textStyle),
-                onTap: () {
-                  /// Share app
                 },
               ),
               ListTile(
