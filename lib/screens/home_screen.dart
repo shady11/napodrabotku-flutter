@@ -5,6 +5,7 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -47,6 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
   List _busynesses = [];
   List _schedules = [];
   List _regions = [];
+
+  DateTime currentBackPressTime;
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(context,msg: 'click_once_to_exit'.tr());
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
 
   getLists() async {
     jobTypeList = await Vacancy.getLists('job_type');
@@ -481,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
             ]),
       ),
-      body: PageView(
+      body:  WillPopScope(child: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
         children: [
@@ -490,7 +504,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ConversationsTab(),
           ProfileTab()
         ],
-      ),
+      ), onWillPop: onWillPop),
     );
   }
 }

@@ -109,6 +109,42 @@ class Vacancy {
     }
   }
 
+  static Future<Vacancy> getVacancyByOffset({
+    int limit,
+    int offset,
+    String type,
+    List job_type_ids,
+    List region_ids,
+    List schedule_ids,
+    List busyness_ids,
+    List vacancy_type_ids,
+  }) async {
+    final url = API_IP + API_VACANCY_LIST;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json","Authorization": Prefs.getString(Prefs.TOKEN)};
+      final response = await http.post(url,
+          headers: headers,
+          body: json.encode({
+            'limit': 1,
+            'offset': offset,
+            'type_ids': vacancy_type_ids,
+            'type': type,
+            'job_type_ids': job_type_ids,
+            'schedule_ids': schedule_ids,
+            'region_ids': region_ids,
+            'busyness_ids': busyness_ids
+          }));
+      print(response.body);
+      for (var i in json.decode(utf8.decode(response.bodyBytes))) {
+        Vacancy model = Vacancy.fromJson(i);
+        return model;
+      }
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static Future<List<Vacancy>> getVacancyListByType(
     int limit,
     int offset,

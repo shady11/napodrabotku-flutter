@@ -26,7 +26,7 @@ RSAA getVacanciesRequest({
       method: 'POST',
       endpoint: API_IP+API_VACANCY_LIST,
       body: json.encode({
-        'limit': 10,
+        'limit': 5,
         'offset': 0,
         'type': type,
         'type_ids': vacancy_type_ids,
@@ -148,3 +148,25 @@ RSAA getUserRequest() {
 }
 
 ThunkAction<AppState> getUser() => (Store<AppState> store) => store.dispatch(getUserRequest());
+
+const GET_USER_CV_REQUEST = 'GET_USER_CV_REQUEST';
+const GET_USER_CV_SUCCESS = 'GET_USER_CV_SUCCESS';
+const GET_USER_CV_FAILURE = 'GET_USER_CV_FAILURE';
+RSAA getUserCvRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_GET_USER_CV,
+      types: [
+        GET_USER_CV_REQUEST,
+        GET_USER_CV_SUCCESS,
+        GET_USER_CV_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getUserCv() => (Store<AppState> store) => store.dispatch(getUserCvRequest());

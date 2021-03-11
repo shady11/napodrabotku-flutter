@@ -6,6 +6,7 @@ import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/routes/routes.dart';
 import 'badge.dart';
@@ -28,8 +29,8 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: index == 0 ?  MediaQuery.of(context).size.width * 1: (index == 1 ?  MediaQuery.of(context).size.width * 0.95:(index == 2 ?  MediaQuery.of(context).size.width * 0.9:(index == 3 ?  MediaQuery.of(context).size.width * 0.85:MediaQuery.of(context).size.width * 0.8))),
-      height: MediaQuery.of(context).size.height * 0.6,
+      width: index == 0 ?  MediaQuery.of(context).size.width * 1: (index == 1 ?  MediaQuery.of(context).size.width * 0.95:(index == 2 ?  MediaQuery.of(context).size.width * 0.9:(index == 3 ?  MediaQuery.of(context).size.width * 0.85:(index == 4 ?  MediaQuery.of(context).size.width * 0.8:MediaQuery.of(context).size.width * 0.75)))),
+      height: MediaQuery.of(context).size.height * 0.7,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Stack(
@@ -61,7 +62,8 @@ class ProfileCard extends StatelessWidget {
 //                                  height: 60,)
 //                            ),
 //                          ),
-                          SizedBox(width: 20),
+                        Container(),
+//                          SizedBox(width: 20),
                           Expanded(
                             child: RichText(
                               text: TextSpan(text: vacancy.company_name.toString() + '\n',
@@ -88,7 +90,7 @@ class ProfileCard extends StatelessWidget {
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
-                            child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
+                            child: Text(/*vacancy.salary!=null ?vacancy.salary:*/'4565 - 4546', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
                       ): Container(),
@@ -122,6 +124,30 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
+                      page =='discover' ?Center(
+                        child: CustomButton(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          padding: EdgeInsets.all(5),
+                          color: Colors.grey[200],
+                          textColor: kColorPrimary,
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return Scaffold(
+                                    backgroundColor: kColorPrimary,
+                                    appBar: AppBar(
+                                      title: Text("vacancy_view".tr()),
+                                    ),
+                                    body: VacancyView(
+                                      page:"view",
+                                      vacancy: vacancy,
+                                    ),
+                                  );
+                                }));
+                          },
+                          text: 'view'.tr(),
+                        ),
+                      ):Container(),
                       index==null||index <=2 ?SizedBox(
                         width: double.maxFinite,
                         child: Row(

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ishapp/datas/vacancy.dart';
+import 'package:flutter/services.dart';
 import 'package:ishapp/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
@@ -44,6 +45,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+//    TO DO make only vertical for IOS
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return StoreProvider(
       store: this.store,
       child: BlocProvider(

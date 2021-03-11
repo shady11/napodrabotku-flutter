@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundImage: NetworkImage(
                   API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
             ),
-            title: Text(widget.user.userFullname,
+            title: Text(widget.user.name,
                 style: TextStyle(fontSize: 18)),
           ),
           onTap: () {
@@ -101,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 ChatMessage(
                   isUserSender: false,
-                  userPhotoLink: widget.user.userPhotoLink,
+                  userPhotoLink: widget.user.image,
                   textMessage: "Добрый день. @Username",
                   timeAgo: "1" + "min_ago".tr(),
                 ),
@@ -117,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ChatMessage(
                   isUserSender: false,
                   isImage: false,
-                  userPhotoLink: widget.user.userPhotoLink,
+                  userPhotoLink: widget.user.surname,
                   textMessage: 'Не за что',
                   timeAgo: "0" + "min_ago".tr(),
                 ),

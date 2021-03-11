@@ -32,16 +32,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _phone_number_controller = TextEditingController();
   final _password_controller = TextEditingController();
   final _password_confirm_controller = TextEditingController();
-  final _linked_link_controller = TextEditingController();
+  final _birth_date_controller = TextEditingController();
   bool _obscureText = true;
 
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   dynamic _pickImageError;
   String _retrieveDataError;
+  String _birth_date;
 
   void _showDataPicker() {
     DatePicker.showDatePicker(context,
+        locale: LocaleType.ru,
         theme: DatePickerTheme(
           headerColor: Theme.of(context).primaryColor,
           cancelStyle: const TextStyle(color: Colors.white, fontSize: 17),
@@ -50,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(date);
       // Change state
       setState(() {
-//        _birthday = date.toString().split(" ")[0];
+        _birth_date_controller.text = date.toString().split(" ")[0];
       });
     });
   }
@@ -138,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     });
                   },
                 ),
-                Text('Работадатель', style: TextStyle(color: Colors.black)),
+                Text('employer'.tr(), style: TextStyle(color: Colors.black)),
                 Radio(
                   value: is_company.User,
                   groupValue: company,
@@ -149,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     });
                   },
                 ),
-                Text('Работник', style: TextStyle(color: Colors.black))
+                Text('employee'.tr(), style: TextStyle(color: Colors.black))
               ],
             ),
             /// Form
@@ -272,7 +274,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //                      widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                      child: Text(company==is_company.Company?'organization_name'.tr() :'name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
@@ -293,12 +295,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Align(
+                  company==is_company.Company?Container():Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text('surname'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
+                  company==is_company.Company?Container():TextFormField(
                     controller: _surnname_controller,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -311,7 +313,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (name) {
                       // Basic validation
-                      if (name.isEmpty) {
+                      if (name.isEmpty && company==is_company.User) {
                         return "please_fill_this_field".tr();
                       }
                       return null;
@@ -368,30 +370,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Align(
+                  company==is_company.Company?Container():Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('linked_link'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
-                    controller: _linked_link_controller,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    validator: (name) {
-                      // Basic validation
-//                      if (name.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),
+                      child: Text('birth_date'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  company==is_company.Company?Container():CustomButton(
+                    width: MediaQuery.of(context).size.width * 1,
+                      color: Colors.grey[200],
+                      textColor: kColorPrimary,
+                      text: _birth_date_controller.text,
+                      onPressed: (){_showDataPicker();}),
                   SizedBox(height: 20),
 
                   /// Sign Up button
@@ -406,13 +395,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                          if (_formKey.currentState.validate()) {
                            Navigator.of(context)
                                .popUntil((route) => route.isFirst);
+                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
                            User user = new User();
                            user.username = _username_controller.text;
                            user.password = _password_controller.text;
                            user.email = _email_controller.text;
                            user.phone_number = _phone_number_controller.text;
-                           user.linked_link = _linked_link_controller.text;
+                           user.birth_date = formatter.parse(_birth_date_controller.text);
                            user.name = _name_controller.text;
                            user.surname = _surnname_controller.text;
                            user.is_company = company == is_company.Company;

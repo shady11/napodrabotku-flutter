@@ -29,6 +29,24 @@ UserState userReducer(UserState state, FSA action) {
       newState.user.data = null;
       return newState;
 
+    case GET_USER_CV_REQUEST:
+      newState.user_cv.error = null;
+      newState.user_cv.loading = true;
+      newState.user_cv.data = null;
+      return newState;
+
+    case GET_USER_CV_SUCCESS:
+      newState.user_cv.error = null;
+      newState.user_cv.loading = false;
+      newState.user_cv.data = userCvFromJSONStr(action.payload);
+      return newState;
+
+    case GET_USER_CV_FAILURE:
+      newState.user_cv.error = action.payload;
+      newState.user_cv.loading = false;
+      newState.user_cv.data = null;
+      return newState;
+
     default:
       return newState;
   }
@@ -36,5 +54,9 @@ UserState userReducer(UserState state, FSA action) {
 
 User userFromJSONStr(dynamic payload) {
   return User.fromJson(json.decode(payload));
+}
+
+UserCv userCvFromJSONStr(dynamic payload) {
+  return UserCv.fromJson(json.decode(payload)[0]);
 }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/screens/disliked_profile_screen.dart';
 import 'package:ishapp/screens/profile_likes_screen.dart';
 import 'package:ishapp/screens/profile_visits_screen.dart';
 import 'package:ishapp/widgets/svg_icon.dart';

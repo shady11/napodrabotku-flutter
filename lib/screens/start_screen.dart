@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:ishapp/constants/constants.dart';
 import 'package:ishapp/routes/routes.dart';
@@ -23,9 +24,22 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
 
+  DateTime currentBackPressTime;
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(context,msg: 'click_once_to_exit'.tr());
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return WillPopScope(child: Material(
       child: Scaffold(
         bottomSheet: Container(
           color: Colors.white,
@@ -64,7 +78,7 @@ class _StartScreenState extends State<StartScreen> {
         ),
         body: Container(
           decoration: BoxDecoration(
-            color: Colors.white
+              color: Colors.white
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,14 +118,14 @@ class _StartScreenState extends State<StartScreen> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
-              Text("sign_in_with_social_apps".tr(),
+              /*Text("sign_in_with_social_apps".tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.black45)),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),*/
 
               /// Social login
-              Row(
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -149,12 +163,12 @@ class _StartScreenState extends State<StartScreen> {
                     },
                   ),
                 ],
-              ),
+              ),*/
 
             ],
           ),
         ),
       ),
-    );
+    ), onWillPop: onWillPop);
   }
 }

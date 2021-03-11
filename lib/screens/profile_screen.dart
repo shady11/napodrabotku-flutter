@@ -9,6 +9,10 @@ import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/constants/configs.dart';
+import 'package:ishapp/widgets/basic_user_info.dart';
+import 'package:ishapp/widgets/user_course_info.dart';
+import 'package:ishapp/widgets/user_education_info.dart';
+import 'package:ishapp/widgets/user_experience_info.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -17,187 +21,125 @@ import 'chat_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
 
-  void handleInitialBuild(ProfileScreenProps props) {
-    props.getUser();
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, ProfileScreenProps>(
-      converter: (store) => mapStateToProps(store),
-      onInitialBuild: (props) => this.handleInitialBuild(props),
-      builder: (context, props) {
-        User data = props.user.data;
-        bool loading = props.user.loading;
-        Widget body;
-        if (loading) {
-          body = Center(
-            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
-          );
-        } else {
-          body = SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.2,)
-                    ),
-                  ),
-                ),
-
-                /// Profile details
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          /// Full Name
-                          Expanded(
-                            child: Text(
-                              currentUserDemo.userFullname,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-
-                        ],
-                      ),
-
-                      SizedBox(height: 5),
-
-//                      /// Education
-//                      _rowProfileInfo(context,
-//                          icon: SvgIcon("assets/icons/university_icon.svg",
-//                              color: Theme.of(context).primaryColor,
-//                              width: 28,
-//                              height: 28),
-//                          title: user.userSchool),
-
-                      Divider(),
-
-                      /// Profile bio
-                      Text('Bio',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black)),
-                      SizedBox(height: 10,),
-                      Text(DEMO_PROFILE_BIO,
-                          style: TextStyle(fontSize: 18, color: Colors.grey)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-
-
+    User user = StoreProvider.of<AppState>(context).state.user.user.data;
+    UserCv user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
         return Scaffold(
 //          backgroundColor: kColorPrimary,
           appBar: AppBar(
             title: Text("profile".tr()),
           ),
-          body: body,
-        );
-      },
-    );
-    return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.2,)
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(3.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
+                    child: CircleAvatar(
+                      backgroundColor: kColorPrimary,
+                      radius: 60,
+                      backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                          SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                     ),
                   ),
                 ),
-
                 /// Profile details
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      /*Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           /// Full Name
                           Expanded(
                             child: Text(
-                              currentUserDemo.userFullname,
+                              '${user.name} ${user.surname}',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
-
                         ],
                       ),
 
-                      SizedBox(height: 5),
-
-//                      /// Education
-//                      _rowProfileInfo(context,
-//                          icon: SvgIcon("assets/icons/university_icon.svg",
-//                              color: Theme.of(context).primaryColor,
-//                              width: 28,
-//                              height: 28),
-//                          title: user.userSchool),
-
-                      Divider(),
+                      SizedBox(height: 5,),
+                      user.email!=null?Container(
+                        height: MediaQuery.of(context).size.height*0.05,
+                        child: Text(
+                          '${user.email}',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ):Container(),
+                      SizedBox(height: 5,),
+                      user.phone_number!=null?Container(
+                        height: MediaQuery.of(context).size.height*0.05,
+                        child: Text(
+                          '${user.phone_number}',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ):Container(),
+                      Divider(),*/
 
                       /// Profile bio
-                      Text('Bio',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black)),
+                      Center(
+                        child: Text('cv'.tr(),
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: kColorDarkBlue)),
+                      ),
                       SizedBox(height: 10,),
-                      Text(DEMO_PROFILE_BIO,
-                          style: TextStyle(fontSize: 18, color: Colors.grey)),
+                      Center(
+                        child: Text('basic_info'.tr(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kColorDarkBlue)),
+                      ),
+                      BasicUserCvInfo(user_cv: user_cv, user: user,),
+                      SizedBox(height: 10,),
+                      Center(
+                        child: Text('user_education_info'.tr(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kColorDarkBlue)),
+                      ),
+                      (user_cv.user_educations.length>0)?UserEducationInfo(user_educations: user_cv.user_educations,):Container(
+                        child: Center(child: Text("empty".tr())),
+                        ),
+                      SizedBox(height: 10,),
+                      Center(
+                        child: Text('user_experience_info'.tr(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kColorDarkBlue)),
+                      ),
+                      user_cv.user_experiences.length>0?UserExperienceInfo(user_experiences: user_cv.user_experiences,):Container(
+                        child: Center(child: Text("empty".tr())),
+                      ),
+                      SizedBox(height: 10,),
+                      Center(
+                        child: Text('user_course_info'.tr(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: kColorDarkBlue)),
+                      ),
+                      user_cv.user_courses.length>0?UserCourseInfo(user_courses: user_cv.user_courses,):Container(
+                        child: Center(child: Text("empty".tr())),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-
-          /// AppBar to return back
-          Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kColorPrimary,
-        child: Icon(Boxicons.bx_message_rounded,  size: 40,),
-        onPressed: () {
-          /// Go to chat screen
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ChatScreen(user: currentUserDemo)));
-        },
-      ),
-    );
+        );
   }
 
   Widget _rowProfileInfo(BuildContext context,
@@ -212,19 +154,3 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class ProfileScreenProps {
-  final Function getUser;
-  final UserDetailState user;
-
-  ProfileScreenProps({
-    this.getUser,
-    this.user,
-  });
-}
-
-ProfileScreenProps mapStateToProps(Store<AppState> store) {
-  return ProfileScreenProps(
-    user: store.state.vacancy.user.user,
-    getUser: () => store.dispatch(getUser()),
-  );
-}

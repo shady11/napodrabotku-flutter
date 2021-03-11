@@ -11,6 +11,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/profile_card.dart';
+import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 
@@ -24,11 +25,32 @@ class _DiscoverTabState extends State<DiscoverTab> {
     props.getVacancies();
   }
   int button = 0;
+  int some_index = 0;
+  int offset = 5;
 
   void removeCards({String type, int vacancy_id, props, context}) {
     Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
-    print(props.listResponse.data);
-    StoreProvider.of<AppState>(context).state.vacancy.list.data.removeLast();
+    setState(() {
+      props.listResponse.data.removeLast();
+    });
+    Vacancy.getVacancyByOffset(
+        offset: /*offset<0?0:offset*/4,
+        job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+        region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+        schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+        busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+        vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+        type: StoreProvider.of<AppState>(context).state.vacancy.type).then((value) {
+          if(value != null){
+            offset = offset-1;
+            print(props.listResponse.data);
+            setState(() {
+              props.listResponse.data.insert(0, value);
+            });
+          }
+    });
+
+//    StoreProvider.of<AppState>(context).state.vacancy.list.data.last;
 //    props.getVacancies();
   }
 
@@ -55,7 +77,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   child: Stack(alignment: Alignment.center, children: [
                     for (int x = 0; x < data.length; x++)
                       Positioned(
-                        bottom: 5 + (x * 15.0),
+                        bottom: ((x) * 10.0),
                         child: Draggable(
                             onDragEnd: (drag) {
                               print(
@@ -86,8 +108,15 @@ class _DiscoverTabState extends State<DiscoverTab> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return ProfileCard(
-                                        vacancy: data[x],
+                                      return Scaffold(
+                                        backgroundColor: kColorPrimary,
+                                        appBar: AppBar(
+                                          title: Text("vacancy_view".tr()),
+                                        ),
+                                        body: VacancyView(
+                                          page:"view",
+                                          vacancy: data[x],
+                                        ),
                                       );
                                     }));
                               },
