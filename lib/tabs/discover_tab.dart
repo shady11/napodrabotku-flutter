@@ -31,6 +31,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
   void removeCards({String type, int vacancy_id, props, context}) {
     Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
     setState(() {
+//      StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.add(new Vacancy());
       props.listResponse.data.removeLast();
     });
     Vacancy.getVacancyByOffset(

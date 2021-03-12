@@ -12,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 class User {
   int id;
   String token;
-  String username;
   String password;
   String name;
   String surname;
@@ -27,7 +26,6 @@ class User {
   User(
       {this.id,
       this.token,
-      this.username,
       this.password,
       this.name,
       this.surname,
@@ -41,7 +39,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
         id: json["id"],
-        username: json["login"],
         name: json["name"],
         surname: json["lastname"],
         image: json['avatar'],
@@ -51,7 +48,7 @@ class User {
         is_company: json['type'] == 'COMPANY',
       );
 
-  void uploadImage1(_image) async {
+  Future<String> uploadImage1(_image) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER1);
 
@@ -61,7 +58,6 @@ class User {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
     request.fields["id"] = this.id.toString();
-    request.fields["login"] = this.username;
     request.fields["password"] = this.password;
     request.fields["name"] = this.name;
     request.fields["lastname"] = this.surname;
@@ -85,17 +81,21 @@ class User {
     }
 
     // send request to upload image
-    await request.send().then((response) async {
+    request.send().then((response) {
       // listen for response
-      response.stream.transform(utf8.decoder).listen((value) {
+      return response.stream.transform(utf8.decoder).listen((value) {
         print(value);
         var response = json.decode(value);
-        Prefs.setString('username', username);
-        Prefs.setString('password', password);
-        Prefs.setString(Prefs.USERNAME, username);
-        Prefs.setString(Prefs.PASSWORD, password);
-        Prefs.setString(Prefs.TOKEN, response["token"]);
-        Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+        if(response['status'] == 200){
+          Prefs.setString(Prefs.PASSWORD, password);
+          Prefs.setString(Prefs.TOKEN, response["token"]);
+          Prefs.setInt(Prefs.USER_ID, response["id"]);
+          Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+          return "OK";
+        }
+        else{
+          return"ERROR";
+        }
       });
     }).catchError((e) {
       print(e);
@@ -172,7 +172,6 @@ class User {
   }
 
   static Map<String, dynamic> userRequestBodyToJson(User user) => {
-        'username': user.username,
         'password': user.password,
         'name': user.name,
         'surname': user.surname,
@@ -185,14 +184,14 @@ class User {
     return token != null;
   }
 
-  Future<void> _authenticate(String username, String password) async {
+  Future<void> _authenticate(String email, String password) async {
     final url = API_IP + API_LOGIN;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.post(
         url,
         headers: headers,
-        body: json.encode(loginRequestBodyToJson(username, password)),
+        body: json.encode(loginRequestBodyToJson(email, password)),
       );
       final responseData = json.decode(response.body);
       if (responseData['status'] == 999) {
@@ -200,11 +199,9 @@ class User {
       } else if (responseData['status'] == 888) {
         throw HttpException(responseData['status'].toString());
       } else if (responseData['token'] != null) {
-        this.username = username;
         this.password = password;
-        Prefs.setString('username', username);
         Prefs.setString('password', password);
-        Prefs.setString(Prefs.USERNAME, username);
+        Prefs.setString(Prefs.EMAIL, email);
         Prefs.setString(Prefs.PASSWORD, password);
         Prefs.setString(Prefs.TOKEN, responseData["token"]);
         Prefs.setString(Prefs.PROFILEIMAGE, responseData["avatar"]);
@@ -215,21 +212,21 @@ class User {
   }
 
   static Map<String, dynamic> loginRequestBodyToJson(
-          String username, String password) =>
+          String email, String password) =>
       {
-        'username': username,
+        'email': email,
         'password': password,
       };
 
-  Future<bool> checkUsername(String username) async {
-    final url = API_IP + 'api/userexist';
+  static Future<bool> checkUsername(String email) async {
+    final url = API_IP + API_CHECK_USER_EMAIL;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.post(
         url,
         headers: headers,
         body: json.encode({
-          'username': username,
+          'email': email,
         }),
       );
       return json.decode(response.body);
@@ -283,7 +280,7 @@ class User {
         url,
         headers: headers,
         body: json.encode({
-          "username": user.username,
+          "email": user.email,
           "old_password": user.password,
           "new_password": new_password,
         }),

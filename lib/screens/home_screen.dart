@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
+import 'package:ishapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,6 +20,7 @@ import 'package:ishapp/tabs/matches_tab.dart';
 import 'package:ishapp/tabs/profile_tab.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishapp/widgets/badge.dart';
 
 import 'notifications_screen.dart';
 
@@ -321,6 +323,14 @@ class _HomeScreenState extends State<HomeScreen> {
         duration: Duration(microseconds: 500), curve: Curves.ease);
   }
 
+  void _nextTab1(int tabIndex) {
+    // Update tab index
+    setState(() => is_profile=true);
+    // Update page index
+    _pageController.animateToPage(tabIndex,
+        duration: Duration(microseconds: 500), curve: Curves.ease);
+  }
+
   List<Widget> app_bar_titles = [];
 
   buildSome(BuildContext context) {
@@ -350,6 +360,22 @@ class _HomeScreenState extends State<HomeScreen> {
               openFilterDialog(context);
             },
           ),
+          GestureDetector(
+            child: CircleButton(
+                bgColor: Colors.transparent,
+                padding: 12,
+                icon: Icon(
+                  Boxicons.bx_user,
+                  color: Colors.white,
+                  size: 35,
+                ),),
+            onTap: () {
+              _nextTab1(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
@@ -368,6 +394,17 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('sms'.tr(),
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600)),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('school'.tr(),
               style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
@@ -429,6 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
           topRight: Radius.circular(25),
         ),
         child: BottomNavigationBar(
+          iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
             currentIndex: _tabCurrentIndex,
@@ -458,9 +496,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Colors.grey),
                   )),
               BottomNavigationBarItem(
-                  icon: Icon(
-                    Boxicons.bx_like,
-                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                  icon: Stack(
+                    children: [
+                      Icon(
+                        Boxicons.bx_like,
+                        color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
+                      Positioned(
+                        top: -0.5,
+                        right: 0.0,
+                        child: Badge(text: /*StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length.toString()*/"1"),
+                      ),
+                    ]
                   ),
                   title: Text(
                     "matches".tr(),
@@ -483,11 +529,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
               BottomNavigationBarItem(
                   icon: Icon(
-                    Boxicons.bx_user,
+                    Boxicons.bx_book,
                     color: _tabCurrentIndex == 3 ? kColorPrimary : null,
                   ),
                   title: Text(
-                    "profile".tr(),
+                    "school".tr(),
                     style: TextStyle(
                         color: _tabCurrentIndex == 3
                             ? kColorPrimary
@@ -502,7 +548,8 @@ class _HomeScreenState extends State<HomeScreen> {
           DiscoverTab(),
           MatchesTab(),
           ConversationsTab(),
-          ProfileTab()
+          SchoolTab(),
+          ProfileTab(),
         ],
       ), onWillPop: onWillPop),
     );

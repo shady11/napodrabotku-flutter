@@ -6,7 +6,7 @@ class Prefs {
   static const String WITH_REGISTRATION = 'with_registration';
   static const String TOKEN = 'token';
   static const String USER_ID = 'user_id';
-  static const String USERNAME = 'username';
+  static const String EMAIL = 'email';
   static const String PROFILEIMAGE = 'proflie_image';
   static const String PASSWORD = 'password';
 

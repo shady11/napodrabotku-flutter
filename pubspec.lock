@@ -107,14 +107,21 @@ packages:
     source: hosted
     version: "0.8.0"
   easy_localization:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: easy_localization
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.3"
+  email_validator:
+    dependency: "direct main"
+    description:
+      name: email_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   equatable:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: equatable
       url: "https://pub.dartlang.org"
@@ -154,14 +161,14 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
   flutter_boxicons:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_boxicons
       url: "https://pub.dartlang.org"
@@ -194,21 +201,21 @@ packages:
     source: hosted
     version: "1.0.11"
   flutter_redux:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_redux
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.4"
   flutter_redux_dev_tools:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_redux_dev_tools
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
   flutter_staggered_animations:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_staggered_animations
       url: "https://pub.dartlang.org"
@@ -227,7 +234,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_tindercard:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_tindercard
       url: "https://pub.dartlang.org"
@@ -287,6 +294,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  masked_text:
+    dependency: "direct main"
+    description:
+      name: masked_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6"
   matcher:
     dependency: transitive
     description:
@@ -309,7 +323,7 @@ packages:
     source: hosted
     version: "1.0.0+1"
   multiselect_formfield:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: multiselect_formfield
       url: "https://pub.dartlang.org"
@@ -428,35 +442,35 @@ packages:
     source: hosted
     version: "4.3.3"
   redux:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: redux
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
   redux_api_middleware:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: redux_api_middleware
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.9"
   redux_dev_tools:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: redux_dev_tools
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
   redux_thunk:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: redux_thunk
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"

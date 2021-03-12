@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: Container(
+      /*bottomSheet: Container(
         color: Colors.white,
         padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
         child: Row(
@@ -66,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
 //            ),
           ],
         ),
-      ),
+      ),*/
       appBar: AppBar(
         title: Text("sign_in_title".tr()),
       ),

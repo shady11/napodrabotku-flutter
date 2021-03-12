@@ -32,9 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
             : AppTheme.LightTheme));
     if(Prefs.getString('language') == null)
       Navigator.of(context).pushReplacementNamed(Routes.chooseLanguage);
-    else if(Prefs.getString(Prefs.TOKEN) != null) {
-      Navigator.of(context).pushReplacementNamed(Routes.home);
-    }
+//    else if(Prefs.getString(Prefs.TOKEN) != null) {
+//      Navigator.of(context).pushReplacementNamed(Routes.home);
+//    }
     else {
       Navigator.of(context).pushReplacementNamed(Routes.start);
     }

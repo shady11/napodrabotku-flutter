@@ -85,7 +85,7 @@ class ProfileTab extends StatelessWidget {
                       SizedBox(height: 15),
                       Center(
                         child: Text(
-                          Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.USERNAME): 'guest_user'.tr(),
+                          Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.EMAIL): 'guest_user'.tr(),
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -222,7 +222,7 @@ class ProfileTab extends StatelessWidget {
                     Prefs.getString(Prefs.TOKEN) != null ? ListTile(
                       title: Text("logout".tr(), style: TextStyle(fontSize: 18),),
                       onTap: () async {
-                        Prefs.setString(Prefs.USERNAME, null);
+                        Prefs.setString(Prefs.EMAIL, null);
                         Prefs.setString(Prefs.PROFILEIMAGE, null);
                         Prefs.setString(Prefs.PASSWORD, null);
                         Prefs.setString(Prefs.TOKEN, null);
@@ -279,7 +279,7 @@ class ProfileTab extends StatelessWidget {
                 SizedBox(height: 15),
                 Center(
                   child: Text(
-                    Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.USERNAME): 'guest_user'.tr(),
+                    Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.EMAIL): 'guest_user'.tr(),
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -416,7 +416,7 @@ class ProfileTab extends StatelessWidget {
               Prefs.getString(Prefs.TOKEN) != null ? ListTile(
                 title: Text("logout".tr(), style: TextStyle(fontSize: 18),),
                 onTap: () async {
-                  Prefs.setString(Prefs.USERNAME, null);
+                  Prefs.setString(Prefs.EMAIL, null);
                   Prefs.setString(Prefs.PROFILEIMAGE, null);
                   Prefs.setString(Prefs.PASSWORD, null);
                   Prefs.setString(Prefs.TOKEN, null);

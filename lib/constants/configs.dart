@@ -4,6 +4,7 @@ String API_IP = "http://192.168.0.103:8000/api/";
 //String SERVER_IP = "http://138.68.82.38:8001";
 String SERVER_IP = "http://192.168.0.103:8000";
 String API_GET_USER = "user";
+String API_CHECK_USER_EMAIL = "users/email_check";
 String API_GET_USER_CV = "user_cv";
 String API_GET_PROFILE_IMAGE = "auth/avatar/";
 String API_GET_COMPANY_AVATAR = "company/avatar/";
