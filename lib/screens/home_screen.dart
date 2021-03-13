@@ -315,15 +315,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var discoverPage = DiscoverTab();
 
   // Tab navigation
-  void _nextTab(int tabIndex) {
+  void _nextTab(int tabIndex, {is_profile=false}) {
     // Update tab index
     setState(() => _tabCurrentIndex = tabIndex);
+    setState(() => is_profile=true);
     // Update page index
+//    if(!is_profile)
     _pageController.animateToPage(tabIndex,
         duration: Duration(microseconds: 500), curve: Curves.ease);
   }
 
-  void _nextTab1(int tabIndex) {
+  void _nextTab12(int tabIndex) {
     // Update tab index
     setState(() => is_profile=true);
     // Update page index
@@ -362,15 +364,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             child: CircleButton(
-                bgColor: Colors.transparent,
-                padding: 12,
-                icon: Icon(
-                  Boxicons.bx_user,
-                  color: Colors.white,
-                  size: 35,
-                ),),
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: Colors.white,
+                size: 35,
+              ),),
             onTap: () {
-              _nextTab1(4);
+              _nextTab(4);
               setState(() {
                 is_profile = true;
               });
@@ -379,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('matches'.tr(),
@@ -387,10 +389,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w600)),
+          GestureDetector(
+            child: CircleButton(
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: Colors.white,
+                size: 35,
+              ),),
+            onTap: () {
+              _nextTab(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('sms'.tr(),
@@ -398,6 +416,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 22,
                   color: Colors.black,
                   fontWeight: FontWeight.w600)),
+          GestureDetector(
+            child: CircleButton(
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: kColorPrimary,
+                size: 35,
+              ),),
+            onTap: () {
+              _nextTab(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
@@ -469,7 +503,8 @@ class _HomeScreenState extends State<HomeScreen> {
           iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
-            currentIndex: _tabCurrentIndex,
+            selectedItemColor: Colors.grey,
+            currentIndex: _tabCurrentIndex==4?0:_tabCurrentIndex,
             onTap: (index) {
               _nextTab(index);
               if (index == 3 || index == 2) {
@@ -496,17 +531,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Colors.grey),
                   )),
               BottomNavigationBarItem(
-                  icon: Stack(
-                    children: [
-                      Icon(
-                        Boxicons.bx_like,
-                        color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
-                      Positioned(
-                        top: -0.5,
-                        right: 0.0,
-                        child: Badge(text: /*StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length.toString()*/"1"),
-                      ),
-                    ]
+                  icon: Container(
+                    width: 50,
+                    height: 30,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: -1.0,
+                          left: 0.0,
+                          child: Icon(
+                            Boxicons.bx_like,
+                            color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
+                        ),
+                        Positioned(
+                          top: 0.0,
+                          right: 0.0,
+                          child: Badge(text: /*StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length.toString()*/"1"),
+                        ),
+                      ]
+                    ),
                   ),
                   title: Text(
                     "matches".tr(),

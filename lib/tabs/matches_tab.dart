@@ -33,7 +33,7 @@ class MatchesTab extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
-              child: Text("you_cant_see_matches_please_sign_in", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 25),),
+              child: Text("you_cant_see_matches_please_sign_in".tr(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 25),),
             ),
 
             CustomButton(text: "sign_in".tr(),

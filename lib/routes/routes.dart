@@ -9,4 +9,7 @@ class Routes {
   static const String change_language = '/change_language';
   static const String user_details = '/user_details';
   static const String user_edit = '/user_edit';
+  static const String validate_code = '/validate_code';
+  static const String forgot_password = '/forgot_password';
+  static const String new_password = '/new_password';
 }

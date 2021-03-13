@@ -173,7 +173,7 @@ class Vacancy {
     }
   }
 
-  static void saveVacancyUser({
+  static Future<String> saveVacancyUser({
     int vacancy_id,
     String type,
   }) async {
@@ -185,9 +185,11 @@ class Vacancy {
       };
       final response = await http.post(url,
           headers: headers,
-          body: json.encode({'vacancy_id': vacancy_id, 'type': type}));
+          body: json.encode({'user_id': Prefs.getInt(Prefs.USER_ID),'vacancy_id': vacancy_id, 'type': type}));
       print(response.body);
+      return "OK";
     } catch (error) {
+      return "ERROR";
       throw error;
     }
   }
