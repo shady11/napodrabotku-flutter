@@ -40,11 +40,30 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Text('ok'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
               },
             )
           ],
         ),
       ),
+    );
+  }
+
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -197,6 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       textColor: Colors.white,
                       onPressed: () {
                          if (_formKey.currentState.validate()) {
+                           _openLoadingDialog(context);
                            /// Remove previous screens
                            User user = new User();
                            user.login(_username_controller.text, _password_controller.text).then((value) {

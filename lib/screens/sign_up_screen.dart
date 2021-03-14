@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
@@ -52,7 +53,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isUserExists=false;
 
   void _showDataPicker(context) {
+    var date = DateTime.now();
     DatePicker.showDatePicker(context,
+        maxTime: new DateTime(date.year-13, date.month, date.day),
         locale: Prefs.getString(Prefs.LANGUAGE)=='ky'? LocaleType.ky:LocaleType.ru,
         theme: DatePickerTheme(
           headerColor: kColorPrimary,
@@ -89,6 +92,55 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),)
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('from_gallery'.tr()),
+                      onTap: () {
+                        _onImageButtonPressed(ImageSource.gallery, context: context);
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('camera'.tr()),
+                    onTap: () {
+                      _onImageButtonPressed(ImageSource.camera, context: context);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
     {
       try {
@@ -118,23 +170,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else {
       _retrieveDataError = response.exception.code;
     }
-  }
-  void _openLoadingDialog(BuildContext context) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: AlertDialog(
-            content: Container(
-              height: 50,
-              width: 50,
-                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),)
-            ),
-          ),
-        );
-      },
-    );
   }
 
 
@@ -171,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 backgroundImage: Image.file(File(_imageFile.path), fit: BoxFit.cover,).image,
                 ),
               onTap: () {
-                _onImageButtonPressed(ImageSource.camera, context: context);
+                _showPicker(context);
               },
             ),
             SizedBox(height: 10),

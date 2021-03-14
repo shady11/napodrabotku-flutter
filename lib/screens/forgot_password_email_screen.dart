@@ -18,6 +18,46 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isValid =false;
 
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: Center(
+                  child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+                )
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void _showDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('continue'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +122,14 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                   textColor: Colors.white,
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
+                      _openLoadingDialog(context);
                       User.sendMailOnForgotPassword(_email_controller.text).then((value) {
                         Prefs.setString(Prefs.EMAIL, _email_controller.text);
                         if(value =="OK"){
                           Navigator.pushNamed(context, Routes.validate_code);
+                        }
+                        else{
+                          _showDialog(context, "some_error_occurred_please_try_again".tr());
                         }
                       });
                     }

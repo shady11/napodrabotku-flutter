@@ -17,6 +17,46 @@ class _ValidateCodeScreenState extends State<ValidateCodeScreen> {
   final _code_controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: Center(
+                  child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+                )
+            ),
+          ),
+        );
+      },
+    );
+  }
+  void _showDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('continue'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,9 +117,13 @@ class _ValidateCodeScreenState extends State<ValidateCodeScreen> {
                 textColor: Colors.white,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    _openLoadingDialog(context);
                     User.validateUserCode(code: _code_controller.text, email: Prefs.getString(Prefs.EMAIL)).then((value) {
                       if(value =="OK"){
                         Navigator.pushNamed(context, Routes.new_password);
+                      }
+                      else{
+                        _showDialog(context, "some_error_occurred_please_try_again".tr());
                       }
                     });
                   }

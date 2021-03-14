@@ -467,9 +467,18 @@ class _HomeScreenState extends State<HomeScreen> {
     buildSome(context);
     getLists();
   }
+  void handleInitialBuild(VacanciesScreenProps1 props) {
+    props.getLikedNumOfVacancies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, VacanciesScreenProps1>(
+    converter: (store) => mapStateToProps(store),
+    onInitialBuild: (props) => this.handleInitialBuild(props),
+    builder: (context, props) {
+    int data = props.response;
+
     return Scaffold(
       backgroundColor: is_profile ? Colors.white : kColorPrimary,
       appBar: AppBar(
@@ -500,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen> {
           topRight: Radius.circular(25),
         ),
         child: BottomNavigationBar(
-          iconSize: 25,
+            iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
             selectedItemColor: Colors.grey,
@@ -535,20 +544,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 50,
                     height: 30,
                     child: Stack(
-                      children: [
-                        Positioned(
-                          top: -1.0,
-                          left: 0.0,
-                          child: Icon(
-                            Boxicons.bx_like,
-                            color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
-                        ),
-                        Positioned(
-                          top: 0.0,
-                          right: 0.0,
-                          child: Badge(text: /*StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length.toString()*/"1"),
-                        ),
-                      ]
+                        children: [
+                          Positioned(
+                            top: -1.0,
+                            left: 0.0,
+                            child: Icon(
+                              Boxicons.bx_like,
+                              color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
+                          ),
+                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==0 ?Container():Positioned(
+                            top: 0.0,
+                            right: 0.0,
+                            child: Badge(text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()),
+                          ),
+                        ]
                     ),
                   ),
                   title: Text(
@@ -596,5 +605,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ), onWillPop: onWillPop),
     );
+
+    });
   }
+}
+class VacanciesScreenProps1 {
+  final Function getLikedNumOfVacancies;
+  final int response;
+
+  VacanciesScreenProps1({
+    this.getLikedNumOfVacancies,
+    this.response,
+  });
+}
+
+VacanciesScreenProps1 mapStateToProps(Store<AppState> store) {
+  return VacanciesScreenProps1(
+    response: store.state.vacancy.number_of_likeds,
+    getLikedNumOfVacancies: () => store.dispatch(getNumberOfLikedVacancies()),
+  );
 }

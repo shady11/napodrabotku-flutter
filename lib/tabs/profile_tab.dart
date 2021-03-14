@@ -33,6 +33,7 @@ class ProfileTab extends StatelessWidget {
     else{
       props.getUser();
       props.getUserCv();
+      props.getSubmittedNumber();
     }
   }
  
@@ -99,18 +100,7 @@ class ProfileTab extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 5),
-
-                              /// Location
-                              Row(
-                                children: [
-                                  SvgIcon("assets/icons/location_point_icon.svg",
-                                      color: Colors.white),
-                                  SizedBox(width: 5),
-                                  Text("Бишкек ул. Чехова 28",
-                                      style: TextStyle(color: Colors.white))
-                                ],
-                              )
+                              SizedBox(height: 15),
                             ],
                           ),
                         ],
@@ -165,7 +155,7 @@ class ProfileTab extends StatelessWidget {
                         ),
                       ),
                       title: Text("matches".tr(), style: _textStyle),
-                      trailing: Text('22', style: TextStyle(color: Colors.grey[400]),),
+                      trailing: Text(StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString(), style: TextStyle(color: Colors.grey[400]),),
                       onTap: () {
                         /// Go to profile likes screen ()
                         Navigator.push(context, MaterialPageRoute(
@@ -173,9 +163,17 @@ class ProfileTab extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Boxicons.bx_file, size: 25, color: kColorPrimary,),
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        child: Icon(Boxicons.bx_file, size: 25, color: kColorPrimary,),
+                        decoration: BoxDecoration(
+                            color: Color(0xffF2F2F5),
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
                       title: Text("visit".tr(), style: _textStyle),
-                      trailing: Text('15', style: TextStyle(color: Colors.grey[400]),),
+                      trailing: Text(StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds !=null ?StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds.toString():'0', style: TextStyle(color: Colors.grey[400]),),
                       onTap: () {
                         /// Go to profile visits screen
                         Navigator.push(context, MaterialPageRoute(
@@ -443,22 +441,28 @@ class ProfileTab extends StatelessWidget {
 class ProfileScreenProps {
   final Function getUser;
   final Function getUserCv;
+  final Function getSubmittedNumber;
   final UserDetailState user;
   final UserCvState user_cv;
+  final int submitted_number;
 
   ProfileScreenProps({
     this.getUser,
     this.user,
     this.getUserCv,
     this.user_cv,
+    this.getSubmittedNumber,
+    this.submitted_number,
   });
 }
 
 ProfileScreenProps mapStateToProps(Store<AppState> store) {
   return ProfileScreenProps(
     user: store.state.vacancy.user.user,
+    submitted_number:store.state.vacancy.number_of_submiteds,
     getUser: () => store.dispatch(getUser()),
     user_cv: store.state.vacancy.user.user_cv,
     getUserCv: () => store.dispatch(getUserCv()),
+    getSubmittedNumber: () => store.dispatch(getNumberOfSubmittedVacancies())
   );
 }

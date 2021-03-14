@@ -291,8 +291,10 @@ class User {
         }),
       );
       var body = json.decode(response.body);
+      if(body == 'user code does not exist')
+        return "ERROR";
       Prefs.setString(Prefs.EMAIL, email);
-      Prefs.setInt(Prefs.USER_ID, body["id"]);
+      Prefs.setString(Prefs.USER_ID, body["id"].toString());
       Prefs.setString(Prefs.PROFILEIMAGE, body["avatar"]);
 
       return "OK";
@@ -317,6 +319,24 @@ class User {
       Prefs.setString(Prefs.TOKEN, body['token']);
 
       return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<String> getCompanyLogo({int vacancy_id}) async {
+    final url = API_IP + API_GET_COMPANY_AVATAR;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'vacancy_id': vacancy_id,
+        }),
+      );
+
+      return response.body;
     } catch (error) {
       throw error;
     }
