@@ -7,10 +7,13 @@ class CustomButton extends StatelessWidget {
   final Function onPressed;
   final double elevation;
   final int borderRadius;
+  final MainAxisAlignment mainAxisAlignment;
   final EdgeInsets padding;
   final double textSize;
-  final Color color;
+  final TextAlign textAlign;
+  final FontWeight fontWeight;
   final Color textColor;
+  final Color color;
   final width;
   final height;
 
@@ -20,10 +23,13 @@ class CustomButton extends StatelessWidget {
     @required this.onPressed,
     this.elevation,
     this.borderRadius,
+    this.mainAxisAlignment,
     this.padding,
     this.textSize,
-    this.color,
+    this.textAlign,
+    this.fontWeight,
     this.textColor,
+    this.color,
     this.width,
     this.height,
   }) : super(key: key);
@@ -43,16 +49,16 @@ class CustomButton extends StatelessWidget {
           padding: padding ??
               const EdgeInsets.only(top: 9, bottom: 10, left: 16, right: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment != null ? mainAxisAlignment : MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 text,
                 style: Theme.of(context).textTheme.button.copyWith(
                     color: textColor ?? Colors.white,
-                    fontSize:
-                        textSize ?? Theme.of(context).textTheme.button.fontSize,
+                    fontSize: textSize ?? Theme.of(context).textTheme.button.fontSize,
+                    fontWeight: fontWeight ?? fontWeight,
                     fontFamily: 'GTEestiProDisplay'),
-                textAlign: TextAlign.center,
+                textAlign: textAlign ?? textAlign,
               ),
             ],
           ),

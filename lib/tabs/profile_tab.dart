@@ -65,23 +65,24 @@ class ProfileTab extends StatelessWidget {
                 /// Basic profile info
                 Container(
                   padding: const EdgeInsets.all(10.0),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// Profile image
-                      Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
-                          child: CircleAvatar(
-                            backgroundColor: kColorPrimary,
-                            radius: 60,
-                            backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
-                                SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Container(
+                      //     padding: const EdgeInsets.all(3.0),
+                      //     decoration: BoxDecoration(
+                      //         color: Colors.white, shape: BoxShape.circle),
+                      //     child: CircleAvatar(
+                      //       backgroundColor: kColorPrimary,
+                      //       radius: 60,
+                      //       backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                      //           SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(height: 15),
                       Center(
                         child: Text(
@@ -150,7 +151,6 @@ class ProfileTab extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
                 /// Profile Statistics Card
                 Prefs.getString(Prefs.TOKEN) != null ? Column(
                   children: [
@@ -173,7 +173,15 @@ class ProfileTab extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Boxicons.bx_file, size: 25, color: kColorPrimary,),
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        child: Icon(Boxicons.bx_file, size: 25, color: kColorPrimary,),
+                        decoration: BoxDecoration(
+                            color: Color(0xffF2F2F5),
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
                       title: Text("visit".tr(), style: _textStyle),
                       trailing: Text('15', style: TextStyle(color: Colors.grey[400]),),
                       onTap: () {

@@ -526,6 +526,85 @@ class UserExperience {
     'organization_name': organization_name.toString(),
     'description': description.toString(),
   };
+
+  void save(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_SAVE);
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["user_id"] = "11";
+    request.fields["user_cv_id"] = id.toString();
+    request.fields["job_title"] = this.job_title.toString();
+    request.fields["start_date"] = formatter.format(start_date).toString();
+    request.fields["end_date"] = formatter.format(end_date).toString();
+    request.fields["organization_name"] = this.organization_name.toString();
+    request.fields["description"] = this.description.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void update(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_UPDATE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["id"] = id.toString();
+    request.fields["job_title"] = this.job_title.toString();
+    request.fields["start_date"] = formatter.format(start_date).toString();
+    request.fields["end_date"] = formatter.format(end_date).toString();
+    request.fields["organization_name"] = this.organization_name.toString();
+    request.fields["description"] = this.description.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void delete(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_DELETE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 }
 
 class UserEducation {
@@ -552,6 +631,85 @@ class UserEducation {
     'speciality': speciality,
     'end_year': end_year,
   };
+
+  void save(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_SAVE);
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["user_id"] = "11";
+    request.fields["user_cv_id"] = id.toString();
+    request.fields["title"] = this.title.toString();
+    request.fields["faculty"] = this.faculty.toString();
+    request.fields["speciality"] = this.speciality.toString();
+    request.fields["type"] = this.type.toString();
+    request.fields["end_year"] = this.end_year.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void update(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_UPDATE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["id"] = id.toString();
+    request.fields["title"] = this.title.toString();
+    request.fields["faculty"] = this.faculty.toString();
+    request.fields["speciality"] = this.speciality.toString();
+    request.fields["type"] = this.type.toString();
+    request.fields["end_year"] = this.end_year.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void delete(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_DELETE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 }
 
 class UserCourse {
@@ -575,4 +733,81 @@ class UserCourse {
     'duration': duration,
     'end_year': end_year,
   };
+
+  void save(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_COURSE_SAVE);
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["user_id"] = "11";
+    request.fields["user_cv_id"] = id.toString();
+    request.fields["name"] = this.name.toString();
+    request.fields["organization_name"] = this.organization_name.toString();
+    request.fields["duration"] = this.duration.toString();
+    request.fields["end_year"] = this.end_year.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void update(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_COURSE_UPDATE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+    request.fields["id"] = id.toString();
+    request.fields["name"] = this.name.toString();
+    request.fields["organization_name"] = this.organization_name.toString();
+    request.fields["duration"] = this.duration.toString();
+    request.fields["end_year"] = this.end_year.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  void delete(id) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_CV_COURSE_DELETE + id.toString());
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+    request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+        var response = json.decode(value);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 }

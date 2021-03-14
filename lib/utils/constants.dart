@@ -15,6 +15,7 @@ const kInputTextStyle = TextStyle(
 const kColorPrimary = Color(0xffE02C52);
 const kColorPrimaryDark = Color(0xffE02C52);
 const kColorSecondary = Color(0xff7B7F9E);
+const kColorDark = Color(0xff1B1D28);
 
 const kTextStyleButton = TextStyle(
   color: kColorPrimary,

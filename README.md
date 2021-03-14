@@ -1,4 +1,4 @@
-# ishapp
+# ishtapp
 
 Flutter app for jumush
 

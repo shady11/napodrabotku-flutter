@@ -1,74 +1,325 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/utils/constants.dart';
+import 'package:ishapp/components/custom_button.dart';
+import 'package:ishapp/widgets/cicle_button.dart';
 
-class UserCourseInfo extends StatelessWidget {
+class UserCourseInfo extends StatefulWidget {
   List<UserCourse> user_courses;
+  UserCv userCv;
 
-  UserCourseInfo({this.user_courses});
+  UserCourseInfo({Key key, this.user_courses, this.userCv}):super(key: key);
+
+  @override
+  _UserCourseInfoState createState() => _UserCourseInfoState();
+}
+
+class _UserCourseInfoState extends State<UserCourseInfo> {
+
+  final name_controller = TextEditingController();
+  final course_organization_name_controller = TextEditingController();
+  final duration_controller = TextEditingController();
+  final course_end_year_controller = TextEditingController();
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-  Widget buildList(){
-    for(var i in user_courses){
-      return Container(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("name".tr(),softWrap: true,
-                    style: TextStyle(fontSize: 20, color: Colors.grey)),
-                Text(i.name,softWrap: true,
-                    style: TextStyle(fontSize: 22,)),
-              ],
-            ),
-            Divider(),
+  openCourseDialog(context, UserCourse userCourse) {
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("organization_name".tr(),softWrap: true,
-                    style: TextStyle(fontSize: 20, color: Colors.grey)),
-                Text(i.organization_name,softWrap: true,
-                    style: TextStyle(fontSize: 22,)),
-              ],
+    name_controller.text = userCourse.name.toString();
+    course_organization_name_controller.text = userCourse.organization_name.toString();
+    duration_controller.text = userCourse.duration.toString();
+    course_end_year_controller.text = userCourse.end_year.toString();
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('user_course_info'.tr().toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: kColorDarkBlue)
+                        ),
+                      ),
+                    ),
+
+                    /// Form
+                    Form(
+                      child: Column(
+                        children: <Widget>[
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text("course_name".tr(), softWrap: true,
+                                      style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: name_controller,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                  ),
+                                  validator: (name) {
+                                    // Basic validation
+                                    if (name.isEmpty) {
+                                      return "please_fill_this_field".tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text("organization_name".tr(), softWrap: true,
+                                      style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: course_organization_name_controller,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                  ),
+                                  validator: (name) {
+                                    // Basic validation
+                                    if (name.isEmpty) {
+                                      return "please_fill_this_field".tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text("duration".tr(), softWrap: true,
+                                      style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: duration_controller,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                  ),
+                                  validator: (name) {
+                                    // Basic validation
+                                    if (name.isEmpty) {
+                                      return "please_fill_this_field".tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(bottom: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Text("end_year".tr(), softWrap: true,
+                                      style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: course_end_year_controller,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                  ),
+                                  validator: (name) {
+                                    // Basic validation
+                                    if (name.isEmpty) {
+                                      return "please_fill_this_field".tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          /// Sign In button
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  width:
+                                  MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.grey[200],
+                                  textColor: kColorPrimary,
+                                  onPressed: () {
+                                    userCourse.delete(userCourse.id);
+                                  },
+                                  text: 'delete'.tr(),
+                                ),
+                                CustomButton(
+                                  width:
+                                  MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+
+                                    userCourse.name = name_controller.text;
+                                    userCourse.organization_name = course_organization_name_controller.text;
+                                    userCourse.duration = duration_controller.text;
+                                    userCourse.end_year = course_end_year_controller.text;
+
+                                    userCourse.update(userCourse.id);
+
+                                  },
+                                  text: 'save'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("duration".tr(),softWrap: true,
-                    style: TextStyle(fontSize: 20, color: Colors.grey)),
-                Text(i.duration,softWrap: true,
-                    style: TextStyle(fontSize: 22,)),
-              ],
-            ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("end_year".tr(),softWrap: true,
-                    style: TextStyle(fontSize: 20, color: Colors.grey)),
-                Text(i.end_year.toString(),softWrap: true,
-                    style: TextStyle(fontSize: 22,)),
-              ],
-            ),
-            Divider(),
-          ],
-        ),
-      );
-    }
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> list = new List<Widget>();
+    for(var i in widget.user_courses){
+      list.add(
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 15),
+                              width: 64,
+                              height: 64,
+                              child: Icon(Boxicons.bx_window_alt, size: 32, color: kColorPrimary,),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffF2F2F5),
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                            ),
+                            Container(
+                              child: Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(i.name, softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
+                                    Text(i.organization_name+', '+i.duration, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.end_year, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: GestureDetector(
+                          child: CircleButton(
+                            bgColor: Colors.transparent,
+                            padding: 0,
+                            icon: Icon(
+                              Boxicons.bx_edit,
+                              color: kColorDarkBlue,
+                              size: 24,
+                            ),
+                          ),
+                          onTap: () {
+                            openCourseDialog(context, i);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+      );
+    }
     return Container(
-//        height: MediaQuery.of(context).size.height*0.4,
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width*0.02),
         child: Column(
-          children: [buildList()],
+          children: list,
         )
     );
   }
