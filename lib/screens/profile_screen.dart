@@ -19,6 +19,7 @@ import 'package:ishapp/widgets/user_education_info.dart';
 import 'package:ishapp/widgets/user_experience_info.dart';
 import 'package:ishapp/widgets/cicle_button.dart';
 
+
 import 'package:ishapp/components/custom_button.dart';
 
 import 'package:redux/redux.dart';
@@ -33,22 +34,27 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  final job_title_controller = TextEditingController();
-  final start_date_controller = TextEditingController();
-  final end_date_controller = TextEditingController();
-  final organization_name_controller = TextEditingController();
-  final description_controller = TextEditingController();
+  void handleInitialBuild(ProfileScreenProps props) {
+    props.getUserCv();
+    props.getUser();
+  }
 
-  final title_controller = TextEditingController();
-  final faculty_controller = TextEditingController();
-  final speciality_controller = TextEditingController();
-  final type_controller = TextEditingController();
-  final end_year_controller = TextEditingController();
+  TextEditingController job_title_controller = TextEditingController();
+  TextEditingController start_date_controller = TextEditingController();
+  TextEditingController end_date_controller = TextEditingController();
+  TextEditingController organization_name_controller = TextEditingController();
+  TextEditingController description_controller = TextEditingController();
 
-  final name_controller = TextEditingController();
-  final course_organization_name_controller = TextEditingController();
-  final duration_controller = TextEditingController();
-  final course_end_year_controller = TextEditingController();
+  TextEditingController title_controller = TextEditingController();
+  TextEditingController faculty_controller = TextEditingController();
+  TextEditingController speciality_controller = TextEditingController();
+  TextEditingController type_controller = TextEditingController();
+  TextEditingController end_year_controller = TextEditingController();
+
+  TextEditingController name_controller = TextEditingController();
+  TextEditingController course_organization_name_controller = TextEditingController();
+  TextEditingController duration_controller = TextEditingController();
+  TextEditingController course_end_year_controller = TextEditingController();
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
@@ -291,7 +297,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     this.userEducation.type = type_controller.text;
                                     this.userEducation.end_year = end_year_controller.text;
 
-                                    this.userEducation.save(userCv.id);
+                                    this.userEducation.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                      title_controller = TextEditingController();
+                                      faculty_controller = TextEditingController();
+                                      speciality_controller = TextEditingController();
+                                      type_controller = TextEditingController();
+                                      end_year_controller = TextEditingController();
+                                    });
 
                                   },
                                   text: 'save'.tr(),
@@ -530,7 +545,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     this.userExperience.organization_name = organization_name_controller.text;
                                     this.userExperience.description = description_controller.text;
 
-                                    this.userExperience.save(userCv.id);
+                                    this.userExperience.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                      job_title_controller = TextEditingController();
+                                      start_date_controller = TextEditingController();
+                                      end_date_controller = TextEditingController();
+                                      organization_name_controller = TextEditingController();
+                                      description_controller = TextEditingController();
+                                    });
 
                                   },
                                   text: 'save'.tr(),
@@ -748,7 +772,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     this.userCourse.duration = duration_controller.text;
                                     this.userCourse.end_year = course_end_year_controller.text;
 
-                                    this.userCourse.save(userCv.id);
+                                    this.userCourse.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+
+                                      name_controller = TextEditingController();
+                                      course_organization_name_controller = TextEditingController();
+                                      duration_controller = TextEditingController();
+                                      course_end_year_controller = TextEditingController();
+                                    });
 
                                   },
                                   text: 'save'.tr(),
@@ -770,173 +803,195 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     User user = StoreProvider.of<AppState>(context).state.user.user.data;
-    UserCv user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
-    userCv = user_cv;
+//    UserCv user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
+//    userCv = user_cv;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("profile".tr()),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    color: Colors.white, shape: BoxShape.circle),
-                child: CircleAvatar(
-                  backgroundColor: kColorPrimary,
-                  radius: 60,
-                  backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
-                      SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
-                ),
-              ),
+    return StoreConnector<AppState, ProfileScreenProps>(
+        converter: (store) => mapStateToProps(store),
+        onInitialBuild: (props) => this.handleInitialBuild(props),
+        builder: (context, props) {
+        User data = props.userResponse.data;
+        UserCv data_cv = props.userCvResponse.data;
+        bool cv_loading =props.userCvResponse.loading;
+        bool user_loading =props.userResponse.loading;
+
+        Widget body;
+        if(user_loading){
+          body = Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+          );
+        }
+        else{
+          body = Scaffold(
+            appBar: AppBar(
+              title: Text("profile".tr()),
             ),
-            /// Profile details
-            Padding(
-              padding: const EdgeInsets.all(20),
+            body: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  /// Profile bio
                   Center(
-                    child: Text('cv'.tr(),
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: kColorDark)),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: CircleAvatar(
+                        backgroundColor: kColorPrimary,
+                        radius: 60,
+                        backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                            SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
+                      ),
+                    ),
                   ),
-
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                    child: Text('basic_info'.tr().toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: kColorDarkBlue)),
-                  ),
-                  BasicUserCvInfo(user_cv: user_cv, user: user),
-
-                  user_cv != null ?
-                    Column(
+                  /// Profile details
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('user_education_info'.tr().toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: kColorDarkBlue)
-                              ),
-                              CustomButton(
-                                height: 40.0,
-                                width: 100.0,
-                                padding: EdgeInsets.all(5),
-                                color: kColorPrimary,
-                                textColor: Colors.white,
-                                textSize: 14,
-                                onPressed: () {
-                                  openEducationDialog(context);
-                                },
-                                text: 'Добавить'.tr(),
-                              ),
-                            ],
-                          ),
+
+                        /// Profile bio
+                        Center(
+                          child: Text('cv'.tr(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: kColorDark)),
                         ),
-                        (user_cv.user_educations.length>0)?UserEducationInfo(user_educations: user_cv.user_educations, userCv: user_cv):Container(
-                          child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                        ),
+
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('user_experience_info'.tr().toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: kColorDarkBlue)
-                              ),
-                              GestureDetector(
-                                child: CircleButton(
-                                  bgColor: Colors.transparent,
-                                  padding: 0,
-                                  icon: Icon(
-                                    Boxicons.bx_plus,
-                                    color: kColorPrimary,
-                                    size: 24,
+                          child: Text('basic_info'.tr().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: kColorDarkBlue)),
+                        ),
+                        BasicUserCvInfo(user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
+
+                        cv_loading  ? Center(
+                          child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+                        ):StoreProvider.of<AppState>(context).state.user.user_cv.data != null ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('user_education_info'.tr().toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: kColorDarkBlue)
                                   ),
-                                ),
-                                onTap: () {
-                                  openExperienceDialog(context);
-                                },
-                              ),
-                            ],
-                          ),
-                          // child: Text('user_experience_info'.tr().toUpperCase(),
-                          //     style: TextStyle(
-                          //         fontSize: 14,
-                          //         fontWeight: FontWeight.w700,
-                          //         color: kColorDarkBlue)),
-                        ),
-                        user_cv.user_experiences.length>0?UserExperienceInfo(user_experiences: user_cv.user_experiences, userCv: user_cv):Container(
-                          child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                        ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('user_course_info'.tr().toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: kColorDarkBlue)
-                              ),
-                              GestureDetector(
-                                child: CircleButton(
-                                  bgColor: Colors.transparent,
-                                  padding: 0,
-                                  icon: Icon(
-                                    Boxicons.bx_plus_circle,
+                                  CustomButton(
+                                    height: 40.0,
+                                    width: 100.0,
+                                    padding: EdgeInsets.all(5),
                                     color: kColorPrimary,
-                                    size: 24,
+                                    textColor: Colors.white,
+                                    textSize: 14,
+                                    onPressed: () {
+                                      openEducationDialog(context);
+                                    },
+                                    text: 'Добавить'.tr(),
                                   ),
-                                ),
-                                onTap: () {
-                                  openCourseDialog(context);
-                                },
+                                ],
                               ),
-                            ],
-                          ),
-                          // child: Text('user_course_info'.tr().toUpperCase(),
-                          //     style: TextStyle(
-                          //         fontSize: 14,
-                          //         fontWeight: FontWeight.w700,
-                          //         color: kColorDarkBlue)),
-                        ),
-                        user_cv.user_courses.length>0?UserCourseInfo(user_courses: user_cv.user_courses, userCv: user_cv,):Container(
+                            ),
+                            (StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations.length>0)?UserEducationInfo(user_educations: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
+                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('user_experience_info'.tr().toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: kColorDarkBlue)
+                                  ),
+                                  GestureDetector(
+                                    child: CircleButton(
+                                      bgColor: Colors.transparent,
+                                      padding: 0,
+                                      icon: Icon(
+                                        Boxicons.bx_plus,
+                                        color: kColorPrimary,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      openExperienceDialog(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // child: Text('user_experience_info'.tr().toUpperCase(),
+                              //     style: TextStyle(
+                              //         fontSize: 14,
+                              //         fontWeight: FontWeight.w700,
+                              //         color: kColorDarkBlue)),
+                            ),
+                            StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences.length>0?UserExperienceInfo(user_experiences: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
+                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('user_course_info'.tr().toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: kColorDarkBlue)
+                                  ),
+                                  GestureDetector(
+                                    child: CircleButton(
+                                      bgColor: Colors.transparent,
+                                      padding: 0,
+                                      icon: Icon(
+                                        Boxicons.bx_plus_circle,
+                                        color: kColorPrimary,
+                                        size: 24,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      openCourseDialog(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // child: Text('user_course_info'.tr().toUpperCase(),
+                              //     style: TextStyle(
+                              //         fontSize: 14,
+                              //         fontWeight: FontWeight.w700,
+                              //         color: kColorDarkBlue)),
+                            ),
+                            StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.length>0?UserCourseInfo(user_courses: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data,):Container(
+                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                            ),
+                          ],
+                        ) : Center(
                           child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
                         ),
                       ],
-                    ) : Center(
-                          child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                        )
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        }
+
+        return body;
+        });
   }
 
   void _showDataPicker(int type, context) {
@@ -987,3 +1042,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+class ProfileScreenProps {
+  final Function getUserCv;
+  final Function getUser;
+  final UserDetailState userResponse;
+  final UserCvState userCvResponse;
+
+  ProfileScreenProps(
+      {this.getUserCv, this.getUser, this.userResponse, this.userCvResponse});
+}
+
+ProfileScreenProps mapStateToProps(Store<AppState> store) {
+  return ProfileScreenProps(
+    getUserCv:()=> store.dispatch(getUserCv()),
+    getUser:()=> store.dispatch(getUser()),
+    userResponse: store.state.user.user,
+    userCvResponse: store.state.user.user_cv,
+  );
+}

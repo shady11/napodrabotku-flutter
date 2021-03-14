@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ishapp/datas/RSAA.dart';
+import 'package:ishapp/datas/app_state.dart';
 
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/utils/constants.dart';
@@ -213,7 +216,10 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
                                   onPressed: () {
-                                    userCourse.delete(userCourse.id);
+                                    userCourse.delete(userCourse.id).then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                    });
                                   },
                                   text: 'delete'.tr(),
                                 ),
@@ -230,7 +236,10 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                     userCourse.duration = duration_controller.text;
                                     userCourse.end_year = course_end_year_controller.text;
 
-                                    userCourse.update(userCourse.id);
+                                    userCourse.update(userCourse.id).then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                    });
 
                                   },
                                   text: 'save'.tr(),

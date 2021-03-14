@@ -111,5 +111,17 @@
   "employer": "Жумуш берүүчү",
   "employee": "Жумушчу",
   "vacancy_view": "Көрүү",
-  "you_cant_see_matches_please_sign_in": "Тандаган вакансияларыңызды көрүү үчүн авторизациядан өтүшүңүз керек."
+  "you_cant_see_matches_please_sign_in": "Тандаган вакансияларыңызды көрүү үчүн авторизациядан өтүшүңүз керек.",
+  "some_error_occurred_please_try_again": "Мектеп",
+  "school": "Мектеп",
+  "like": "Танда",
+  "password_forgot_email": "Мектеп",
+  "password_email_info_text": "Мектеп",
+  "validate_code": "Мектеп",
+  "validate_code_info_text": "Мектеп",
+  "code_must_be_6_digit": "6 сандан турушу керек!",
+  "new_password_title": "Мектеп",
+  "new_password_info_text": "Мектеп",
+  "new_password": "Жаңы сыр сөз",
+  "new_password_confirm": "Жаңы сыр сөздү тастыктаңыз"
 }

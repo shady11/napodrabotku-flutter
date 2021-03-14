@@ -64,7 +64,7 @@ class MatchesTab extends StatelessWidget {
             body = Column(
               children: [
                 Expanded(
-                  child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length >0?UsersGrid(
+                  child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data!=null?UsersGrid(
                       children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
                         return GestureDetector(
                           child: ProfileCard(vacancy: vacancy),

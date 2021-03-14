@@ -12,4 +12,5 @@ class Routes {
   static const String validate_code = '/validate_code';
   static const String forgot_password = '/forgot_password';
   static const String new_password = '/new_password';
+  static const String profile = '/profile';
 }

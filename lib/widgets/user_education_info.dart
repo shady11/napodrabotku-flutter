@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ishapp/datas/RSAA.dart';
+import 'package:ishapp/datas/app_state.dart';
 
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/widgets/cicle_button.dart';
@@ -249,7 +253,10 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
                                   onPressed: () {
-                                    userEducation.delete(userEducation.id);
+                                    userEducation.delete(userEducation.id).then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                    });
                                   },
                                   text: 'delete'.tr(),
                                 ),
@@ -267,7 +274,10 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     userEducation.type = type_controller.text;
                                     userEducation.end_year = end_year_controller.text;
 
-                                    userEducation.update(userEducation.id);
+                                    userEducation.update(userEducation.id).then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                      Navigator.of(context).pop();
+                                    });
 
                                   },
                                   text: 'save'.tr(),
@@ -290,7 +300,7 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
   Widget build(BuildContext context) {
 
     List<Widget> list = new List<Widget>();
-    for(var i in widget.user_educations){
+    for(var i in StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations){
       list.add(
           Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 10),

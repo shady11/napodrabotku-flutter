@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:async/async.dart';
+import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -8,6 +9,11 @@ import 'package:intl/intl.dart';
 import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ishapp/datas/app_state.dart';
+
+import 'RSAA.dart';
 
 class User {
   int id;
@@ -634,7 +640,7 @@ class UserExperience {
     'description': description.toString(),
   };
 
-  void save(id) async {
+  Future<void> save(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_SAVE);
 
@@ -664,7 +670,7 @@ class UserExperience {
     });
   }
 
-  void update(id) async {
+  Future<void> update(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_UPDATE + id.toString());
 
@@ -693,7 +699,7 @@ class UserExperience {
     });
   }
 
-  void delete(id) async {
+  Future<void> delete(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EXPERIENCE_DELETE + id.toString());
 
@@ -739,7 +745,7 @@ class UserEducation {
     'end_year': end_year,
   };
 
-  void save(id) async {
+  Future<String> save(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_SAVE);
 
@@ -758,18 +764,20 @@ class UserEducation {
     request.fields["end_year"] = this.end_year.toString();
 
     // send request to upload image
-    await request.send().then((response) async {
+    return await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        var response = json.decode(value);
+        if(value=="OK")
+          return value;
       });
     }).catchError((e) {
+      return "ERROR";
       print(e);
     });
   }
 
-  void update(id) async {
+  Future<void> update(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_UPDATE + id.toString());
 
@@ -798,7 +806,7 @@ class UserEducation {
     });
   }
 
-  void delete(id) async {
+  Future<String> delete(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_EDUCATION_DELETE + id.toString());
 
@@ -807,11 +815,11 @@ class UserEducation {
     request.headers['Authorization'] = Prefs.getString(Prefs.TOKEN);
 
     // send request to upload image
-    await request.send().then((response) async {
+    return await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        var response = json.decode(value);
+        return value;
       });
     }).catchError((e) {
       print(e);
@@ -841,7 +849,7 @@ class UserCourse {
     'end_year': end_year,
   };
 
-  void save(id) async {
+  Future<void> save(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_COURSE_SAVE);
 
@@ -870,7 +878,7 @@ class UserCourse {
     });
   }
 
-  void update(id) async {
+  Future<void> update(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_COURSE_UPDATE + id.toString());
 
@@ -898,7 +906,7 @@ class UserCourse {
     });
   }
 
-  void delete(id) async {
+  Future<void> delete(id) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_COURSE_DELETE + id.toString());
 

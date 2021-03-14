@@ -73,7 +73,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
             child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
           );
         } else {
-          body = Stack(
+          body = StoreProvider.of<AppState>(context).state.vacancy.list.data!=null?Stack(
               alignment: Alignment.topCenter,
               fit: StackFit.expand,
               children: [
@@ -133,7 +133,9 @@ class _DiscoverTabState extends State<DiscoverTab> {
                       ),
                   ]),
                 ),
-              ]);
+              ]):Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),)
+          );
         }
 
         return Stack(children: [

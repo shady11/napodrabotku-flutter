@@ -111,5 +111,17 @@
   "employer": "Работадатель",
   "employee": "Работник",
   "vacancy_view": "Посмотреть",
-  "you_cant_see_matches_please_sign_in": "Для просмотра выбранных вакансий вам нужно авторизоваться"
+  "you_cant_see_matches_please_sign_in": "Для просмотра выбранных вакансий вам нужно авторизоваться",
+  "some_error_occurred_please_try_again": "Мектеп",
+  "school": "Школа",
+  "like": "В ибранное",
+  "password_forgot_email": "Мектеп",
+  "password_email_info_text": "Мектеп",
+  "validate_code": "Мектеп",
+  "validate_code_info_text": "Мектеп",
+  "code_must_be_6_digit": "код должен состоять из 6 цифр!",
+  "new_password_title": "Мектеп",
+  "new_password_info_text": "Мектеп",
+  "new_password": "Новый пароль",
+  "new_password_confirm": "Подтверждение нового пароля"
 }
