@@ -1,11 +1,16 @@
 import 'dart:io';
-
+import 'dart:convert';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/routes/routes.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/show_scaffold_msg.dart';
@@ -15,6 +20,7 @@ import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:masked_text/masked_text.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:ishapp/constants/configs.dart';
 
 import 'home_screen.dart';
 
@@ -32,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _name_controller = TextEditingController();
   final _surnname_controller = TextEditingController();
   final _email_controller = TextEditingController();
-  final _phone_number_controller = TextEditingController();
+  final _phone_number_controller = TextEditingController(text: '+(996)');
   final _password_controller = TextEditingController();
   final _password_confirm_controller = TextEditingController();
   final _birth_date_controller = TextEditingController();
@@ -46,8 +52,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isValid=false;
   bool isUserExists=false;
 
-  void _showDataPicker() {
+  void _showDataPicker(context) {
+    var date = DateTime.now();
     DatePicker.showDatePicker(context,
+        maxTime: new DateTime(date.year-13, date.month, date.day),
         locale: Prefs.getString(Prefs.LANGUAGE)=='ky'? LocaleType.ky:LocaleType.ru,
         theme: DatePickerTheme(
           headerColor: kColorPrimary,
@@ -74,11 +82,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Text('continue'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
+                Navigator.pushReplacementNamed(
+                    context, Routes.home);
               },
             )
           ],
         ),
       ),
+    );
+  }
+
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),)
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('from_gallery'.tr()),
+                      onTap: () {
+                        _onImageButtonPressed(ImageSource.gallery, context: context);
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('camera'.tr()),
+                    onTap: () {
+                      _onImageButtonPressed(ImageSource.camera, context: context);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 
@@ -115,6 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
   is_company company = is_company.User;
+  bool is_sending=false;
 @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 backgroundImage: Image.file(File(_imageFile.path), fit: BoxFit.cover,).image,
                 ),
               onTap: () {
-                _onImageButtonPressed(ImageSource.camera, context: context);
+                _showPicker(context);
               },
             ),
             SizedBox(height: 10),
@@ -226,14 +286,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fillColor: Colors.grey[200],
                     ),
                     onChanged: (value){
-                      User.checkUsername(value).then((value) {
-                        setState(() {
-                          isUserExists=value;
-                        });
-                      });
-                      setState(() {
-                        isValid = EmailValidator.validate(value);
-                      });
+                      isValid = EmailValidator.validate(_email_controller.text);
                     },
                     validator: (name) {
                       if (name.isEmpty) {
@@ -397,6 +450,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     maxLength: 18,
                     keyboardType: TextInputType.number,
                     inputDecoration: InputDecoration(
+                      hintText: '+(996)',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none
@@ -417,7 +471,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.grey[200],
                       textColor: kColorPrimary,
                       text: _birth_date_controller.text,
-                      onPressed: (){_showDataPicker();}),
+                      onPressed: (){_showDataPicker(context);}),
                   SizedBox(height: 20),
 
                   /// Sign Up button
@@ -428,60 +482,92 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
+                        User.checkUsername(_email_controller.text).then((
+                            value) {
+                          setState(() {
+                            isUserExists = value;
+                          });
+                        });
+                        _openLoadingDialog(context);
+
                         /// Validate form
-                         if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState.validate()) {
 //                           Navigator.of(context)
 //                               .popUntil((route) => route.isFirst);
-                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                          final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-                           User user = new User();
-                           user.password = _password_controller.text;
-                           user.email = _email_controller.text;
-                           user.phone_number = _phone_number_controller.text;
-                           user.birth_date = formatter.parse(_birth_date_controller.text);
-                           user.name = _name_controller.text;
-                           user.surname = _surnname_controller.text;
-                           user.is_company = company == is_company.Company;
+                          User user = new User();
+                          user.password = _password_controller.text;
+                          user.email = _email_controller.text;
+                          user.phone_number = _phone_number_controller.text;
+                          user.birth_date =
+                              formatter.parse(_birth_date_controller.text);
+                          user.name = _name_controller.text;
+                          user.surname = _surnname_controller.text;
+                          user.is_company = company == is_company.Company;
 
-                           if(_imageFile != null) {
-                             var response = await user.uploadImage1(File(_imageFile.path)).then((value) {
-                                   while(value.runtimeType == String)
-                                     {
-                                     }
-                                   if (value == "OK") {
-                                     _showDialog(context, 'successfull_sign_up'.tr());
-                                     Navigator.pushReplacementNamed(
-                                         context, Routes.home);
-                                   }
-                                   else {
-                                     _showDialog(context,
-                                         'some_errors_occured_plese_try_again'.tr());
-                                   }
-                             });
-                           }
-                           else{
-                             var response = await user.uploadImage1(null).then((value) {
-                               if(value == "OK"){
-                                 _showDialog(context, 'successfull_sign_up'.tr());
-                                 Navigator.pushReplacementNamed(context, Routes.home);
-                               }
-                               else{
-                                 _showDialog(context, 'some_errors_occured_plese_try_again'.tr());
-                               }
-                             });
-                           }
+                          var uri = Uri.parse(API_IP + API_REGISTER1);
 
+                          // create multipart request
+                          var request = new http.MultipartRequest("POST", uri);
+
+                          // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
+                          request.fields["id"] = user.id.toString();
+                          request.fields["password"] = user.password;
+                          request.fields["name"] = user.name;
+                          request.fields["lastname"] = user.surname;
+                          request.fields["email"] = user.email;
+                          request.fields["birth_date"] =
+                              formatter.format(user.birth_date);
+                          request.fields["active"] = '1';
+                          request.fields["phone_number"] = user.phone_number;
+                          request.fields["type"] =
+                          user.is_company ? 'COMPANY' : 'USER';
+
+                          // open a byteStream
+                          if (_imageFile != null) {
+                            var _image = File(_imageFile.path);
+                            var stream =
+                            new http.ByteStream(DelegatingStream.typed(_image
+                                .openRead()));
+                            // get file length
+                            var length = await _image.length();
+                            // multipart that takes file.. here this "image_file" is a key of the API request
+                            var multipartFile = new http.MultipartFile(
+                                'avatar', stream, length,
+                                filename: basename(_image.path));
+                            // add file to multipart
+                            request.files.add(multipartFile);
+                          }
+                          request.send().then((response) {
+                            print(response);
+                            response.stream.transform(utf8.decoder).listen((
+                                value) {
+                              print(value);
+                              var response = json.decode(value);
+                              if (response['status'] == 200) {
+                                Prefs.setString(Prefs.PASSWORD, user.password);
+                                Prefs.setString(Prefs.TOKEN, response["token"]);
+                                Prefs.setString(Prefs.EMAIL, response["email"]);
+                                Prefs.setInt(Prefs.USER_ID, response["id"]);
+                                Prefs.setString(
+                                    Prefs.PROFILEIMAGE, response["avatar"]);
+                                _showDialog(
+                                    context, 'successfull_sign_up'.tr());
+                              }
+                              else {
+                                _showDialog(context,
+                                    'some_errors_occured_plese_try_again'.tr());
+                              }
+                            });
+                          }).catchError((e) {
+                            print(e);
+                          });
                          }
                          else{
                            return;
                          }
-//                        Navigator.of(context)
-//                            .popUntil((route) => route.isFirst);
-//                        Navigator.of(context)
-//                            .pushNamed(Routes.home);
-
-                        /// Remove previous screens
-                      },
+                        },
                       text: 'create'.tr(),
                     ),
                   ),

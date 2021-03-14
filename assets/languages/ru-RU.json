@@ -110,5 +110,6 @@
   "click_once_to_exit": "Нажмите ещё раз чтобы выйти!",
   "employer": "Работадатель",
   "employee": "Работник",
-  "vacancy_view": "Посмотреть"
+  "vacancy_view": "Посмотреть",
+  "you_cant_see_matches_please_sign_in": "Для просмотра выбранных вакансий вам нужно авторизоваться"
 }

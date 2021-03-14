@@ -33,7 +33,7 @@ class MatchesTab extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
-              child: Text("you_cant_see_matches_please_sign_in", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 25),),
+              child: Text("you_cant_see_matches_please_sign_in".tr(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 25),),
             ),
 
             CustomButton(text: "sign_in".tr(),
@@ -64,8 +64,8 @@ class MatchesTab extends StatelessWidget {
             body = Column(
               children: [
                 Expanded(
-                  child: UsersGrid(
-                      children: data.map((vacancy) {
+                  child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length >0?UsersGrid(
+                      children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
                         return GestureDetector(
                           child: ProfileCard(vacancy: vacancy),
                           onTap: () {
@@ -73,7 +73,9 @@ class MatchesTab extends StatelessWidget {
 //                    builder: (context) => ProfileScreen(user: user)));
                           },
                         );
-                      }).toList()),
+                      }).toList()):Center(
+                    child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+                  ),
                 ),
 
               ],

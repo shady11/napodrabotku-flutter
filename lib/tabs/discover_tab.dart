@@ -29,6 +29,9 @@ class _DiscoverTabState extends State<DiscoverTab> {
   int offset = 5;
 
   void removeCards({String type, int vacancy_id, props, context}) {
+    if(type =="LIKED"){
+      props.addOneToMatches();
+    }
     Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
     setState(() {
 //      StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.add(new Vacancy());
@@ -209,18 +212,21 @@ class _DiscoverTabState extends State<DiscoverTab> {
 class VacanciesScreenProps {
   final Function getVacancies;
   final Function deleteItem;
+  final Function addOneToMatches;
   final ListVacancysState listResponse;
 
   VacanciesScreenProps({
     this.getVacancies,
     this.listResponse,
-    this.deleteItem
+    this.deleteItem,
+    this.addOneToMatches
   });
 }
 
 VacanciesScreenProps mapStateToProps(Store<AppState> store) {
   return VacanciesScreenProps(
     listResponse: store.state.vacancy.list,
+    addOneToMatches: ()=>store.dispatch(getNumberOfLikedVacancies()),
     getVacancies: () => store.dispatch(getVacancies()),
     deleteItem: () => store.dispatch(deleteItem1()),
   );

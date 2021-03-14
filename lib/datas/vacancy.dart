@@ -8,6 +8,7 @@ import 'package:ishapp/datas/user.dart';
 class Vacancy {
   int id;
   String company_name;
+  String company_logo;
   String name;
   String title;
   String description;
@@ -22,6 +23,7 @@ class Vacancy {
   Vacancy(
       {this.id,
       this.company_name,
+      this.company_logo,
       this.name,
       this.title,
       this.description,
@@ -54,6 +56,7 @@ class Vacancy {
         salary: json['salary'],
         company: json['company'],
         company_name: json['company_name'],
+        company_logo: json['company_logo'],
         busyness: json['busyness'],
         schedule: json['schedule'],
         job_type: json['job_type'],
@@ -173,7 +176,7 @@ class Vacancy {
     }
   }
 
-  static void saveVacancyUser({
+  static Future<String> saveVacancyUser({
     int vacancy_id,
     String type,
   }) async {
@@ -185,9 +188,11 @@ class Vacancy {
       };
       final response = await http.post(url,
           headers: headers,
-          body: json.encode({'vacancy_id': vacancy_id, 'type': type}));
+          body: json.encode({'user_id': Prefs.getInt(Prefs.USER_ID),'vacancy_id': vacancy_id, 'type': type}));
       print(response.body);
+      return "OK";
     } catch (error) {
+      return "ERROR";
       throw error;
     }
   }
@@ -203,6 +208,8 @@ class JobType {
 class VacancyState {
   List job_type_ids;
   String type;
+  int number_of_likeds;
+  int number_of_submiteds;
   List region_ids;
   List schedule_ids;
   List busyness_ids;
@@ -222,6 +229,8 @@ class VacancyState {
         busyness_ids: [],
         vacancy_type_ids: [],
         type: 'all',
+        number_of_likeds: 0,
+        number_of_submiteds: 0,
         user: UserState.initial()
       );
 
@@ -236,7 +245,9 @@ class VacancyState {
         this.liked_list,
         this.type,
         this.submitted_list,
-        this.user
+        this.user,
+        this.number_of_submiteds,
+        this.number_of_likeds
       });
 }
 

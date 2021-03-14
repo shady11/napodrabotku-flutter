@@ -126,6 +126,49 @@ ThunkAction<AppState> getSubmittedVacancies() => (Store<AppState> store) => stor
 
 ThunkAction <AppState> deleteItem1() => (Store<AppState> store) => store.state.vacancy.list.data.removeLast();
 
+const GET_LIKED_VACANCY_NUMBER_REQUEST = 'GET_LIKED_VACANCY_NUMBER_REQUEST';
+const GET_LIKED_VACANCY_NUMBER_SUCCESS = 'GET_LIKED_VACANCY_NUMBER_SUCCESS';
+const GET_LIKED_VACANCY_NUMBER_FAILURE = 'GET_LIKED_VACANCY_NUMBER_FAILURE';
+RSAA getNumOfLikedVacancyRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_VACANCY_NUMBER_LIKED,
+      types: [
+        GET_LIKED_VACANCY_NUMBER_REQUEST,
+        GET_LIKED_VACANCY_NUMBER_SUCCESS,
+        GET_LIKED_VACANCY_NUMBER_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getNumberOfLikedVacancies() => (Store<AppState> store) => store.dispatch(getNumOfLikedVacancyRequest());
+
+const GET_SUBMITTED_VACANCY_NUMBER_REQUEST = 'GET_SUBMITTED_VACANCY_NUMBER_REQUEST';
+const GET_SUBMITTED_VACANCY_NUMBER_SUCCESS = 'GET_SUBMITTED_VACANCY_NUMBER_SUCCESS';
+const GET_SUBMITTED_VACANCY_NUMBER_FAILURE = 'GET_SUBMITTED_VACANCY_NUMBER_FAILURE';
+RSAA getNumOfSubmittedVacancyRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_VACANCY_NUMBER_SUBMITTED,
+      types: [
+        GET_SUBMITTED_VACANCY_NUMBER_REQUEST,
+        GET_SUBMITTED_VACANCY_NUMBER_SUCCESS,
+        GET_SUBMITTED_VACANCY_NUMBER_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getNumberOfSubmittedVacancies() => (Store<AppState> store) => store.dispatch(getNumOfSubmittedVacancyRequest());
 
 const GET_USER_REQUEST = 'GET_USER_REQUEST';
 const GET_USER_SUCCESS = 'GET_USER_SUCCESS';

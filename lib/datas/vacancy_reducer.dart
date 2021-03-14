@@ -66,23 +66,29 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       newState.submitted_list.data = null;
       return newState;
 
-//    case GET_USER_REQUEST:
-//      newState.user.user.error = null;
-//      newState.user.user.loading = true;
-//      newState.user.user.data = null;
-//      return newState;
-//
-//    case GET_USER_SUCCESS:
-//      newState.user.user.error = null;
-//      newState.user.user.loading = false;
-//      newState.user.user.data = userFromJSONStr(action.payload);
-//      return newState;
-//
-//    case GET_USER_FAILURE:
-//      newState.user.user.error = action.payload;
-//      newState.user.user.loading = false;
-//      newState.user.user.data = null;
-//      return newState;
+    case GET_LIKED_VACANCY_NUMBER_REQUEST:
+      newState.number_of_likeds = 0;
+      return newState;
+
+    case GET_LIKED_VACANCY_NUMBER_SUCCESS:
+      newState.number_of_likeds = int.parse(action.payload);
+      return newState;
+
+    case GET_LIKED_VACANCY_NUMBER_FAILURE:
+      newState.number_of_likeds = 0;
+      return newState;
+
+    case GET_SUBMITTED_VACANCY_NUMBER_REQUEST:
+      newState.number_of_submiteds = 0;
+      return newState;
+
+    case GET_SUBMITTED_VACANCY_NUMBER_SUCCESS:
+      newState.number_of_submiteds = int.parse(action.payload);
+      return newState;
+
+    case GET_SUBMITTED_VACANCY_NUMBER_FAILURE:
+      newState.number_of_submiteds = 0;
+      return newState;
 
     case DELETE_ITEM:
       newState.list.error = null;

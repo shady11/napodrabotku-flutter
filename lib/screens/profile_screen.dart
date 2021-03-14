@@ -781,17 +781,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             Center(
-              // child: Container(
-              //   padding: const EdgeInsets.all(20),
-              //   decoration: BoxDecoration(
-              //       color: Colors.white, shape: BoxShape.circle),
-              //   child: CircleAvatar(
-              //     backgroundColor: kColorPrimary,
-              //     radius: 60,
-              //     backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
-              //         SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
-              //   ),
-              // ),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.white, shape: BoxShape.circle),
+                child: CircleAvatar(
+                  backgroundColor: kColorPrimary,
+                  radius: 60,
+                  backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                      SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
+                ),
+              ),
             ),
             /// Profile details
             Padding(

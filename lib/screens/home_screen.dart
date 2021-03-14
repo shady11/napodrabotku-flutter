@@ -315,15 +315,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var discoverPage = DiscoverTab();
 
   // Tab navigation
-  void _nextTab(int tabIndex) {
+  void _nextTab(int tabIndex, {is_profile=false}) {
     // Update tab index
     setState(() => _tabCurrentIndex = tabIndex);
+    setState(() => is_profile=true);
     // Update page index
+//    if(!is_profile)
     _pageController.animateToPage(tabIndex,
         duration: Duration(microseconds: 500), curve: Curves.ease);
   }
 
-  void _nextTab1(int tabIndex) {
+  void _nextTab12(int tabIndex) {
     // Update tab index
     setState(() => is_profile=true);
     // Update page index
@@ -362,15 +364,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             child: CircleButton(
-                bgColor: Colors.transparent,
-                padding: 12,
-                icon: Icon(
-                  Boxicons.bx_user,
-                  color: Colors.white,
-                  size: 35,
-                ),),
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: Colors.white,
+                size: 35,
+              ),),
             onTap: () {
-              _nextTab1(4);
+              _nextTab(4);
               setState(() {
                 is_profile = true;
               });
@@ -379,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('matches'.tr(),
@@ -387,10 +389,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w600)),
+          GestureDetector(
+            child: CircleButton(
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: Colors.white,
+                size: 35,
+              ),),
+            onTap: () {
+              _nextTab(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('sms'.tr(),
@@ -398,6 +416,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 22,
                   color: Colors.black,
                   fontWeight: FontWeight.w600)),
+          GestureDetector(
+            child: CircleButton(
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: kColorPrimary,
+                size: 35,
+              ),),
+            onTap: () {
+              _nextTab(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
@@ -433,9 +467,18 @@ class _HomeScreenState extends State<HomeScreen> {
     buildSome(context);
     getLists();
   }
+  void handleInitialBuild(VacanciesScreenProps1 props) {
+    props.getLikedNumOfVacancies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, VacanciesScreenProps1>(
+    converter: (store) => mapStateToProps(store),
+    onInitialBuild: (props) => this.handleInitialBuild(props),
+    builder: (context, props) {
+    int data = props.response;
+
     return Scaffold(
       backgroundColor: is_profile ? Colors.white : kColorPrimary,
       appBar: AppBar(
@@ -466,10 +509,11 @@ class _HomeScreenState extends State<HomeScreen> {
           topRight: Radius.circular(25),
         ),
         child: BottomNavigationBar(
-          iconSize: 25,
+            iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
-            currentIndex: _tabCurrentIndex,
+            selectedItemColor: Colors.grey,
+            currentIndex: _tabCurrentIndex==4?0:_tabCurrentIndex,
             onTap: (index) {
               _nextTab(index);
               if (index == 3 || index == 2) {
@@ -496,17 +540,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Colors.grey),
                   )),
               BottomNavigationBarItem(
-                  icon: Stack(
-                    children: [
-                      Icon(
-                        Boxicons.bx_like,
-                        color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
-                      Positioned(
-                        top: -0.5,
-                        right: 0.0,
-                        child: Badge(text: /*StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length.toString()*/"1"),
-                      ),
-                    ]
+                  icon: Container(
+                    width: 50,
+                    height: 30,
+                    child: Stack(
+                        children: [
+                          Positioned(
+                            top: -1.0,
+                            left: 0.0,
+                            child: Icon(
+                              Boxicons.bx_like,
+                              color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
+                          ),
+                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==0 ?Container():Positioned(
+                            top: 0.0,
+                            right: 0.0,
+                            child: Badge(text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()),
+                          ),
+                        ]
+                    ),
                   ),
                   title: Text(
                     "matches".tr(),
@@ -553,5 +605,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ), onWillPop: onWillPop),
     );
+
+    });
   }
+}
+class VacanciesScreenProps1 {
+  final Function getLikedNumOfVacancies;
+  final int response;
+
+  VacanciesScreenProps1({
+    this.getLikedNumOfVacancies,
+    this.response,
+  });
+}
+
+VacanciesScreenProps1 mapStateToProps(Store<AppState> store) {
+  return VacanciesScreenProps1(
+    response: store.state.vacancy.number_of_likeds,
+    getLikedNumOfVacancies: () => store.dispatch(getNumberOfLikedVacancies()),
+  );
 }

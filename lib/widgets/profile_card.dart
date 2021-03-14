@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/widgets/show_like_or_dislike.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:ishapp/datas/app_state.dart';
 import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/routes/routes.dart';
@@ -26,23 +30,41 @@ class ProfileCard extends StatelessWidget {
 
   ProfileCard({this.page, this.position, @required this.vacancy, this.index});
 
+  void _showDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: index == 0 ?  MediaQuery.of(context).size.width * 1: (index == 1 ?  MediaQuery.of(context).size.width * 0.95:(index == 2 ?  MediaQuery.of(context).size.width * 0.9:(index == 3 ?  MediaQuery.of(context).size.width * 0.85:(index == 4 ?  MediaQuery.of(context).size.width * 0.8:MediaQuery.of(context).size.width * 0.75)))),
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.62,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Stack(
           children: [
-            /// User Card
-
             Card(
               clipBehavior: Clip.antiAlias,
               elevation: 4.0,
               color: Colors.white,
               margin: EdgeInsets.all(0),
-              shape: defaultCardBorder(),
+                            shape: defaultCardBorder(),
               child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(20.0),
@@ -54,16 +76,15 @@ class ProfileCard extends StatelessWidget {
                       /// User fullname
                       Row(
                         children: [
-//                          Align(
-//                            alignment: Alignment.topLeft,
-//                            child: ClipRRect(
-//                                borderRadius: BorderRadius.circular(20),
-//                                child: Image.network(API_IP+ API_GET_COMPANY_AVATAR + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
-//                                  height: 60,)
-//                            ),
-//                          ),
-                        Container(),
-//                          SizedBox(width: 20),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: vacancy.company_logo!=null? Image.network(SERVER_IP+ vacancy.company_logo,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
+                                  height: 60,):Image.asset('assets/images/camera.png', fit: BoxFit.cover,width: 80, height: 60,),
+                            ),
+                          ),
+                          SizedBox(width: 20),
                           Expanded(
                             child: RichText(
                               text: TextSpan(text: vacancy.company_name.toString() + '\n',
@@ -90,7 +111,7 @@ class ProfileCard extends StatelessWidget {
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
-                            child: Text(/*vacancy.salary!=null ?vacancy.salary:*/'4565 - 4546', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
+                            child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
                           ),
                         ],
                       ): Container(),
@@ -124,36 +145,12 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
-                      page =='discover' ?Center(
-                        child: CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          padding: EdgeInsets.all(5),
-                          color: Colors.grey[200],
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return Scaffold(
-                                    backgroundColor: kColorPrimary,
-                                    appBar: AppBar(
-                                      title: Text("vacancy_view".tr()),
-                                    ),
-                                    body: VacancyView(
-                                      page:"view",
-                                      vacancy: vacancy,
-                                    ),
-                                  );
-                                }));
-                          },
-                          text: 'view'.tr(),
-                        ),
-                      ):Container(),
                       index==null||index <=2 ?SizedBox(
                         width: double.maxFinite,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            page =='discover' ?Container() :CustomButton(
+                            page =='submit' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: Colors.grey[200],
@@ -163,16 +160,49 @@ class ProfileCard extends StatelessWidget {
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
-                            page =='discover' ?Container() :CustomButton(
+                            page =='submit' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),
                               color: kColorPrimary,
                               textColor: Colors.white,
                               onPressed: () {
-
-//                                Navigator.of(context).pop();
+                                void _openLoadingDialog(BuildContext context) {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child: AlertDialog(
+                                          content: Container(
+                                              height: 50,
+                                              width: 50,
+                                              child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                                User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                  if(value){
+                                    Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
+                                      if(value=="OK"){
+                                        _showDialog(context, "successfully_submitted".tr());
+                                        StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
+                                        StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                        StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                      }
+                                      else{
+                                        _showDialog(context, "some_errors_occured_try_again".tr());
+                                      }
+                                    });
+                                  }
+                                  else{
+                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                  }
+                                });
                               },
-                              text: 'submit'.tr(),
+                              text: page =='discover' ? 'like'.tr() : 'submit'.tr(),
                             ),
                           ],
                         ),

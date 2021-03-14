@@ -11,6 +11,9 @@ import 'package:ishapp/screens/sign_up_screen.dart';
 import 'package:ishapp/screens/start_screen.dart';
 import 'package:ishapp/screens/splash_screen.dart';
 import 'package:ishapp/screens/choose_language.dart';
+import 'package:ishapp/screens/validate_code_screen.dart';
+import 'package:ishapp/screens/forgot_password_email_screen.dart';
+import 'package:ishapp/screens/new_password_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -44,6 +47,14 @@ class RouteGenerator {
       case Routes.user_edit:
         return CupertinoPageRoute(builder: (_) => EditProfileScreen());
 
+      case Routes.validate_code:
+        return CupertinoPageRoute(builder: (_) => ValidateCodeScreen());
+
+      case Routes.forgot_password:
+        return CupertinoPageRoute(builder: (_) => ForgotPasswordEmailScreen());
+
+      case Routes.new_password:
+        return CupertinoPageRoute(builder: (_) => NewPasswordScreen());
 
       case Routes.error:
         return _errorRoute();

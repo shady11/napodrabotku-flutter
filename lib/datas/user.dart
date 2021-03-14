@@ -48,7 +48,7 @@ class User {
         is_company: json['type'] == 'COMPANY',
       );
 
-  Future<String> uploadImage1(_image) async {
+  String uploadImage1(_image){
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER1);
 
@@ -72,7 +72,7 @@ class User {
       var stream =
           new http.ByteStream(DelegatingStream.typed(_image.openRead()));
       // get file length
-      var length = await _image.length();
+      var length = _image.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
       var multipartFile = new http.MultipartFile('avatar', stream, length,
           filename: basename(_image.path));
@@ -81,9 +81,11 @@ class User {
     }
 
     // send request to upload image
+    var mm;
     request.send().then((response) {
       // listen for response
-      return response.stream.transform(utf8.decoder).listen((value) {
+      print(response);
+      response.stream.transform(utf8.decoder).listen((value) {
         print(value);
         var response = json.decode(value);
         if(response['status'] == 200){
@@ -91,15 +93,18 @@ class User {
           Prefs.setString(Prefs.TOKEN, response["token"]);
           Prefs.setInt(Prefs.USER_ID, response["id"]);
           Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-          return "OK";
+          mm="OK";
+//          return "OK";
         }
         else{
-          return"ERROR";
+          mm="ERROR";
+//          return "ERROR";
         }
       });
     }).catchError((e) {
       print(e);
     });
+    return mm;
   }
   void uploadImage2(_image) async {
     // string to uri
@@ -184,7 +189,7 @@ class User {
     return token != null;
   }
 
-  Future<void> _authenticate(String email, String password) async {
+  Future<String> _authenticate(String email, String password) async {
     final url = API_IP + API_LOGIN;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
@@ -195,6 +200,7 @@ class User {
       );
       final responseData = json.decode(response.body);
       if (responseData['status'] == 999) {
+        return "ERROR";
         throw HttpException(responseData['status'].toString());
       } else if (responseData['status'] == 888) {
         throw HttpException(responseData['status'].toString());
@@ -203,8 +209,10 @@ class User {
         Prefs.setString('password', password);
         Prefs.setString(Prefs.EMAIL, email);
         Prefs.setString(Prefs.PASSWORD, password);
+        Prefs.setInt(Prefs.USER_ID, responseData["id"]);
         Prefs.setString(Prefs.TOKEN, responseData["token"]);
         Prefs.setString(Prefs.PROFILEIMAGE, responseData["avatar"]);
+        return "OK";
       }
     } catch (error) {
       throw error;
@@ -235,7 +243,106 @@ class User {
     }
   }
 
-  Future<void> login(String email, String password) async {
+  static Future<bool> checkUserCv(int user_id) async {
+    final url = API_IP + API_CHECK_USER_CV;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'user_id': user_id.toString(),
+        }),
+      );
+      return json.decode(response.body);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<String> sendMailOnForgotPassword(String email) async {
+    final url = API_IP + API_FORGOT_PASSWORD;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'email': email,
+          'language': Prefs.getString(Prefs.LANGUAGE),
+        }),
+      );
+      return response.body;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<String> validateUserCode({String email, String code}) async {
+    final url = API_IP + API_VALIDATE_CODE;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'email': email,
+          'code': code,
+        }),
+      );
+      var body = json.decode(response.body);
+      if(body == 'user code does not exist')
+        return "ERROR";
+      Prefs.setString(Prefs.EMAIL, email);
+      Prefs.setString(Prefs.USER_ID, body["id"].toString());
+      Prefs.setString(Prefs.PROFILEIMAGE, body["avatar"]);
+
+      return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<String> resetPassword({String email, String new_password}) async {
+    final url = API_IP + API_RESET_PASSWORD;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'email': email,
+          'new_password': new_password,
+        }),
+      );
+      var body = json.decode(response.body);
+      Prefs.setString(Prefs.TOKEN, body['token']);
+
+      return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<String> getCompanyLogo({int vacancy_id}) async {
+    final url = API_IP + API_GET_COMPANY_AVATAR;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'vacancy_id': vacancy_id,
+        }),
+      );
+
+      return response.body;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<String> login(String email, String password) async {
     return _authenticate(email, password);
   }
 
@@ -269,7 +376,7 @@ class User {
     }
   }
 
-  Future<void> resetPassword(User user, String new_password) async {
+  /*Future<void> resetPassword(User user, String new_password) async {
     final url = API_IP + 'api/resetpassword/';
     try {
       Map<String, String> headers = {
@@ -297,7 +404,7 @@ class User {
     } catch (error) {
       throw error;
     }
-  }
+  }*/
 
   void logout() async {
     var userId = 0;

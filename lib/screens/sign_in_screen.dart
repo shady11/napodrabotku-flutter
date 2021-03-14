@@ -28,6 +28,45 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
+  void _showDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     widthFactor: 10,
                     heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                      child: Text('email'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
@@ -160,7 +199,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(height: 20,),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Text('forgot_password'.tr())
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.forgot_password);
+                      },
+                      child: Text('forgot_password'.tr()),
+                    ),
                   ),
                   SizedBox(height: 30),
                   /// Sign In button
@@ -172,13 +216,21 @@ class _SignInScreenState extends State<SignInScreen> {
                       textColor: Colors.white,
                       onPressed: () {
                          if (_formKey.currentState.validate()) {
+                           _openLoadingDialog(context);
                            /// Remove previous screens
-                           Navigator.of(context)
-                               .popUntil((route) => route.isFirst);
                            User user = new User();
-                           user.login(_username_controller.text, _password_controller.text);
-                           Navigator.of(context)
-                               .pushNamed(Routes.home);
+                           user.login(_username_controller.text, _password_controller.text).then((value) {
+                             if(value == "OK"){
+                               Navigator.of(context)
+                                   .popUntil((route) => route.isFirst);
+                               Navigator.of(context)
+                                   .pushNamed(Routes.home);
+                             }
+                             else{
+                               _showDialog(context, "password_or_email_is_incorrect".tr());
+                             }
+                           });
+
                          }
                          else{
                            return 'Bum-shakalaka';
@@ -187,6 +239,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: 'sign_in'.tr(),
                     ),
                   ),
+
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                   Text("sign_in_with_social_apps".tr(),
