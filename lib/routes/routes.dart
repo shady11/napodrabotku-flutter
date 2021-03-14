@@ -13,4 +13,6 @@ class Routes {
   static const String forgot_password = '/forgot_password';
   static const String new_password = '/new_password';
   static const String profile = '/profile';
+  static const String about = '/about';
+  static const String user_policy = '/user_policy';
 }

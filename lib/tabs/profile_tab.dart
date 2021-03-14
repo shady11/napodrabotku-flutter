@@ -205,16 +205,17 @@ class ProfileTab extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text("about_us".tr(), style: _textStyle),
+                      title: Text("about_app".tr(), style: _textStyle),
                       onTap: () {
                         /// Go to About us
-
+                        Navigator.pushNamed(context, Routes.about);
                       },
                     ),
                     ListTile(
                       title: Text("privacy_policy".tr(), style: _textStyle),
                       onTap: () async {
                         /// Go to privacy policy
+                        Navigator.pushNamed(context, Routes.user_policy);
                       },
                     ),
                     Prefs.getString(Prefs.TOKEN) != null ? ListTile(
