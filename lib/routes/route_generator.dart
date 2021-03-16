@@ -11,6 +11,8 @@ import 'package:ishapp/screens/sign_up_screen.dart';
 import 'package:ishapp/screens/start_screen.dart';
 import 'package:ishapp/screens/splash_screen.dart';
 import 'package:ishapp/screens/choose_language.dart';
+import 'package:ishapp/screens/about_screen.dart';
+import 'package:ishapp/screens/user_policy_screen.dart';
 import 'package:ishapp/screens/validate_code_screen.dart';
 import 'package:ishapp/screens/forgot_password_email_screen.dart';
 import 'package:ishapp/screens/new_password_screen.dart';
@@ -59,6 +61,12 @@ class RouteGenerator {
 
       case Routes.profile:
         return CupertinoPageRoute(builder: (_) => ProfileScreen());
+
+      case Routes.about:
+        return CupertinoPageRoute(builder: (_) => AboutScreen());
+
+      case Routes.user_policy:
+        return CupertinoPageRoute(builder: (_) => UserPolicyScreen());
 
       case Routes.error:
         return _errorRoute();

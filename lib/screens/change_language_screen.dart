@@ -53,7 +53,7 @@ class _ChangeLanguageScreenState extends State<ChangeLanguageScreen> {
       appBar: AppBar(
         title: Text(
           'language_settings'.tr(),
-          style: TextStyle(fontFamily: 'Nunito'),
+          style: TextStyle(),
         ),
       ),
       body: SingleChildScrollView(
