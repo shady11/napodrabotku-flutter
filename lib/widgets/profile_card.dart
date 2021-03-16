@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishapp/tabs/discover_tab.dart';
 import 'package:ishapp/widgets/show_like_or_dislike.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
@@ -18,17 +19,38 @@ import 'default_card_border.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/constants/configs.dart';
+import 'package:ishapp/utils/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   /// User object
   final Vacancy vacancy;
+  final VacanciesScreenProps props;
   /// Screen to be checked
   final String page;
   final int index;
   /// Swiper position
   final SwiperPosition position;
 
-  ProfileCard({this.page, this.position, @required this.vacancy, this.index});
+  ProfileCard({this.page, this.position, @required this.vacancy, this.index, this.props});
+
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                color: Colors.transparent,
+                height: 50,
+                width: 50,
+                child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void _showDialog(context,String message) {
     showDialog(
@@ -44,6 +66,74 @@ class ProfileCard extends StatelessWidget {
                 Navigator.of(ctx).pop();
               },
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showOnDeleteDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        heightFactor: 1/2,
+        child: AlertDialog(
+          backgroundColor: kColorPrimary,
+          title: Text(''),
+          content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('no'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('yes'.tr()),
+              onPressed: () {
+                Vacancy.deleteCompanyVacancy(vacancy_id: vacancy.id,).then((value) {
+                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                  Navigator.of(ctx).pop();
+                  Navigator.of(ctx).pop();
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showOnDeactivateDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        heightFactor: 1/2,
+        child: AlertDialog(
+          backgroundColor: kColorPrimary,
+          title: Text(''),
+          content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('no'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('yes'.tr()),
+              onPressed: () {
+                Vacancy.activateDeactiveVacancy(vacancy_id: vacancy.id, active: false).then((value) {
+                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                  Navigator.of(ctx).pop();
+                  Navigator.of(ctx).pop();
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -155,8 +245,29 @@ class ProfileCard extends StatelessWidget {
                               padding: EdgeInsets.all(5),
                               color: Colors.grey[200],
                               textColor: kColorPrimary,
-                              onPressed: () {
-//                                Navigator.of(context).pop();
+                              onPressed: () async{
+                                _openLoadingDialog(context);
+                                if(page =='discover'){
+                                  Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "DISLIKED");
+                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0, await Vacancy.getVacancyByOffset(
+                                      offset: /*offset<0?0:offset*/4,
+                                      job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+                                      region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+                                      schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+                                      busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+                                      vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+                                      type: StoreProvider.of<AppState>(context).state.vacancy.type));
+                                  StoreProvider.of<AppState>(context).dispatch(getNumberOfSubmittedVacancies());
+                                }
+                                else if(page =='match'){
+                                  Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "LIKED_THEN_DELETED");
+                                  StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
+                                  StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                }
+                                else if(page =='company'){
+                                  _showOnDeleteDialog(context, 'delete_are_you_sure'.tr());
+                                }
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
@@ -165,44 +276,46 @@ class ProfileCard extends StatelessWidget {
                               padding: EdgeInsets.all(5),
                               color: kColorPrimary,
                               textColor: Colors.white,
-                              onPressed: () {
-                                void _openLoadingDialog(BuildContext context) {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Center(
-                                        child: AlertDialog(
-                                          content: Container(
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
+                              onPressed: () async{
+                                _openLoadingDialog(context);
+                                if(page =='discover'){
+                                  Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "LIKED");
+                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0, await Vacancy.getVacancyByOffset(
+                                      offset: /*offset<0?0:offset*/4,
+                                      job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+                                      region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+                                      schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+                                      busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+                                      vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+                                      type: StoreProvider.of<AppState>(context).state.vacancy.type));
+                                  StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
                                 }
-                                User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                  if(value){
-                                    Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
-                                      if(value=="OK"){
-                                        _showDialog(context, "successfully_submitted".tr());
-                                        StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
-                                        StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                        StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
-                                      }
-                                      else{
-                                        _showDialog(context, "some_errors_occured_try_again".tr());
-                                      }
-                                    });
-                                  }
-                                  else{
-                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                  }
-                                });
+                                else if(page =='match'){
+                                  User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                    if(value){
+                                      Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
+                                        if(value=="OK"){
+                                          _showDialog(context, "successfully_submitted".tr());
+                                          StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
+                                          StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                          StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                        }
+                                        else{
+                                          _showDialog(context, "some_errors_occured_try_again".tr());
+                                        }
+                                      });
+                                    }
+                                    else{
+                                      _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                    }
+                                  });
+                                }
+                                else if(page =='company'){
+                                  _showOnDeactivateDialog(context, 'deactivate_are_you_sure'.tr());
+                                }
                               },
-                              text: page =='discover' ? 'like'.tr() : 'submit'.tr(),
+                              text: page =='discover' ?'like'.tr(): (page == 'company'? 'deactivate'.tr() :'submit'.tr()),
                             ),
                           ],
                         ),

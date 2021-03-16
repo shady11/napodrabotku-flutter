@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
-import 'package:ishapp/datas/demo_users.dart';
+import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/utils/constants.dart';
@@ -21,9 +21,57 @@ class ProfileLikesScreen extends StatelessWidget {
     props.getLikedVacancies();
   }
 
+  void handleInitialBuildOfCompanyVacancy(CompanyVacanciesScreenProps props) {
+    props.getCompanyVacancies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, VacanciesScreenProps1>(
+    return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
+        ?StoreConnector<AppState, CompanyVacanciesScreenProps>(
+      converter: (store) => mapStateToVacancyProps(store),
+      onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
+      builder: (context, props) {
+        List<Vacancy> data = props.listResponse.data;
+        bool loading = props.listResponse.loading;
+
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+          );
+        } else {
+          body = Column(
+            children: [
+              Expanded(
+                child: StoreProvider.of<AppState>(context).state.vacancy.list.data!=null?UsersGrid(
+                    children: StoreProvider.of<AppState>(context).state.vacancy.list.data.map((vacancy) {
+                      return GestureDetector(
+                        child: ProfileCard(vacancy: vacancy, page: 'company',),
+                        onTap: () {
+//                  Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (context) => ProfileScreen(user: user)));
+                        },
+                      );
+                    }).toList()):Center(
+                  child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+                ),
+              ),
+
+            ],
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: kColorPrimary,
+          appBar: AppBar(
+            title: Text("active_vacancies".tr()),
+          ),
+          body: body,
+        );
+      },
+    )
+        :StoreConnector<AppState, VacanciesScreenProps1>(
       converter: (store) => mapStateToProps(store),
       onInitialBuild: (props) => this.handleInitialBuild(props),
       builder: (context, props) {
@@ -41,7 +89,7 @@ class ProfileLikesScreen extends StatelessWidget {
                 child: UsersGrid(
                     children: data.map((vacancy) {
                       return GestureDetector(
-                        child: ProfileCard(vacancy: vacancy),
+                        child: ProfileCard(vacancy: vacancy, page: 'match',),
                         onTap: () {
 //                  Navigator.of(context).push(MaterialPageRoute(
 //                    builder: (context) => ProfileScreen(user: user)));
@@ -80,5 +128,21 @@ VacanciesScreenProps1 mapStateToProps(Store<AppState> store) {
   return VacanciesScreenProps1(
     listResponse1: store.state.vacancy.liked_list,
     getLikedVacancies: () => store.dispatch(getLikedVacancies()),
+  );
+}
+class CompanyVacanciesScreenProps {
+  final Function getCompanyVacancies;
+  final ListVacancysState listResponse;
+
+  CompanyVacanciesScreenProps({
+    this.getCompanyVacancies,
+    this.listResponse,
+  });
+}
+
+CompanyVacanciesScreenProps mapStateToVacancyProps(Store<AppState> store) {
+  return CompanyVacanciesScreenProps(
+    listResponse: store.state.vacancy.list,
+    getCompanyVacancies: ()=>store.dispatch(getCompanyVacancies()),
   );
 }

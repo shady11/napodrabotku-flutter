@@ -154,7 +154,7 @@ class ProfileTab extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)
                         ),
                       ),
-                      title: Text("matches".tr(), style: _textStyle),
+                      title: Text(Prefs.getString(Prefs.USER_TYPE) == 'USER' ?"matches".tr():'active_vacancies'.tr(), style: _textStyle),
                       trailing: Text(StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString(), style: TextStyle(color: Colors.grey[400]),),
                       onTap: () {
                         /// Go to profile likes screen ()
@@ -172,7 +172,7 @@ class ProfileTab extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)
                         ),
                       ),
-                      title: Text("visit".tr(), style: _textStyle),
+                      title: Text(Prefs.getString(Prefs.USER_TYPE) == 'USER' ?"visit".tr():'inactive_vacancies'.tr(), style: _textStyle),
                       trailing: Text(StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds !=null ?StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds.toString():'0', style: TextStyle(color: Colors.grey[400]),),
                       onTap: () {
                         /// Go to profile visits screen

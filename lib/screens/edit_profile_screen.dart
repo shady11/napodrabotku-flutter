@@ -1,5 +1,6 @@
 import 'dart:io';
 
+//import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,9 +29,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  final _experienceForm = GlobalKey<FormState>();
-  final _educationForm = GlobalKey<FormState>();
-  final _courseForm = GlobalKey<FormState>();
   final title_controller1 = TextEditingController();
   final experience_year_controller = TextEditingController();
   UserCv user_cv;
@@ -40,6 +38,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   dynamic _pickImageError;
   String _retrieveDataError;
+  File attachment;
+
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+
 
   final _name_controller = TextEditingController();
   final _surnname_controller = TextEditingController();
@@ -47,22 +50,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _phone_number_controller = TextEditingController();
   final _birth_date_controller = TextEditingController();
 
-  final job_title_controller = TextEditingController();
-  final start_date_controller = TextEditingController();
-  final end_date_controller = TextEditingController();
-  final organization_name_controller = TextEditingController();
-  final description_controller = TextEditingController();
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('from_gallery'.tr()),
+                      onTap: () {
+                        _onImageButtonPressed(ImageSource.gallery, context: context);
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('camera'.tr()),
+                    onTap: () {
+                      _onImageButtonPressed(ImageSource.camera, context: context);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
 
-  final title_controller = TextEditingController();
-  final faculty_controller = TextEditingController();
-  final speciality_controller = TextEditingController();
-  final end_year_controller = TextEditingController();
-
-  final name_controller = TextEditingController();
-  final course_organization_name_controller = TextEditingController();
-  final duration_controller = TextEditingController();
-  final course_end_year_controller = TextEditingController();
 
   List<UserExperienceForm> user_experience_forms = [];
 
@@ -119,7 +137,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }*/
 
-  void _showDataPicker(int type) {
+  void _showDataPicker() {
     DatePicker.showDatePicker(context,
         locale: LocaleType.ru,
         theme: DatePickerTheme(
@@ -130,36 +148,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           print(date);
           // Change state
           setState(() {
-            if(type ==1) {
-              start_date_controller.text = date.toString().split(" ")[0];
-              StoreProvider
-                  .of<AppState>(context)
-                  .state
-                  .user
-                  .user_cv
-                  .data
-                  .user_experiences[0].start_date = date;
-            }
-            else if(type ==2) {
-              end_date_controller.text = date.toString().split(" ")[0];
-              StoreProvider
-                  .of<AppState>(context)
-                  .state
-                  .user
-                  .user_cv
-                  .data
-                  .user_experiences[0].end_date = date;
-            }
-            else {
-              _birth_date_controller.text = date.toString().split(" ")[0];
-              StoreProvider
-                  .of<AppState>(context)
-                  .state
-                  .user
-                  .user
-                  .data
-                  .birth_date = date;
-            }
+            _birth_date_controller.text = date.toString().split(" ")[0];
+            StoreProvider
+                .of<AppState>(context)
+                .state
+                .user
+                .user
+                .data
+                .birth_date = date;
           });
         });
   }
@@ -171,6 +167,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 //  }
   int count =1;
 
+  /*void _pickAttachment() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+        allowMultiple: false
+    );
+
+    if(result != null) {
+      setState(() {
+        attachment = File(result.files.single.path);
+      });
+    } else {
+      // User canceled the picker
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     if(count ==1){
@@ -179,43 +191,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       //    });
 
-      user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
-      title_controller1.text = user_cv.job_title;
-      experience_year_controller.text = user_cv.experience_year.toString();
+      if(Prefs.getString(Prefs.USER_TYPE) == 'USER'){
+        user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
+        title_controller1.text = user_cv.job_title;
+        experience_year_controller.text = user_cv.experience_year.toString();
+      }
       _name_controller.text = user.name;
       _surnname_controller.text = user.surname;
       _email_controller.text = user.email;
       _phone_number_controller.text = user.phone_number;
       if(user.birth_date!=null)
         _birth_date_controller.text = formatter.format(user.birth_date);
-      if(user_cv.user_experiences.isNotEmpty){
-        job_title_controller.text = user_cv.user_experiences[0].job_title;
-        start_date_controller.text = formatter.format(user_cv.user_experiences[0].start_date);
-        end_date_controller.text = formatter.format(user_cv.user_experiences[0].end_date);
-        organization_name_controller.text = user_cv.user_experiences[0].organization_name;
-        description_controller.text = user_cv.user_experiences[0].description;
-      }
-      else{
-        user_cv.user_experiences.add(new UserExperience());
-      }
-      if(user_cv.user_educations.isNotEmpty){
-        title_controller.text = user_cv.user_educations[0].title;
-        faculty_controller.text = user_cv.user_educations[0].faculty;
-        speciality_controller.text = user_cv.user_educations[0].speciality;
-        end_year_controller.text = user_cv.user_educations[0].end_year.toString();
-      }
-      else{
-        user_cv.user_educations.add(new UserEducation());
-      }
-      if(user_cv.user_courses.isNotEmpty){
-        name_controller.text = user_cv.user_courses[0].name;
-        course_organization_name_controller.text = user_cv.user_courses[0].organization_name;
-        duration_controller.text = user_cv.user_courses[0].duration;
-        course_end_year_controller.text = user_cv.user_courses[0].end_year.toString();
-      }
-      else{
-        user_cv.user_courses.add(new UserCourse());
-      }
       count =2;
     }
     return Scaffold(
@@ -245,7 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       backgroundImage: Image.file(File(_imageFile.path), fit: BoxFit.cover,).image,
                     ),
                     onTap: () {
-                      _onImageButtonPressed(ImageSource.camera, context: context);
+                      _showPicker(context);
                     },
                   ),
                   SizedBox(height: 10),
@@ -364,25 +350,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text('birth_date'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  /*TextFormField(
-                    controller: _birth_date_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                    validator: (name) {
-                      // Basic validation
-//                      if (name.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),*/
                   CustomButton(
                       mainAxisAlignment: MainAxisAlignment.start,
                       width: MediaQuery.of(context).size.width * 1,
@@ -392,67 +359,68 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       fontWeight: FontWeight.w400,
                       textAlign: TextAlign.right,
                       text: _birth_date_controller.text,
-                      onPressed: (){_showDataPicker(3);}),
+                      onPressed: (){_showDataPicker();}),
                   SizedBox(height: 20),
-                  AppBar(
-                    leading: Container(),
-                    title: Text("cv".tr()),
-                    actions: [
-                              IconButton(icon: Icon(Icons.delete), onPressed: (){
-//                                widget.onDelete();
-                              })
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Align(
+                  Prefs.getString(Prefs.USER_TYPE) == 'USER'?Column(children: [
+                    AppBar(
+                      leading: Container(),
+                      title: Text("cv".tr()),
+                    ),
+                    SizedBox(height: 20),
+                    Align(
 //                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text('resume_title'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
-                    controller: title_controller1,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text('resume_title'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                    TextFormField(
+                      controller: title_controller1,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.grey[200],
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
+                      validator: (name) {
+                        // Basic validation
+                        if (name.isEmpty) {
+                          return "please_fill_this_field".tr();
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text('experience_year'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
-                    controller: experience_year_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
+                    SizedBox(height: 20),
+                    Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text('experience_year'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                    TextFormField(
+                      controller: experience_year_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.grey[200],
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
+                      validator: (name) {
+                        // Basic validation
+                        if (name.isEmpty) {
+                          return "please_fill_this_field".tr();
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
+                  ],):Container(),
+                  SizedBox(),
+                  /*CustomButton(text: 'attachment'.tr(), onPressed: (){
+                    _pickAttachment();
+                  }),*/
                   SizedBox(height: 30),
                   /// Sign Up button
                   SizedBox(
@@ -478,32 +446,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             user.uploadImage2(File(_imageFile.path));
                           else
                             user.uploadImage2(null);
-                          
-                          user_cv.experience_year = int.parse(experience_year_controller.text);
-                          user_cv.job_title = title_controller1.text;
-//                          experiences
-                          user_cv.user_experiences[0].job_title = job_title_controller.text;
-                          user_cv.user_experiences[0].organization_name = organization_name_controller.text;
-                          user_cv.user_experiences[0].start_date = formatter.parse(start_date_controller.text);
-                          user_cv.user_experiences[0].end_date = formatter.parse(end_date_controller.text);
-                          user_cv.user_experiences[0].description = description_controller.text;
 
-//                          educations
-                          user_cv.user_educations[0].title = title_controller.text;
-                          user_cv.user_educations[0].end_year = end_year_controller.text;
-                          user_cv.user_educations[0].speciality = speciality_controller.text;
-                          user_cv.user_educations[0].faculty = faculty_controller.text;
-                          user_cv.user_educations[0].type = "1";
+                          if(Prefs.getString(Prefs.USER_TYPE) == 'USER'){
+                            user_cv.experience_year = int.parse(experience_year_controller.text);
+                            user_cv.job_title = title_controller1.text;
 
-//                          courses
-                          user_cv.user_courses[0].name = name_controller.text;
-                          user_cv.user_courses[0].organization_name = course_organization_name_controller.text;
-                          user_cv.user_courses[0].duration = duration_controller.text;
-                          user_cv.user_courses[0].end_year = course_end_year_controller.text;
+                            user_cv.save();
+                          }
 
-                          user_cv.save();
-
-                          Navigator.pushReplacementNamed(context, Routes.home);
+                          Navigator.of(context).pop();
                         }
                         else{
                           return;

@@ -196,6 +196,47 @@ class Vacancy {
       throw error;
     }
   }
+
+  static Future<String> deleteCompanyVacancy({
+    int vacancy_id,
+  }) async {
+    final url = API_IP + API_COMPANY_VACANCY_DELETE;
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
+      final response = await http.post(url,
+          headers: headers,
+          body: json.encode({'vacancy_id': vacancy_id}));
+      print(response.body);
+      return "OK";
+    } catch (error) {
+      return "ERROR";
+      throw error;
+    }
+  }
+
+  static Future<String> activateDeactiveVacancy({
+    int vacancy_id,
+    bool active
+  }) async {
+    final url = API_IP + API_COMPANY_VACANCY_ACTIVATE_DEACTIVATE;
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
+      final response = await http.post(url,
+          headers: headers,
+          body: json.encode({'vacancy_id': vacancy_id, 'active': active}));
+      print(response.body);
+      return "OK";
+    } catch (error) {
+      return "ERROR";
+      throw error;
+    }
+  }
 }
 
 class JobType {
@@ -215,12 +256,14 @@ class VacancyState {
   List busyness_ids;
   List vacancy_type_ids;
   ListVacancysState list;
+  ListVacancysState inactive_list;
   LikedVacancyListState liked_list;
   ListSubmittedVacancyState submitted_list;
   UserState user;
 
   factory VacancyState.initial() => VacancyState(
         list: ListVacancysState.initial(),
+        inactive_list: ListVacancysState.initial(),
         liked_list: LikedVacancyListState.initial(),
         submitted_list: ListSubmittedVacancyState.initial(),
         job_type_ids: [],
@@ -229,7 +272,7 @@ class VacancyState {
         busyness_ids: [],
         vacancy_type_ids: [],
         type: 'all',
-        number_of_likeds: 0,
+        number_of_likeds: null,
         number_of_submiteds: 0,
         user: UserState.initial()
       );
@@ -247,7 +290,8 @@ class VacancyState {
         this.submitted_list,
         this.user,
         this.number_of_submiteds,
-        this.number_of_likeds
+        this.number_of_likeds,
+        this.inactive_list
       });
 }
 

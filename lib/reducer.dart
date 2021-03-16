@@ -8,9 +8,7 @@ import 'datas/vacancy_reducer.dart';
 
 List<Vacancy> vacancyItemsReducer(
     List<Vacancy> items, dynamic action) {
-  if (action is RemoveLikedItemAction) {
-    return deleteItem(items, action);
-  } else if (action is ToggleItemStateAction) {
+  if (action is ToggleItemStateAction) {
     return toggleItemState(items, action);
   }
   return items;

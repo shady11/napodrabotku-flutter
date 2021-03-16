@@ -57,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
         return Center(
           child: AlertDialog(
             content: Container(
+              color: Colors.transparent,
                 height: 50,
                 width: 50,
                 child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))

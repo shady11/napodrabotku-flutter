@@ -42,7 +42,7 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
+      /*padding: EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
           TextField(
@@ -98,7 +98,7 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
             ),
           ),
         ],
-      ),
+      ),*/
     );
   }
 

@@ -9,6 +9,7 @@ class Prefs {
   static const String EMAIL = 'email';
   static const String PROFILEIMAGE = 'proflie_image';
   static const String PASSWORD = 'password';
+  static const String USER_TYPE = 'user_type';
 
   static SharedPreferences _prefs;
   static Map<String, dynamic> _memoryPrefs = Map<String, dynamic>();

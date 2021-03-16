@@ -213,3 +213,92 @@ RSAA getUserCvRequest() {
 }
 
 ThunkAction<AppState> getUserCv() => (Store<AppState> store) => store.dispatch(getUserCvRequest());
+
+
+const GET_COMPANY_VACANCIES_REQUEST = 'GET_COMPANY_VACANCIES_REQUEST';
+const GET_COMPANY_VACANCIES_SUCCESS = 'GET_COMPANY_VACANCIES_SUCCESS';
+const GET_COMPANY_VACANCIES_FAILURE = 'GET_COMPANY_VACANCIES_FAILURE';
+RSAA getCompanyVacanciesRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_COMPANY_VACANCIES,
+      types: [
+        GET_COMPANY_VACANCIES_REQUEST,
+        GET_COMPANY_VACANCIES_SUCCESS,
+        GET_COMPANY_VACANCIES_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getCompanyVacancies() => (Store<AppState> store) => store.dispatch(getCompanyVacanciesRequest());
+
+const GET_COMPANY_INACTIVE_VACANCIES_REQUEST = 'GET_COMPANY_INACTIVE_VACANCIES_REQUEST';
+const GET_COMPANY_INACTIVE_VACANCIES_SUCCESS = 'GET_COMPANY_INACTIVE_VACANCIES_SUCCESS';
+const GET_COMPANY_INACTIVE_VACANCIES_FAILURE = 'GET_COMPANY_INACTIVE_VACANCIES_FAILURE';
+RSAA getCompanyInactiveVacanciesRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_COMPANY_INACTIVE_VACANCIES,
+      types: [
+        GET_COMPANY_INACTIVE_VACANCIES_REQUEST,
+        GET_COMPANY_INACTIVE_VACANCIES_SUCCESS,
+        GET_COMPANY_INACTIVE_VACANCIES_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getCompanyInactiveVacancies() => (Store<AppState> store) => store.dispatch(getCompanyInactiveVacanciesRequest());
+
+const GET_SUBMITTED_USER_REQUEST = 'GET_SUBMITTED_USER_REQUEST';
+const GET_SUBMITTED_USER_SUCCESS = 'GET_SUBMITTED_USER_SUCCESS';
+const GET_SUBMITTED_USER_FAILURE = 'GET_SUBMITTED_USER_FAILURE';
+RSAA getSubmittedUsersRequest() {
+  return
+    RSAA(
+      method: 'POST',
+      endpoint: API_IP+API_SUBMITTED_USERS+Prefs.getInt(Prefs.USER_ID).toString(),
+      types: [
+        GET_SUBMITTED_USER_REQUEST,
+        GET_SUBMITTED_USER_SUCCESS,
+        GET_SUBMITTED_USER_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN),
+      },
+    );
+}
+
+ThunkAction<AppState> getSubmittedUsers() => (Store<AppState> store) => store.dispatch(getSubmittedUsersRequest());
+
+const GET_USER_FULL_INFO_REQUEST = 'GET_USER_FULL_INFO_REQUEST';
+const GET_USER_FULL_INFO_SUCCESS = 'GET_USER_FULL_INFO_SUCCESS';
+const GET_USER_FULL_INFO_FAILURE = 'GET_USER_FULL_INFO_FAILURE';
+RSAA getUserFullInfoRequest(int user_id) {
+  return
+    RSAA(
+      method: 'POST',
+      endpoint: API_IP+API_USER_FULL_INFO+user_id.toString(),
+      types: [
+        GET_USER_FULL_INFO_REQUEST,
+        GET_USER_FULL_INFO_SUCCESS,
+        GET_USER_FULL_INFO_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN),
+      },
+    );
+}
+
+ThunkAction<AppState> getUserFullInfo(int user_id) => (Store<AppState> store) => store.dispatch(getUserFullInfoRequest(user_id));

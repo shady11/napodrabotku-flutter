@@ -47,6 +47,42 @@ UserState userReducer(UserState state, FSA action) {
       newState.user_cv.data = null;
       return newState;
 
+    case GET_SUBMITTED_USER_REQUEST:
+      newState.submitted_user_list.error = null;
+      newState.submitted_user_list.loading = true;
+      newState.submitted_user_list.data = null;
+      return newState;
+
+    case GET_SUBMITTED_USER_SUCCESS:
+      newState.submitted_user_list.error = null;
+      newState.submitted_user_list.loading = false;
+      newState.submitted_user_list.data = usersFromJsonStr(action.payload);
+      return newState;
+
+    case GET_SUBMITTED_USER_FAILURE:
+      newState.submitted_user_list.error = action.payload;
+      newState.submitted_user_list.loading = false;
+      newState.submitted_user_list.data = null;
+      return newState;
+
+    case GET_USER_FULL_INFO_REQUEST:
+      newState.user_full_info.error = null;
+      newState.user_full_info.loading = true;
+      newState.user_full_info.data = null;
+      return newState;
+
+    case GET_USER_FULL_INFO_SUCCESS:
+      newState.user_full_info.error = null;
+      newState.user_full_info.loading = false;
+      newState.user_full_info.data = userFullInfoFromJSONStr(action.payload);
+      return newState;
+
+    case GET_USER_FULL_INFO_FAILURE:
+      newState.user_full_info.error = action.payload;
+      newState.user_full_info.loading = false;
+      newState.user_full_info.data = null;
+      return newState;
+
     default:
       return newState;
   }
@@ -60,3 +96,11 @@ UserCv userCvFromJSONStr(dynamic payload) {
   return UserCv.fromJson(json.decode(payload)[0]);
 }
 
+UserFullInfo userFullInfoFromJSONStr(dynamic payload) {
+  return UserFullInfo.fromJson(json.decode(payload));
+}
+
+List<User> usersFromJsonStr(dynamic payload) {
+  Iterable jsonArray = json.decode(payload);
+  return jsonArray.map((j) => User.fromJson(j)).toList();
+}

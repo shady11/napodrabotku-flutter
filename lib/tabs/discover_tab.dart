@@ -13,6 +13,7 @@ import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/profile_card.dart';
 import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:ishapp/widgets/users_grid.dart';
 
 
 class DiscoverTab extends StatefulWidget {
@@ -23,6 +24,10 @@ class DiscoverTab extends StatefulWidget {
 class _DiscoverTabState extends State<DiscoverTab> {
   void handleInitialBuild(VacanciesScreenProps props) {
     props.getVacancies();
+  }
+
+  void handleInitialBuildOfCompanyVacancy(CompanyVacanciesScreenProps props) {
+    props.getCompanyVacancies();
   }
   int button = 0;
   int some_index = 0;
@@ -60,7 +65,45 @@ class _DiscoverTabState extends State<DiscoverTab> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, VacanciesScreenProps>(
+    return Prefs.getString(Prefs.USER_TYPE)=='COMPANY'
+         ?StoreConnector<AppState, CompanyVacanciesScreenProps>(
+      converter: (store) => mapStateToVacancyProps(store),
+      onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
+      builder: (context, props) {
+        List<Vacancy> data = props.listResponse.data;
+        bool loading = props.listResponse.loading;
+
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+          );
+        } else {
+          body = Column(
+            children: [
+              Expanded(
+                child: StoreProvider.of<AppState>(context).state.vacancy.list.data!=null?UsersGrid(
+                    children: StoreProvider.of<AppState>(context).state.vacancy.list.data.map((vacancy) {
+                      return GestureDetector(
+                        child: ProfileCard(vacancy: vacancy, page: 'company',),
+                        onTap: () {
+//                  Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (context) => ProfileScreen(user: user)));
+                        },
+                      );
+                    }).toList()):Center(
+                  child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+                ),
+              ),
+
+            ],
+          );
+        }
+
+        return body;
+      },
+    )
+        :StoreConnector<AppState, VacanciesScreenProps>(
       converter: (store) => mapStateToProps(store),
       onInitialBuild: (props) => this.handleInitialBuild(props),
       builder: (context, props) {
@@ -79,7 +122,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
               children: [
                 Container(
                   child: Stack(alignment: Alignment.center, children: [
-                    for (int x = 0; x < data.length; x++)
+                    for (int x = 0; x < StoreProvider.of<AppState>(context).state.vacancy.list.data.length; x++)
                       Positioned(
                         bottom: ((x) * 10.0),
                         child: Draggable(
@@ -91,10 +134,10 @@ class _DiscoverTabState extends State<DiscoverTab> {
                               print(
                                   "============================================");
                               if (drag.offset.dx < -200) {
-                                removeCards(props: props, type: "DISLIKED", vacancy_id: data[x].id, context: context);
+                                removeCards(props: props, type: "DISLIKED", vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[x].id, context: context);
                               }
                               if (drag.offset.dx > 200) {
-                                removeCards(props: props, type: "LIKED", vacancy_id: data[x].id, context: context);
+                                removeCards(props: props, type: "LIKED", vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[x].id, context: context);
                               }
                             },
                             childWhenDragging: Container(),
@@ -103,9 +146,10 @@ class _DiscoverTabState extends State<DiscoverTab> {
                                 print("Hello All");
                               },
                               child: ProfileCard(
+                                props: props,
                                 page: 'discover',
-                                vacancy: data[x],
-                                index: data.length - x,
+                                vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
+                                index: StoreProvider.of<AppState>(context).state.vacancy.list.data.length - x,
                               ),
                             ),
                             child: GestureDetector(
@@ -119,16 +163,17 @@ class _DiscoverTabState extends State<DiscoverTab> {
                                         ),
                                         body: VacancyView(
                                           page:"view",
-                                          vacancy: data[x],
+                                          vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
                                         ),
                                       );
                                     }));
                               },
-                              child: ProfileCard(
+                              child: StoreProvider.of<AppState>(context).state.vacancy.list.data[x] != null?ProfileCard(
+                                props: props,
                                 page: 'discover',
-                                vacancy: data[x],
-                                index: data.length - x,
-                              ),
+                                vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
+                                index: StoreProvider.of<AppState>(context).state.vacancy.list.data.length - x,
+                              ):Container(),
                             )),
                       ),
                   ]),
@@ -211,6 +256,23 @@ class _DiscoverTabState extends State<DiscoverTab> {
     );
   }
 }
+class CompanyVacanciesScreenProps {
+  final Function getCompanyVacancies;
+  final ListVacancysState listResponse;
+
+  CompanyVacanciesScreenProps({
+    this.getCompanyVacancies,
+    this.listResponse,
+  });
+}
+
+CompanyVacanciesScreenProps mapStateToVacancyProps(Store<AppState> store) {
+  return CompanyVacanciesScreenProps(
+    listResponse: store.state.vacancy.list,
+    getCompanyVacancies: ()=>store.dispatch(getCompanyVacancies()),
+  );
+}
+
 class VacanciesScreenProps {
   final Function getVacancies;
   final Function deleteItem;

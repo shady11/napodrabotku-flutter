@@ -46,7 +46,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                       ),
                       Center(
                         child: Text(
-                          'Тил тандаңыз',
+                          'Колдонмонун тилин тандаңыз',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -85,7 +85,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                 EasyLocalization.of(context).supportedLocales[0];
                                 Navigator.of(context).popAndPushNamed(Routes.start);
                               },
-                              text: 'Кыргызча',
+                              text: 'Кыргыз тили',
                             ),
                             SizedBox(
                               height: 20,
@@ -101,7 +101,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                 EasyLocalization.of(context).supportedLocales[1];
                                 Navigator.of(context).popAndPushNamed(Routes.start);
                               },
-                              text: 'Русский',
+                              text: 'Русский язык',
                             ),
                           ],
                         ),

@@ -25,9 +25,10 @@ class User {
   String email;
   DateTime birth_date;
   String phone_number;
+  String user_cv_name;
+  String vacancy_name;
+  String experience_year;
   bool is_company;
-  List<UserEducation> user_educations;
-  List<UserExperience> user_experiences;
 
   User(
       {this.id,
@@ -39,9 +40,10 @@ class User {
       this.email,
       this.birth_date,
       this.phone_number,
-      this.is_company,
-      this.user_educations,
-      this.user_experiences});
+      this.user_cv_name,
+      this.experience_year,
+      this.vacancy_name,
+      this.is_company});
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
         id: json["id"],
@@ -51,6 +53,9 @@ class User {
         email: json['email'],
         birth_date: DateTime.parse(json['birth_date']),
         phone_number: json['phone_number'],
+        vacancy_name: json['vacancy_name'],
+        user_cv_name: json['job_title'],
+        experience_year: json['experience_year'].toString(),
         is_company: json['type'] == 'COMPANY',
       );
 
@@ -99,6 +104,7 @@ class User {
           Prefs.setString(Prefs.TOKEN, response["token"]);
           Prefs.setInt(Prefs.USER_ID, response["id"]);
           Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+          Prefs.setString(Prefs.USER_TYPE, response["user_type"]);
           mm="OK";
 //          return "OK";
         }
@@ -152,7 +158,7 @@ class User {
 //        Prefs.setString(Prefs.USERNAME, username);
 //        Prefs.setString(Prefs.PASSWORD, password);
 //        Prefs.setString(Prefs.TOKEN, response["token"]);
-//        Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+        Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
       });
     }).catchError((e) {
       print(e);
@@ -218,6 +224,7 @@ class User {
         Prefs.setInt(Prefs.USER_ID, responseData["id"]);
         Prefs.setString(Prefs.TOKEN, responseData["token"]);
         Prefs.setString(Prefs.PROFILEIMAGE, responseData["avatar"]);
+        Prefs.setString(Prefs.USER_TYPE, responseData["user_type"]);
         return "OK";
       }
     } catch (error) {
@@ -433,16 +440,23 @@ class User {
 
 class UserState {
   UserDetailState user;
+  ListUserDetailState submitted_user_list;
   UserCvState user_cv;
+  UserFullInfoState user_full_info;
+
 
   UserState({
     this.user,
     this.user_cv,
+    this.submitted_user_list,
+    this.user_full_info
   });
 
   factory UserState.initial() => UserState(
         user: UserDetailState.initial(),
         user_cv: UserCvState.initial(),
+        submitted_user_list: ListUserDetailState.initial(),
+        user_full_info: UserFullInfoState.initial(),
       );
 }
 
@@ -464,6 +478,24 @@ class UserDetailState {
       );
 }
 
+class ListUserDetailState {
+  dynamic error;
+  bool loading;
+  List<User> data;
+
+  ListUserDetailState({
+    this.error,
+    this.loading,
+    this.data,
+  });
+
+  factory ListUserDetailState.initial() => ListUserDetailState(
+    error: null,
+    loading: false,
+    data: [],
+  );
+}
+
 class UserCvState {
   dynamic error;
   bool loading;
@@ -480,6 +512,24 @@ class UserCvState {
         loading: false,
         data: new UserCv(),
       );
+}
+
+class UserFullInfoState {
+  dynamic error;
+  bool loading;
+  UserFullInfo data;
+
+  UserFullInfoState({
+    this.error,
+    this.loading,
+    this.data,
+  });
+
+  factory UserFullInfoState.initial() => UserFullInfoState(
+    error: null,
+    loading: false,
+    data: new UserFullInfo(),
+  );
 }
 
 class EducationType {
@@ -522,18 +572,13 @@ class UserCv {
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    List<Map> experiences = this.user_experiences != null ? this.user_experiences.map((i) => i.toJson()).toList() : null;
-    List<Map> educations = this.user_educations != null ? this.user_educations.map((i) => i.toJson()).toList() : null;
-    List<Map> courses = this.user_courses != null ? this.user_courses.map((i) => i.toJson()).toList() : null;
-    // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
-
-    request.fields["user_id"] = "11";
+    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID);
     request.fields["user_cv_id"] = this.id.toString();
     request.fields["experience_year"] = this.experience_year.toString();
     request.fields["job_title"] = this.job_title;
-    request.fields["user_experiences"] = json.encode(this.user_experiences);
-    request.fields["user_educations"] = json.encode(this.user_educations);
-    request.fields["user_courses"] = json.encode(this.user_courses);
+//    request.fields["user_experiences"] = json.encode(this.user_experiences);
+//    request.fields["user_educations"] = json.encode(this.user_educations);
+//    request.fields["user_courses"] = json.encode(this.user_courses);
 
     // open a byteStream
 //    if (_image != null) {
@@ -553,7 +598,7 @@ class UserCv {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        var response = json.decode(value);
+        return value;
 //        Prefs.setString('username', username);
 //        Prefs.setString('password', password);
 //        Prefs.setString(Prefs.USERNAME, username);
@@ -565,6 +610,97 @@ class UserCv {
       print(e);
     });
   }
+
+  static List<UserExperience> experiencesToList(var j) {
+    List<UserExperience> result = new List<UserExperience>();
+    for (var i in j) {
+      result.add(new UserExperience(
+        id: i['id'],
+        job_title: i['job_title'],
+        start_date: DateTime.parse(i['start_date']),
+        end_date: DateTime.parse(i['end_date']),
+        organization_name: i['organization_name'],
+        description: i['description'],
+      ));
+    }
+    return result;
+  }
+
+  static List<UserEducation> educationsToList(var j) {
+    List<UserEducation> result = new List<UserEducation>();
+    for (var i in j) {
+      result.add(new UserEducation(
+        id: i['id'],
+        type: i['type'],
+        title: i['title'],
+        faculty: i['faculty'],
+        speciality: i['speciality'],
+        end_year: i['end_year'].toString(),
+      ));
+    }
+    return result;
+  }
+
+  static List<UserCourse> coursesToList(var j) {
+    if(j ==null)
+      return null;
+    List<UserCourse> result = [];
+    print(j);
+    for (var i in j) {
+      result.add(new UserCourse(
+        id: i['id'],
+        name: i['name'],
+        organization_name: i['organization_name'],
+        duration: i['duration'],
+        end_year: i['end_year'].toString(),
+      ));
+    }
+    return result;
+  }
+}
+
+class UserFullInfo {
+  int id;
+  int experience_year;
+  String job_title;
+  String surname_name;
+  String avatar;
+  String email;
+  String attachment;
+  DateTime birth_date;
+  String phone_number;
+  List<UserExperience> user_experiences;
+  List<UserEducation> user_educations;
+  List<UserCourse> user_courses;
+
+  UserFullInfo(
+      {this.id,
+        this.experience_year,
+        this.job_title,
+        this.surname_name,
+        this.avatar,
+        this.email,
+        this.birth_date,
+        this.phone_number,
+        this.attachment,
+        this.user_experiences,
+        this.user_educations,
+        this.user_courses});
+
+  factory UserFullInfo.fromJson(Map<String, dynamic> json) => new UserFullInfo(
+    id: json["id"],
+    job_title: json["job_title"],
+    surname_name: json["surname_name"],
+    avatar: json["avatar"],
+    email: json["email"],
+    birth_date: DateTime.parse(json['birth_date']),
+    phone_number: json["phone_number"],
+    attachment: json["attachment"],
+    experience_year: json["experience_year"],
+    user_courses: coursesToList(json['courses']),
+    user_educations: educationsToList(json['educations']),
+    user_experiences: experiencesToList(json['experiences']),
+  );
 
   static List<UserExperience> experiencesToList(var j) {
     List<UserExperience> result = new List<UserExperience>();

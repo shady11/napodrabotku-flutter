@@ -100,9 +100,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return Center(
           child: AlertDialog(
             content: Container(
+              color: Colors.transparent,
                 height: 50,
                 width: 50,
-                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),)
+                child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
             ),
           ),
         );

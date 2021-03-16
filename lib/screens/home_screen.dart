@@ -21,6 +21,7 @@ import 'package:ishapp/tabs/profile_tab.dart';
 import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/widgets/badge.dart';
+import 'package:ishapp/datas/pref_manager.dart';
 
 import 'notifications_screen.dart';
 
@@ -411,11 +412,11 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('sms'.tr(),
-              style: TextStyle(
+          Text('chat'.tr(),
+              /*style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
-                  fontWeight: FontWeight.w600)),
+                  fontWeight: FontWeight.w600)*/),
           GestureDetector(
             child: CircleButton(
               bgColor: Colors.transparent,
@@ -435,14 +436,30 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('school'.tr(),
-              style: TextStyle(
+              /*style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
-                  fontWeight: FontWeight.w600)),
+                  fontWeight: FontWeight.w600)*/),
+          GestureDetector(
+            child: CircleButton(
+              bgColor: Colors.transparent,
+              padding: 12,
+              icon: Icon(
+                Boxicons.bx_user,
+                color: kColorPrimary,
+                size: 35,
+              ),),
+            onTap: () {
+              _nextTab(4);
+              setState(() {
+                is_profile = true;
+              });
+            },
+          ),
         ],
       ),
       Row(
@@ -467,6 +484,8 @@ class _HomeScreenState extends State<HomeScreen> {
     buildSome(context);
     getLists();
   }
+
+  bool is_special=false;
   void handleInitialBuild(VacanciesScreenProps1 props) {
     props.getLikedNumOfVacancies();
   }
@@ -481,7 +500,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: is_profile ? Colors.white : kColorPrimary,
-      appBar: AppBar(
+      appBar: is_special?AppBar(
+        automaticallyImplyLeading: false,
+        title: Container(
+//          padding: EdgeInsets.fromLTRB(20, 15, 20, 10),
+          width: MediaQuery.of(context).size.width * 1.0,
+          child: app_bar_titles[_tabCurrentIndex],
+        ),
+      ):AppBar(
         backgroundColor: is_profile ? Colors.white : kColorPrimary,
         elevation: 0,
         toolbarHeight: 80,
@@ -518,16 +544,18 @@ class _HomeScreenState extends State<HomeScreen> {
               _nextTab(index);
               if (index == 3 || index == 2) {
                 setState(() {
+                  is_special=true;
                   is_profile = true;
                 });
               } else {
                 setState(() {
+                  is_special=false;
                   is_profile = false;
                 });
               }
             },
             items: [
-              BottomNavigationBarItem(
+              Prefs.getString(Prefs.USER_TYPE)=='USER'?BottomNavigationBarItem(
                   icon: Icon(
                     Boxicons.bx_search,
                     color: _tabCurrentIndex == 0 ? kColorPrimary : null,
@@ -538,8 +566,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: _tabCurrentIndex == 0
                             ? kColorPrimary
                             : Colors.grey),
+                  )):BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_briefcase,
+                    color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "vacancies".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 0
+                            ? kColorPrimary
+                            : Colors.grey),
                   )),
-              BottomNavigationBarItem(
+              Prefs.getString(Prefs.USER_TYPE)=='USER'?BottomNavigationBarItem(
                   icon: Container(
                     width: 50,
                     height: 30,
@@ -552,16 +591,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               Boxicons.bx_like,
                               color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
                           ),
-                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==0 ?Container():Positioned(
+                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==null ?Container():Positioned(
                             top: 0.0,
                             right: 0.0,
-                            child: Badge(text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()),
+                            child: Badge(text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==0 ?'':StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()),
                           ),
                         ]
                     ),
                   ),
                   title: Text(
                     "matches".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 1
+                            ? kColorPrimary
+                            : Colors.grey),
+                  )):BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_folder,
+                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "cvs".tr(),
                     style: TextStyle(
                         color: _tabCurrentIndex == 1
                             ? kColorPrimary
