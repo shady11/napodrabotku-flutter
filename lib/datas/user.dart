@@ -572,7 +572,7 @@ class UserCv {
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID);
+    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID).toString();
     request.fields["user_cv_id"] = this.id.toString();
     request.fields["experience_year"] = this.experience_year.toString();
     request.fields["job_title"] = this.job_title;

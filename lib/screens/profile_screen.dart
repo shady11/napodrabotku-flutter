@@ -850,12 +850,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
 
                         /// Profile bio
-                        Center(
+                        Prefs.getString(Prefs.USER_TYPE)=="USER"?Center(
                           child: Text('cv'.tr(),
                               style: TextStyle(
                                   fontSize: 20,
                                   color: kColorDark)),
-                        ),
+                        ):Container(),
 
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
@@ -867,120 +867,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         BasicUserCvInfo(user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
 
-                        cv_loading  ? Center(
-                          child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
-                        ):StoreProvider.of<AppState>(context).state.user.user_cv.data != null ?
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('user_education_info'.tr().toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: kColorDarkBlue)
-                                  ),
-                                  CustomButton(
-                                    height: 40.0,
-                                    width: 100.0,
-                                    padding: EdgeInsets.all(5),
-                                    color: kColorPrimary,
-                                    textColor: Colors.white,
-                                    textSize: 14,
-                                    onPressed: () {
-                                      openEducationDialog(context);
-                                    },
-                                    text: 'Добавить'.tr(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            (StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations.length>0)?UserEducationInfo(user_educations: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
-                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('user_experience_info'.tr().toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: kColorDarkBlue)
-                                  ),
-                                  GestureDetector(
-                                    child: CircleButton(
-                                      bgColor: Colors.transparent,
-                                      padding: 0,
-                                      icon: Icon(
-                                        Boxicons.bx_plus,
-                                        color: kColorPrimary,
-                                        size: 24,
-                                      ),
+                        Prefs.getString(Prefs.USER_TYPE)=="USER"?Column(children: [
+                          cv_loading  ? Center(
+                            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+                          ):StoreProvider.of<AppState>(context).state.user.user_cv.data != null ?
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('user_education_info'.tr().toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: kColorDarkBlue)
                                     ),
-                                    onTap: () {
-                                      openExperienceDialog(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                              // child: Text('user_experience_info'.tr().toUpperCase(),
-                              //     style: TextStyle(
-                              //         fontSize: 14,
-                              //         fontWeight: FontWeight.w700,
-                              //         color: kColorDarkBlue)),
-                            ),
-                            StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences.length>0?UserExperienceInfo(user_experiences: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
-                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('user_course_info'.tr().toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: kColorDarkBlue)
-                                  ),
-                                  GestureDetector(
-                                    child: CircleButton(
-                                      bgColor: Colors.transparent,
-                                      padding: 0,
-                                      icon: Icon(
-                                        Boxicons.bx_plus_circle,
-                                        color: kColorPrimary,
-                                        size: 24,
-                                      ),
+                                    CustomButton(
+                                      height: 40.0,
+                                      width: 100.0,
+                                      padding: EdgeInsets.all(5),
+                                      color: kColorPrimary,
+                                      textColor: Colors.white,
+                                      textSize: 14,
+                                      onPressed: () {
+                                        openEducationDialog(context);
+                                      },
+                                      text: 'add'.tr(),
                                     ),
-                                    onTap: () {
-                                      openCourseDialog(context);
-                                    },
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              // child: Text('user_course_info'.tr().toUpperCase(),
-                              //     style: TextStyle(
-                              //         fontSize: 14,
-                              //         fontWeight: FontWeight.w700,
-                              //         color: kColorDarkBlue)),
-                            ),
-                            StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.length>0?UserCourseInfo(user_courses: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data,):Container(
-                              child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                            ),
-                          ],
-                        ) : Center(
-                          child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
-                        ),
+                              (StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations.length>0)?UserEducationInfo(user_educations: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_educations, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
+                                child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('user_experience_info'.tr().toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: kColorDarkBlue)
+                                    ),
+                                    CustomButton(
+                                      height: 40.0,
+                                      width: 100.0,
+                                      padding: EdgeInsets.all(5),
+                                      color: kColorPrimary,
+                                      textColor: Colors.white,
+                                      textSize: 14,
+                                      onPressed: () {
+                                        openExperienceDialog(context);
+                                      },
+                                      text: 'add'.tr(),
+                                    ),
+                                  ],
+                                ),
+                                // child: Text('user_experience_info'.tr().toUpperCase(),
+                                //     style: TextStyle(
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: kColorDarkBlue)),
+                              ),
+                              StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences.length>0?UserExperienceInfo(user_experiences: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_experiences, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data):Container(
+                                child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('user_course_info'.tr().toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: kColorDarkBlue)
+                                    ),
+                                    CustomButton(
+                                      height: 40.0,
+                                      width: 100.0,
+                                      padding: EdgeInsets.all(5),
+                                      color: kColorPrimary,
+                                      textColor: Colors.white,
+                                      textSize: 14,
+                                      onPressed: () {
+                                        openCourseDialog(context);
+                                      },
+                                      text: 'add'.tr(),
+                                    ),
+                                  ],
+                                ),
+                                // child: Text('user_course_info'.tr().toUpperCase(),
+                                //     style: TextStyle(
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: kColorDarkBlue)),
+                              ),
+                              StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.length>0?UserCourseInfo(user_courses: StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses, userCv: StoreProvider.of<AppState>(context).state.user.user_cv.data,):Container(
+                                child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                              ),
+                            ],
+                          ) : Center(
+                            child: Container(margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                          ),
+                        ],):Container(),
                       ],
                     ),
                   ),

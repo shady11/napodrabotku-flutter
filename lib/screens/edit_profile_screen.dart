@@ -207,7 +207,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Edit profile"),
+        title: Text("edit_profile".tr()),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -245,12 +245,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 20),
-                  Align(
+                  Prefs.getString(Prefs.USER_TYPE)=="COMPANY"?Align(
 //                      widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
+                      child: Text('company_name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)):Container(),
+                  Prefs.getString(Prefs.USER_TYPE)=="COMPANY"?TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -268,14 +268,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }
                       return null;
                     },
-                  ),
-                  SizedBox(height: 20),
-                  Align(
+                  ):Container(),
+//                  SizedBox(height: 20),
+                  Prefs.getString(Prefs.USER_TYPE)=="USER"?Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('surname'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
+                      child: Text('surname'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)):Container(),
+                  Prefs.getString(Prefs.USER_TYPE)=="USER"?TextFormField(
                     controller: _surnname_controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -293,7 +293,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       }
                       return null;
                     },
-                  ),
+                  ):Container(),
                   SizedBox(height: 20),
                   Align(
                       widthFactor: 10,
@@ -345,12 +345,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   ),
                   SizedBox(height: 20),
-                  Align(
+                  Prefs.getString(Prefs.USER_TYPE)=="USER"?Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('birth_date'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  CustomButton(
+                      child: Text('birth_date'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)):Container(),
+                  Prefs.getString(Prefs.USER_TYPE)=="USER"?CustomButton(
                       mainAxisAlignment: MainAxisAlignment.start,
                       width: MediaQuery.of(context).size.width * 1,
                       color: Colors.grey[200],
@@ -359,14 +359,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       fontWeight: FontWeight.w400,
                       textAlign: TextAlign.right,
                       text: _birth_date_controller.text,
-                      onPressed: (){_showDataPicker();}),
+                      onPressed: (){_showDataPicker();}):Container(),
                   SizedBox(height: 20),
                   Prefs.getString(Prefs.USER_TYPE) == 'USER'?Column(children: [
-                    AppBar(
-                      leading: Container(),
-                      title: Text("cv".tr()),
-                    ),
-                    SizedBox(height: 20),
+//                    AppBar(
+//                      leading: Container(),
+//                      title: Text("cv".tr()),
+//                    ),
+//                    SizedBox(height: 20),
                     Align(
 //                      widthFactor: 10,
                         heightFactor: 1.5,
@@ -433,8 +433,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         onSave();
                         /// Validate form
                         if (_formKey.currentState.validate()) {
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
                           user.email = _email_controller.text;
                           user.phone_number = _phone_number_controller.text;
@@ -455,14 +453,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
 
                           Navigator.of(context).pop();
+//                          Navigator.of(context).popAndPushNamed(Routes.user_details);
                         }
                         else{
                           return;
                         }
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.of(context)
-                            .pushNamed(Routes.home);
 
                         /// Remove previous screens
                       },

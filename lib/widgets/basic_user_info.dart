@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/utils/constants.dart';
 
 class BasicUserCvInfo extends StatelessWidget {
@@ -21,24 +22,16 @@ class BasicUserCvInfo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("name".tr(),softWrap: true,
+              Text(Prefs.getString(Prefs.USER_TYPE)=="USER"?"surname".tr():"company_name".tr(),softWrap: true,
                   style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
-              Text(user.name,softWrap: true,
-                  style: TextStyle(fontSize: 16, color: kColorDark)),
+              Flexible(
+                child: Text(Prefs.getString(Prefs.USER_TYPE)=="USER"?user.surname:user.name,softWrap: true,
+                    style: TextStyle(fontSize: 16, color: kColorDark)),
+              ),
             ],
           ),
           Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("surname".tr(),softWrap: true,
-                  style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
-              Text(user.surname,softWrap: true,
-                  style: TextStyle(fontSize: 16, color: kColorDark)),
-            ],
-          ),
-          Divider(),
-          /*Row(
+          Prefs.getString(Prefs.USER_TYPE)=="USER"?Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("birth_date".tr(),softWrap: true,
@@ -46,8 +39,8 @@ class BasicUserCvInfo extends StatelessWidget {
               Text(formatter.format(user.birth_date),softWrap: true,
                   style: TextStyle(fontSize: 22,)),
             ],
-          ),*/
-          // Divider(),
+          ):Container(),
+          Prefs.getString(Prefs.USER_TYPE)=="USER"?Divider():Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -71,6 +64,19 @@ class BasicUserCvInfo extends StatelessWidget {
           user_cv != null ?
               Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("job_title".tr(),softWrap: true,
+                          style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                      SizedBox(width: 5,),
+                      Flexible(
+                        child: Text(user_cv.job_title.toString(),softWrap: true,
+                            style: TextStyle(fontSize: 16, color: kColorDark)),
+                      ),
+                    ],
+                  ),
+                  Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -23,8 +23,6 @@ import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/widgets/badge.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 
-import 'notifications_screen.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
 
@@ -538,7 +536,8 @@ class _HomeScreenState extends State<HomeScreen> {
             iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
-            selectedItemColor: Colors.grey,
+            selectedItemColor: Colors.grey[700],
+            selectedFontSize: _tabCurrentIndex==4?13:14,
             currentIndex: _tabCurrentIndex==4?0:_tabCurrentIndex,
             onTap: (index) {
               _nextTab(index);
@@ -555,7 +554,20 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             items: [
-              Prefs.getString(Prefs.USER_TYPE)=='USER'?BottomNavigationBarItem(
+              Prefs.getString(Prefs.USER_TYPE)=='COMPANY'
+                  ?BottomNavigationBarItem(
+                  icon: Icon(
+                    Boxicons.bx_briefcase,
+                    color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                  ),
+                  title: Text(
+                    "vacancies".tr(),
+                    style: TextStyle(
+                        color: _tabCurrentIndex == 0
+                            ? kColorPrimary
+                            : null),
+                  ))
+                  :BottomNavigationBarItem(
                   icon: Icon(
                     Boxicons.bx_search,
                     color: _tabCurrentIndex == 0 ? kColorPrimary : null,
@@ -566,19 +578,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: _tabCurrentIndex == 0
                             ? kColorPrimary
                             : Colors.grey),
-                  )):BottomNavigationBarItem(
+                  )),
+              Prefs.getString(Prefs.USER_TYPE)=='COMPANY'
+                  ?BottomNavigationBarItem(
                   icon: Icon(
-                    Boxicons.bx_briefcase,
-                    color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                    Boxicons.bx_folder,
+                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                   ),
                   title: Text(
-                    "vacancies".tr(),
+                    "cvs".tr(),
                     style: TextStyle(
-                        color: _tabCurrentIndex == 0
+                        color: _tabCurrentIndex == 1
                             ? kColorPrimary
                             : Colors.grey),
-                  )),
-              Prefs.getString(Prefs.USER_TYPE)=='USER'?BottomNavigationBarItem(
+                  ))
+                  :BottomNavigationBarItem(
                   icon: Container(
                     width: 50,
                     height: 30,
@@ -591,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Boxicons.bx_like,
                               color: _tabCurrentIndex == 1 ? kColorPrimary : null,),
                           ),
-                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==null ?Container():Positioned(
+                          StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==null ?Container():Positioned(
                             top: 0.0,
                             right: 0.0,
                             child: Badge(text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds==0 ?'':StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()),
@@ -601,17 +615,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text(
                     "matches".tr(),
-                    style: TextStyle(
-                        color: _tabCurrentIndex == 1
-                            ? kColorPrimary
-                            : Colors.grey),
-                  )):BottomNavigationBarItem(
-                  icon: Icon(
-                    Boxicons.bx_folder,
-                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
-                  ),
-                  title: Text(
-                    "cvs".tr(),
                     style: TextStyle(
                         color: _tabCurrentIndex == 1
                             ? kColorPrimary

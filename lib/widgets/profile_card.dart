@@ -94,7 +94,9 @@ class ProfileCard extends StatelessWidget {
               onPressed: () {
                 Vacancy.deleteCompanyVacancy(vacancy_id: vacancy.id,).then((value) {
                   StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
-                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+//                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfInactiveVacancies());
                   Navigator.of(ctx).pop();
                   Navigator.of(ctx).pop();
                 });
@@ -127,7 +129,9 @@ class ProfileCard extends StatelessWidget {
               child: Text('yes'.tr()),
               onPressed: () {
                 Vacancy.activateDeactiveVacancy(vacancy_id: vacancy.id, active: false).then((value) {
-                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+//                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfInactiveVacancies());
                   StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
                   Navigator.of(ctx).pop();
                   Navigator.of(ctx).pop();
@@ -178,7 +182,7 @@ class ProfileCard extends StatelessWidget {
                           Expanded(
                             child: RichText(
                               text: TextSpan(text: vacancy.company_name.toString() + '\n',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
                                 children: <TextSpan>[
                                   TextSpan(text: vacancy.address, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                                 ],
@@ -199,10 +203,8 @@ class ProfileCard extends StatelessWidget {
                             ),
                             child: Text(vacancy.type.toString(), style: TextStyle(color: Colors.black87),),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
-                          ),
+                          SizedBox(width: 5,),
+                          Flexible(child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: kColorPrimary),)),
                         ],
                       ): Container(),
                       index==null||index <=2 ?Row(
@@ -235,13 +237,14 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
-                      index==null||index <=2 ?SizedBox(
+                      index==null||index <=2  ?Prefs.getString(Prefs.TOKEN )!=null?SizedBox(
                         width: double.maxFinite,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             page =='submit' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.07,
                               padding: EdgeInsets.all(5),
                               color: Colors.grey[200],
                               textColor: kColorPrimary,
@@ -273,6 +276,7 @@ class ProfileCard extends StatelessWidget {
                             ),
                             page =='submit' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.07,
                               padding: EdgeInsets.all(5),
                               color: kColorPrimary,
                               textColor: Colors.white,
@@ -319,7 +323,7 @@ class ProfileCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ):Container(),
+                      ):Container():Container(),
 
                       this.page == 'discover'
                           ? SizedBox(height: 0)

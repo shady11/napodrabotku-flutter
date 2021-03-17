@@ -28,20 +28,22 @@ class _DiscoverTabState extends State<DiscoverTab> {
 
   void handleInitialBuildOfCompanyVacancy(CompanyVacanciesScreenProps props) {
     props.getCompanyVacancies();
+    props.getNumOfActiveVacancies();
   }
   int button = 0;
   int some_index = 0;
   int offset = 5;
 
   void removeCards({String type, int vacancy_id, props, context}) {
-    if(type =="LIKED"){
-      props.addOneToMatches();
+    if(Prefs.getString(Prefs.TOKEN)==null){
+      if(type =="LIKED"){
+        props.addOneToMatches();
+      }
+      Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
+      setState(() {
+        props.listResponse.data.removeLast();
+      });
     }
-    Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
-    setState(() {
-//      StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.add(new Vacancy());
-      props.listResponse.data.removeLast();
-    });
     Vacancy.getVacancyByOffset(
         offset: /*offset<0?0:offset*/4,
         job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
@@ -258,10 +260,12 @@ class _DiscoverTabState extends State<DiscoverTab> {
 }
 class CompanyVacanciesScreenProps {
   final Function getCompanyVacancies;
+  final Function getNumOfActiveVacancies;
   final ListVacancysState listResponse;
 
   CompanyVacanciesScreenProps({
     this.getCompanyVacancies,
+    this.getNumOfActiveVacancies,
     this.listResponse,
   });
 }
@@ -270,6 +274,7 @@ CompanyVacanciesScreenProps mapStateToVacancyProps(Store<AppState> store) {
   return CompanyVacanciesScreenProps(
     listResponse: store.state.vacancy.list,
     getCompanyVacancies: ()=>store.dispatch(getCompanyVacancies()),
+    getNumOfActiveVacancies: ()=>store.dispatch(getNumberOfActiveVacancies()),
   );
 }
 

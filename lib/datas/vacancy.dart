@@ -251,6 +251,8 @@ class VacancyState {
   String type;
   int number_of_likeds;
   int number_of_submiteds;
+  int number_of_active_vacancies;
+  int number_of_inactive_vacancies;
   List region_ids;
   List schedule_ids;
   List busyness_ids;

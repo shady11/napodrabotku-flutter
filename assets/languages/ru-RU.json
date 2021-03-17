@@ -163,9 +163,18 @@
   "for_now_you_dont_have_any_vacancies": "Пока у вас нет обьявленных вакансий",
   "vacancies": "Вакансии",
   "cvs": "Резюме",
-  "deactivate": "Деактивировать",
+  "deactivate": "Деактиви\nровать",
   "delete_are_you_sure": "Удалить вакансию?",
   "deactivate_are_you_sure": "Деактивировать вакансию?",
   "active_vacancies": "Активные ваканси",
-  "inactive_vacancies": "Неактивные ваканси"
+  "inactive_vacancies": "Неактивные ваканси",
+  "add": "Добавить",
+  "edit_profile": "Редактировать профиль",
+  "company_name": "Название компании",
+  "user_surname_name": "ФИО",
+  "user_job_title": "Должность",
+  "user_phone_number": "Номер телефона",
+  "user_phone_number": "Телефон номери",
+  "sign_in_to_submit": "Чтобы подать входите",
+  "back": "Назад"
 }

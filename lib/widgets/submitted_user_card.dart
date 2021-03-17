@@ -85,15 +85,11 @@ class UserCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 20),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(text: user.surname.toString() + '\n',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(text: user.email, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
-                              ],
-                            ),
-                          ),
+                        Column(
+                          children: [
+                            Text(user.surname, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),),
+                            Text(user.email, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45),),
+                          ],
                         ),
                       ],
                     ),
@@ -109,10 +105,8 @@ class UserCard extends StatelessWidget {
                           ),
                           child: Text(user.phone_number, style: TextStyle(color: Colors.black87),),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          child: Text(user.vacancy_name!=null ?user.vacancy_name:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
-                        ),
+                        SizedBox(width: 5,),
+                        Container(child: Flexible(child: Text(user.vacancy_name!=null ?user.vacancy_name:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),))),
                       ],
                     ): Container(),
                     index==null||index <=2 ?Row(

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ishapp/datas/RSAA.dart';
+import 'package:ishapp/datas/app_state.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/vacancy.dart';
 import 'package:ishapp/widgets/show_like_or_dislike.dart';
@@ -24,11 +27,58 @@ class VacancyView extends StatelessWidget {
 
   VacancyView({this.page, this.position, @required this.vacancy});
 
+  void _showDialog(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('back'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            ),
+            CustomButton(text: "sign_in".tr(),
+                textColor: kColorPrimary,
+                color: Colors.white,
+                onPressed:(){
+                  Navigator.of(context)
+                      .popUntil((route) => route.isFirst);
+                  Navigator.pushNamed(context, Routes.start);
+                })
+          ],
+        ),
+      ),
+    );
+  }
+  void _showDialog1(context,String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 1,
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 1,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Stack(
@@ -85,10 +135,8 @@ class VacancyView extends StatelessWidget {
                           ),
                           child: Text(vacancy.type.toString(), style: TextStyle(color: Colors.black87),),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),),
-                        ),
+                        SizedBox(width: 5,),
+                        Flexible(child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),)),
                       ],
                     ),
                     Row(
@@ -121,6 +169,16 @@ class VacancyView extends StatelessWidget {
                       ),
                     ) : SizedBox(),
                     SizedBox(height: 20),
+                    Expanded(
+                      flex:1,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: RichText(
+                          text: TextSpan(text: vacancy.description, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     SizedBox(
                       width: double.maxFinite,
                       child: Row(
@@ -133,8 +191,24 @@ class VacancyView extends StatelessWidget {
                               color: kColorPrimary,
                               textColor: Colors.white,
                               onPressed: () {
-
-//                                Navigator.of(context).pop();
+                                Prefs.getString(Prefs.TOKEN )==null?_showDialog(context, 'sign_in_to_submit'.tr()):User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                  if(value){
+                                    Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
+                                      if(value=="OK"){
+                                        _showDialog1(context, "successfully_submitted".tr());
+                                        StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                        StoreProvider.of<AppState>(context).dispatch(getSubmittedVacancies());
+                                        StoreProvider.of<AppState>(context).dispatch(getNumberOfSubmittedVacancies());
+                                      }
+                                      else{
+                                        _showDialog(context, "some_errors_occured_try_again".tr());
+                                      }
+                                    });
+                                  }
+                                  else{
+                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                  }
+                                });
                               },
                               text: 'submit'.tr(),
                             ),

@@ -107,7 +107,9 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
 
     case GET_LIKED_VACANCY_NUMBER_SUCCESS:
-      if(int.parse(action.payload) == 0)
+      if(action.payload == "FALSE")
+        newState.number_of_likeds = null;
+      else if(int.parse(action.payload) == 0)
         newState.number_of_likeds = null;
       else
         newState.number_of_likeds = int.parse(action.payload);
@@ -127,6 +129,36 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
 
     case GET_SUBMITTED_VACANCY_NUMBER_FAILURE:
       newState.number_of_submiteds = 0;
+      return newState;
+
+    case GET_ACTIVE_VACANCY_NUMBER_REQUEST:
+      newState.number_of_active_vacancies = 0;
+      return newState;
+
+    case GET_ACTIVE_VACANCY_NUMBER_SUCCESS:
+      if(int.parse(action.payload) == 0)
+        newState.number_of_active_vacancies = null;
+      else
+        newState.number_of_active_vacancies = int.parse(action.payload);
+      return newState;
+
+    case GET_ACTIVE_VACANCY_NUMBER_FAILURE:
+      newState.number_of_active_vacancies = null;
+      return newState;
+
+    case GET_INACTIVE_VACANCY_NUMBER_REQUEST:
+      newState.number_of_inactive_vacancies = 0;
+      return newState;
+
+    case GET_INACTIVE_VACANCY_NUMBER_SUCCESS:
+      if(int.parse(action.payload) == 0)
+        newState.number_of_inactive_vacancies = null;
+      else
+        newState.number_of_inactive_vacancies = int.parse(action.payload);
+      return newState;
+
+    case GET_INACTIVE_VACANCY_NUMBER_FAILURE:
+      newState.number_of_inactive_vacancies = null;
       return newState;
 
     case DELETE_ITEM:

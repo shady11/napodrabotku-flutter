@@ -934,7 +934,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                           backgroundColor: kColorPrimary,
                           radius: 60,
                           backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
-                              SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
+                              SERVER_IP+ data.avatar,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                         ),
                       ),
                     ),
@@ -968,7 +968,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("surname_name".tr(),softWrap: true,
+                                    Text("user_surname_name".tr(),softWrap: true,
                                         style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                     Text(data.surname_name,softWrap: true,
                                         style: TextStyle(fontSize: 16, color: kColorDark)),
@@ -988,7 +988,20 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("phone_number".tr(),softWrap: true,
+                                    Text("user_job_title".tr(),softWrap: true,
+                                        style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                    SizedBox(width: 5,),
+                                    Flexible(
+                                      child: Text(data?.job_title,softWrap: true,
+                                          style: TextStyle(fontSize: 16, color: kColorDark)),
+                                    ),
+                                  ],
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("user_phone_number".tr(),softWrap: true,
                                         style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                     Text(data?.phone_number,softWrap: true,
                                         style: TextStyle(fontSize: 16, color: kColorDark)),

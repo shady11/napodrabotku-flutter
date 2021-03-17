@@ -42,7 +42,7 @@ RSAA getVacanciesRequest({
       ],
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': Prefs.getString(Prefs.TOKEN ),
+        'Authorization': Prefs.getString(Prefs.TOKEN )!=null?Prefs.getString(Prefs.TOKEN ):'null',
       },
     );
 }
@@ -302,3 +302,48 @@ RSAA getUserFullInfoRequest(int user_id) {
 }
 
 ThunkAction<AppState> getUserFullInfo(int user_id) => (Store<AppState> store) => store.dispatch(getUserFullInfoRequest(user_id));
+
+
+const GET_ACTIVE_VACANCY_NUMBER_REQUEST = 'GET_ACTIVE_VACANCY_NUMBER_REQUEST';
+const GET_ACTIVE_VACANCY_NUMBER_SUCCESS = 'GET_ACTIVE_VACANCY_NUMBER_SUCCESS';
+const GET_ACTIVE_VACANCY_NUMBER_FAILURE = 'GET_ACTIVE_VACANCY_NUMBER_FAILURE';
+RSAA getNumOfActiveVacancyRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_ACTIVE_VACANCY_NUMBER,
+      types: [
+        GET_ACTIVE_VACANCY_NUMBER_REQUEST,
+        GET_ACTIVE_VACANCY_NUMBER_SUCCESS,
+        GET_ACTIVE_VACANCY_NUMBER_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getNumberOfActiveVacancies() => (Store<AppState> store) => store.dispatch(getNumOfActiveVacancyRequest());
+
+const GET_INACTIVE_VACANCY_NUMBER_REQUEST = 'GET_INACTIVE_VACANCY_NUMBER_REQUEST';
+const GET_INACTIVE_VACANCY_NUMBER_SUCCESS = 'GET_INACTIVE_VACANCY_NUMBER_SUCCESS';
+const GET_INACTIVE_VACANCY_NUMBER_FAILURE = 'GET_INACTIVE_VACANCY_NUMBER_FAILURE';
+RSAA getNumOfInactiveVacancyRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_INACTIVE_VACANCY_NUMBER,
+      types: [
+        GET_INACTIVE_VACANCY_NUMBER_REQUEST,
+        GET_INACTIVE_VACANCY_NUMBER_SUCCESS,
+        GET_INACTIVE_VACANCY_NUMBER_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN ),
+      },
+    );
+}
+
+ThunkAction<AppState> getNumberOfInactiveVacancies() => (Store<AppState> store) => store.dispatch(getNumOfInactiveVacancyRequest());
