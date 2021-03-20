@@ -63,7 +63,7 @@ class VacancyView extends StatelessWidget {
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              child: Text('ok'.tr()),
+              child: Text('okay'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
@@ -184,7 +184,7 @@ class VacancyView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          page =='discover' ?Container() :Center(
+                          page =='discover' ?Container() :page=='submitted'||page=='inactive'?Container():Center(
                             child: CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),

@@ -933,7 +933,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                         child: CircleAvatar(
                           backgroundColor: kColorPrimary,
                           radius: 60,
-                          backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                          backgroundImage: data.avatar != null ? NetworkImage(
                               SERVER_IP+ data.avatar,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                         ),
                       ),

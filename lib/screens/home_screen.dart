@@ -536,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
             iconSize: 25,
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
-            selectedItemColor: Colors.grey[700],
+            selectedItemColor: Colors.grey[600],
             selectedFontSize: _tabCurrentIndex==4?13:14,
             currentIndex: _tabCurrentIndex==4?0:_tabCurrentIndex,
             onTap: (index) {

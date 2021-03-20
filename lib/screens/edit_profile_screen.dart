@@ -194,7 +194,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if(Prefs.getString(Prefs.USER_TYPE) == 'USER'){
         user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
         title_controller1.text = user_cv.job_title;
-        experience_year_controller.text = user_cv.experience_year.toString();
+        experience_year_controller.text = user_cv.experience_year==null?'0':user_cv.experience_year.toString();
       }
       _name_controller.text = user.name;
       _surnname_controller.text = user.surname;
@@ -222,7 +222,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: _imageFile == null ? CircleAvatar(
                       backgroundColor: kColorPrimary,
                       radius: 60,
-                      backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                      backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null ? NetworkImage(
                           SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                     ) :
                     CircleAvatar(

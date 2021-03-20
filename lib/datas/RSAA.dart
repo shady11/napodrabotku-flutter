@@ -27,6 +27,7 @@ RSAA getVacanciesRequest({
       endpoint: API_IP+API_VACANCY_LIST,
       body: json.encode({
         'limit': 5,
+        'lang': Prefs.getString(Prefs.LANGUAGE),
         'offset': 0,
         'type': type,
         'type_ids': vacancy_type_ids,
@@ -87,7 +88,7 @@ RSAA getLikedVacancyRequest() {
   return
     RSAA(
       method: 'GET',
-      endpoint: API_IP+API_LIKED_USER_VACANCY_LIST,
+      endpoint: API_IP+API_LIKED_USER_VACANCY_LIST+'?lang='+Prefs.getString(Prefs.LANGUAGE),
       types: [
         GET_LIKED_VACANCY_REQUEST,
         GET_LIKED_VACANCY_SUCCESS,
@@ -109,7 +110,7 @@ RSAA getSubmittedVacancyRequest() {
   return
     RSAA(
       method: 'GET',
-      endpoint: API_IP+API_SUBMITTED_USER_VACANCY_LIST,
+      endpoint: API_IP+API_SUBMITTED_USER_VACANCY_LIST+'?lang='+Prefs.getString(Prefs.LANGUAGE),
       types: [
         GET_SUBMITTED_VACANCY_REQUEST,
         GET_SUBMITTED_VACANCY_SUCCESS,
@@ -199,7 +200,7 @@ RSAA getUserCvRequest() {
   return
     RSAA(
       method: 'GET',
-      endpoint: API_IP+API_GET_USER_CV,
+      endpoint: API_IP+API_GET_USER_CV+'?lang='+Prefs.getString(Prefs.LANGUAGE),
       types: [
         GET_USER_CV_REQUEST,
         GET_USER_CV_SUCCESS,
@@ -222,7 +223,7 @@ RSAA getCompanyVacanciesRequest() {
   return
     RSAA(
       method: 'GET',
-      endpoint: API_IP+API_COMPANY_VACANCIES,
+      endpoint: API_IP+API_COMPANY_VACANCIES+'?lang='+Prefs.getString(Prefs.LANGUAGE),
       types: [
         GET_COMPANY_VACANCIES_REQUEST,
         GET_COMPANY_VACANCIES_SUCCESS,
@@ -244,7 +245,7 @@ RSAA getCompanyInactiveVacanciesRequest() {
   return
     RSAA(
       method: 'GET',
-      endpoint: API_IP+API_COMPANY_INACTIVE_VACANCIES,
+      endpoint: API_IP+API_COMPANY_INACTIVE_VACANCIES+'?lang='+Prefs.getString(Prefs.LANGUAGE),
       types: [
         GET_COMPANY_INACTIVE_VACANCIES_REQUEST,
         GET_COMPANY_INACTIVE_VACANCIES_SUCCESS,

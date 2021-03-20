@@ -837,7 +837,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: CircleAvatar(
                         backgroundColor: kColorPrimary,
                         radius: 60,
-                        backgroundImage: Prefs.getString(Prefs.TOKEN) != null ? NetworkImage(
+                        backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null ? NetworkImage(
                             SERVER_IP+ Prefs.getString(Prefs.PROFILEIMAGE),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}) : null,
                       ),
                     ),

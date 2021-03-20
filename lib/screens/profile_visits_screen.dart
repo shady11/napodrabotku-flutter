@@ -10,6 +10,7 @@ import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/profile_card.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:ishapp/widgets/users_grid.dart';
+import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -45,8 +46,19 @@ class ProfileVisitsScreen extends StatelessWidget {
                       return GestureDetector(
                         child: ProfileCard(vacancy: vacancy, page:"submit"),
                         onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return Scaffold(
+                                  backgroundColor: kColorPrimary,
+                                  appBar: AppBar(
+                                    title: Text("vacancy_view".tr()),
+                                  ),
+                                  body: VacancyView(
+                                    page:"submitted",
+                                    vacancy: vacancy,
+                                  ),
+                                );
+                              }));
                         },
                       );
                     }).toList()),
@@ -84,10 +96,21 @@ class ProfileVisitsScreen extends StatelessWidget {
                 child: StoreProvider.of<AppState>(context).state.vacancy.inactive_list.data!=null?UsersGrid(
                     children: StoreProvider.of<AppState>(context).state.vacancy.inactive_list.data.map((vacancy) {
                       return GestureDetector(
-                        child: ProfileCard(vacancy: vacancy, page: 'company',),
+                        child: ProfileCard(vacancy: vacancy, page: 'company_inactive',),
                         onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return Scaffold(
+                                  backgroundColor: kColorPrimary,
+                                  appBar: AppBar(
+                                    title: Text("vacancy_view".tr()),
+                                  ),
+                                  body: VacancyView(
+                                    page:"inactive",
+                                    vacancy: vacancy,
+                                  ),
+                                );
+                              }));
                         },
                       );
                     }).toList()):Center(

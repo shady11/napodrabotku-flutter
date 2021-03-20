@@ -1,8 +1,25 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+//import 'package:socket_io/socket_io.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+class StreamSocket{
+  final _socketResponse= StreamController<String>();
+
+  void Function(String) get addResponse => _socketResponse.sink.add;
+
+  Stream<String> get getResponse => _socketResponse.stream;
+
+  void dispose(){
+    _socketResponse.close();
+  }
+}
 
 class SocketDemo extends StatefulWidget {
   SocketDemo() : super();
@@ -14,23 +31,61 @@ class SocketDemo extends StatefulWidget {
 }
 
 class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
-  WebSocketChannel channel;
+  WebSocketChannel channel ;
 
   String _status;
-  SocketUtil _socketUtil;
+//  SocketUtil _socketUtil;
 
   List<String> _messages;
   TextEditingController _textEditingController;
   int userSelected = 1;
+  IO.Socket socket;
 
   @override
   void initState() {
     super.initState();
+    connectAndListen();
+    socket = IO.io('http://192.168.0.105:8001');
     _textEditingController = TextEditingController();
     _status = "";
     _messages = List<String>();
-    _socketUtil = SocketUtil();
-    _socketUtil.initSocket(connectListener, messageListener);
+
+    /*Socket.connect("192.168.0.105", 8001).then((socket) {
+      print('Connected to: ');
+
+      //Establish the onData, and onDone callbacks
+      socket.listen((data) {
+        print(new String.fromCharCodes(data).trim());
+      },
+          onDone: () {
+            print("Done");
+            socket.destroy();
+          });
+
+      //Send the request
+      socket.write(json.encode('{command: "register", userId: 9}'));
+    });*/
+  }
+
+
+
+  StreamSocket streamSocket =StreamSocket();
+
+//STEP2: Add this function in main function in main.dart file and add incoming data to the stream
+  void connectAndListen(){
+    IO.Socket socket = IO.io('http://localhost:3000',
+    OptionBuilder()
+        .setTransports(['websocket']).build());
+
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('msg', 'test');
+    });
+
+    //When an event recieved from server, data is added to the stream
+    socket.on('event', (data) => streamSocket.addResponse);
+    socket.onDisconnect((_) => print('disconnect'));
+
   }
 
   @override
@@ -42,7 +97,7 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Container(
-      /*padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0),
       child: Column(
         children: <Widget>[
           TextField(
@@ -67,13 +122,24 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
               if (_textEditingController.text.isEmpty) {
                 return;
               }
+              socket.onConnect((_) {
+                print('connect');
+                socket.emit('chat message', 'test');
+              });
+              socket.emit('chat message', 'test');
+              socket.on('event', (data) => print(data));
+              socket.onDisconnect((_) => print('disconnect'));
+              socket.on('fromServer', (_) => print(_));
+              /*channel.sink.add('chat message, message');
+              channel.sink.add(json.encode('{command: "message", from:"1", to: "9", message: "22"}'));
+              channel.sink.add('asd');
               _socketUtil.sendMessage(_textEditingController.text).then(
                     (bool messageSent) {
                   if (messageSent) {
                     _textEditingController.text = "";
                   }
                 },
-              );
+              );*/
             },
           ),
           SizedBox(
@@ -83,22 +149,18 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
           SizedBox(
             height: 20.0,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: null == _messages ? 0 : _messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Text(
-                  _messages[index],
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black,
-                  ),
+          /*Expanded(
+            child: StreamBuilder(
+              stream: streamSocket.getResponse ,
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot){
+                return Container(
+                  child: Text(snapshot.data),
                 );
               },
             ),
-          ),
+          ),*/
         ],
-      ),*/
+      ),
     );
   }
 
@@ -116,15 +178,16 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   }
 }
 
+/*
 class SocketUtil {
   Socket _socket;
   bool socketInit = false;
-  static const String SERVER_IP = "192.168.0.103";
-  static const int SERVER_PORT = 8000;
+  static const String SERVER_IP = "192.168.0.105";
+  static const int SERVER_PORT = 8001;
 
   Future<bool> sendMessage(String message) async {
     try {
-      _socket.add(utf8.encode(message));
+      _socket.add(utf8.encode("chat message, message"));
     } catch (e) {
       print(e.toString());
       return false;
@@ -161,3 +224,4 @@ class SocketUtil {
     }
   }
 }
+*/

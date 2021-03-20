@@ -35,9 +35,9 @@ class BasicUserCvInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("birth_date".tr(),softWrap: true,
-                  style: TextStyle(fontSize: 20, color: Colors.grey)),
+                  style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
               Text(formatter.format(user.birth_date),softWrap: true,
-                  style: TextStyle(fontSize: 22,)),
+                  style: TextStyle(fontSize: 16, color: kColorDark)),
             ],
           ):Container(),
           Prefs.getString(Prefs.USER_TYPE)=="USER"?Divider():Container(),
@@ -71,7 +71,7 @@ class BasicUserCvInfo extends StatelessWidget {
                           style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                       SizedBox(width: 5,),
                       Flexible(
-                        child: Text(user_cv.job_title.toString(),softWrap: true,
+                        child: Text(user_cv.job_title==null?'-':user_cv.job_title.toString(),softWrap: true,
                             style: TextStyle(fontSize: 16, color: kColorDark)),
                       ),
                     ],
@@ -82,7 +82,7 @@ class BasicUserCvInfo extends StatelessWidget {
                     children: [
                       Text("experience_year".tr(),softWrap: true,
                           style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
-                      Text(user_cv.experience_year.toString(),softWrap: true,
+                      Text(user_cv.experience_year==null?'-':user_cv.experience_year.toString(),softWrap: true,
                           style: TextStyle(fontSize: 16, color: kColorDark)),
                     ],
                   ), Divider()

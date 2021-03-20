@@ -35,7 +35,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
   int offset = 5;
 
   void removeCards({String type, int vacancy_id, props, context}) {
-    if(Prefs.getString(Prefs.TOKEN)==null){
+    if(Prefs.getString(Prefs.TOKEN)!=null){
       if(type =="LIKED"){
         props.addOneToMatches();
       }

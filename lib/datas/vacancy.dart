@@ -36,7 +36,7 @@ class Vacancy {
       this.company});
 
   static Future<List<dynamic>> getLists(String model) async {
-    final url = API_IP + model;
+    final url = API_IP + model+'?lang='+Prefs.getString(Prefs.LANGUAGE);
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(url, headers: headers);
@@ -188,7 +188,7 @@ class Vacancy {
       };
       final response = await http.post(url,
           headers: headers,
-          body: json.encode({'user_id': Prefs.getInt(Prefs.USER_ID),'vacancy_id': vacancy_id, 'type': type}));
+          body: json.encode({'vacancy_id': vacancy_id, 'type': type}));
       print(response.body);
       return "OK";
     } catch (error) {

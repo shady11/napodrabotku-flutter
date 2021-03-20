@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  void _showDialog(context,String message) {
+  void _showDialog(context,String message, bool error) {
     showDialog(
       context: context,
       builder: (ctx) => Center(
@@ -82,6 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Text('continue'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
+                if(!error)
                 Navigator.pushReplacementNamed(
                     context, Routes.home);
               },
@@ -489,19 +490,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isUserExists = value;
                           });
                         });
-                        _openLoadingDialog(context);
 
                         /// Validate form
                         if (_formKey.currentState.validate()) {
 //                           Navigator.of(context)
 //                               .popUntil((route) => route.isFirst);
+                          _openLoadingDialog(context);
                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
                           User user = new User();
                           user.password = _password_controller.text;
                           user.email = _email_controller.text;
                           user.phone_number = _phone_number_controller.text;
-                          user.birth_date =
+                          user.birth_date =company == is_company.Company?DateTime.now():
                               formatter.parse(_birth_date_controller.text);
                           user.name = _name_controller.text;
                           user.surname = _surnname_controller.text;
@@ -551,14 +552,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Prefs.setString(Prefs.TOKEN, response["token"]);
                                 Prefs.setString(Prefs.EMAIL, response["email"]);
                                 Prefs.setInt(Prefs.USER_ID, response["id"]);
+                                Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
                                 Prefs.setString(
                                     Prefs.PROFILEIMAGE, response["avatar"]);
                                 _showDialog(
-                                    context, 'successfull_sign_up'.tr());
+                                    context, 'successfull_sign_up'.tr(), false);
                               }
                               else {
                                 _showDialog(context,
-                                    'some_errors_occured_plese_try_again'.tr());
+                                    'some_errors_occured_plese_try_again'.tr(), true);
                               }
                             });
                           }).catchError((e) {
