@@ -293,8 +293,8 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
   openExperienceDialog(context, UserExperience userExperience) {
 
     job_title_controller.text = userExperience.job_title.toString();
-    start_date_controller.text = formatter.format(userExperience.start_date);
-    end_date_controller.text = formatter.format(userExperience.end_date);
+    start_date_controller.text = userExperience.start_date;
+    end_date_controller.text = userExperience.end_date;
     organization_name_controller.text = userExperience.organization_name.toString();
     description_controller.text = userExperience.description.toString();
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
@@ -63,8 +64,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserCourse userCourse = new UserCourse();
   UserCv userCv;
 
-  openEducationDialog(context) {
+  final educationAddFormKey = GlobalKey<FormState>();
+  final educationEditFormKey = GlobalKey<FormState>();
+  final experienceAddFormKey = GlobalKey<FormState>();
+  final experienceEditFormKey = GlobalKey<FormState>();
+  final courseAddFormKey = GlobalKey<FormState>();
+  final courseEditFormKey = GlobalKey<FormState>();
 
+  openEducationDialog(context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -94,6 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     /// Form
                     Form(
+                      key:educationAddFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -153,13 +161,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -187,13 +195,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -221,13 +229,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -244,6 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 TextFormField(
+                                  keyboardType: TextInputType.number,
                                   controller: end_year_controller,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -255,13 +264,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -290,23 +299,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
+                                    if(educationAddFormKey.currentState.validate()){
+                                      this.userEducation.title = title_controller.text;
+                                      this.userEducation.faculty = faculty_controller.text;
+                                      this.userEducation.speciality = speciality_controller.text;
+                                      this.userEducation.type = type_controller.text;
+                                      this.userEducation.end_year = end_year_controller.text;
 
-                                    this.userEducation.title = title_controller.text;
-                                    this.userEducation.faculty = faculty_controller.text;
-                                    this.userEducation.speciality = speciality_controller.text;
-                                    this.userEducation.type = type_controller.text;
-                                    this.userEducation.end_year = end_year_controller.text;
-
-                                    this.userEducation.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
-                                      StoreProvider.of<AppState>(context)
-                                          .dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-                                      title_controller = TextEditingController();
-                                      faculty_controller = TextEditingController();
-                                      speciality_controller = TextEditingController();
-                                      type_controller = TextEditingController();
-                                      end_year_controller = TextEditingController();
-                                    });
+                                      this.userEducation.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                        StoreProvider.of<AppState>(context)
+                                            .dispatch(getUserCv());
+                                        Navigator.of(context).pop();
+                                        title_controller = TextEditingController();
+                                        faculty_controller = TextEditingController();
+                                        speciality_controller = TextEditingController();
+                                        type_controller = TextEditingController();
+                                        end_year_controller = TextEditingController();
+                                      });
+                                    }
 
                                   },
                                   text: 'save'.tr(),
@@ -356,6 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     /// Form
                     Form(
+                      key:experienceAddFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -404,16 +415,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 Container(
-                                  child: CustomButton(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    width: MediaQuery.of(context).size.width * 1,
-                                    color: Colors.grey[200],
-                                    textColor: kColorPrimary,
-                                    textSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    textAlign: TextAlign.right,
-                                    text: this.start_date_controller.text,
-                                    onPressed: (){_showDataPicker(1, context);}
+                                  child: TextFormField(
+                                    controller: this.start_date_controller,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none
+                                      ),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    /*validator: (name) {
+                                      // Basic validation
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },*/
                                   ),
                                 ),
                               ],
@@ -431,16 +451,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 Container(
-                                  child: CustomButton(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      width: MediaQuery.of(context).size.width * 1,
-                                      color: Colors.grey[200],
-                                      textColor: kColorPrimary,
-                                      textSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      textAlign: TextAlign.right,
-                                      text: this.end_date_controller.text,
-                                      onPressed: (){_showDataPicker(2, context);}
+                                  child: TextFormField(
+                                    controller: this.end_date_controller,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none
+                                      ),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    /*validator: (name) {
+                                      // Basic validation
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },*/
                                   ),
                                 ),
                               ],
@@ -469,13 +498,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -503,13 +532,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -539,22 +568,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
 
-                                    this.userExperience.job_title = job_title_controller.text;
-                                    this.userExperience.start_date = formatter.parse(start_date_controller.text);
-                                    this.userExperience.end_date = formatter.parse(end_date_controller.text);
-                                    this.userExperience.organization_name = organization_name_controller.text;
-                                    this.userExperience.description = description_controller.text;
+                                    if(experienceAddFormKey.currentState.validate()){
+                                      this.userExperience.job_title = job_title_controller.text;
+                                      this.userExperience.start_date = (start_date_controller.text);
+                                      this.userExperience.end_date = (end_date_controller.text);
+                                      this.userExperience.organization_name = organization_name_controller.text;
+                                      this.userExperience.description = description_controller.text;
 
-                                    this.userExperience.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
-                                      StoreProvider.of<AppState>(context)
-                                          .dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-                                      job_title_controller = TextEditingController();
-                                      start_date_controller = TextEditingController();
-                                      end_date_controller = TextEditingController();
-                                      organization_name_controller = TextEditingController();
-                                      description_controller = TextEditingController();
-                                    });
+                                      this.userExperience.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                        StoreProvider.of<AppState>(context)
+                                            .dispatch(getUserCv());
+                                        Navigator.of(context).pop();
+                                        job_title_controller = TextEditingController();
+                                        start_date_controller = TextEditingController();
+                                        end_date_controller = TextEditingController();
+                                        organization_name_controller = TextEditingController();
+                                        description_controller = TextEditingController();
+                                      });
+                                    }
 
                                   },
                                   text: 'save'.tr(),
@@ -604,6 +635,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     /// Form
                     Form(
+                      key: courseAddFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -663,13 +695,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -697,13 +729,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -731,13 +763,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -760,28 +792,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'cancel'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                  MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
+                                    if(courseAddFormKey.currentState.validate()){
+                                      this.userCourse.name = name_controller.text;
+                                      this.userCourse.organization_name = course_organization_name_controller.text;
+                                      this.userCourse.duration = duration_controller.text;
+                                      this.userCourse.end_year = course_end_year_controller.text;
 
-                                    this.userCourse.name = name_controller.text;
-                                    this.userCourse.organization_name = course_organization_name_controller.text;
-                                    this.userCourse.duration = duration_controller.text;
-                                    this.userCourse.end_year = course_end_year_controller.text;
+                                      this.userCourse.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
+                                        StoreProvider.of<AppState>(context)
+                                            .dispatch(getUserCv());
+                                        Navigator.of(context).pop();
 
-                                    this.userCourse.save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id).then((value) {
-                                      StoreProvider.of<AppState>(context)
-                                          .dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-
-                                      name_controller = TextEditingController();
-                                      course_organization_name_controller = TextEditingController();
-                                      duration_controller = TextEditingController();
-                                      course_end_year_controller = TextEditingController();
-                                    });
+                                        name_controller = TextEditingController();
+                                        course_organization_name_controller = TextEditingController();
+                                        duration_controller = TextEditingController();
+                                        course_end_year_controller = TextEditingController();
+                                      });
+                                    }
 
                                   },
                                   text: 'save'.tr(),
@@ -799,6 +831,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         });
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -541,6 +541,7 @@ class UserCv {
   int id;
   int experience_year;
   String job_title;
+  String attachment;
   List<UserExperience> user_experiences;
   List<UserEducation> user_educations;
   List<UserCourse> user_courses;
@@ -549,6 +550,7 @@ class UserCv {
       {this.id,
       this.experience_year,
       this.job_title,
+      this.attachment,
       this.user_experiences,
       this.user_educations,
       this.user_courses});
@@ -556,13 +558,14 @@ class UserCv {
   factory UserCv.fromJson(Map<String, dynamic> json) => new UserCv(
         id: json["id"],
         job_title: json["job_title"],
+        attachment: json["attachment"],
         experience_year: json["experience_year"],
         user_courses: coursesToList(json['courses']),
         user_educations: educationsToList(json['educations']),
         user_experiences: experiencesToList(json['experiences']),
       );
 
-  void save() async {
+  void save({attachment}) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_SAVE);
 
@@ -581,17 +584,17 @@ class UserCv {
 //    request.fields["user_courses"] = json.encode(this.user_courses);
 
     // open a byteStream
-//    if (_image != null) {
-//      var stream =
-//      new http.ByteStream(DelegatingStream.typed(_image.openRead()));
-//      // get file length
-//      var length = await _image.length();
-//      // multipart that takes file.. here this "image_file" is a key of the API request
-//      var multipartFile = new http.MultipartFile('file', stream, length,
-//          filename: basename(_image.path));
-//      // add file to multipart
-//      request.files.add(multipartFile);
-//    }
+    if (attachment != null) {
+      var stream =
+      new http.ByteStream(DelegatingStream.typed(attachment.openRead()));
+      // get file length
+      var length = await attachment.length();
+      // multipart that takes file.. here this "image_file" is a key of the API request
+      var multipartFile = new http.MultipartFile('attachment', stream, length,
+          filename: basename(attachment.path));
+      // add file to multipart
+      request.files.add(multipartFile);
+    }
 
     // send request to upload image
     await request.send().then((response) async {
@@ -617,8 +620,8 @@ class UserCv {
       result.add(new UserExperience(
         id: i['id'],
         job_title: i['job_title'],
-        start_date: DateTime.parse(i['start_date']),
-        end_date: DateTime.parse(i['end_date']),
+        start_date: i['start_date'],
+        end_date: i['end_date'],
         organization_name: i['organization_name'],
         description: i['description'],
       ));
@@ -708,8 +711,8 @@ class UserFullInfo {
       result.add(new UserExperience(
         id: i['id'],
         job_title: i['job_title'],
-        start_date: DateTime.parse(i['start_date']),
-        end_date: DateTime.parse(i['end_date']),
+        start_date: (i['start_date']),
+        end_date: (i['end_date']),
         organization_name: i['organization_name'],
         description: i['description'],
       ));
@@ -754,8 +757,8 @@ class UserExperience {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   int id;
   String job_title;
-  DateTime start_date;
-  DateTime end_date;
+  String start_date;
+  String end_date;
   String organization_name;
   String description;
 
@@ -770,8 +773,8 @@ class UserExperience {
   Map toJson() => {
     'id': id.toString(),
     'job_title': job_title.toString(),
-    'start_date': formatter.format(start_date).toString(),
-    'end_date': formatter.format(end_date).toString(),
+    'start_date': start_date,
+    'end_date': end_date,
     'organization_name': organization_name.toString(),
     'description': description.toString(),
   };
@@ -786,11 +789,11 @@ class UserExperience {
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    request.fields["user_id"] = "11";
+    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID).toString();
     request.fields["user_cv_id"] = id.toString();
     request.fields["job_title"] = this.job_title.toString();
-    request.fields["start_date"] = formatter.format(start_date).toString();
-    request.fields["end_date"] = formatter.format(end_date).toString();
+    request.fields["start_date"] = start_date;
+    request.fields["end_date"] = end_date;
     request.fields["organization_name"] = this.organization_name.toString();
     request.fields["description"] = this.description.toString();
 
@@ -799,7 +802,7 @@ class UserExperience {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        var response = json.decode(value);
+        var response = value;
       });
     }).catchError((e) {
       print(e);
@@ -818,8 +821,8 @@ class UserExperience {
 
     request.fields["id"] = id.toString();
     request.fields["job_title"] = this.job_title.toString();
-    request.fields["start_date"] = formatter.format(start_date).toString();
-    request.fields["end_date"] = formatter.format(end_date).toString();
+    request.fields["start_date"] = start_date;
+    request.fields["end_date"] = end_date;
     request.fields["organization_name"] = this.organization_name.toString();
     request.fields["description"] = this.description.toString();
 
@@ -891,7 +894,7 @@ class UserEducation {
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    request.fields["user_id"] = "11";
+    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID).toString();
     request.fields["user_cv_id"] = id.toString();
     request.fields["title"] = this.title.toString();
     request.fields["faculty"] = this.faculty.toString();
@@ -995,7 +998,7 @@ class UserCourse {
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-    request.fields["user_id"] = "11";
+    request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID).toString();
     request.fields["user_cv_id"] = id.toString();
     request.fields["name"] = this.name.toString();
     request.fields["organization_name"] = this.organization_name.toString();

@@ -184,7 +184,7 @@ class VacancyView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          page =='discover' ?Container() :page=='submitted'||page=='inactive'?Container():Center(
+                          page =='discover' ?Container() :page=='submitted'||page=='inactive'||page=='company_view'?Container():Center(
                             child: CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               padding: EdgeInsets.all(5),

@@ -31,13 +31,15 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
+  final educationUpdateFormKey = GlobalKey<FormState>();
+
   openEducationDialog(context, UserEducation userEducation) {
 
-    title_controller.text = userEducation.title.toString();
-    faculty_controller.text = userEducation.faculty.toString();
-    speciality_controller.text = userEducation.speciality.toString();
-    type_controller.text = userEducation.type.toString();
-    end_year_controller.text = userEducation.end_year.toString();
+    title_controller.text = userEducation.title!= null?userEducation.title.toString():'';
+    faculty_controller.text = userEducation.faculty!= null?userEducation.faculty.toString():'';
+    speciality_controller.text = userEducation.speciality!= null?userEducation.speciality.toString():'';
+    type_controller.text = userEducation.type!= null?userEducation.type.toString():'';
+    end_year_controller.text = userEducation.end_year!= "null"?userEducation.end_year.toString():'';
 
     showDialog(
         context: context,
@@ -68,6 +70,7 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
 
                     /// Form
                     Form(
+                      key: educationUpdateFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -127,13 +130,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -161,13 +164,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -195,13 +198,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -229,13 +232,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -261,24 +264,24 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                   text: 'delete'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                  MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
 
-                                    userEducation.title = title_controller.text;
-                                    userEducation.faculty = faculty_controller.text;
-                                    userEducation.speciality = speciality_controller.text;
-                                    userEducation.type = type_controller.text;
-                                    userEducation.end_year = end_year_controller.text;
+                                    if(educationUpdateFormKey.currentState.validate()){
+                                      userEducation.title = title_controller.text;
+                                      userEducation.faculty = faculty_controller.text;
+                                      userEducation.speciality = speciality_controller.text;
+                                      userEducation.type = type_controller.text;
+                                      userEducation.end_year = end_year_controller.text;
 
-                                    userEducation.update(userEducation.id).then((value) {
-                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-                                    });
-
+                                      userEducation.update(userEducation.id).then((value) {
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                        Navigator.of(context).pop();
+                                      });
+                                    }
                                   },
                                   text: 'save'.tr(),
                                 ),
@@ -332,8 +335,8 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(i.title, softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
-                                    Text(i.type+', '+i.faculty+', '+i.speciality, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
-                                    Text(i.end_year, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.type!=null?i.type:''+', '+i.faculty!=null?i.faculty:''+', '+i.speciality!=null?i.speciality:'', softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.end_year!="null"?i.end_year:'', softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                   ],
                                 ),
                               ),

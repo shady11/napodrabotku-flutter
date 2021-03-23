@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ishapp/components/custom_button.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:path/path.dart';
 
 import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/datas/app_state.dart';
@@ -19,6 +20,7 @@ import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/widgets/show_scaffold_msg.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
 import 'package:ishapp/widgets/user_experience_form.dart';
+import 'package:gx_file_picker/gx_file_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -82,7 +84,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
 
-  List<UserExperienceForm> user_experience_forms = [];
+//  List<UserExperienceForm> user_experience_forms = [];
 
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
     {
@@ -115,21 +117,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  void onDelete(int index){
-    setState(() {
-      user_cv.user_experiences.removeAt(index);
-    });
-  }
-
-  void onAddForm(){
-    setState(() {
-      user_cv.user_experiences.add(UserExperience(start_date: new DateTime.now(), end_date: new DateTime.now()));
-    });
-  }
-
-  void onSave(){
-    user_experience_forms.forEach((form) => form.isValid());
-  }
+//  void onDelete(int index){
+//    setState(() {
+//      user_cv.user_experiences.removeAt(index);
+//    });
+//  }
+//
+//  void onAddForm(){
+//    setState(() {
+//      user_cv.user_experiences.add(UserExperience());
+//    });
+//  }
+//
+//  void onSave(){
+//    user_experience_forms.forEach((form) => form.isValid());
+//  }
 
   /*Widget buildList(var experiences){
     for(var i=0;i<experiences.length;i++){
@@ -137,7 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }*/
 
-  void _showDataPicker() {
+  void _showDataPicker(context) {
     DatePicker.showDatePicker(context,
         locale: LocaleType.ru,
         theme: DatePickerTheme(
@@ -167,21 +169,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 //  }
   int count =1;
 
-  /*void _pickAttachment() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
-        allowMultiple: false
-    );
+  void _pickAttachment() async {
+    File file = await FilePicker.getFile(type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'],);
 
-    if(result != null) {
+    if(file != null) {
       setState(() {
-        attachment = File(result.files.single.path);
+        attachment = file;
       });
     } else {
       // User canceled the picker
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -359,7 +358,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       fontWeight: FontWeight.w400,
                       textAlign: TextAlign.right,
                       text: _birth_date_controller.text,
-                      onPressed: (){_showDataPicker();}):Container(),
+                      onPressed: (){_showDataPicker(context);}):Container(),
                   SizedBox(height: 20),
                   Prefs.getString(Prefs.USER_TYPE) == 'USER'?Column(children: [
 //                    AppBar(
@@ -417,11 +416,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                     ),
                   ],):Container(),
-                  SizedBox(),
-                  /*CustomButton(text: 'attachment'.tr(), onPressed: (){
-                    _pickAttachment();
-                  }),*/
                   SizedBox(height: 30),
+                  user_cv== null?Container():Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text('attachment'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  user_cv== null?Container():CustomButton(text: attachment != null?basename(attachment.path):'upload_new_file'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+                    _pickAttachment();
+                  }),
+                  user_cv== null?Container():SizedBox(height: 30),
                   /// Sign Up button
                   SizedBox(
                     width: double.maxFinite,
@@ -430,7 +434,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
-                        onSave();
+//                        onSave();
                         /// Validate form
                         if (_formKey.currentState.validate()) {
                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -449,7 +453,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             user_cv.experience_year = int.parse(experience_year_controller.text);
                             user_cv.job_title = title_controller1.text;
 
-                            user_cv.save();
+                            if(attachment!=null)
+                              user_cv.save(attachment: attachment);
+                            else
+                              user_cv.save();
                           }
 
                           Navigator.of(context).pop();
