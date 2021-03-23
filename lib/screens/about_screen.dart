@@ -63,20 +63,20 @@ class AboutScreen extends StatelessWidget {
                       children: [
                         Container(
                           child: SizedBox(
-                            height: 80,
+                            height: 70,
+                            child: Image.asset('assets/images/partners/giz.gif'),
+                          ),
+                        ),
+                        Container(
+                          child: SizedBox(
+                            height: 70,
                             child: Image.asset('assets/images/partners/japan.png'),
                           ),
                         ),
                         Container(
                           child: SizedBox(
-                            height: 80,
+                            height: 70,
                             child: Image.asset('assets/images/partners/undp.png'),
-                          ),
-                        ),
-                        Container(
-                          child: SizedBox(
-                            height: 80,
-                            child: Image.asset('assets/images/partners/giz.gif'),
                           ),
                         ),
                       ],

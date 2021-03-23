@@ -5,6 +5,7 @@ import 'package:ishapp/components/custom_button.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
+import 'package:ishapp/widgets/vacancy_view.dart';
 import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/screens/profile_full_info_screen.dart';
 import 'package:ishapp/datas/pref_manager.dart';
@@ -114,8 +115,19 @@ class MatchesTab extends StatelessWidget {
                         return GestureDetector(
                           child: ProfileCard(vacancy: vacancy, page: 'match',),
                           onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return Scaffold(
+                                    backgroundColor: kColorPrimary,
+                                    appBar: AppBar(
+                                      title: Text("vacancy_view".tr()),
+                                    ),
+                                    body: VacancyView(
+                                      page:"view",
+                                      vacancy: vacancy,
+                                    ),
+                                  );
+                                }));
                           },
                         );
                       }).toList()):Center(

@@ -16,6 +16,7 @@ class Vacancy {
   String salary;
   String busyness;
   String schedule;
+  String region;
   String job_type;
   String type;
   int company;
@@ -32,6 +33,7 @@ class Vacancy {
       this.busyness,
       this.schedule,
       this.job_type,
+      this.region,
       this.type,
       this.company});
 
@@ -62,6 +64,20 @@ class Vacancy {
         job_type: json['job_type'],
         type: json['type'],
       );
+
+  static Map<String, dynamic> vacancyToJsonMap(
+      Vacancy vacancy) =>
+      {
+        'company_id': Prefs.getInt(Prefs.USER_ID).toString(),
+        'name': vacancy.name,
+        'salary': vacancy.salary,
+        'description': vacancy.description,
+        'region': vacancy.region,
+        'busyness': vacancy.busyness,
+        'schedule': vacancy.schedule,
+        'job_type': vacancy.job_type,
+        'type': vacancy.type,
+      };
 
   static List<Vacancy> getListOfVacancies() {
     getVacancyList(
@@ -189,6 +205,26 @@ class Vacancy {
       final response = await http.post(url,
           headers: headers,
           body: json.encode({'vacancy_id': vacancy_id, 'type': type}));
+      print(response.body);
+      return "OK";
+    } catch (error) {
+      return "ERROR";
+      throw error;
+    }
+  }
+
+  static Future<String> saveCompanyVacancy({
+    Vacancy vacancy
+  }) async {
+    final url = API_IP + API_VACANCY_SAVE;
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
+      final response = await http.post(url,
+          headers: headers,
+          body: json.encode(vacancyToJsonMap(vacancy)));
       print(response.body);
       return "OK";
     } catch (error) {

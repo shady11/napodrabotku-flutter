@@ -39,7 +39,14 @@ class _DiscoverTabState extends State<DiscoverTab> {
       if(type =="LIKED"){
         props.addOneToMatches();
       }
-      Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type);
+      Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type).then((value) {
+        StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+      });
+      setState(() {
+        props.listResponse.data.removeLast();
+      });
+    }
+    else{
       setState(() {
         props.listResponse.data.removeLast();
       });
@@ -89,8 +96,19 @@ class _DiscoverTabState extends State<DiscoverTab> {
                       return GestureDetector(
                         child: ProfileCard(vacancy: vacancy, page: 'company',),
                         onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return Scaffold(
+                                  backgroundColor: kColorPrimary,
+                                  appBar: AppBar(
+                                    title: Text("vacancy_view".tr()),
+                                  ),
+                                  body: VacancyView(
+                                    page:"company_view",
+                                    vacancy: vacancy,
+                                  ),
+                                );
+                              }));
                         },
                       );
                     }).toList()):Center(

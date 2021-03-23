@@ -84,14 +84,14 @@ class ProfileCard extends StatelessWidget {
           content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
           actions: <Widget>[
             FlatButton(
-              child: Text('no'.tr()),
+              child: Text('no'.tr(),style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(ctx).pop();
                 Navigator.of(ctx).pop();
               },
             ),
             FlatButton(
-              child: Text('yes'.tr()),
+              child: Text('yes'.tr(),style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Vacancy.deleteCompanyVacancy(vacancy_id: vacancy.id,).then((value) {
                   StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
@@ -120,14 +120,14 @@ class ProfileCard extends StatelessWidget {
           content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
           actions: <Widget>[
             FlatButton(
-              child: Text('no'.tr()),
+              child: Text('no'.tr(),style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Navigator.of(ctx).pop();
 //                Navigator.of(ctx).pop();
               },
             ),
             FlatButton(
-              child: Text('yes'.tr()),
+              child: Text('yes'.tr(),style: TextStyle(color: Colors.white),),
               onPressed: () {
                 Vacancy.activateDeactiveVacancy(vacancy_id: vacancy.id, active: active).then((value) {
 //                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
@@ -241,7 +241,7 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
-                      index==null||index <=2  ?Prefs.getString(Prefs.TOKEN )!=null?SizedBox(
+                      index==null||index <=2  ?SizedBox(
                         width: double.maxFinite,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -253,7 +253,11 @@ class ProfileCard extends StatelessWidget {
                               color: Colors.grey[200],
                               textColor: kColorPrimary,
                               onPressed: () async{
-                                if(page =='discover'){
+                                if(Prefs.getString(Prefs.TOKEN)==null){
+                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                  StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
+                                }
+                                else if(page =='discover'){
                                   Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "DISLIKED");
                                   StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
                                   StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0, await Vacancy.getVacancyByOffset(
@@ -278,7 +282,7 @@ class ProfileCard extends StatelessWidget {
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
-                            page =='submit' ?Container() :CustomButton(
+                            Prefs.getString(Prefs.TOKEN)!=null?page =='submit' ?Container() :CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               height: MediaQuery.of(context).size.height * 0.07,
                               padding: EdgeInsets.all(5),
@@ -329,10 +333,10 @@ class ProfileCard extends StatelessWidget {
 
                               },
                               text: page =='discover' ?'like'.tr(): (page == 'company'? 'deactivate'.tr() :page=='company_inactive'?'activate'.tr():'submit'.tr()),
-                            ),
+                            ):Container(),
                           ],
                         ),
-                      ):Container():Container(),
+                      ):Container(),
 
                       this.page == 'discover'
                           ? SizedBox(height: 0)

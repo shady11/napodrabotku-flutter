@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
+import 'package:ishapp/components/custom_button.dart';
+import 'package:ishapp/constants/configs.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/pref_manager.dart';
@@ -8,10 +15,19 @@ import 'package:ishapp/utils/constants.dart';
 class BasicUserCvInfo extends StatelessWidget {
   UserCv user_cv;
   User user;
+  Directory _downloadsDirectory;
 
   BasicUserCvInfo({this.user_cv, this.user});
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +103,16 @@ class BasicUserCvInfo extends StatelessWidget {
                     ],
                   ), Divider()
                 ],
-              ) : SizedBox()
+              ) : SizedBox(),
+          user_cv== null?Container():Align(
+              widthFactor: 10,
+              heightFactor: 1.5,
+              alignment: Alignment.topLeft,
+              child: Text('attachment'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+          user_cv== null?Container():CustomButton(text: user_cv.attachment != null?'download_file'.tr():'file_doesnt_exist', width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+            _launchURL(SERVER_IP+user_cv.attachment);
+//            doSome1(user_cv.attachment);
+          }),
 //          Row(
 //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //            children: [

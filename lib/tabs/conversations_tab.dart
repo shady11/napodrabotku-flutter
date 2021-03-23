@@ -20,7 +20,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container()/*SocketDemo()*//*Column(
+    return SocketDemo()/*Column(
       children: [
         SizedBox(height: 20,),
         /// Conversations

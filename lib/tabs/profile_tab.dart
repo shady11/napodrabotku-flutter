@@ -314,6 +314,8 @@ class ProfileTab extends StatelessWidget {
                               Prefs.setString(Prefs.PROFILEIMAGE, null);
                               Prefs.setString(Prefs.PASSWORD, null);
                               Prefs.setString(Prefs.TOKEN, null);
+                              Prefs.setString(Prefs.USER_TYPE, "USER");
+                              Prefs.setInt(Prefs.USER_ID, null);
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
                               Navigator.pushReplacementNamed(

@@ -31,13 +31,15 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
 
   final DateFormat formatter = DateFormat('dd.MM.yyyy');
 
+  final experienceUpdateFormKey = GlobalKey<FormState>();
+
   openExperienceDialog(context, UserExperience userExperience) {
 
     job_title_controller.text = userExperience.job_title.toString();
-    start_date_controller.text = formatter.format(userExperience.start_date);
-    end_date_controller.text = formatter.format(userExperience.end_date);
-    organization_name_controller.text = userExperience.organization_name.toString();
-    description_controller.text = userExperience.description.toString();
+    start_date_controller.text = userExperience.start_date!=null?(userExperience.start_date):'';
+    end_date_controller.text = userExperience.end_date!=null?(userExperience.end_date):'';
+    organization_name_controller.text = userExperience.organization_name!=null?userExperience.organization_name.toString():'';
+    description_controller.text = userExperience.description!=null?userExperience.description.toString():"";
 
     showDialog(
         context: context,
@@ -68,6 +70,7 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
 
                     /// Form
                     Form(
+                      key: experienceUpdateFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -116,16 +119,25 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                   ),
                                 ),
                                 Container(
-                                  child: CustomButton(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      width: MediaQuery.of(context).size.width * 1,
-                                      color: Colors.grey[200],
-                                      textColor: kColorPrimary,
-                                      textSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      textAlign: TextAlign.right,
-                                      text: this.start_date_controller.text,
-                                      onPressed: (){_showDataPicker(1, context);}
+                                  child: TextFormField(
+                                    controller: this.start_date_controller,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none
+                                      ),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    /*validator: (name) {
+                                      // Basic validation
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },*/
                                   ),
                                 ),
                               ],
@@ -143,16 +155,25 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                   ),
                                 ),
                                 Container(
-                                  child: CustomButton(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      width: MediaQuery.of(context).size.width * 1,
-                                      color: Colors.grey[200],
-                                      textColor: kColorPrimary,
-                                      textSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      textAlign: TextAlign.right,
-                                      text: this.end_date_controller.text,
-                                      onPressed: (){_showDataPicker(2, context);}
+                                  child: TextFormField(
+                                    controller: this.end_date_controller,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none
+                                      ),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    /*validator: (name) {
+                                      // Basic validation
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },*/
                                   ),
                                 ),
                               ],
@@ -181,13 +202,13 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -215,13 +236,13 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -247,23 +268,24 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                   text: 'delete'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                  MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
 
-                                    userExperience.job_title = job_title_controller.text;
-                                    userExperience.start_date = formatter.parse(start_date_controller.text);
-                                    userExperience.end_date = formatter.parse(end_date_controller.text);
-                                    userExperience.organization_name = organization_name_controller.text;
-                                    userExperience.description = description_controller.text;
+                                    if(experienceUpdateFormKey.currentState.validate()){
+                                      userExperience.job_title = job_title_controller.text;
+                                      userExperience.start_date = start_date_controller.text;
+                                      userExperience.end_date = (end_date_controller.text);
+                                      userExperience.organization_name = organization_name_controller.text;
+                                      userExperience.description = description_controller.text;
 
-                                    userExperience.update(userExperience.id).then((value) {
-                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-                                    });
+                                      userExperience.update(userExperience.id).then((value) {
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                        Navigator.of(context).pop();
+                                      });
+                                    }
 
                                   },
                                   text: 'save'.tr(),
@@ -354,8 +376,8 @@ class _UserExperienceInfoState extends State<UserExperienceInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(i.job_title, softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
-                                    Text(i.organization_name, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
-                                    Text(formatter.format(i.start_date) + ' - ' + formatter.format(i.end_date), softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.organization_name!=null?i.organization_name:'', softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text((i.start_date!=null?i.start_date:'') + ' - ' + (i.end_date!=null?i.end_date:''), softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                   ],
                                 ),
                               ),

@@ -29,12 +29,14 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
+  final courseUpdateFormKey = GlobalKey<FormState>();
+
   openCourseDialog(context, UserCourse userCourse) {
 
     name_controller.text = userCourse.name.toString();
-    course_organization_name_controller.text = userCourse.organization_name.toString();
-    duration_controller.text = userCourse.duration.toString();
-    course_end_year_controller.text = userCourse.end_year.toString();
+    course_organization_name_controller.text = userCourse.organization_name!=null?userCourse.organization_name.toString():'';
+    duration_controller.text = userCourse.duration!=null?userCourse.duration.toString():'';
+    course_end_year_controller.text = userCourse.end_year!="null"?userCourse.end_year.toString():'';
 
     showDialog(
         context: context,
@@ -65,6 +67,7 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
 
                     /// Form
                     Form(
+                      key: courseUpdateFormKey,
                       child: Column(
                         children: <Widget>[
 
@@ -124,13 +127,13 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -158,13 +161,13 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -192,13 +195,13 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  validator: (name) {
+                                  /*validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },
+                                  },*/
                                 ),
                               ],
                             ),
@@ -230,16 +233,17 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
+                                    if(courseUpdateFormKey.currentState.validate()){
+                                      userCourse.name = name_controller.text;
+                                      userCourse.organization_name = course_organization_name_controller.text;
+                                      userCourse.duration = duration_controller.text;
+                                      userCourse.end_year = course_end_year_controller.text;
 
-                                    userCourse.name = name_controller.text;
-                                    userCourse.organization_name = course_organization_name_controller.text;
-                                    userCourse.duration = duration_controller.text;
-                                    userCourse.end_year = course_end_year_controller.text;
-
-                                    userCourse.update(userCourse.id).then((value) {
-                                      StoreProvider.of<AppState>(context).dispatch(getUserCv());
-                                      Navigator.of(context).pop();
-                                    });
+                                      userCourse.update(userCourse.id).then((value) {
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
+                                        Navigator.of(context).pop();
+                                      });
+                                    }
 
                                   },
                                   text: 'save'.tr(),
@@ -293,8 +297,8 @@ class _UserCourseInfoState extends State<UserCourseInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(i.name, softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
-                                    Text(i.organization_name+', '+i.duration, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
-                                    Text(i.end_year, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text((i.organization_name!=null?i.organization_name:' ')+', '+(i.duration!=null?i.duration:' '), softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.end_year!="null"?i.end_year:'', softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                   ],
                                 ),
                               ),

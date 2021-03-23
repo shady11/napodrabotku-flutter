@@ -47,6 +47,7 @@ dependencies:
   email_validator: '^1.0.5'
   url_launcher: any
   socket_io_client: ^0.9.12
+  gx_file_picker: ^1.9.0+2
 
 
   # The following adds the Cupertino Icons font to your application.
