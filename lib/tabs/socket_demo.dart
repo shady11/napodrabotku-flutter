@@ -44,8 +44,8 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    connectAndListen();
-    socket = IO.io('http://192.168.0.105:8001');
+    // connectAndListen();
+    socket = IO.io('http://10.0.2.2:8001');
     _textEditingController = TextEditingController();
     _status = "";
     _messages = List<String>();
@@ -73,17 +73,21 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
 
 //STEP2: Add this function in main function in main.dart file and add incoming data to the stream
   void connectAndListen(){
-    IO.Socket socket = IO.io('http://localhost:3000',
-    OptionBuilder()
-        .setTransports(['websocket']).build());
+    IO.Socket socket = IO.io('http://10.0.2.2:8001',
+      OptionBuilder()
+        .setTransports(['websocket']).build()
+    );
 
     socket.onConnect((_) {
       print('connect');
-      socket.emit('msg', 'test');
+      socket.emit('msg', 'test111');
     });
 
     //When an event recieved from server, data is added to the stream
-    socket.on('event', (data) => streamSocket.addResponse);
+    socket.on('event', (data) {
+      print(data);
+      streamSocket.addResponse;
+    });
     socket.onDisconnect((_) => print('disconnect'));
 
   }
@@ -119,14 +123,18 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
           OutlineButton(
             child: Text("Send Message"),
             onPressed: () {
+
+              // print(111);
+              // connectAndListen();
+
               if (_textEditingController.text.isEmpty) {
                 return;
               }
-              socket.onConnect((_) {
-                print('connect');
-                socket.emit('chat message', 'test');
-              });
-              socket.emit('chat message', 'test');
+              // socket.onConnect((_) {
+              //   print('connect');
+              //   socket.emit('chat message', 'testa23423');
+              // });
+              socket.emit('chat message', _textEditingController.text);
               socket.on('event', (data) => print(data));
               socket.onDisconnect((_) => print('disconnect'));
               socket.on('fromServer', (_) => print(_));
@@ -149,16 +157,17 @@ class SocketDemoState extends State<SocketDemo> with WidgetsBindingObserver {
           SizedBox(
             height: 20.0,
           ),
-          /*Expanded(
+          Expanded(
             child: StreamBuilder(
-              stream: streamSocket.getResponse ,
+              stream: streamSocket.getResponse,
               builder: (BuildContext context, AsyncSnapshot<String> snapshot){
+                print(snapshot.data);
                 return Container(
-                  child: Text(snapshot.data),
+                  child: Text(snapshot.data != null ? snapshot.data : 'tttt'),
                 );
               },
             ),
-          ),*/
+          ),
         ],
       ),
     );

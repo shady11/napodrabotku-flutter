@@ -20,6 +20,8 @@ import 'package:ishapp/utils/constants.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/utils/constants.dart';
+import 'package:ishapp/screens/chat_screen.dart';
+import 'package:ishapp/datas/demo_users.dart';
 
 class ProfileCard extends StatelessWidget {
   /// User object
@@ -285,7 +287,7 @@ class ProfileCard extends StatelessWidget {
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
-                            Prefs.getString(Prefs.TOKEN)!=null?page =='submit' ? Container() : Container(
+                            Prefs.getString(Prefs.TOKEN)!=null ? Container(
                               margin: EdgeInsets.only(left: 10),
                               child: CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.35,
@@ -335,9 +337,17 @@ class ProfileCard extends StatelessWidget {
                                   else if(page =='company_inactive'){
                                     _showOnDeactivateDialog(context, 'activate_are_you_sure'.tr(), true);
                                   }
+                                  else if(page =='submit'){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return ChatScreen(user: currentUserDemo,);
+                                        }
+                                      )
+                                    );
+                                  }
 
                                 },
-                                text: page =='discover' ?'like'.tr(): (page == 'company'? 'deactivate'.tr() :page=='company_inactive'?'activate'.tr():'submit'.tr()),
+                                text: page =='discover' ? 'like'.tr() : (page == 'company' ? 'deactivate'.tr() : page=='company_inactive' ? 'activate'.tr() : page=='submit' ? 'write_to'.tr() : 'submit'.tr()),
                               ),
                             ) : Container(),
                           ],

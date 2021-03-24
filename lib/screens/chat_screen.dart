@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 
-import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/datas/demo_users.dart';
+// import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/chat_message.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -11,7 +12,7 @@ import 'package:ishapp/constants/configs.dart';
 
 class ChatScreen extends StatefulWidget {
   /// Get user object
-  final User user;
+  final DemoUser user;
 
   ChatScreen({@required this.user});
 
@@ -36,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundImage: NetworkImage(
                   API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
             ),
-            title: Text(widget.user.name,
+            title: Text(widget.user.userFullname,
                 style: TextStyle(fontSize: 18)),
           ),
           onTap: () {
@@ -101,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 ChatMessage(
                   isUserSender: false,
-                  userPhotoLink: widget.user.image,
+                  userPhotoLink: widget.user.userPhotoLink,
                   textMessage: "Добрый день. @Username",
                   timeAgo: "1" + "min_ago".tr(),
                 ),
@@ -117,7 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ChatMessage(
                   isUserSender: false,
                   isImage: false,
-                  userPhotoLink: widget.user.surname,
+                  userPhotoLink: widget.user.userPhotoLink,
                   textMessage: 'Не за что',
                   timeAgo: "0" + "min_ago".tr(),
                 ),

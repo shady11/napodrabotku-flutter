@@ -7,7 +7,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
-import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/utils/constants.dart';

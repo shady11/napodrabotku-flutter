@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ishapp/datas/demo_users.dart';
-import 'package:ishapp/datas/user.dart';
+// import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/screens/chat_screen.dart';
 import 'package:ishapp/tabs/socket_demo.dart';
 import 'package:ishapp/utils/constants.dart';
@@ -20,7 +20,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SocketDemo()/*Column(
+    return /*SocketDemo()*/Column(
       children: [
         SizedBox(height: 20,),
         /// Conversations
@@ -31,7 +31,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
             itemCount: getDemoUsers().length,
             itemBuilder: ((context, index) {
               /// Get user object
-              final User user = getDemoUsers()[index];
+              final DemoUser user = getDemoUsers()[index];
 
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
@@ -58,6 +58,6 @@ class _ConversationsTabState extends State<ConversationsTab> {
           ),
         ),
       ],
-    )*/;
+    );
   }
 }

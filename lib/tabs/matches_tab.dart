@@ -6,7 +6,6 @@ import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
 import 'package:ishapp/widgets/vacancy_view.dart';
-import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/screens/profile_full_info_screen.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/datas/vacancy.dart';

@@ -11,7 +11,6 @@ import 'package:path/path.dart';
 
 import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/datas/app_state.dart';
-import 'package:ishapp/datas/demo_users.dart';
 import 'package:ishapp/datas/pref_manager.dart';
 import 'package:ishapp/datas/user.dart';
 import 'package:ishapp/routes/routes.dart';

@@ -26,7 +26,8 @@ class ProfileVisitsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Prefs.getString(Prefs.USER_TYPE) == 'USER'
-        ? StoreConnector<AppState, VacanciesScreenProps1>(
+        ?
+    StoreConnector<AppState, VacanciesScreenProps1>(
       converter: (store) => mapStateToProps(store),
       onInitialBuild: (props) => this.handleInitialBuild(props),
       builder: (context, props) {
@@ -77,7 +78,8 @@ class ProfileVisitsScreen extends StatelessWidget {
         );
       },
     )
-        :StoreConnector<AppState, CompanyInactiveVacanciesScreenProps>(
+        :
+    StoreConnector<AppState, CompanyInactiveVacanciesScreenProps>(
       converter: (store) => mapStateToVacancyProps(store),
       onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
       builder: (context, props) {
