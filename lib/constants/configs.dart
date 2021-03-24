@@ -1,9 +1,9 @@
- String API_IP = "http://138.68.79.49/api/";
+ // String API_IP = "http://138.68.79.49/api/";
 // String API_IP = "http://192.168.0.105:8000/api/";
-//String API_IP = "http://10.0.2.2:8000/api/";
- String SERVER_IP = "http://138.68.79.49";
-// String SERVER_IP = "http://192.168.0.105:8000";
-//String SERVER_IP = "http://10.0.2.2:8000";
+String API_IP = "http://10.0.2.2:8000/api/";
+//  String SERVER_IP = "http://138.68.79.49/";
+// String SERVER_IP = "http://192.168.0.105:8000/";
+String SERVER_IP = "http://10.0.2.2:8000/";
 String API_GET_USER = "user";
 String API_CHECK_USER_EMAIL = "users/email_check";
 String API_CHECK_USER_CV = "users/user_cv_check";

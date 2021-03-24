@@ -178,8 +178,10 @@ class ProfileCard extends StatelessWidget {
                             alignment: Alignment.topLeft,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: vacancy.company_logo!=null? Image.network(SERVER_IP+ vacancy.company_logo,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
-                                  height: 60,):Image.asset('assets/images/camera.png', fit: BoxFit.cover,width: 80, height: 60,),
+                                child: vacancy.company_logo!=null
+                                    ? Image.network(SERVER_IP+ vacancy.company_logo,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 60,
+                                  height: 70,)
+                                    : Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 70, height: 70,),
                             ),
                           ),
                           SizedBox(width: 20),
@@ -211,6 +213,7 @@ class ProfileCard extends StatelessWidget {
                           Flexible(child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: kColorPrimary),)),
                         ],
                       ): Container(),
+                      SizedBox(height: 5),
                       index==null||index <=2 ?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -222,13 +225,13 @@ class ProfileCard extends StatelessWidget {
                             ),
                             child: Text(vacancy.schedule.toString(), style: TextStyle(color: Colors.black87),),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8)
-                            ),
-                            child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.all(5),
+                          //   decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(8)
+                          //   ),
+                          //   child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
+                          // ),
                         ],
                       ):Container(),
                       SizedBox(height: 15),
@@ -241,12 +244,12 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ) : SizedBox(),
                       SizedBox(height: 20),
-                      index==null||index <=2  ?SizedBox(
+                      index==null||index <=2  ? SizedBox(
                         width: double.maxFinite,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            page =='submit' ?Container() :CustomButton(
+                            page =='submit' ? Container() : CustomButton(
                               width: MediaQuery.of(context).size.width * 0.35,
                               height: MediaQuery.of(context).size.height * 0.07,
                               padding: EdgeInsets.all(5),
@@ -282,58 +285,61 @@ class ProfileCard extends StatelessWidget {
                               },
                               text: page =='discover' ? 'skip'.tr() : 'delete'.tr(),
                             ),
-                            Prefs.getString(Prefs.TOKEN)!=null?page =='submit' ?Container() :CustomButton(
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              padding: EdgeInsets.all(5),
-                              color: kColorPrimary,
-                              textColor: Colors.white,
-                              onPressed: () async{
+                            Prefs.getString(Prefs.TOKEN)!=null?page =='submit' ? Container() : Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                height: MediaQuery.of(context).size.height * 0.07,
+                                padding: EdgeInsets.all(5),
+                                color: kColorPrimary,
+                                textColor: Colors.white,
+                                onPressed: () async{
 //                                _openLoadingDialog(context);
-                                if(page =='discover'){
-                                  Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "LIKED");
-                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
-                                  StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0, await Vacancy.getVacancyByOffset(
-                                      offset: /*offset<0?0:offset*/4,
-                                      job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-                                      region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-                                      schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-                                      busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-                                      vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
-                                      type: StoreProvider.of<AppState>(context).state.vacancy.type));
-                                  StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
-                                }
-                                else if(page =='match'){
-                                  _openLoadingDialog(context);
-                                  User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                    if(value){
-                                      Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
-                                        if(value=="OK"){
-                                          _showDialog(context, "successfully_submitted".tr());
-                                          StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
-                                          StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                          StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
-                                        }
-                                        else{
-                                          _showDialog(context, "some_errors_occured_try_again".tr());
-                                        }
-                                      });
-                                    }
-                                    else{
-                                      _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                    }
-                                  });
-                                }
-                                else if(page =='company'){
-                                  _showOnDeactivateDialog(context, 'deactivate_are_you_sure'.tr(), false);
-                                }
-                                else if(page =='company_inactive'){
-                                  _showOnDeactivateDialog(context, 'activate_are_you_sure'.tr(), true);
-                                }
+                                  if(page =='discover'){
+                                    Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "LIKED");
+                                    StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                    StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0, await Vacancy.getVacancyByOffset(
+                                        offset: /*offset<0?0:offset*/4,
+                                        job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+                                        region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+                                        schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+                                        busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+                                        vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+                                        type: StoreProvider.of<AppState>(context).state.vacancy.type));
+                                    StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                  }
+                                  else if(page =='match'){
+                                    _openLoadingDialog(context);
+                                    User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                      if(value){
+                                        Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
+                                          if(value=="OK"){
+                                            _showDialog(context, "successfully_submitted".tr());
+                                            StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(vacancy);
+                                            StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                            StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                          }
+                                          else{
+                                            _showDialog(context, "some_errors_occured_try_again".tr());
+                                          }
+                                        });
+                                      }
+                                      else{
+                                        _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                      }
+                                    });
+                                  }
+                                  else if(page =='company'){
+                                    _showOnDeactivateDialog(context, 'deactivate_are_you_sure'.tr(), false);
+                                  }
+                                  else if(page =='company_inactive'){
+                                    _showOnDeactivateDialog(context, 'activate_are_you_sure'.tr(), true);
+                                  }
 
-                              },
-                              text: page =='discover' ?'like'.tr(): (page == 'company'? 'deactivate'.tr() :page=='company_inactive'?'activate'.tr():'submit'.tr()),
-                            ):Container(),
+                                },
+                                text: page =='discover' ?'like'.tr(): (page == 'company'? 'deactivate'.tr() :page=='company_inactive'?'activate'.tr():'submit'.tr()),
+                              ),
+                            ) : Container(),
                           ],
                         ),
                       ):Container(),

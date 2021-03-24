@@ -363,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text('vacancy_name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                                 TextFormField(
                                   controller: _vacancy_name_controller,
+                                  focusNode: FocusNode(canRequestFocus: false),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -387,6 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text('vacancy_salary'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                                 TextFormField(
                                   controller: _vacancy_salary_controller,
+                                  focusNode: FocusNode(canRequestFocus: false),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -412,6 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 TextFormField(
                                   controller: _vacancy_description_controller,
                                   maxLines: 5,
+                                  focusNode: FocusNode(canRequestFocus: false),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -906,6 +909,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Positioned(
                             top: -1.0,
                             left: 0.0,
+                            right: 0.0,
                             child: Icon(
                               Boxicons.bx_like,
                               color: _tabCurrentIndex == 1 ? kColorPrimary : null,),

@@ -8,7 +8,7 @@ import 'package:ishapp/constants/constants.dart';
 import 'package:ishapp/routes/routes.dart';
 import 'package:ishapp/screens/home_screen.dart';
 import 'package:ishapp/screens/sign_up_screen.dart';
-import 'package:ishapp/widgets/app_logo.dart';
+// import 'package:ishapp/widgets/app_logo.dart';
 import 'package:ishapp/widgets/cicle_button.dart';
 import 'package:ishapp/widgets/default_button.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -85,8 +85,8 @@ class _StartScreenState extends State<StartScreen> {
             children: <Widget>[
               Align(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.55,
-                  child: Image.asset('assets/images/bb.png', fit: BoxFit.cover,),
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Image.asset('assets/images/welcome.png', fit: BoxFit.cover,),
                 ),
               ),
 

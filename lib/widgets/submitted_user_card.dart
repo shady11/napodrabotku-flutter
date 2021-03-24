@@ -79,13 +79,14 @@ class UserCard extends StatelessWidget {
                         Align(
                           alignment: Alignment.topLeft,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
+                            // borderRadius: BorderRadius.circular(20),
                             child: user.image!=null? Image.network(SERVER_IP+ user.image, width: 80,
-                              height: 60,):Image.asset('assets/images/camera.png', fit: BoxFit.cover,width: 80, height: 60,),
+                              height: 60,):Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 80, height: 60,),
                           ),
                         ),
                         SizedBox(width: 20),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(user.surname, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),),
                             Text(user.email, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45),),
@@ -93,33 +94,38 @@ class UserCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     index==null||index <=2 ?Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        user.phone_number != null ? Container(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          margin: EdgeInsets.only(bottom: 5),
                           decoration: BoxDecoration(
                               color: Color(0xffF2F2F5),
                               borderRadius: BorderRadius.circular(8)
                           ),
                           child: Text(user.phone_number, style: TextStyle(color: Colors.black87),),
-                        ),
-                        SizedBox(width: 5,),
-                        Container(child: Flexible(child: Text(user.vacancy_name!=null ?user.vacancy_name:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),))),
+                        ) : Container(),
+                        user.vacancy_name != null ? Container(
+                            child: Flexible(
+                                child: Text(user.vacancy_name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                )
+                            )
+                        ) : Container(),
                       ],
                     ): Container(),
                     index==null||index <=2 ?Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
+                        user.experience_year.isEmpty ? Container(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                               color: Color(0xffF2F2F5),
                               borderRadius: BorderRadius.circular(8)
                           ),
                           child: Text(user.experience_year.toString(), style: TextStyle(color: Colors.black87),),
-                        ),
+                        ) : Container(),
                         /*Container(
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -135,7 +141,7 @@ class UserCard extends StatelessWidget {
                     SizedBox(height: 10),
                     page =='discover' ? Expanded(
                       child: RichText(
-                        text: TextSpan(text: user.user_cv_name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                        text: TextSpan(text: user.user_cv_name!=null ? user.user_cv_name:'', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                       ),
                     ) : SizedBox(),
                     SizedBox(height: 20),

@@ -793,7 +793,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                   children: [
                                     Text(i.job_title, softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
                                     Text(i.organization_name, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
-                                    Text(formatter.format(i.start_date) + ' - ' + formatter.format(i.end_date), softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
+                                    Text(i.start_date + ' - ' + i.end_date, softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                   ],
                                 ),
                               ),
@@ -992,7 +992,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                         style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                     SizedBox(width: 5,),
                                     Flexible(
-                                      child: Text(data?.job_title,softWrap: true,
+                                      child: Text(data?.job_title!=null ? data?.job_title:'-',softWrap: true,
                                           style: TextStyle(fontSize: 16, color: kColorDark)),
                                     ),
                                   ],
@@ -1015,7 +1015,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                       children: [
                                         Text("experience_year".tr(),softWrap: true,
                                             style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
-                                        Text(data.experience_year.toString(),softWrap: true,
+                                        Text(data.experience_year!=null ? data.experience_year.toString() : '0',softWrap: true,
                                             style: TextStyle(fontSize: 16, color: kColorDark)),
                                       ],
                                     ), Divider()

@@ -390,11 +390,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   SizedBox(height: 20),
                   company==is_company.Company?Align(
-//                      widthFactor: 10,
+                      widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text(company==is_company.Company?'organization_name'.tr() :'name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)):Container(),
-                  company==is_company.Company?TextFormField(
+                  company==is_company.Company ? TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -413,14 +413,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ):Container(),
-                  SizedBox(height: 20),
                   company==is_company.Company?Container():Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('surname_name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                      child: Text('name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   company==is_company.Company?Container():TextFormField(
-                    controller: _surnname_controller,
+                    controller: _name_controller,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -438,7 +437,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
                   SizedBox(height: 20),
                   Align(
                       widthFactor: 10,
@@ -462,25 +460,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fillColor: Colors.grey[200],
                     ),
                   ),
-                  SizedBox(height: 20),
                   company==is_company.Company?Container():Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text('birth_date'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
                   company==is_company.Company?Container():CustomButton(
-                    width: MediaQuery.of(context).size.width * 1,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      width: MediaQuery.of(context).size.width * 1,
                       color: Colors.grey[200],
                       textColor: kColorPrimary,
+                      textSize: 16,
+                      height: 60.0,
+                      fontWeight: FontWeight.w400,
+                      textAlign: TextAlign.right,
                       text: _birth_date_controller.text,
                       onPressed: (){_showDataPicker(context);}),
-                  SizedBox(height: 20),
+                  SizedBox(height: 40),
 
                   /// Sign Up button
                   SizedBox(
                     width: double.maxFinite,
                     child: CustomButton(
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(10),
+                      height: 60.0,
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
@@ -502,8 +505,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           user.password = _password_controller.text;
                           user.email = _email_controller.text;
                           user.phone_number = _phone_number_controller.text;
-                          user.birth_date =company == is_company.Company?DateTime.now():
-                              formatter.parse(_birth_date_controller.text);
+                          user.birth_date =company == is_company.Company ? DateTime.now() : formatter.parse(_birth_date_controller.text);
                           user.name = _name_controller.text;
                           user.surname = _surnname_controller.text;
                           user.is_company = company == is_company.Company;
@@ -519,8 +521,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           request.fields["name"] = user.name;
                           request.fields["lastname"] = user.surname;
                           request.fields["email"] = user.email;
-                          request.fields["birth_date"] =
-                              formatter.format(user.birth_date);
+                          request.fields["birth_date"] = formatter.format(user.birth_date);
                           request.fields["active"] = '1';
                           request.fields["phone_number"] = user.phone_number;
                           request.fields["type"] =
@@ -553,10 +554,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Prefs.setString(Prefs.EMAIL, response["email"]);
                                 Prefs.setInt(Prefs.USER_ID, response["id"]);
                                 Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
-                                Prefs.setString(
-                                    Prefs.PROFILEIMAGE, response["avatar"]);
-                                _showDialog(
-                                    context, 'successfull_sign_up'.tr(), false);
+                                Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+                                _showDialog(context, 'successfull_sign_up'.tr(), false);
                               }
                               else {
                                 _showDialog(context,

@@ -38,10 +38,10 @@ class BasicUserCvInfo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(Prefs.getString(Prefs.USER_TYPE)=="USER"?"surname".tr():"company_name".tr(),softWrap: true,
+              Text(Prefs.getString(Prefs.USER_TYPE)=="USER"?"name".tr():"company_name".tr(),softWrap: true,
                   style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
               Flexible(
-                child: Text(Prefs.getString(Prefs.USER_TYPE)=="USER"?user.surname:user.name,softWrap: true,
+                child: Text(user.name, softWrap: true,
                     style: TextStyle(fontSize: 16, color: kColorDark)),
               ),
             ],
@@ -87,7 +87,7 @@ class BasicUserCvInfo extends StatelessWidget {
                           style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                       SizedBox(width: 5,),
                       Flexible(
-                        child: Text(user_cv.job_title==null?'-':user_cv.job_title.toString(),softWrap: true,
+                        child: Text((user_cv.job_title==null || user_cv.job_title=='')?'-':user_cv.job_title.toString(),softWrap: true,
                             style: TextStyle(fontSize: 16, color: kColorDark)),
                       ),
                     ],
@@ -109,7 +109,7 @@ class BasicUserCvInfo extends StatelessWidget {
               heightFactor: 1.5,
               alignment: Alignment.topLeft,
               child: Text('attachment'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-          user_cv== null?Container():CustomButton(text: user_cv.attachment != null?'download_file'.tr():'file_doesnt_exist', width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+          user_cv== null?Container():CustomButton(text: user_cv.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
             _launchURL(SERVER_IP+user_cv.attachment);
 //            doSome1(user_cv.attachment);
           }),

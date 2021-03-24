@@ -32,6 +32,7 @@
   "profile_photo": "Сүрөтүңүз",
   "please_fill_this_field": "Бул жерди толтуруңуз",
   "password_must_at_least_5_chars": "Сырсөз кеминде 5 символдон туруш керек",
+  "password_or_email_is_incorrect": "Сырсөз же э-адрес туура эмес",
   "view": "Көрүү",
   "edit": "Өзгөрт",
   "visit": "Тапшырылгандар",
@@ -183,8 +184,8 @@
   "please_fill_user_cv_to_submit": "Вакансияга тапшыруу үчүн резюмеңизди толтуруңуз",
   "download_file": "Файлды кочүрүү",
   "file_doesnt_exist": "Файлыңыз",
-  "upload_new_file": "Жаңы файл кочүрүү",
-  "vacancy_name": "Тема",
+  "upload_new_file": "Даяр резюме жүктөө",
+  "vacancy_name": "Вакансия аталышы",
   "vacancy_salary": "Айлык",
   "vacancy_description": "Сүрөттө"
 }

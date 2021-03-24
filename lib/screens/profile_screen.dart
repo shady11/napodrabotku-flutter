@@ -20,11 +20,11 @@ import 'package:ishapp/widgets/user_education_info.dart';
 import 'package:ishapp/widgets/user_experience_info.dart';
 import 'package:ishapp/widgets/cicle_button.dart';
 
-
 import 'package:ishapp/components/custom_button.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'chat_screen.dart';
 
@@ -832,6 +832,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -900,7 +907,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         BasicUserCvInfo(user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
 
-                        Prefs.getString(Prefs.USER_TYPE)=="USER"?Column(children: [
+                        StoreProvider.of<AppState>(context).state.user.user_cv.data == null ? Container() :
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                              child: Text('attachment'.tr().toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: kColorDarkBlue)),
+                            ),
+                            StoreProvider.of<AppState>(context).state.user.user_cv.data== null ? Container() : CustomButton(text: StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+                              _launchURL(SERVER_IP+StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment);
+//            doSome1(user_cv.attachment);
+                            }),
+                          ],
+                        ),
+
+                        Prefs.getString(Prefs.USER_TYPE)=="USER"? Column(children: [
                           cv_loading  ? Center(
                             child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
                           ):StoreProvider.of<AppState>(context).state.user.user_cv.data != null ?

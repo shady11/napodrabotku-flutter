@@ -352,6 +352,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Prefs.getString(Prefs.USER_TYPE)=="USER"?CustomButton(
                       mainAxisAlignment: MainAxisAlignment.start,
                       width: MediaQuery.of(context).size.width * 1,
+                      height: 60.0,
                       color: Colors.grey[200],
                       textColor: kColorPrimary,
                       textSize: 16,

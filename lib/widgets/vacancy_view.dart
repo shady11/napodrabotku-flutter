@@ -150,13 +150,13 @@ class VacancyView extends StatelessWidget {
                           ),
                           child: Text(vacancy.schedule.toString(), style: TextStyle(color: Colors.black87),),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8)
-                          ),
-                          child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                        ),
+                        // Container(
+                        //   padding: EdgeInsets.all(5),
+                        //   decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(8)
+                        //   ),
+                        //   child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
+                        // ),
                       ],
                     ),
                     SizedBox(height: 15),

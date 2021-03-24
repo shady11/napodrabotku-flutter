@@ -58,7 +58,7 @@ class AboutScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
@@ -68,6 +68,7 @@ class AboutScreen extends StatelessWidget {
                           ),
                         ),
                         Container(
+                          padding: EdgeInsets.only(right: 10),
                           child: SizedBox(
                             height: 70,
                             child: Image.asset('assets/images/partners/japan.png'),
