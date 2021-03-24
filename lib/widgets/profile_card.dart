@@ -340,7 +340,7 @@ class ProfileCard extends StatelessWidget {
                                   else if(page =='submit'){
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (BuildContext context) {
-                                          return ChatScreen(user: currentUserDemo,);
+                                          return ChatScreen(user_id: vacancy.company, name: vacancy.company_name,);
                                         }
                                       )
                                     );

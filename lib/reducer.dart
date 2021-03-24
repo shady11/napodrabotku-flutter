@@ -5,6 +5,7 @@ import 'actions.dart';
 import 'datas/app_state.dart';
 import 'datas/vacancy.dart';
 import 'datas/vacancy_reducer.dart';
+import 'datas/chat_reducer.dart';
 
 List<Vacancy> vacancyItemsReducer(
     List<Vacancy> items, dynamic action) {
@@ -30,6 +31,7 @@ List<Vacancy> toggleItemState(
 AppState appReducer(AppState state, action) {
   return AppState(
     vacancy: vacancyReducer(state.vacancy, action),
-    user: userReducer(state.user, action)
+    user: userReducer(state.user, action),
+    chat: chatReducer(state.chat, action)
   );
 }

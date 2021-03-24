@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:ishapp/datas/demo_users.dart';
-// import 'package:ishapp/datas/user.dart';
+import 'package:ishapp/datas/app_state.dart';
+import 'package:ishapp/datas/chat.dart';
+import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/screens/profile_screen.dart';
 import 'package:ishapp/widgets/chat_message.dart';
 import 'package:ishapp/widgets/svg_icon.dart';
@@ -12,15 +15,20 @@ import 'package:ishapp/constants/configs.dart';
 
 class ChatScreen extends StatefulWidget {
   /// Get user object
-  final DemoUser user;
+  final int user_id;
+  String name;
 
-  ChatScreen({@required this.user});
+  ChatScreen({@required this.user_id, this.name});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  void handleInitialBuild(MessageListProps props) {
+    props.getMessageList(widget.user_id);
+  }
   // Variables
   final _textController = TextEditingController();
   bool _isComposing = false;
@@ -28,144 +36,154 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GestureDetector(
-          child: ListTile(
-            contentPadding: const EdgeInsets.only(left: 0),
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
-            ),
-            title: Text(widget.user.userFullname,
-                style: TextStyle(fontSize: 18)),
-          ),
-          onTap: () {
-              /// Go to profile screen
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ProfileScreen(
-//                    user: widget.user,
-              )));
-          },
-        ),
-        actions: <Widget>[
-          /// Actions list
-          PopupMenuButton<String>(
-            initialValue: "",
-            itemBuilder: (context) => <PopupMenuEntry<String>>[
-              /// Delete Chat
-              PopupMenuItem(
-                  value: "delete_chat",
-                  child: Row(
-                    children: <Widget>[
-                      SvgIcon("assets/icons/trash_icon.svg", 
-                      width: 20, height: 20, 
-                      color: Theme.of(context).primaryColor),
-                      SizedBox(width: 5),
-                      Text("delete_conversation".tr()),
-                    ],
-              )),
+    return StoreConnector<AppState, MessageListProps>(
+      converter: (store) => mapStateToMessageProps(store, widget.user_id),
+      onInitialBuild: (props) => this.handleInitialBuild(props),
+      builder: (context, props) {
+        List<Message> data = props.list.data;
+        bool loading = props.list.loading;
 
-              /// Undo Match
-              /*PopupMenuItem(
-                  value: "undo_match",
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.highlight_off,
-                          color: Theme.of(context).primaryColor),
-                      SizedBox(width: 5),
-                      Text("Undo Match")
-                    ],
-                  )),*/
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+          );
+        } else {
+          body = Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                    itemCount: data.length,
+                    itemBuilder: (context, index){
+                      return ChatMessage(
+                        isUserSender: data[index].type,
+                        body: data[index].body,
+                        date_time: data[index].date_time,
+                        read: data[index].read,
+                      );
+                    }),
+              ),
+              Container(
+                color: Colors.grey.withAlpha(50),
+                child: ListTile(
+                    title: TextField(
+                      controller: _textController,
+                      minLines: 1,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                          hintText: "write".tr(), border: InputBorder.none),
+                      onChanged: (text) {
+                        setState(() {
+                          _isComposing = text.isNotEmpty;
+                        });
+                      },
+                    ),
+                    trailing: IconButton(
+                        icon: Icon(Icons.send,
+                            color: _isComposing ? Theme.of(context).primaryColor
+                                : Colors.grey),
+                        onPressed: _isComposing ? () async {
+                          /// Send text message
+                          ///
+
+                          Message.sendMessage(_textController.text, widget.user_id);
+                          // clear input text
+                          _textController.clear();
+
+                          // Change state
+                          setState(() => _isComposing = false);
+
+                        }: null)),
+              ),
             ],
-            onSelected: (val) {
-              /// Control selected value
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              children: [
-                /// Chat list
-                
-                /// Current user
-                ChatMessage(
-                  isUserSender: true,
-                  userPhotoLink: "assets/images/man.jpg",
-                  textMessage: "Здравствуйте, можно телеграм вашего hr manager?",
-                  timeAgo: "3" + "min_ago".tr(),
-                ),
+          );
+        }
 
-                ChatMessage(
-                  isUserSender: false,
-                  userPhotoLink: widget.user.userPhotoLink,
-                  textMessage: "Добрый день. @Username",
-                  timeAgo: "1" + "min_ago".tr(),
-                ),
 
-                /// Current user
-                ChatMessage(
-                  isUserSender: true,
-                  userPhotoLink: "assets/images/man.jpg",
-                  textMessage: "Спасибо",
-                  timeAgo: "1" + "min_ago".tr(),
+        return Scaffold(
+            appBar: AppBar(
+              title: GestureDetector(
+                child: ListTile(
+                  contentPadding: const EdgeInsets.only(left: 0),
+                  /*leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        SERVER_IP +
+                            Prefs.getString(Prefs.PROFILEIMAGE),
+                        headers: {
+                          "Authorization":
+                          Prefs.getString(Prefs.TOKEN)
+                        }),
+                  ),*/
+                  title: Text(widget.name,
+                      style: TextStyle(fontSize: 18)),
                 ),
+                onTap: () {
+                  /// Go to profile screen
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfileScreen(
+//                    user: widget.user,
+                      )));
+                },
+              ),
+              actions: <Widget>[
+                /// Actions list
+                PopupMenuButton<String>(
+                  initialValue: "",
+                  itemBuilder: (context) => <PopupMenuEntry<String>>[
+                    /// Delete Chat
+                    PopupMenuItem(
+                        value: "delete_chat",
+                        child: Row(
+                          children: <Widget>[
+                            SvgIcon("assets/icons/trash_icon.svg",
+                                width: 20, height: 20,
+                                color: Theme.of(context).primaryColor),
+                            SizedBox(width: 5),
+                            Text("delete_conversation".tr()),
+                          ],
+                        )),
 
-                ChatMessage(
-                  isUserSender: false,
-                  isImage: false,
-                  userPhotoLink: widget.user.userPhotoLink,
-                  textMessage: 'Не за что',
-                  timeAgo: "0" + "min_ago".tr(),
+                    /// Undo Match
+                    PopupMenuItem(
+                        value: "undo_match",
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.highlight_off,
+                                color: Theme.of(context).primaryColor),
+                            SizedBox(width: 5),
+                            Text("Undo Match")
+                          ],
+                        )),
+                  ],
+                  onSelected: (val) {
+                    /// Control selected value
+                  },
                 ),
               ],
             ),
-          ),
-
-          /// Text Composer
-          Container(
-            color: Colors.grey.withAlpha(50),
-            child: ListTile(
-                leading: IconButton(
-                    icon: SvgIcon("assets/icons/camera_icon.svg", 
-                    width: 20, height: 20),
-                    onPressed: () async {
-                      /// Send image file
-                    }),
-                title: TextField(
-                  controller: _textController,
-                  minLines: 1,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                      hintText: "write".tr(), border: InputBorder.none),
-
-                  onChanged: (text) {
-                    setState(() {
-                      _isComposing = text.isNotEmpty;
-                    });
-                  },
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.send,
-                  color: _isComposing ? Theme.of(context).primaryColor
-                          : Colors.grey),
-                  onPressed: _isComposing ? () async { 
-                    /// Send text message
-                    
-                    // clear input text
-                    _textController.clear();
-
-                    // Change state
-                    setState(() => _isComposing = false);
-
-                }: null)),
-          ),
-        ],
-      ),
+            body: body
+        );
+      },
     );
   }
+}
+
+
+
+class MessageListProps {
+  final Function getMessageList;
+  final ListMessageViewState list;
+
+  MessageListProps({
+    this.getMessageList,
+    this.list,
+  });
+}
+
+MessageListProps mapStateToMessageProps(Store<AppState> store, int receiver_id) {
+  return MessageListProps(
+    list: store.state.chat.message_list,
+    getMessageList: (int receiver_id)=>store.dispatch(getMessageList(receiver_id)),
+  );
 }

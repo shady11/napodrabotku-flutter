@@ -348,3 +348,49 @@ RSAA getNumOfInactiveVacancyRequest() {
 }
 
 ThunkAction<AppState> getNumberOfInactiveVacancies() => (Store<AppState> store) => store.dispatch(getNumOfInactiveVacancyRequest());
+
+//CHAT
+const GET_CHAT_LIST_REQUEST = 'GET_CHAT_LIST_REQUEST';
+const GET_CHAT_LIST_SUCCESS = 'GET_CHAT_LIST_SUCCESS';
+const GET_CHAT_LIST_FAILURE = 'GET_CHAT_LIST_FAILURE';
+RSAA getChatListRequest() {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_CHAT_LIST,
+      types: [
+        GET_CHAT_LIST_REQUEST,
+        GET_CHAT_LIST_SUCCESS,
+        GET_CHAT_LIST_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN),
+      },
+    );
+}
+
+ThunkAction<AppState> getChatList() => (Store<AppState> store) => store.dispatch(getChatListRequest());
+
+const GET_MESSAGE_LIST_REQUEST = 'GET_MESSAGE_LIST_REQUEST';
+const GET_MESSAGE_LIST_SUCCESS = 'GET_MESSAGE_LIST_SUCCESS';
+const GET_MESSAGE_LIST_FAILURE = 'GET_MESSAGE_LIST_FAILURE';
+RSAA getMessageListRequest(int receiver_id) {
+  return
+    RSAA(
+      method: 'GET',
+      endpoint: API_IP+API_MESSAGE_LIST+"/"+receiver_id.toString(),
+      types: [
+        GET_MESSAGE_LIST_REQUEST,
+        GET_MESSAGE_LIST_SUCCESS,
+        GET_MESSAGE_LIST_FAILURE,
+      ],
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': Prefs.getString(Prefs.TOKEN),
+      },
+    );
+}
+
+ThunkAction<AppState> getMessageList(int receiver_id) => (Store<AppState> store) => store.dispatch(getMessageListRequest(receiver_id));
+
