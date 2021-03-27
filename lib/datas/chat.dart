@@ -51,6 +51,25 @@ class ChatView{
     last_message: json["last_message"],
     num_of_unreads: json["unread_messages"]
   );
+
+  static Future<String> deleteChat(int receiver_id) async {
+    final url = API_IP + API_CHAT_DELETE;
+    print(url);
+    try {
+      Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'receiver_id': receiver_id
+        }),
+      );
+      json.decode(response.body);
+      return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 class ListMessageViewState {
@@ -82,7 +101,7 @@ class Message{
   bool read;
 
   Message({this.body, this.date_time, this.type, this.read});
-  static DateFormat formatter = DateFormat('yyyy-MM-dd H:m:ss');
+  static DateFormat formatter = DateFormat('yyyy-MM-dd H:m');
 
   factory Message.fromJson(Map<String, dynamic> json) => new Message(
       body: json["message"],

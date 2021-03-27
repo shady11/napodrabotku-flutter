@@ -487,8 +487,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
-                        User.checkUsername(_email_controller.text).then((
-                            value) {
+                        User.checkUsername(_email_controller.text).then((value) {
                           setState(() {
                             isUserExists = value;
                           });

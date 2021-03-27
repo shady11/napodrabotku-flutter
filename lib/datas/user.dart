@@ -158,11 +158,15 @@ class User {
 //        Prefs.setString(Prefs.USERNAME, username);
 //        Prefs.setString(Prefs.PASSWORD, password);
 //        Prefs.setString(Prefs.TOKEN, response["token"]);
-        Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+//         Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
       });
     }).catchError((e) {
       print(e);
     });
+        // .then((value){
+        //   var response = json.decode(value);
+        //   Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+        // });
   }
 
   Future<void> register() async {

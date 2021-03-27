@@ -79,6 +79,7 @@ class BasicUserCvInfo extends StatelessWidget {
           Divider(),
           user_cv != null ?
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,18 +102,22 @@ class BasicUserCvInfo extends StatelessWidget {
                       Text(user_cv.experience_year==null?'-':user_cv.experience_year.toString(),softWrap: true,
                           style: TextStyle(fontSize: 16, color: kColorDark)),
                     ],
-                  ), Divider()
+                  ),
+                  Divider(),
+                  user_cv.attachment == null ? Container() : Container(
+                    margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                    child: Text('attachment'.tr().toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: kColorDarkBlue)),
+                  ),
+                  user_cv.attachment == null ? Container() : CustomButton(text: user_cv.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+                    _launchURL(SERVER_IP+user_cv.attachment);
+//            doSome1(user_cv.attachment);
+                  }),
                 ],
               ) : SizedBox(),
-          user_cv== null?Container():Align(
-              widthFactor: 10,
-              heightFactor: 1.5,
-              alignment: Alignment.topLeft,
-              child: Text('attachment'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-          user_cv== null?Container():CustomButton(text: user_cv.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
-            _launchURL(SERVER_IP+user_cv.attachment);
-//            doSome1(user_cv.attachment);
-          }),
 //          Row(
 //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //            children: [

@@ -8,6 +8,7 @@ import 'package:ishapp/components/custom_button.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:path/path.dart';
+import 'package:ishapp/datas/RSAA.dart';
 
 import 'package:ishapp/constants/configs.dart';
 import 'package:ishapp/datas/app_state.dart';
@@ -460,7 +461,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
 
                           Navigator.of(context).pop();
-//                          Navigator.of(context).popAndPushNamed(Routes.user_details);
+                          // StoreProvider.of<AppState>(context).dispatch(getUser())
+                          // Navigator.of(context).popAndPushNamed(Routes.user_details);
                         }
                         else{
                           return;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ishapp/utils/constants.dart';
+import 'package:intl/intl.dart';
 
 class ChatMessage extends StatelessWidget {
   // Variables
@@ -7,6 +8,8 @@ class ChatMessage extends StatelessWidget {
   final String body;
   final bool read;
   final DateTime date_time;
+
+  final DateFormat formatter = DateFormat('dd-MM-yyyy H:mm');
 
   ChatMessage(
       {@required this.isUserSender,
@@ -50,7 +53,7 @@ class ChatMessage extends StatelessWidget {
                 /// Message time ago
                 Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Text(date_time.toString(), style: TextStyle(color: Colors.grey),)),
+                    child: Text(formatter.format(date_time), style: TextStyle(color: Colors.grey),)),
               ],
             ),
           ),

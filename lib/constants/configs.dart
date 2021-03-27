@@ -1,7 +1,9 @@
-  String API_IP = "http://138.68.79.49/api/";
+// String API_IP = "http://ishtapp.kg/api/";
+String API_IP = "http://138.68.79.49/api/";
 // String API_IP = "http://192.168.0.105:8000/api/";
 //String API_IP = "http://10.0.2.2:8000/api/";
-  String SERVER_IP = "http://138.68.79.49/";
+// String SERVER_IP = "http://ishtapp.kg/";
+String SERVER_IP = "http://138.68.79.49/";
 // String SERVER_IP = "http://192.168.0.105:8000/";
 //String SERVER_IP = "http://10.0.2.2:8000/";
 String API_GET_USER = "user";
@@ -51,5 +53,6 @@ String API_USER_FULL_INFO = 'users/full_info/';
 
 //chat
  String API_CHAT_LIST = 'chats';
+ String API_CHAT_DELETE = 'chats/delete';
  String API_MESSAGE_LIST = 'messages';
  String API_SEND_MESSAGE = 'messages';

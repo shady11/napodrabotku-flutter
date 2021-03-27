@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-
 import 'package:ishapp/datas/RSAA.dart';
 import 'package:ishapp/datas/app_state.dart';
 
@@ -906,24 +905,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         BasicUserCvInfo(user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
 
-                        StoreProvider.of<AppState>(context).state.user.user_cv.data == null ? Container() :
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                              child: Text('attachment'.tr().toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: kColorDarkBlue)),
-                            ),
-                            StoreProvider.of<AppState>(context).state.user.user_cv.data== null ? Container() : CustomButton(text: StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
-                              _launchURL(SERVER_IP+StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment);
-//            doSome1(user_cv.attachment);
-                            }),
-                          ],
-                        ),
+//                         StoreProvider.of<AppState>(context).state.user.user_cv.data == null ? Container() :
+//                         Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Container(
+//                               margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+//                               child: Text('attachment'.tr().toUpperCase(),
+//                                   style: TextStyle(
+//                                       fontSize: 14,
+//                                       fontWeight: FontWeight.w700,
+//                                       color: kColorDarkBlue)),
+//                             ),
+//                             StoreProvider.of<AppState>(context).state.user.user_cv.data== null ? Container() : CustomButton(text: StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
+//                               _launchURL(SERVER_IP+StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment);
+// //            doSome1(user_cv.attachment);
+//                             }),
+//                           ],
+//                         ),
 
                         Prefs.getString(Prefs.USER_TYPE)=="USER"? Column(children: [
                           cv_loading  ? Center(

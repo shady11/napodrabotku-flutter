@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:redux/redux.dart';
@@ -17,8 +19,9 @@ class ChatScreen extends StatefulWidget {
   /// Get user object
   final int user_id;
   String name;
+  String avatar;
 
-  ChatScreen({@required this.user_id, this.name});
+  ChatScreen({@required this.user_id, this.name, this.avatar});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -33,13 +36,21 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
   bool _isComposing = false;
 
+  final  DateFormat formatter = DateFormat('yyyy-MM-dd H:m');
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return StoreConnector<AppState, MessageListProps>(
       converter: (store) => mapStateToMessageProps(store, widget.user_id),
       onInitialBuild: (props) => this.handleInitialBuild(props),
       builder: (context, props) {
+
         List<Message> data = props.list.data;
         bool loading = props.list.loading;
 
@@ -53,9 +64,12 @@ class _ChatScreenState extends State<ChatScreen> {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                  shrinkWrap: true,
-                    itemCount: data.length,
+                    shrinkWrap: true,
+                    itemCount: data == null ? 0 : data.length,
                     itemBuilder: (context, index){
+                      // SchedulerBinding.instance.addPostFrameCallback((_) {
+                      //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                      // });
                       return ChatMessage(
                         isUserSender: data[index].type,
                         body: data[index].body,
@@ -80,50 +94,41 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                     ),
                     trailing: IconButton(
-                        icon: Icon(Icons.send,
-                            color: _isComposing ? Theme.of(context).primaryColor
-                                : Colors.grey),
+                        icon: Icon(Icons.send, color: _isComposing ? Theme.of(context).primaryColor : Colors.grey),
                         onPressed: _isComposing ? () async {
-                          /// Send text message
-                          ///
-
                           Message.sendMessage(_textController.text, widget.user_id);
-                          // clear input text
+                          data.add(Message(body: _textController.text, date_time: DateTime.now(), type: true, read: true));
                           _textController.clear();
-
-                          // Change state
                           setState(() => _isComposing = false);
-
-                        }: null)),
+                        } : null
+                    )
+                ),
               ),
             ],
           );
         }
-
 
         return Scaffold(
             appBar: AppBar(
               title: GestureDetector(
                 child: ListTile(
                   contentPadding: const EdgeInsets.only(left: 0),
-                  /*leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        SERVER_IP +
-                            Prefs.getString(Prefs.PROFILEIMAGE),
+                  leading: CircleAvatar(
+                    backgroundImage: widget.avatar != null ? NetworkImage(
+                        SERVER_IP + widget.avatar,
                         headers: {
                           "Authorization":
                           Prefs.getString(Prefs.TOKEN)
-                        }),
-                  ),*/
-                  title: Text(widget.name,
-                      style: TextStyle(fontSize: 18)),
+                        }) : AssetImage('assets/images/default-user.jpg'),
+                  ),
+                  title: Text(widget.name, style: TextStyle(fontSize: 18)),
                 ),
                 onTap: () {
-                  /// Go to profile screen
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ProfileScreen(
-//                    user: widget.user,
-                      )));
+//                   /// Go to profile screen
+//                   Navigator.of(context).push(
+//                       MaterialPageRoute(builder: (context) => ProfileScreen(
+// //                    user: widget.user,
+//                       )));
                 },
               ),
               actions: <Widget>[
@@ -142,22 +147,15 @@ class _ChatScreenState extends State<ChatScreen> {
                             SizedBox(width: 5),
                             Text("delete_conversation".tr()),
                           ],
-                        )),
-
-                    /// Undo Match
-                    PopupMenuItem(
-                        value: "undo_match",
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.highlight_off,
-                                color: Theme.of(context).primaryColor),
-                            SizedBox(width: 5),
-                            Text("Undo Match")
-                          ],
-                        )),
+                        )
+                    ),
                   ],
                   onSelected: (val) {
-                    /// Control selected value
+                    if(val == 'delete_chat'){
+                      print(val);
+                      ChatView.deleteChat(widget.user_id);
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ],
@@ -168,8 +166,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
-
 
 class MessageListProps {
   final Function getMessageList;
@@ -184,6 +180,6 @@ class MessageListProps {
 MessageListProps mapStateToMessageProps(Store<AppState> store, int receiver_id) {
   return MessageListProps(
     list: store.state.chat.message_list,
-    getMessageList: (int receiver_id)=>store.dispatch(getMessageList(receiver_id)),
+    getMessageList: (int receiver_id) => store.dispatch(getMessageList(receiver_id)),
   );
 }

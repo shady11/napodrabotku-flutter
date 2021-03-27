@@ -48,9 +48,9 @@
   "surname": "Фамилия",
   "surname_name": "Имя, фамилия",
   "enter_your_surname": "Введите фамилию",
-  "job_type": "Вид работы",
+  "job_type": "Сфера деятельности",
   "select_job_type": "Выбрать",
-  "job_types": "Вид работы",
+  "job_types": "Сферы деятельности",
   "vacancy_type": "Вид",
   "select_vacancy_type": "Выбрать",
   "vacancy_types": "Вид",
@@ -190,5 +190,7 @@
   "upload_new_file": "Загрузка готового резюме",
   "vacancy_name": "Название вакансии",
   "vacancy_salary": "Зарплата",
-  "vacancy_description": "Описание"
+  "vacancy_description": "Описание",
+  "write_to": "Написать",
+  "soon": "Скоро"
 }

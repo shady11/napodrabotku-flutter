@@ -20,16 +20,20 @@ import 'package:redux/redux.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
-class MatchesTab extends StatelessWidget {
+class MatchesTab extends StatefulWidget {
+  @override
+  _MatchesTabState createState() => _MatchesTabState();
+}
+
+class _MatchesTabState extends State<MatchesTab> {
 
   void handleInitialBuild(VacanciesScreenProps1 props) {
-      props.getLikedVacancies();
+    props.getLikedVacancies();
   }
 
   void handleInitialBuildOfSubmits(SubmittedUsersProps props) {
     props.getSubmittedUsers();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,7 @@ class MatchesTab extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
-              child: Text("you_cant_see_matches_please_sign_in".tr(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 25),),
+              child: Text("you_cant_see_matches_please_sign_in".tr(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 20),),
             ),
 
             CustomButton(text: "sign_in".tr(),
@@ -55,94 +59,101 @@ class MatchesTab extends StatelessWidget {
         ),
       );
     }
-    else{
-      return Prefs.getString(Prefs.USER_TYPE)=='COMPANY'
-    ?StoreConnector<AppState, SubmittedUsersProps>(
-        converter: (store) => mapStateToSubmittedUsersProps(store),
-        onInitialBuild: (props) => this.handleInitialBuildOfSubmits(props),
-        builder: (context, props) {
-          List<User> data = props.listResponse.data;
-          bool loading = props.listResponse.loading;
+    else {
+      if (Prefs.getString(Prefs.USER_TYPE) == 'COMPANY') {
+        return StoreConnector<AppState, SubmittedUsersProps>(
+          converter: (store) => mapStateToSubmittedUsersProps(store),
+          onInitialBuild: (props) => this.handleInitialBuildOfSubmits(props),
+          builder: (context, props) {
+            List<User> data = props.listResponse.data;
+            bool loading = props.listResponse.loading;
 
-          Widget body;
-          if (loading) {
-            body = Center(
-              child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
-            );
-          } else {
-            body = Column(
-              children: [
-                Expanded(
-                  child: data!=null?UsersGrid(
-                      children: data.map((user) {
-                        return GestureDetector(
-                          child: UserCard(user: user, /*page: 'match',*/),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfileInfoScreen(user_id: user.id)));
-                          },
-                        );
-                      }).toList()):Center(
-                    child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+            Widget body;
+            if (loading) {
+              body = Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+              );
+            } else {
+              body = Column(
+                children: [
+                  Expanded(
+                    child: data != null ? UsersGrid(
+                        children: data.map((user) {
+                          return GestureDetector(
+                            child: UserCard(user: user, /*page: 'match',*/),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext ctx) =>
+                                      ProfileInfoScreen(user_id: user.id))
+                              );
+                            },
+                          );
+                        }).toList()) : Center(
+                      child: Text(
+                        'empty'.tr(), style: TextStyle(color: Colors.white),),
+                    ),
                   ),
-                ),
+                ],
+              );
+            }
 
-              ],
-            );
-          }
-
-          return body;
-        },
-      )
-    : StoreConnector<AppState, VacanciesScreenProps1>(
-        converter: (store) => mapStateToProps(store),
-        onInitialBuild: (props) => this.handleInitialBuild(props),
-        builder: (context, props) {
-          List<Vacancy> data = props.listResponse1.data;
-          bool loading = props.listResponse1.loading;
-          Widget body;
-          if (loading) {
-            body = Center(
-              child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
-            );
-          } else {
-            body = Column(
-              children: [
-                Expanded(
-                  child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length !=0?UsersGrid(
-                      children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
-                        return GestureDetector(
-                          child: ProfileCard(vacancy: vacancy, page: 'match',),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return Scaffold(
-                                    backgroundColor: kColorPrimary,
-                                    appBar: AppBar(
-                                      title: Text("vacancy_view".tr()),
-                                    ),
-                                    body: VacancyView(
-                                      page:"view",
-                                      vacancy: vacancy,
-                                    ),
-                                  );
-                                }));
-                          },
-                        );
-                      }).toList()):Center(
-                    child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+            return body;
+          },
+        );
+      }
+      else {
+        return StoreConnector<AppState, VacanciesScreenProps1>(
+          converter: (store) => mapStateToProps(store),
+          onInitialBuild: (props) => this.handleInitialBuild(props),
+          builder: (context, props) {
+            List<Vacancy> data = props.listResponse1.data;
+            bool loading = props.listResponse1.loading;
+            Widget body;
+            if (loading) {
+              body = Center(
+                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+              );
+            } else {
+              body = Column(
+                children: [
+                  Expanded(
+                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length !=0?UsersGrid(
+                        children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
+                          return GestureDetector(
+                            child: ProfileCard(vacancy: vacancy, page: 'match',),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return Scaffold(
+                                      backgroundColor: kColorPrimary,
+                                      appBar: AppBar(
+                                        title: Text("vacancy_view".tr()),
+                                      ),
+                                      body: VacancyView(
+                                        page:"view",
+                                        vacancy: vacancy,
+                                      ),
+                                    );
+                                  }
+                                )
+                              );
+                            },
+                          );
+                        }).toList()):Center(
+                      child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
+                    ),
                   ),
-                ),
 
-              ],
-            );
-          }
+                ],
+              );
+            }
 
-          return body;
-        },
-      );
+            return body;
+          },
+        );
+      }
     }
-
   }
 }
 

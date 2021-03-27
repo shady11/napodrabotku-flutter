@@ -76,6 +76,8 @@ class VacancyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(vacancy.region);
+
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
@@ -102,28 +104,32 @@ class VacancyView extends StatelessWidget {
                     /// User fullname
                     Row(
                       children: [
-//                          Align(
-//                            alignment: Alignment.topLeft,
-//                            child: ClipRRect(
-//                                borderRadius: BorderRadius.circular(20),
-//                                child: Image.network(API_IP+ API_GET_COMPANY_AVATAR + vacancy.id.toString(),headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 80,
-//                                  height: 60,)
-//                            ),
-//                          ),
+                         Align(
+                           alignment: Alignment.topLeft,
+                           child: ClipRRect(
+                               borderRadius: BorderRadius.circular(20),
+                               child: vacancy.company_logo != null ? Image.network(
+                                 SERVER_IP + vacancy.company_logo.toString(),
+                                 headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
+                                 width: 50,
+                                 height: 50,
+                               ) : Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 70, height: 70,),
+                           ),
+                         ),
                         SizedBox(width: 20),
                         Expanded(
                           child: RichText(
                             text: TextSpan(text: vacancy.company_name.toString() + '\n',
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
                               children: <TextSpan>[
-                                TextSpan(text: vacancy.address, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                TextSpan(text: vacancy.region, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: kColorDark)),
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

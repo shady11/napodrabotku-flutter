@@ -59,13 +59,13 @@ class _DiscoverTabState extends State<DiscoverTab> {
         busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
         vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
         type: StoreProvider.of<AppState>(context).state.vacancy.type).then((value) {
-          if(value != null){
-            offset = offset-1;
-            print(props.listResponse.data);
-            setState(() {
-              props.listResponse.data.insert(0, value);
-            });
-          }
+      if(value != null){
+        offset = offset-1;
+        print(props.listResponse.data);
+        setState(() {
+          props.listResponse.data.insert(0, value);
+        });
+      }
     });
 
 //    StoreProvider.of<AppState>(context).state.vacancy.list.data.last;
@@ -75,7 +75,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
   @override
   Widget build(BuildContext context) {
     return Prefs.getString(Prefs.USER_TYPE)=='COMPANY'
-         ?StoreConnector<AppState, CompanyVacanciesScreenProps>(
+        ?StoreConnector<AppState, CompanyVacanciesScreenProps>(
       converter: (store) => mapStateToVacancyProps(store),
       onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
       builder: (context, props) {
@@ -186,7 +186,9 @@ class _DiscoverTabState extends State<DiscoverTab> {
                                           vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
                                         ),
                                       );
-                                    }));
+                                    }
+                                  )
+                                );
                               },
                               child: StoreProvider.of<AppState>(context).state.vacancy.list.data[x] != null?ProfileCard(
                                 props: props,
@@ -199,7 +201,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
                   ]),
                 ),
               ]):Center(
-            child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),)
+              child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),)
           );
         }
 
@@ -291,8 +293,8 @@ class CompanyVacanciesScreenProps {
 CompanyVacanciesScreenProps mapStateToVacancyProps(Store<AppState> store) {
   return CompanyVacanciesScreenProps(
     listResponse: store.state.vacancy.list,
-    getCompanyVacancies: ()=>store.dispatch(getCompanyVacancies()),
-    getNumOfActiveVacancies: ()=>store.dispatch(getNumberOfActiveVacancies()),
+    getCompanyVacancies: ()=> store.dispatch(getCompanyVacancies()),
+    getNumOfActiveVacancies: ()=> store.dispatch(getNumberOfActiveVacancies()),
   );
 }
 
@@ -313,7 +315,7 @@ class VacanciesScreenProps {
 VacanciesScreenProps mapStateToProps(Store<AppState> store) {
   return VacanciesScreenProps(
     listResponse: store.state.vacancy.list,
-    addOneToMatches: ()=>store.dispatch(getNumberOfLikedVacancies()),
+    addOneToMatches: ()=> store.dispatch(getNumberOfLikedVacancies()),
     getVacancies: () => store.dispatch(getVacancies()),
     deleteItem: () => store.dispatch(deleteItem1()),
   );

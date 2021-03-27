@@ -738,7 +738,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                             bgColor: Colors.transparent,
                             padding: 0,
                             icon: Icon(
-                              Boxicons.bx_webcam,
+                              Boxicons.bx_info_square,
                               color: kColorDarkBlue,
                               size: 24,
                             ),
@@ -810,7 +810,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                 bgColor: Colors.transparent,
                                 padding: 0,
                                 icon: Icon(
-                                  Boxicons.bx_webcam,
+                                  Boxicons.bx_info_square,
                                   color: kColorDarkBlue,
                                   size: 24,
                                 ),
@@ -881,7 +881,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                             bgColor: Colors.transparent,
                             padding: 0,
                             icon: Icon(
-                              Boxicons.bx_webcam,
+                              Boxicons.bx_info_square,
                               color: kColorDarkBlue,
                               size: 24,
                             ),
@@ -913,8 +913,10 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
 
           Widget body;
           if(user_loading){
-            body = Center(
-              child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+            body = Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),),
+              ),
             );
           }
           else{

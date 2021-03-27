@@ -23,19 +23,19 @@ class Vacancy {
 
   Vacancy(
       {this.id,
-      this.company_name,
-      this.company_logo,
-      this.name,
-      this.title,
-      this.description,
-      this.address,
-      this.salary,
-      this.busyness,
-      this.schedule,
-      this.job_type,
-      this.region,
-      this.type,
-      this.company});
+        this.company_name,
+        this.company_logo,
+        this.name,
+        this.title,
+        this.description,
+        this.address,
+        this.salary,
+        this.busyness,
+        this.schedule,
+        this.job_type,
+        this.region,
+        this.type,
+        this.company});
 
   static Future<List<dynamic>> getLists(String model) async {
     final url = API_IP + model+'?lang='+Prefs.getString(Prefs.LANGUAGE);
@@ -50,20 +50,21 @@ class Vacancy {
   }
 
   factory Vacancy.fromJson(Map<String, dynamic> json) => new Vacancy(
-        id: json["id"],
-        name: json["name"],
-        title: json["title"],
-        description: json["description"],
-        address: json["address"],
-        salary: json['salary'],
-        company: json['company'],
-        company_name: json['company_name'],
-        company_logo: json['company_logo'],
-        busyness: json['busyness'],
-        schedule: json['schedule'],
-        job_type: json['job_type'],
-        type: json['type'],
-      );
+    id: json["id"],
+    name: json["name"],
+    title: json["title"],
+    description: json["description"],
+    address: json["address"],
+    salary: json['salary'],
+    company: json['company'],
+    company_name: json['company_name'],
+    company_logo: json['company_logo'],
+    busyness: json['busyness'],
+    schedule: json['schedule'],
+    job_type: json['job_type'],
+    region: json['region'],
+    type: json['type'],
+  );
 
   static Map<String, dynamic> vacancyToJsonMap(
       Vacancy vacancy) =>
@@ -165,10 +166,10 @@ class Vacancy {
   }
 
   static Future<List<Vacancy>> getVacancyListByType(
-    int limit,
-    int offset,
-    String type,
-  ) async {
+      int limit,
+      int offset,
+      String type,
+      ) async {
     final url = API_IP + API_LIKED_USER_VACANCY_LIST;
     try {
       Map<String, String> headers = {
@@ -178,7 +179,7 @@ class Vacancy {
       final response = await http.post(url,
           headers: headers,
           body:
-              json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
+          json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
       print(response.body);
       List<Vacancy> result_list = [];
       for (var i in json.decode(utf8.decode(response.bodyBytes))) {
@@ -300,20 +301,20 @@ class VacancyState {
   UserState user;
 
   factory VacancyState.initial() => VacancyState(
-        list: ListVacancysState.initial(),
-        inactive_list: ListVacancysState.initial(),
-        liked_list: LikedVacancyListState.initial(),
-        submitted_list: ListSubmittedVacancyState.initial(),
-        job_type_ids: [],
-        region_ids: [],
-        schedule_ids: [],
-        busyness_ids: [],
-        vacancy_type_ids: [],
-        type: 'all',
-        number_of_likeds: null,
-        number_of_submiteds: 0,
-        user: UserState.initial()
-      );
+      list: ListVacancysState.initial(),
+      inactive_list: ListVacancysState.initial(),
+      liked_list: LikedVacancyListState.initial(),
+      submitted_list: ListSubmittedVacancyState.initial(),
+      job_type_ids: [],
+      region_ids: [],
+      schedule_ids: [],
+      busyness_ids: [],
+      vacancy_type_ids: [],
+      type: 'all',
+      number_of_likeds: null,
+      number_of_submiteds: 0,
+      user: UserState.initial()
+  );
 
   VacancyState(
       {
@@ -345,10 +346,10 @@ class ListVacancysState {
   });
 
   factory ListVacancysState.initial() => ListVacancysState(
-        error: null,
-        loading: false,
-        data: [],
-      );
+    error: null,
+    loading: false,
+    data: [],
+  );
 }
 
 class ListSubmittedVacancyState {
@@ -381,10 +382,10 @@ class LikedVacancyListState {
   });
 
   factory LikedVacancyListState.initial() => LikedVacancyListState(
-        error: null,
-        loading: false,
-        data: [],
-      );
+    error: null,
+    loading: false,
+    data: [],
+  );
 }
 
 class VacancyType {

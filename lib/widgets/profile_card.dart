@@ -81,26 +81,24 @@ class ProfileCard extends StatelessWidget {
       builder: (ctx) => Center(
         heightFactor: 1/2,
         child: AlertDialog(
-          backgroundColor: kColorPrimary,
+          backgroundColor: kColorWhite,
           title: Text(''),
-          content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+          content: Text(message, style: TextStyle(color: kColorPrimary), textAlign: TextAlign.center,),
           actions: <Widget>[
             FlatButton(
-              child: Text('no'.tr(),style: TextStyle(color: Colors.white),),
+              child: Text('no'.tr(),style: TextStyle(color: kColorDark),),
               onPressed: () {
-                Navigator.of(ctx).pop();
                 Navigator.of(ctx).pop();
               },
             ),
             FlatButton(
-              child: Text('yes'.tr(),style: TextStyle(color: Colors.white),),
+              child: Text('yes'.tr(),style: TextStyle(color: kColorPrimary),),
               onPressed: () {
                 Vacancy.deleteCompanyVacancy(vacancy_id: vacancy.id,).then((value) {
                   StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
-//                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                  // StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                   StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
                   StoreProvider.of<AppState>(context).dispatch(getNumberOfInactiveVacancies());
-                  Navigator.of(ctx).pop();
                   Navigator.of(ctx).pop();
                 });
               },
@@ -117,19 +115,19 @@ class ProfileCard extends StatelessWidget {
       builder: (ctx) => Center(
         heightFactor: 1/2,
         child: AlertDialog(
-          backgroundColor: kColorPrimary,
+          backgroundColor: kColorWhite,
           title: Text(''),
-          content: Text(message, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+          content: Text(message, style: TextStyle(color: kColorPrimary), textAlign: TextAlign.center,),
           actions: <Widget>[
             FlatButton(
-              child: Text('no'.tr(),style: TextStyle(color: Colors.white),),
+              child: Text('no'.tr(),style: TextStyle(color: kColorDark),),
               onPressed: () {
                 Navigator.of(ctx).pop();
 //                Navigator.of(ctx).pop();
               },
             ),
             FlatButton(
-              child: Text('yes'.tr(),style: TextStyle(color: Colors.white),),
+              child: Text('yes'.tr(),style: TextStyle(color: kColorPrimary),),
               onPressed: () {
                 Vacancy.activateDeactiveVacancy(vacancy_id: vacancy.id, active: active).then((value) {
 //                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
@@ -156,7 +154,7 @@ class ProfileCard extends StatelessWidget {
       width: index == 0 ?  MediaQuery.of(context).size.width * 1: (index == 1 ?  MediaQuery.of(context).size.width * 0.95:(index == 2 ?  MediaQuery.of(context).size.width * 0.9:(index == 3 ?  MediaQuery.of(context).size.width * 0.85:(index == 4 ?  MediaQuery.of(context).size.width * 0.8:MediaQuery.of(context).size.width * 0.75)))),
       height: MediaQuery.of(context).size.height * 0.62,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Stack(
           children: [
             Card(
@@ -172,16 +170,14 @@ class ProfileCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      /// User fullname
                       Row(
                         children: [
                           Align(
                             alignment: Alignment.topLeft,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: vacancy.company_logo!=null
-                                    ? Image.network(SERVER_IP+ vacancy.company_logo,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 60,
+                                child: vacancy.company_logo != null
+                                    ? Image.network(SERVER_IP+ vacancy.company_logo,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}, width: 70,
                                   height: 70,)
                                     : Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 70, height: 70,),
                             ),
@@ -192,14 +188,14 @@ class ProfileCard extends StatelessWidget {
                               text: TextSpan(text: vacancy.company_name.toString() + '\n',
                                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
                                 children: <TextSpan>[
-                                  TextSpan(text: vacancy.address, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                  TextSpan(text: vacancy.region, style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black45)),
                                 ],
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 20),
                       index==null||index <=2 ?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -227,17 +223,9 @@ class ProfileCard extends StatelessWidget {
                             ),
                             child: Text(vacancy.schedule.toString(), style: TextStyle(color: Colors.black87),),
                           ),
-                          // Container(
-                          //   padding: EdgeInsets.all(5),
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(8)
-                          //   ),
-                          //   child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                          // ),
                         ],
                       ):Container(),
                       SizedBox(height: 15),
-                      /// User job title
                       Text(vacancy.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
                       SizedBox(height: 10),
                       page =='discover' ? Expanded(
@@ -340,7 +328,7 @@ class ProfileCard extends StatelessWidget {
                                   else if(page =='submit'){
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (BuildContext context) {
-                                          return ChatScreen(user_id: vacancy.company, name: vacancy.company_name,);
+                                          return ChatScreen(user_id: vacancy.company, name: vacancy.company_name, avatar: vacancy.company_logo,);
                                         }
                                       )
                                     );

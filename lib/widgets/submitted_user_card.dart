@@ -79,9 +79,9 @@ class UserCard extends StatelessWidget {
                         Align(
                           alignment: Alignment.topLeft,
                           child: ClipRRect(
-                            // borderRadius: BorderRadius.circular(20),
-                            child: user.image!=null? Image.network(SERVER_IP+ user.image, width: 80,
-                              height: 60,):Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 80, height: 60,),
+                            borderRadius: BorderRadius.circular(20),
+                            child: user.image!=null? Image.network(SERVER_IP+ user.image, width: 60,
+                              height: 60,):Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 60, height: 60,),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -107,9 +107,9 @@ class UserCard extends StatelessWidget {
                           ),
                           child: Text(user.phone_number, style: TextStyle(color: Colors.black87),),
                         ) : Container(),
-                        user.vacancy_name != null ? Container(
+                        user.user_cv_name != null ? Container(
                             child: Flexible(
-                                child: Text(user.vacancy_name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                child: Text(user.user_cv_name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
                                 )
                             )
                         ) : Container(),
@@ -137,7 +137,7 @@ class UserCard extends StatelessWidget {
                     ):Container(),
                     SizedBox(height: 15),
                     /// User job title
-                    Text(user.surname, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
+                    Text(user.vacancy_name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
                     SizedBox(height: 10),
                     page =='discover' ? Expanded(
                       child: RichText(
