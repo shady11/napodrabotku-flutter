@@ -1,4 +1,4 @@
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 
 class AddItemAction {
   final Vacancy item;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ishapp/user.dart';
+import 'package:ishtapp/user.dart';
 
 class CardProfile extends StatelessWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 
 import 'actions.dart';
 
@@ -14,12 +14,12 @@ class ShoppingListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreConnector<List<Vacancy>, OnStateChanged>(
         converter: (store) {
-          return (item) => store.dispatch(ToggleItemStateAction(item));
-        }, builder: (context, callback) {
+      return (item) => store.dispatch(ToggleItemStateAction(item));
+    }, builder: (context, callback) {
       return new ListTile(
         title: new Text(item.name),
         leading: new Checkbox(
-            value: item.address!=null,
+            value: item.address != null,
             onChanged: (bool newValue) {
               callback(Vacancy(name: item.name, address: 'sd'));
             }),

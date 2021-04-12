@@ -1,12 +1,12 @@
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 
-class AddLikedItemAction{
+class AddLikedItemAction {
   final Vacancy vacancy;
 
   AddLikedItemAction(this.vacancy);
 }
 
-class RemoveLikedItemAction{
+class RemoveLikedItemAction {
   final Vacancy vacancy;
 
   RemoveLikedItemAction(this.vacancy);

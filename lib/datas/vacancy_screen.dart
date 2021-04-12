@@ -1,13 +1,13 @@
 //import 'package:flutter/material.dart';
 //import 'package:flutter_redux/flutter_redux.dart';
-//import 'package:ishapp/components/custom_button.dart';
-//import 'package:ishapp/datas/routes.dart';
-//import 'package:ishapp/datas/vacancy.dart';
-//import 'package:ishapp/utils/constants.dart';
-//import 'package:ishapp/widgets/profile_card.dart';
+//import 'package:ishtapp/components/custom_button.dart';
+//import 'package:ishtapp/datas/routes.dart';
+//import 'package:ishtapp/datas/vacancy.dart';
+//import 'package:ishtapp/utils/constants.dart';
+//import 'package:ishtapp/widgets/profile_card.dart';
 //import 'package:easy_localization/easy_localization.dart';
 //import 'package:redux/redux.dart';
-//import 'package:ishapp/datas/app_state.dart';
+//import 'package:ishtapp/datas/app_state.dart';
 //import 'RSAA.dart';
 //
 //

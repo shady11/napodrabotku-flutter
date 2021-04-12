@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:ishapp/components/custom_button.dart';
+import 'package:ishtapp/components/custom_button.dart';
 
-import 'package:ishapp/datas/demo_users.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/screens/edit_profile_screen.dart';
-import 'package:ishapp/screens/profile_likes_screen.dart';
-import 'package:ishapp/screens/profile_screen.dart';
-import 'package:ishapp/screens/profile_visits_screen.dart';
-import 'package:ishapp/tabs/kk.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/widgets/app_section_card.dart';
-import 'package:ishapp/widgets/badge.dart';
-import 'package:ishapp/widgets/profile_basic_info_card.dart';
-import 'package:ishapp/widgets/profile_statistics_card.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/constants/configs.dart';
+import 'package:ishtapp/datas/demo_users.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/screens/edit_profile_screen.dart';
+import 'package:ishtapp/screens/profile_likes_screen.dart';
+import 'package:ishtapp/screens/profile_screen.dart';
+import 'package:ishtapp/screens/profile_visits_screen.dart';
+import 'package:ishtapp/tabs/kk.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/widgets/app_section_card.dart';
+import 'package:ishtapp/widgets/badge.dart';
+import 'package:ishtapp/widgets/profile_basic_info_card.dart';
+import 'package:ishtapp/widgets/profile_statistics_card.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/configs.dart';
 import 'package:redux/redux.dart';
-import 'package:ishapp/datas/RSAA.dart';
-import 'package:ishapp/datas/app_state.dart';
-import 'package:ishapp/datas/user.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+import 'package:ishtapp/datas/app_state.dart';
+import 'package:ishtapp/datas/user.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -182,33 +182,33 @@ class ProfileTab extends StatelessWidget {
                                 style: _textStyle),
                             trailing: Prefs.getString(Prefs.USER_TYPE) == 'USER'
                                 ? Text(
-                              StoreProvider.of<AppState>(context)
-                                  .state
-                                  .vacancy
-                                  .number_of_likeds !=
-                                  null
-                                  ? StoreProvider.of<AppState>(context)
-                                  .state
-                                  .vacancy
-                                  .number_of_likeds
-                                  .toString()
-                                  : '0',
-                              style: TextStyle(color: Colors.grey[400]),
-                            )
+                                    StoreProvider.of<AppState>(context)
+                                                .state
+                                                .vacancy
+                                                .number_of_likeds !=
+                                            null
+                                        ? StoreProvider.of<AppState>(context)
+                                            .state
+                                            .vacancy
+                                            .number_of_likeds
+                                            .toString()
+                                        : '0',
+                                    style: TextStyle(color: Colors.grey[400]),
+                                  )
                                 : Text(
-                              StoreProvider.of<AppState>(context)
-                                  .state
-                                  .vacancy
-                                  .number_of_active_vacancies !=
-                                  null
-                                  ? StoreProvider.of<AppState>(context)
-                                  .state
-                                  .vacancy
-                                  .number_of_active_vacancies
-                                  .toString()
-                                  : '0',
-                              style: TextStyle(color: Colors.grey[400]),
-                            ),
+                                    StoreProvider.of<AppState>(context)
+                                                .state
+                                                .vacancy
+                                                .number_of_active_vacancies !=
+                                            null
+                                        ? StoreProvider.of<AppState>(context)
+                                            .state
+                                            .vacancy
+                                            .number_of_active_vacancies
+                                            .toString()
+                                        : '0',
+                                    style: TextStyle(color: Colors.grey[400]),
+                                  ),
                             onTap: () {
                               /// Go to profile likes screen ()
                               Navigator.push(

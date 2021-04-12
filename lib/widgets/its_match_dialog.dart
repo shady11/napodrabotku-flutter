@@ -1,6 +1,6 @@
 //import 'package:flutter/material.dart';
-//import 'package:ishapp/datas/user.dart';
-//import 'package:ishapp/screens/chat_screen.dart';
+//import 'package:ishtapp/datas/user.dart';
+//import 'package:ishtapp/screens/chat_screen.dart';
 //import 'package:swipe_stack/swipe_stack.dart';
 //
 //class ItsMatchDialog extends StatelessWidget {

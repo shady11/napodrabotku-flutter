@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 
-import 'package:ishapp/datas/user.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/widgets/default_button.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
-import 'package:ishapp/widgets/cicle_button.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/components/custom_button.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/widgets/default_button.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:ishtapp/widgets/cicle_button.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/components/custom_button.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  void _showDialog(context,String message) {
+  void _showDialog(context, String message) {
     showDialog(
       context: context,
       builder: (ctx) => Center(
@@ -57,11 +57,13 @@ class _SignInScreenState extends State<SignInScreen> {
         return Center(
           child: AlertDialog(
             content: Container(
-              color: Colors.transparent,
+                color: Colors.transparent,
                 height: 50,
                 width: 50,
-                child: Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),))
-            ),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
+                ))),
           ),
         );
       },
@@ -115,10 +117,15 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Column(
           children: <Widget>[
             Align(
-
               alignment: Alignment.topLeft,
-              child: Text("sign_in".tr(),
-                  style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+              child: Text(
+                "sign_in".tr(),
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                textAlign: TextAlign.start,
+              ),
             ),
             SizedBox(height: 40),
 
@@ -130,21 +137,22 @@ class _SignInScreenState extends State<SignInScreen> {
                 children: <Widget>[
                   /// Fullname field
                   Align(
-                    widthFactor: 10,
-                    heightFactor: 1.5,
+                      widthFactor: 10,
+                      heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('email'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                      child: Text(
+                        'email'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
-                        ),
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200]
-                    ),
+                        filled: true,
+                        fillColor: Colors.grey[200]),
                     validator: (name) {
                       // Basic validation
                       if (name.isEmpty) {
@@ -158,16 +166,18 @@ class _SignInScreenState extends State<SignInScreen> {
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
-                      child: Text('password'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                      child: Text(
+                        'password'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )),
                   TextFormField(
                     obscureText: _obscureText,
                     controller: _password_controller,
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(
+                      border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                          borderSide: BorderSide.none),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
@@ -197,7 +207,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: GestureDetector(
@@ -208,6 +220,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                   SizedBox(height: 30),
+
                   /// Sign In button
                   SizedBox(
                     width: double.maxFinite,
@@ -216,78 +229,79 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
-                         if (_formKey.currentState.validate()) {
-                           _openLoadingDialog(context);
-                           /// Remove previous screens
-                           User user = new User();
-                           user.login(_username_controller.text, _password_controller.text).then((value) {
-                             if(value == "OK"){
-                               Navigator.of(context)
-                                   .popUntil((route) => route.isFirst);
-                               Navigator.of(context)
-                                   .pushNamed(Routes.home);
-                             }
-                             else{
-                               _showDialog(context, "password_or_email_is_incorrect".tr());
-                             }
-                           });
+                        if (_formKey.currentState.validate()) {
+                          _openLoadingDialog(context);
 
-                         }
-                         else{
-                           return 'Bum-shakalaka';
-                         }
+                          /// Remove previous screens
+                          User user = new User();
+                          user
+                              .login(_username_controller.text,
+                                  _password_controller.text)
+                              .then((value) {
+                            if (value == "OK") {
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
+                              Navigator.of(context).pushNamed(Routes.home);
+                            } else {
+                              _showDialog(context,
+                                  "password_or_email_is_incorrect".tr());
+                            }
+                          });
+                        } else {
+                          return 'Bum-shakalaka';
+                        }
                       },
                       text: 'sign_in'.tr(),
                     ),
                   ),
 
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
-                  Text("sign_in_with_social_apps".tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.black45)),
+                  // Text("sign_in_with_social_apps".tr(),
+                  //     textAlign: TextAlign.center,
+                  //     style: TextStyle(fontSize: 16, color: Colors.black45)),
 
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   /// Social login
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      /// Login with google
-                      GestureDetector(
-                        child: CircleButton(
-                            bgColor: Colors.white,
-                            padding: 13,
-                            icon: Icon(Boxicons.bxl_google)
-//                    icon: SvgPicture.asset("assets/icons/google_icon.svg",
-//                        width: 20, height: 20, color: kColorPrimary,),
-                        ),
-                        onTap: () {
-                          /// Go to sing up screen - for demo
-                          Navigator.pushNamed(context, Routes.signup);
-                        },
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      /// Login with facebook
-                      GestureDetector(
-                        child: CircleButton(
-                            bgColor: Colors.white,
-                            padding: 13,
-                            icon: Icon(Boxicons.bxl_facebook_circle)
-//                    icon: SvgIcon("assets/icons/facebook_icon.svg",
-//                        width: 20, height: 20,
-//                        color: kColorPrimary),
-                        ),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(Routes.signup);
-                        },
-                      ),
-                    ],
-                  ),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                     mainAxisSize: MainAxisSize.min,
+//                     children: [
+//                       /// Login with google
+//                       GestureDetector(
+//                         child: CircleButton(
+//                             bgColor: Colors.white,
+//                             padding: 13,
+//                             icon: Icon(Boxicons.bxl_google)
+// //                    icon: SvgPicture.asset("assets/icons/google_icon.svg",
+// //                        width: 20, height: 20, color: kColorPrimary,),
+//                             ),
+//                         onTap: () {
+//                           /// Go to sing up screen - for demo
+//                           Navigator.pushNamed(context, Routes.signup);
+//                         },
+//                       ),
+//                       SizedBox(
+//                         width: 30,
+//                       ),
+
+//                       /// Login with facebook
+//                       GestureDetector(
+//                         child: CircleButton(
+//                             bgColor: Colors.white,
+//                             padding: 13,
+//                             icon: Icon(Boxicons.bxl_facebook_circle)
+// //                    icon: SvgIcon("assets/icons/facebook_icon.svg",
+// //                        width: 20, height: 20,
+// //                        color: kColorPrimary),
+//                             ),
+//                         onTap: () {
+//                           Navigator.of(context).pushNamed(Routes.signup);
+//                         },
+//                       ),
+//                     ],
+//                   ),
                 ],
               ),
             ),

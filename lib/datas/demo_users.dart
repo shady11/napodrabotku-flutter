@@ -1,4 +1,4 @@
-// import 'package:ishapp/datas/user.dart';
+// import 'package:ishtapp/datas/user.dart';
 
 class DemoUser {
   /// User basic info
@@ -9,13 +9,12 @@ class DemoUser {
   final String userDistance;
 
   // Constructor
-  DemoUser({
-    this.userFullname,
-    this.userPhotoLink,
-    this.userSchool,
-    this.jobTitle,
-    this.userDistance
-  });
+  DemoUser(
+      {this.userFullname,
+      this.userPhotoLink,
+      this.userSchool,
+      this.jobTitle,
+      this.userDistance});
 }
 
 /// CURRENT SINGNED USER DEMO [currentUserDemo]
@@ -31,7 +30,6 @@ const DEMO_PROFILE_BIO =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper\n'
     '😍👜👢👗🌷🍔🧁️🍟🍕❤️️ convallis nulla in cursus. '
     'Proin id accumsan felis. Aenean malesuada vitae ligula ac bibendum.';
-
 
 /// DEMO PROFILES - [getDemoUsers] ///
 ///
@@ -52,7 +50,6 @@ List<DemoUser> getDemoUsers() {
       jobTitle: "Management analyst",
       userDistance: "15km",
     ),
-
     DemoUser(
       userFullname: "Nicole, 27",
       userPhotoLink: "assets/images/demo_users/maddevs.png",
@@ -60,7 +57,6 @@ List<DemoUser> getDemoUsers() {
       jobTitle: "Psychologist",
       userDistance: "20km",
     ),
-
     DemoUser(
       userFullname: "Angela, 24",
       userPhotoLink: "assets/images/demo_users/maddevs.png",
@@ -68,7 +64,6 @@ List<DemoUser> getDemoUsers() {
       jobTitle: "Engineer",
       userDistance: "25km",
     ),
-
     DemoUser(
       userFullname: "Deborah, 25",
       userPhotoLink: "assets/images/demo_users/maddevs.png",
@@ -76,7 +71,6 @@ List<DemoUser> getDemoUsers() {
       jobTitle: "Computer programmer",
       userDistance: "30km",
     ),
-
     DemoUser(
       userFullname: "Jennifer, 25",
       userPhotoLink: "assets/images/demo_users/maddevs.png",

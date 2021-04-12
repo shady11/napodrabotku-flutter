@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
-import 'package:ishapp/shopping_list.dart';
+import 'package:ishtapp/shopping_list.dart';
 
 import 'add_item_dialog.dart';
 

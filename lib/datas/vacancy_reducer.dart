@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ishapp/datas/actions.dart';
-import 'package:ishapp/datas/user.dart';
+import 'package:ishtapp/datas/actions.dart';
+import 'package:ishtapp/datas/user.dart';
 import 'package:redux_api_middleware/redux_api_middleware.dart';
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 
 import 'RSAA.dart';
 
@@ -28,7 +28,6 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       newState.list.loading = false;
       newState.list.data = null;
       return newState;
-
 
     case GET_LIKED_VACANCY_REQUEST:
       newState.liked_list.error = null;
@@ -107,9 +106,9 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
 
     case GET_LIKED_VACANCY_NUMBER_SUCCESS:
-      if(action.payload == "FALSE")
+      if (action.payload == "FALSE")
         newState.number_of_likeds = null;
-      else if(int.parse(action.payload) == 0)
+      else if (int.parse(action.payload) == 0)
         newState.number_of_likeds = null;
       else
         newState.number_of_likeds = int.parse(action.payload);
@@ -124,7 +123,7 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
 
     case GET_SUBMITTED_VACANCY_NUMBER_SUCCESS:
-        newState.number_of_submiteds = int.parse(action.payload);
+      newState.number_of_submiteds = int.parse(action.payload);
       return newState;
 
     case GET_SUBMITTED_VACANCY_NUMBER_FAILURE:
@@ -136,7 +135,7 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
 
     case GET_ACTIVE_VACANCY_NUMBER_SUCCESS:
-      if(int.parse(action.payload) == 0)
+      if (int.parse(action.payload) == 0)
         newState.number_of_active_vacancies = null;
       else
         newState.number_of_active_vacancies = int.parse(action.payload);
@@ -151,7 +150,7 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
 
     case GET_INACTIVE_VACANCY_NUMBER_SUCCESS:
-      if(int.parse(action.payload) == 0)
+      if (int.parse(action.payload) == 0)
         newState.number_of_inactive_vacancies = null;
       else
         newState.number_of_inactive_vacancies = int.parse(action.payload);
@@ -171,6 +170,7 @@ VacancyState vacancyReducer(VacancyState state, FSA action) {
       return newState;
   }
 }
+
 List<Vacancy> vacanciesFromJsonStr(dynamic payload) {
   Iterable jsonArray = json.decode(payload);
   return jsonArray.map((j) => Vacancy.fromJson(j)).toList();

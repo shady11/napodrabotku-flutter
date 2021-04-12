@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ishapp/screens/sign_up_screen.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishtapp/screens/sign_up_screen.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:otp_screen/otp_screen.dart';
 
 class VerificationCodeScreen extends StatelessWidget {
-
-
   /// logic to validate otp return [null] when success else error [String]
   Future<String> validateOtp(String otp) async {
     return null;
+
     /// Handle entered verification code here
     // await Future.delayed(Duration(milliseconds: 5000));
     // if (otp == "123456") {

@@ -1,9 +1,9 @@
-import 'package:ishapp/constants/configs.dart';
+import 'package:ishtapp/constants/configs.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/datas/user.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/datas/user.dart';
 
 class Vacancy {
   int id;
@@ -23,22 +23,22 @@ class Vacancy {
 
   Vacancy(
       {this.id,
-        this.company_name,
-        this.company_logo,
-        this.name,
-        this.title,
-        this.description,
-        this.address,
-        this.salary,
-        this.busyness,
-        this.schedule,
-        this.job_type,
-        this.region,
-        this.type,
-        this.company});
+      this.company_name,
+      this.company_logo,
+      this.name,
+      this.title,
+      this.description,
+      this.address,
+      this.salary,
+      this.busyness,
+      this.schedule,
+      this.job_type,
+      this.region,
+      this.type,
+      this.company});
 
   static Future<List<dynamic>> getLists(String model) async {
-    final url = API_IP + model+'?lang='+Prefs.getString(Prefs.LANGUAGE);
+    final url = API_IP + model + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(url, headers: headers);
@@ -50,25 +50,23 @@ class Vacancy {
   }
 
   factory Vacancy.fromJson(Map<String, dynamic> json) => new Vacancy(
-    id: json["id"],
-    name: json["name"],
-    title: json["title"],
-    description: json["description"],
-    address: json["address"],
-    salary: json['salary'],
-    company: json['company'],
-    company_name: json['company_name'],
-    company_logo: json['company_logo'],
-    busyness: json['busyness'],
-    schedule: json['schedule'],
-    job_type: json['job_type'],
-    region: json['region'],
-    type: json['type'],
-  );
+        id: json["id"],
+        name: json["name"],
+        title: json["title"],
+        description: json["description"],
+        address: json["address"],
+        salary: json['salary'],
+        company: json['company'],
+        company_name: json['company_name'],
+        company_logo: json['company_logo'],
+        busyness: json['busyness'],
+        schedule: json['schedule'],
+        job_type: json['job_type'],
+        region: json['region'],
+        type: json['type'],
+      );
 
-  static Map<String, dynamic> vacancyToJsonMap(
-      Vacancy vacancy) =>
-      {
+  static Map<String, dynamic> vacancyToJsonMap(Vacancy vacancy) => {
         'company_id': Prefs.getInt(Prefs.USER_ID).toString(),
         'name': vacancy.name,
         'salary': vacancy.salary,
@@ -141,7 +139,10 @@ class Vacancy {
   }) async {
     final url = API_IP + API_VACANCY_LIST;
     try {
-      Map<String, String> headers = {"Content-type": "application/json","Authorization": Prefs.getString(Prefs.TOKEN)};
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
       final response = await http.post(url,
           headers: headers,
           body: json.encode({
@@ -166,10 +167,10 @@ class Vacancy {
   }
 
   static Future<List<Vacancy>> getVacancyListByType(
-      int limit,
-      int offset,
-      String type,
-      ) async {
+    int limit,
+    int offset,
+    String type,
+  ) async {
     final url = API_IP + API_LIKED_USER_VACANCY_LIST;
     try {
       Map<String, String> headers = {
@@ -179,7 +180,7 @@ class Vacancy {
       final response = await http.post(url,
           headers: headers,
           body:
-          json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
+              json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
       print(response.body);
       List<Vacancy> result_list = [];
       for (var i in json.decode(utf8.decode(response.bodyBytes))) {
@@ -214,9 +215,7 @@ class Vacancy {
     }
   }
 
-  static Future<String> saveCompanyVacancy({
-    Vacancy vacancy
-  }) async {
+  static Future<String> saveCompanyVacancy({Vacancy vacancy}) async {
     final url = API_IP + API_VACANCY_SAVE;
     try {
       Map<String, String> headers = {
@@ -224,8 +223,7 @@ class Vacancy {
         "Authorization": Prefs.getString(Prefs.TOKEN)
       };
       final response = await http.post(url,
-          headers: headers,
-          body: json.encode(vacancyToJsonMap(vacancy)));
+          headers: headers, body: json.encode(vacancyToJsonMap(vacancy)));
       print(response.body);
       return "OK";
     } catch (error) {
@@ -244,8 +242,7 @@ class Vacancy {
         "Authorization": Prefs.getString(Prefs.TOKEN)
       };
       final response = await http.post(url,
-          headers: headers,
-          body: json.encode({'vacancy_id': vacancy_id}));
+          headers: headers, body: json.encode({'vacancy_id': vacancy_id}));
       print(response.body);
       return "OK";
     } catch (error) {
@@ -254,10 +251,8 @@ class Vacancy {
     }
   }
 
-  static Future<String> activateDeactiveVacancy({
-    int vacancy_id,
-    bool active
-  }) async {
+  static Future<String> activateDeactiveVacancy(
+      {int vacancy_id, bool active}) async {
     final url = API_IP + API_COMPANY_VACANCY_ACTIVATE_DEACTIVATE;
     try {
       Map<String, String> headers = {
@@ -313,25 +308,22 @@ class VacancyState {
       type: 'all',
       number_of_likeds: null,
       number_of_submiteds: 0,
-      user: UserState.initial()
-  );
+      user: UserState.initial());
 
   VacancyState(
-      {
-        this.job_type_ids,
-        this.region_ids,
-        this.schedule_ids,
-        this.busyness_ids,
-        this.vacancy_type_ids,
-        this.list,
-        this.liked_list,
-        this.type,
-        this.submitted_list,
-        this.user,
-        this.number_of_submiteds,
-        this.number_of_likeds,
-        this.inactive_list
-      });
+      {this.job_type_ids,
+      this.region_ids,
+      this.schedule_ids,
+      this.busyness_ids,
+      this.vacancy_type_ids,
+      this.list,
+      this.liked_list,
+      this.type,
+      this.submitted_list,
+      this.user,
+      this.number_of_submiteds,
+      this.number_of_likeds,
+      this.inactive_list});
 }
 
 class ListVacancysState {
@@ -346,10 +338,10 @@ class ListVacancysState {
   });
 
   factory ListVacancysState.initial() => ListVacancysState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
 class ListSubmittedVacancyState {
@@ -364,10 +356,10 @@ class ListSubmittedVacancyState {
   });
 
   factory ListSubmittedVacancyState.initial() => ListSubmittedVacancyState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
 class LikedVacancyListState {
@@ -382,10 +374,10 @@ class LikedVacancyListState {
   });
 
   factory LikedVacancyListState.initial() => LikedVacancyListState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
 class VacancyType {

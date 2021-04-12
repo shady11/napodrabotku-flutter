@@ -1,18 +1,18 @@
-import 'package:ishapp/constants/configs.dart';
-import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:async/async.dart';
 
-class ChatState{
+class ChatState {
   ListChatViewState chat_list;
   ListMessageViewState message_list;
 
   factory ChatState.initial() => ChatState(
-      chat_list: ListChatViewState.initial(),
-      message_list: ListMessageViewState.initial(),
-  );
+        chat_list: ListChatViewState.initial(),
+        message_list: ListMessageViewState.initial(),
+      );
 
   ChatState({this.chat_list, this.message_list});
 }
@@ -29,40 +29,45 @@ class ListChatViewState {
   });
 
   factory ListChatViewState.initial() => ListChatViewState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
-class ChatView{
+class ChatView {
   int user_id;
   String name;
   String avatar;
   String last_message;
   int num_of_unreads;
 
-  ChatView({this.user_id, this.avatar, this.last_message, this.name, this.num_of_unreads});
+  ChatView(
+      {this.user_id,
+      this.avatar,
+      this.last_message,
+      this.name,
+      this.num_of_unreads});
 
   factory ChatView.fromJson(Map<String, dynamic> json) => new ChatView(
-    user_id: json["id"],
-    name: json["name"],
-    avatar: json["avatar"],
-    last_message: json["last_message"],
-    num_of_unreads: json["unread_messages"]
-  );
+      user_id: json["id"],
+      name: json["name"],
+      avatar: json["avatar"],
+      last_message: json["last_message"],
+      num_of_unreads: json["unread_messages"]);
 
   static Future<String> deleteChat(int receiver_id) async {
     final url = API_IP + API_CHAT_DELETE;
     print(url);
     try {
-      Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
       final response = await http.post(
         url,
         headers: headers,
-        body: json.encode({
-          'receiver_id': receiver_id
-        }),
+        body: json.encode({'receiver_id': receiver_id}),
       );
       json.decode(response.body);
       return "OK";
@@ -84,17 +89,15 @@ class ListMessageViewState {
   });
 
   factory ListMessageViewState.initial() => ListMessageViewState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
-enum MessageType{
-  FROM, TO
-}
+enum MessageType { FROM, TO }
 
-class Message{
+class Message {
   String body;
   DateTime date_time;
   bool type;
@@ -107,20 +110,19 @@ class Message{
       body: json["message"],
       date_time: formatter.parse(json['date_time']),
       type: json["from"],
-      read: json["read"]
-  );
+      read: json["read"]);
 
   static Future<String> sendMessage(String message, int receiver_id) async {
     final url = API_IP + API_SEND_MESSAGE;
     try {
-      Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
       final response = await http.post(
         url,
         headers: headers,
-        body: json.encode({
-          'message': message,
-          'receiver_id': receiver_id
-        }),
+        body: json.encode({'message': message, 'receiver_id': receiver_id}),
       );
       json.decode(response.body);
       return "OK";

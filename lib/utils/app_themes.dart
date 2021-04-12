@@ -116,7 +116,7 @@ final appThemeData = {
       ),
     ),
     bottomAppBarColor: Colors.transparent,
-    buttonColor:Colors.lightBlue,
+    buttonColor: Colors.lightBlue,
     focusColor: Colors.white,
     cursorColor: Colors.white,
     splashColor: kColorBlue,

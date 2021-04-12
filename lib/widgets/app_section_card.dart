@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
 
 import 'default_card_border.dart';
 
 class AppSectionCard extends StatelessWidget {
   // Variables
-    final _textStyle = TextStyle(
+  final _textStyle = TextStyle(
     color: Colors.black,
     fontSize: 16.0,
     fontWeight: FontWeight.w500,
@@ -32,7 +32,6 @@ class AppSectionCard extends StatelessWidget {
             title: Text("about_us".tr(), style: _textStyle),
             onTap: () {
               /// Go to About us
-
             },
           ),
           Divider(height: 0),

@@ -2,12 +2,12 @@
 //import 'package:easy_localization/easy_localization.dart';
 //import 'package:flutter/material.dart';
 //import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-//import 'package:ishapp/components/custom_button.dart';
+//import 'package:ishtapp/components/custom_button.dart';
 //import 'package:flutter_redux/flutter_redux.dart';
 //
-//import 'package:ishapp/datas/user.dart';
-//import 'package:ishapp/utils/constants.dart';
-//import 'package:ishapp/datas/app_state.dart';
+//import 'package:ishtapp/datas/user.dart';
+//import 'package:ishtapp/utils/constants.dart';
+//import 'package:ishtapp/datas/app_state.dart';
 //
 //typedef OnDelete();
 //

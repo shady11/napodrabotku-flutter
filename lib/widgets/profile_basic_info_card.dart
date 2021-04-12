@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/datas/demo_users.dart';
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/constants/configs.dart';
-import 'package:ishapp/screens/edit_profile_screen.dart';
-import 'package:ishapp/screens/profile_screen.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishtapp/datas/demo_users.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/screens/edit_profile_screen.dart';
+import 'package:ishtapp/screens/profile_screen.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
 
 import 'default_card_border.dart';
 
 class ProfileBasicInfoCard extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,8 +32,10 @@ class ProfileBasicInfoCard extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
                     radius: 40,
-                    backgroundImage: NetworkImage(
-                        API_IP+ API_GET_PROFILE_IMAGE,headers: {"Authorization": Prefs.getString(Prefs.TOKEN)}),
+                    backgroundImage:
+                        NetworkImage(API_IP + API_GET_PROFILE_IMAGE, headers: {
+                      "Authorization": Prefs.getString(Prefs.TOKEN)
+                    }),
                   ),
                 ),
 
@@ -80,14 +81,16 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28)),
                       icon: Icon(Icons.remove_red_eye),
-                      label: Text("view".tr(),style: TextStyle(fontSize: 13)),
+                      label: Text("view".tr(), style: TextStyle(fontSize: 13)),
                       textColor: Colors.white,
                       onPressed: () {
                         /// Go to profile screen
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => ProfileScreen(
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen(
 //                            user: currentUserDemo
-                          )));
+                                    )));
                       }),
                 ),
                 SizedBox(
@@ -101,8 +104,10 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       label: Text("edit".tr(), style: TextStyle(fontSize: 13)),
                       onPressed: () {
                         /// Go to edit profile screen
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => EditProfileScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProfileScreen()));
                       }),
                 ),
               ],

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ishapp/datas/actions.dart';
-import 'package:ishapp/datas/user.dart';
+import 'package:ishtapp/datas/actions.dart';
+import 'package:ishtapp/datas/user.dart';
 import 'package:redux_api_middleware/redux_api_middleware.dart';
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 
 import 'RSAA.dart';
 

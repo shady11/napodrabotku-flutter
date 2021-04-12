@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 
 enum Language { russian, kyrgyz }
 
@@ -42,7 +42,7 @@ class _ChangeLanguageScreenState extends State<ChangeLanguageScreen> {
         break;
     }
     EasyLocalization.of(context).locale =
-    EasyLocalization.of(context).supportedLocales[index];
+        EasyLocalization.of(context).supportedLocales[index];
 
     print("language" + _language.toString());
   }

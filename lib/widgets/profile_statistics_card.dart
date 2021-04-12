@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/screens/profile_likes_screen.dart';
-import 'package:ishapp/screens/profile_visits_screen.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishtapp/screens/profile_likes_screen.dart';
+import 'package:ishtapp/screens/profile_visits_screen.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
 
 import 'badge.dart';
 import 'default_card_border.dart';
@@ -31,8 +31,10 @@ class ProfileStatisticsCard extends StatelessWidget {
             trailing: Badge(text: "125"),
             onTap: () {
               /// Go to profile likes screen ()
-              Navigator.push(context, MaterialPageRoute(
-                 builder: (context) => ProfileLikesScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileLikesScreen()));
             },
           ),
           Divider(height: 0),
@@ -43,8 +45,10 @@ class ProfileStatisticsCard extends StatelessWidget {
             trailing: Badge(text: "238"),
             onTap: () {
               /// Go to profile visits screen
-              Navigator.push(context, MaterialPageRoute(
-                 builder: (context) => ProfileVisitsScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileVisitsScreen()));
             },
           ),
           Divider(height: 0),
