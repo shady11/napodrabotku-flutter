@@ -456,19 +456,19 @@ class ProfileCard extends StatelessWidget {
                                 //     context: context);
 
                               } else if (page == 'discover') {
-                                // Vacancy.saveVacancyUser(vacancy_id: vacancy.id,type: "DISLIKED");
-                                // StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
-                                // StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0,
-                                //     await Vacancy.getVacancyByOffset(
-                                //         offset: /*offset<0?0:offset*/ 4,
-                                //         job_type_ids:StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-                                //         region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-                                //         schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-                                //         busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-                                //         vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
-                                //         type: StoreProvider.of<AppState>(context).state.vacancy.type)
-                                // );
-                                // StoreProvider.of<AppState>(context).dispatch(getNumberOfSubmittedVacancies());
+                                Vacancy.saveVacancyUser(vacancy_id: vacancy.id,type: "DISLIKED");
+                                StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
+                                StoreProvider.of<AppState>(context).state.vacancy.list.data.insert(0,
+                                    await Vacancy.getVacancyByOffset(
+                                        offset: /*offset<0?0:offset*/ 4,
+                                        job_type_ids:StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+                                        region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+                                        schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+                                        busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+                                        vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+                                        type: StoreProvider.of<AppState>(context).state.vacancy.type)
+                                );
+                                StoreProvider.of<AppState>(context).dispatch(getNumberOfSubmittedVacancies());
                               } else if (page == 'match') {
                                 Vacancy.saveVacancyUser(
                                     vacancy_id: vacancy.id,

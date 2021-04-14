@@ -142,13 +142,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -180,13 +180,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -218,13 +218,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -256,13 +256,13 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),

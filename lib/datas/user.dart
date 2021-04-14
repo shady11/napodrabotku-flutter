@@ -665,6 +665,7 @@ class UserFullInfo {
   int experience_year;
   String job_title;
   String surname_name;
+  String name;
   String avatar;
   String email;
   String attachment;
@@ -678,6 +679,7 @@ class UserFullInfo {
       {this.id,
       this.experience_year,
       this.job_title,
+      this.name,
       this.surname_name,
       this.avatar,
       this.email,
@@ -691,6 +693,7 @@ class UserFullInfo {
   factory UserFullInfo.fromJson(Map<String, dynamic> json) => new UserFullInfo(
         id: json["id"],
         job_title: json["job_title"],
+        name: json["name"],
         surname_name: json["surname_name"],
         avatar: json["avatar"],
         email: json["email"],

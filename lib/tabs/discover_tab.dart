@@ -91,6 +91,7 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+
     return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
     StoreConnector<AppState, CompanyVacanciesScreenProps>(
       converter: (store) => mapStateToVacancyProps(store),
@@ -111,19 +112,9 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
           body = Column(
             children: [
               Expanded(
-                child: StoreProvider.of<AppState>(context)
-                    .state
-                    .vacancy
-                    .list
-                    .data !=
-                    null
-                    ? UsersGrid(
-                    children: StoreProvider.of<AppState>(context)
-                        .state
-                        .vacancy
-                        .list
-                        .data
-                        .map((vacancy) {
+                child: StoreProvider.of<AppState>(context).state.vacancy.list.data.length > 0 ?
+                UsersGrid(
+                    children: StoreProvider.of<AppState>(context).state.vacancy.list.data.map((vacancy) {
                       return GestureDetector(
                         child: ProfileCard(
                             vacancy: vacancy,
@@ -146,11 +137,15 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                               }));
                         },
                       );
-                    }).toList())
-                    : Center(
-                  child: Text(
-                    'empty'.tr(),
-                    style: TextStyle(color: Colors.white),
+                    }).toList()) :
+                Container(
+                  padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                  child: Center(
+                    child: Text(
+                      'company_vacancies_empty'.tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 20,),
+                    ),
                   ),
                 ),
               ),
@@ -234,14 +229,7 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                 offset: offset,
                                 vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
                                 index: StoreProvider.of<AppState>(context).state.vacancy.list.data.length - x,
-                              ) :
-                              Container(
-                                child: Text(
-                                  "empty",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ),
-                              ),
+                              ) : Container(),
                             ),
                             child: GestureDetector(
                               onTap: () {
@@ -269,14 +257,7 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                 offset: offset,
                                 vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[x],
                                 index: StoreProvider.of<AppState>(context).state.vacancy.list.data.length - x,
-                              ) :
-                              Container(
-                                child: Text(
-                                  "empty",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ),
-                              ),
+                              ) : Container()
                             )
                         ),
                       ),
@@ -284,13 +265,16 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                 ),
               ]
           ) :
-          Center(
-            child: Text(
-              "vacancies_empty".tr(),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          );
+          Container(
+           padding: EdgeInsets.symmetric(horizontal: 40),
+           child:  Center(
+             child: Text(
+               "vacancies_empty".tr(),
+               textAlign: TextAlign.center,
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+           ),
+         );
         }
 
         return Stack(

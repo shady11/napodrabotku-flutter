@@ -150,7 +150,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey,
-                                          height: 2)),
+                                          height: 2
+                                      )
+                                  ),
                                 ),
                                 TextFormField(
                                   controller: faculty_controller,
@@ -165,13 +167,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -203,13 +205,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -241,13 +243,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -280,13 +282,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -468,13 +470,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       filled: true,
                                       fillColor: Colors.grey[200],
                                     ),
-                                    /*validator: (name) {
+                                    validator: (name) {
                                       // Basic validation
                                       if (name.isEmpty) {
                                         return "please_fill_this_field".tr();
                                       }
                                       return null;
-                                    },*/
+                                    },
                                   ),
                                 ),
                               ],
@@ -509,13 +511,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       filled: true,
                                       fillColor: Colors.grey[200],
                                     ),
-                                    /*validator: (name) {
+                                    validator: (name) {
                                       // Basic validation
                                       if (name.isEmpty) {
                                         return "please_fill_this_field".tr();
                                       }
                                       return null;
-                                    },*/
+                                    },
                                   ),
                                 ),
                               ],
@@ -548,13 +550,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -586,13 +588,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -773,13 +775,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -811,13 +813,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -849,13 +851,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
-                                  /*validator: (name) {
+                                  validator: (name) {
                                     // Basic validation
                                     if (name.isEmpty) {
                                       return "please_fill_this_field".tr();
                                     }
                                     return null;
-                                  },*/
+                                  },
                                 ),
                               ],
                             ),
@@ -1050,20 +1052,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Prefs.getString(Prefs.USER_TYPE) == "USER"
                               ? Column(
                                   children: [
-                                    cv_loading
-                                        ? Center(
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(kColorPrimary),
-                                            ),
-                                          )
-                                        : StoreProvider.of<AppState>(context)
-                                                    .state
-                                                    .user
-                                                    .user_cv
-                                                    .data !=
-                                                null
+                                    cv_loading ?
+                                    Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<
+                                                Color>(kColorPrimary),
+                                      ),
+                                    ) :
+                                    StoreProvider.of<AppState>(context).state.user.user_cv.data != null
                                             ? Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,

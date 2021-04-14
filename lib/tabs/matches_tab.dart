@@ -95,12 +95,17 @@ class _MatchesTabState extends State<MatchesTab> {
                               },
                             );
                           }).toList())
-                        : Center(
-                            child: Text(
-                              'empty'.tr(),
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
+                        :
+                    Container(
+                      padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                      child: Center(
+                        child: Text(
+                          'cvs_empty'.tr(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                    )
                   ),
                 ],
               );

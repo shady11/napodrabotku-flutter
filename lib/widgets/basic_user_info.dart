@@ -147,19 +147,19 @@ class BasicUserCvInfo extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                     color: kColorDarkBlue)),
                           ),
-                    user_cv.attachment == null
-                        ? Container()
-                        : CustomButton(
-                            text: user_cv.attachment != null
-                                ? 'download_file'.tr()
-                                : 'file_doesnt_exist'.tr(),
-                            width: MediaQuery.of(context).size.width * 1,
-                            color: Colors.grey[200],
-                            textColor: kColorPrimary,
-                            onPressed: () {
-                              _launchURL(SERVER_IP + user_cv.attachment);
-//            doSome1(user_cv.attachment);
-                            }),
+                    user_cv.attachment == null ? Container() :
+                    CustomButton(
+                      text: user_cv.attachment != null
+                          ? 'download_file'.tr()
+                          : 'file_doesnt_exist'.tr(),
+                      width: MediaQuery.of(context).size.width * 1,
+                      color: Colors.grey[200],
+                      textColor: kColorPrimary,
+                      onPressed: () {
+                        _launchURL(SERVER_IP + user_cv.attachment);
+  //            doSome1(user_cv.attachment);
+                      }
+                    ),
                   ],
                 )
               : SizedBox(),

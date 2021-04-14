@@ -341,11 +341,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       Align(
                           alignment: Alignment.center,
                           child: Text(
-                            'search_filter'.tr(),
+                            'add'.tr(),
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
+                          )),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'fill_all_fields'.tr(),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: kColorPrimary),
                           )),
                       SizedBox(
                         height: 30,
@@ -422,7 +433,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   'vacancy_description'.tr(),
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black),
-                                )),
+                                )
+                            ),
                             TextFormField(
                               controller: _vacancy_description_controller,
                               maxLines: 5,
@@ -444,24 +456,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             SizedBox(height: 20),
-                            DropdownButton<int>(
-                              isExpanded: true,
+                            DropdownButtonFormField<int>(
+                              // isExpanded: true,
                               hint: Text("regions".tr()),
                               value: _region_id,
-                              underline: Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height: 2,
-                                color: Colors.grey,
-                              ),
                               onChanged: (int newValue) {
                                 setState(() {
                                   _region_id = newValue;
                                 });
                               },
-                              items: regionList
-                                  .map<DropdownMenuItem<int>>((dynamic value) {
-                                var jj = new JobType(
-                                    id: value['id'], name: value['name']);
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              items: regionList.map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(id: value['id'], name: value['name']);
                                 return DropdownMenuItem<int>(
                                   value: jj.id,
                                   child: Text(value['name']),
@@ -469,20 +481,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               }).toList(),
                             ),
                             SizedBox(height: 20),
-                            DropdownButton<int>(
+                            DropdownButtonFormField<int>(
                               isExpanded: true,
                               hint: Text("job_types".tr()),
                               value: _job_type_id,
-                              underline: Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height: 2,
-                                color: Colors.grey,
-                              ),
                               onChanged: (int newValue) {
                                 setState(() {
                                   _job_type_id = newValue;
                                 });
                               },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
                               items: jobTypeList
                                   .map<DropdownMenuItem<int>>((dynamic value) {
                                 var jj = new JobType(
@@ -494,20 +508,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               }).toList(),
                             ),
                             SizedBox(height: 20),
-                            DropdownButton<int>(
+                            DropdownButtonFormField<int>(
                               isExpanded: true,
                               hint: Text("vacancy_types".tr()),
                               value: _vacancy_type_id,
-                              underline: Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height: 2,
-                                color: Colors.grey,
-                              ),
                               onChanged: (int newValue) {
                                 setState(() {
                                   _vacancy_type_id = newValue;
                                 });
                               },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
                               items: vacancyTypeList
                                   .map<DropdownMenuItem<int>>((dynamic value) {
                                 var jj = new JobType(
@@ -519,20 +535,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               }).toList(),
                             ),
                             SizedBox(height: 20),
-                            DropdownButton<int>(
+                            DropdownButtonFormField<int>(
                               isExpanded: true,
                               hint: Text("busynesses".tr()),
                               value: _busyness_id,
-                              underline: Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height: 2,
-                                color: Colors.grey,
-                              ),
                               onChanged: (int newValue) {
                                 setState(() {
                                   _busyness_id = newValue;
                                 });
                               },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
                               items: busynessList
                                   .map<DropdownMenuItem<int>>((dynamic value) {
                                 var jj = new JobType(
@@ -544,20 +562,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               }).toList(),
                             ),
                             SizedBox(height: 20),
-                            DropdownButton<int>(
+                            DropdownButtonFormField<int>(
                               isExpanded: true,
                               hint: Text("schedules".tr()),
                               value: _schedule_id,
-                              underline: Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                height: 2,
-                                color: Colors.grey,
-                              ),
                               onChanged: (int newValue) {
                                 setState(() {
                                   _schedule_id = newValue;
                                 });
                               },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
                               items: scheduleList
                                   .map<DropdownMenuItem<int>>((dynamic value) {
                                 var jj = new JobType(
@@ -595,17 +615,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
-                                      if (_vacancyAddFormKey.currentState
-                                          .validate()) {
+                                      if (_vacancyAddFormKey.currentState.validate()) {
                                         // StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                                         // StoreProvider.of<AppState>(context).dispatch(getVacancies());
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
-                                          salary:
-                                              _vacancy_salary_controller.text,
-                                          description:
-                                              _vacancy_description_controller
-                                                  .text,
+                                          salary: _vacancy_salary_controller.text,
+                                          description: _vacancy_description_controller.text,
                                           type: _vacancy_type_id.toString(),
                                           busyness: _busyness_id.toString(),
                                           schedule: _schedule_id.toString(),

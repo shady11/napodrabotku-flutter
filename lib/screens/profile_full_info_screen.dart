@@ -23,6 +23,7 @@ import 'package:ishtapp/components/custom_button.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'chat_screen.dart';
 
@@ -62,6 +63,14 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
   UserExperience userExperience = new UserExperience();
   UserEducation userEducation = new UserEducation();
   UserCourse userCourse = new UserCourse();
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   openEducationDialog(context, UserEducation userEducation) {
     title_controller.text = userEducation.title.toString();
@@ -767,16 +776,13 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                         color: kColorDark,
                                         height: 1.4)),
                                 Text(
-                                    i.type +
-                                        ', ' +
-                                        i.faculty +
-                                        ', ' +
-                                        i.speciality,
+                                    i.type + ', ' + i.faculty + ', ' + i.speciality,
                                     softWrap: true,
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey,
-                                        height: 1.4)),
+                                        height: 1.4)
+                                ),
                                 Text(i.end_year,
                                     softWrap: true,
                                     style: TextStyle(
@@ -960,7 +966,9 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                     style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey,
-                                        height: 1.4)),
+                                        height: 1.4
+                                    )
+                                ),
                               ],
                             ),
                           ),
@@ -1072,7 +1080,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                             fontSize: 16,
                                             color: Colors.grey,
                                             height: 2)),
-                                    Text(data.surname_name,
+                                    Text(data.name,
                                         softWrap: true,
                                         style: TextStyle(
                                             fontSize: 16, color: kColorDark)),
@@ -1160,9 +1168,33 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                                 fontSize: 16,
                                                 color: kColorDark)),
                                       ],
-                                    ),
-                                    Divider()
+                                    )
                                   ],
+                                ),
+                                Divider(),
+                                data.attachment == null
+                                    ? Container()
+                                    : Container(
+                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                                  alignment: Alignment.topLeft,
+                                  child: Text('attachment'.tr().toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: kColorDarkBlue)),
+                                ),
+                                data.attachment == null ? Container() :
+                                CustomButton(
+                                    text: data.attachment != null
+                                        ? 'download_file'.tr()
+                                        : 'file_doesnt_exist'.tr(),
+                                    width: MediaQuery.of(context).size.width * 1,
+                                    color: Colors.grey[200],
+                                    textColor: kColorPrimary,
+                                    onPressed: () {
+                                      _launchURL(SERVER_IP + data.attachment);
+                                      //            doSome1(user_cv.attachment);
+                                    }
                                 ),
                               ],
                             ),

@@ -137,7 +137,7 @@ class Vacancy {
     List busyness_ids,
     List vacancy_type_ids,
   }) async {
-    final url = API_IP + API_VACANCY_LIST;
+    final url = API_IP + API_VACANCY_LIST + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
