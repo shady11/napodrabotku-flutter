@@ -1,5 +1,5 @@
 //import 'package:flutter/material.dart';
-//import 'package:ishapp/datas/vacancy.dart';
+//import 'package:ishtapp/datas/vacancy.dart';
 //
 //import 'package:redux/redux.dart';
 //

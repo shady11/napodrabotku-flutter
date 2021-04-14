@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:ishapp/components/custom_button.dart';
+import 'package:ishtapp/components/custom_button.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:ishapp/datas/user.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/datas/app_state.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/datas/app_state.dart';
 
 typedef OnDelete();
 
@@ -17,16 +17,16 @@ class UserCourseForm extends StatefulWidget {
   final OnDelete onDelete;
   int index;
 
-  UserCourseForm({Key key, this.course, this.onDelete, this.index}):super(key: key);
+  UserCourseForm({Key key, this.course, this.onDelete, this.index})
+      : super(key: key);
 
-  bool isValid()=>state.validate();
+  bool isValid() => state.validate();
 
   @override
   _UserCourseFormState createState() => state;
 }
 
 class _UserCourseFormState extends State<UserCourseForm> {
-
   final form = GlobalKey<FormState>();
 
   final name_controller = TextEditingController();
@@ -34,18 +34,19 @@ class _UserCourseFormState extends State<UserCourseForm> {
   final duration_controller = TextEditingController();
   final end_year_controller = TextEditingController();
 
-  bool validate(){
+  bool validate() {
     var valid = form.currentState.validate();
-    if(valid) form.currentState.save();
+    if (valid) form.currentState.save();
     return valid;
   }
+
   @override
   void initState() {
 //    if(StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.length>widget.index){
 //      UserCourse userExperience = new UserCourse();
 //      StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.add(userExperience);
 //    }
-    if(widget.course != null){
+    if (widget.course != null) {
 //      job_title_controller.text = StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].job_title;
 //      start_date_controller.text = formatter.format(StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].start_date);
 //      end_date_controller.text = formatter.format(StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].end_date);
@@ -71,16 +72,23 @@ class _UserCourseFormState extends State<UserCourseForm> {
                 leading: Container(),
                 title: Text("course".tr()),
                 actions: [
-                  IconButton(icon: Icon(Icons.delete), onPressed: (){
-                    widget.onDelete();
-                  })
+                  IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        widget.onDelete();
+                      })
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Align(
                   heightFactor: 1.5,
                   alignment: Alignment.topLeft,
-                  child: Text('course_name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  child: Text(
+                    'course_name'.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
@@ -88,8 +96,7 @@ class _UserCourseFormState extends State<UserCourseForm> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -101,17 +108,28 @@ class _UserCourseFormState extends State<UserCourseForm> {
                     }
                     return null;
                   },
-                  onChanged: (value){
-                    StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].name = value;
+                  onChanged: (value) {
+                    StoreProvider.of<AppState>(context)
+                        .state
+                        .user
+                        .user_cv
+                        .data
+                        .user_courses[widget.index]
+                        .name = value;
                   },
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Align(
 //                      widthFactor: 10,
                   heightFactor: 1.5,
                   alignment: Alignment.topLeft,
-                  child: Text('organization_name'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  child: Text(
+                    'organization_name'.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
@@ -119,8 +137,7 @@ class _UserCourseFormState extends State<UserCourseForm> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -132,16 +149,27 @@ class _UserCourseFormState extends State<UserCourseForm> {
                     }
                     return null;
                   },
-                  onChanged: (value){
-                    StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].organization_name = value;
+                  onChanged: (value) {
+                    StoreProvider.of<AppState>(context)
+                        .state
+                        .user
+                        .user_cv
+                        .data
+                        .user_courses[widget.index]
+                        .organization_name = value;
                   },
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Align(
                   heightFactor: 1.5,
                   alignment: Alignment.topLeft,
-                  child: Text('duration'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  child: Text(
+                    'duration'.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
@@ -149,8 +177,7 @@ class _UserCourseFormState extends State<UserCourseForm> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -162,18 +189,31 @@ class _UserCourseFormState extends State<UserCourseForm> {
                     }
                     return null;
                   },
-                  onChanged: (value){
-                    StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].duration = value;
+                  onChanged: (value) {
+                    StoreProvider.of<AppState>(context)
+                        .state
+                        .user
+                        .user_cv
+                        .data
+                        .user_courses[widget.index]
+                        .duration = value;
                   },
                 ),
               ),
-              SizedBox(height: 10,),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Align(
 //                      widthFactor: 10,
                   heightFactor: 1.5,
                   alignment: Alignment.topLeft,
-                  child: Text('end_year'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
+                  child: Text(
+                    'end_year'.tr(),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: TextFormField(
@@ -181,8 +221,7 @@ class _UserCourseFormState extends State<UserCourseForm> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
-                    ),
+                        borderSide: BorderSide.none),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
                     fillColor: Colors.grey[200],
@@ -194,8 +233,14 @@ class _UserCourseFormState extends State<UserCourseForm> {
                     }
                     return null;
                   },
-                  onChanged: (value){
-                    StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses[widget.index].end_year = value;
+                  onChanged: (value) {
+                    StoreProvider.of<AppState>(context)
+                        .state
+                        .user
+                        .user_cv
+                        .data
+                        .user_courses[widget.index]
+                        .end_year = value;
                   },
                 ),
               ),

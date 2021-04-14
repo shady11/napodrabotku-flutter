@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishapp/datas/vacancy.dart';
-import 'package:ishapp/shopping_list_item.dart';
-
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/shopping_list_item.dart';
 
 class ShoppingList extends StatelessWidget {
   @override
@@ -13,7 +12,7 @@ class ShoppingList extends StatelessWidget {
         return new ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, position) =>
-            new ShoppingListItem(list[position]));
+                new ShoppingListItem(list[position]));
       },
     );
   }

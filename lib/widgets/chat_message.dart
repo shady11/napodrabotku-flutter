@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ishapp/utils/constants.dart';
+import 'package:ishtapp/utils/constants.dart';
 import 'package:intl/intl.dart';
 
 class ChatMessage extends StatelessWidget {
@@ -24,6 +24,7 @@ class ChatMessage extends StatelessWidget {
       child: Row(
         children: <Widget>[
           SizedBox(width: 10),
+
           /// User message
           Expanded(
             child: Column(
@@ -37,27 +38,35 @@ class ChatMessage extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       color: !isUserSender
-                        /// Color for receiver
-                        ? Colors.grey.withAlpha(70)
-                        /// Color for sender
-                        : kColorPrimary,
+
+                          /// Color for receiver
+                          ? Colors.grey.withAlpha(70)
+
+                          /// Color for sender
+                          : kColorPrimary,
                       borderRadius: BorderRadius.circular(25)),
-                  child: Text(body ?? "",
-                      style: TextStyle(
+                  child: Text(
+                    body ?? "",
+                    style: TextStyle(
                         fontSize: 18,
                         color: isUserSender ? Colors.white : Colors.black),
 //                        textAlign: TextAlign.center,
-                    ),
+                  ),
                 ),
                 SizedBox(height: 5),
+
                 /// Message time ago
                 Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Text(formatter.format(date_time), style: TextStyle(color: Colors.grey),)),
+                    child: Text(
+                      formatter.format(date_time),
+                      style: TextStyle(color: Colors.grey),
+                    )),
               ],
             ),
           ),
           SizedBox(width: 10),
+
           /// Current User photo right
 //          isUserSender ? _userProfilePhoto : Container(width: 0, height: 0),
         ],

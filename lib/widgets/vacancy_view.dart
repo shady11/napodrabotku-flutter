@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishapp/datas/RSAA.dart';
-import 'package:ishapp/datas/app_state.dart';
-import 'package:ishapp/datas/user.dart';
-import 'package:ishapp/datas/vacancy.dart';
-import 'package:ishapp/widgets/show_like_or_dislike.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+import 'package:ishtapp/datas/app_state.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/widgets/show_like_or_dislike.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/components/custom_button.dart';
-import 'package:ishapp/routes/routes.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/routes/routes.dart';
 import 'badge.dart';
 import 'default_card_border.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/constants/configs.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/configs.dart';
 
 class VacancyView extends StatelessWidget {
   /// User object
   final Vacancy vacancy;
+
   /// Screen to be checked
   final String page;
+
   /// Swiper position
   final SwiperPosition position;
 
   VacancyView({this.page, this.position, @required this.vacancy});
 
-  void _showDialog(context,String message) {
+  void _showDialog(context, String message) {
     showDialog(
       context: context,
       builder: (ctx) => Center(
@@ -41,12 +43,12 @@ class VacancyView extends StatelessWidget {
                 Navigator.of(ctx).pop();
               },
             ),
-            CustomButton(text: "sign_in".tr(),
+            CustomButton(
+                text: "sign_in".tr(),
                 textColor: kColorPrimary,
                 color: Colors.white,
-                onPressed:(){
-                  Navigator.of(context)
-                      .popUntil((route) => route.isFirst);
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.pushNamed(context, Routes.start);
                 })
           ],
@@ -54,7 +56,8 @@ class VacancyView extends StatelessWidget {
       ),
     );
   }
-  void _showDialog1(context,String message) {
+
+  void _showDialog1(context, String message) {
     showDialog(
       context: context,
       builder: (ctx) => Center(
@@ -100,29 +103,47 @@ class VacancyView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     /// User fullname
                     Row(
                       children: [
-                         Align(
-                           alignment: Alignment.topLeft,
-                           child: ClipRRect(
-                               borderRadius: BorderRadius.circular(20),
-                               child: vacancy.company_logo != null ? Image.network(
-                                 SERVER_IP + vacancy.company_logo.toString(),
-                                 headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
-                                 width: 50,
-                                 height: 50,
-                               ) : Image.asset('assets/images/default-user.jpg', fit: BoxFit.cover,width: 70, height: 70,),
-                           ),
-                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: vacancy.company_logo != null
+                                ? Image.network(
+                                    SERVER_IP + vacancy.company_logo.toString(),
+                                    headers: {
+                                      "Authorization":
+                                          Prefs.getString(Prefs.TOKEN)
+                                    },
+                                    width: 50,
+                                    height: 50,
+                                  )
+                                : Image.asset(
+                                    'assets/images/default-user.jpg',
+                                    fit: BoxFit.cover,
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                          ),
+                        ),
                         SizedBox(width: 20),
                         Expanded(
                           child: RichText(
-                            text: TextSpan(text: vacancy.company_name.toString() + '\n',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+                            text: TextSpan(
+                              text: vacancy.company_name.toString() + '\n',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
                               children: <TextSpan>[
-                                TextSpan(text: vacancy.region, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: kColorDark)),
+                                TextSpan(
+                                    text: vacancy.region,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: kColorDark)),
                               ],
                             ),
                           ),
@@ -134,27 +155,42 @@ class VacancyView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                               color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(8)
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            vacancy.type.toString(),
+                            style: TextStyle(color: Colors.black87),
                           ),
-                          child: Text(vacancy.type.toString(), style: TextStyle(color: Colors.black87),),
                         ),
-                        SizedBox(width: 5,),
-                        Flexible(child: Text(vacancy.salary!=null ?vacancy.salary:'', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),)),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                            child: Text(
+                          vacancy.salary != null ? vacancy.salary : '',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: kColorPrimary),
+                        )),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                               color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(8)
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            vacancy.schedule.toString(),
+                            style: TextStyle(color: Colors.black87),
                           ),
-                          child: Text(vacancy.schedule.toString(), style: TextStyle(color: Colors.black87),),
                         ),
                         // Container(
                         //   padding: EdgeInsets.all(5),
@@ -166,21 +202,40 @@ class VacancyView extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 15),
+
                     /// User job title
-                    Text(vacancy.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),),
+                    Text(
+                      vacancy.name,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
                     SizedBox(height: 10),
-                    page =='discover' ? Expanded(
-                      child: RichText(
-                        text: TextSpan(text: vacancy.description, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
-                      ),
-                    ) : SizedBox(),
+                    page == 'discover'
+                        ? Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                  text: vacancy.description,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black45)),
+                            ),
+                          )
+                        : SizedBox(),
                     SizedBox(height: 20),
                     Expanded(
-                      flex:1,
+                      flex: 1,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: RichText(
-                          text: TextSpan(text: vacancy.description, style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                          text: TextSpan(
+                              text: vacancy.description,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black45)),
                         ),
                       ),
                     ),
@@ -190,35 +245,74 @@ class VacancyView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          page =='discover' ?Container() :page=='submitted'||page=='inactive'||page=='company_view'?Container():Center(
-                            child: CustomButton(
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              padding: EdgeInsets.all(5),
-                              color: kColorPrimary,
-                              textColor: Colors.white,
-                              onPressed: () {
-                                Prefs.getString(Prefs.TOKEN )==null?_showDialog(context, 'sign_in_to_submit'.tr()):User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                  if(value){
-                                    Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED").then((value) {
-                                      if(value=="OK"){
-                                        _showDialog1(context, "successfully_submitted".tr());
-                                        StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
-                                        StoreProvider.of<AppState>(context).dispatch(getSubmittedVacancies());
-                                        StoreProvider.of<AppState>(context).dispatch(getNumberOfSubmittedVacancies());
-                                      }
-                                      else{
-                                        _showDialog(context, "some_errors_occured_try_again".tr());
-                                      }
-                                    });
-                                  }
-                                  else{
-                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                  }
-                                });
-                              },
-                              text: 'submit'.tr(),
-                            ),
-                          ),
+                          page == 'discover'
+                              ? Container()
+                              : page == 'submitted' ||
+                                      page == 'inactive' ||
+                                      page == 'company_view'
+                                  ? Container()
+                                  : Center(
+                                      child: CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                        padding: EdgeInsets.all(5),
+                                        color: kColorPrimary,
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          Prefs.getString(Prefs.TOKEN) == null
+                                              ? _showDialog(context,
+                                                  'sign_in_to_submit'.tr())
+                                              : User.checkUserCv(Prefs.getInt(
+                                                      Prefs.USER_ID))
+                                                  .then((value) {
+                                                  if (value) {
+                                                    Vacancy.saveVacancyUser(
+                                                            vacancy_id:
+                                                                vacancy.id,
+                                                            type: "SUBMITTED")
+                                                        .then((value) {
+                                                      if (value == "OK") {
+                                                        _showDialog1(
+                                                            context,
+                                                            "successfully_submitted"
+                                                                .tr());
+                                                        StoreProvider.of<
+                                                                    AppState>(
+                                                                context)
+                                                            .state
+                                                            .vacancy
+                                                            .list
+                                                            .data
+                                                            .remove(vacancy);
+                                                        StoreProvider.of<
+                                                                    AppState>(
+                                                                context)
+                                                            .dispatch(
+                                                                getSubmittedVacancies());
+                                                        StoreProvider.of<
+                                                                    AppState>(
+                                                                context)
+                                                            .dispatch(
+                                                                getNumberOfSubmittedVacancies());
+                                                      } else {
+                                                        _showDialog(
+                                                            context,
+                                                            "some_errors_occured_try_again"
+                                                                .tr());
+                                                      }
+                                                    });
+                                                  } else {
+                                                    _showDialog(
+                                                        context,
+                                                        "please_fill_user_cv_to_submit"
+                                                            .tr());
+                                                  }
+                                                });
+                                        },
+                                        text: 'submit'.tr(),
+                                      ),
+                                    ),
                         ],
                       ),
                     ),

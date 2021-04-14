@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:ishapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 import 'package:flutter/services.dart';
-import 'package:ishapp/reducer.dart';
+import 'package:ishtapp/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -9,10 +9,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:ishapp/routes/route_generator.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/screens/start_screen.dart';
-import 'package:ishapp/utils/themebloc/theme_bloc.dart';
+import 'package:ishtapp/routes/route_generator.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/screens/start_screen.dart';
+import 'package:ishtapp/utils/themebloc/theme_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/constants.dart';
 import 'datas/app_state.dart';
@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
     middleware: [thunkMiddleware, apiMiddleware, loggingMiddleware],
   );
 
-
   @override
   Widget build(BuildContext context) {
 //    TO DO make only vertical for IOS
@@ -63,29 +62,28 @@ class MyApp extends StatelessWidget {
 
   Widget _buildWithTheme(BuildContext context, ThemeState state) {
     return MaterialApp(
-        builder: (context, child) {
-          return ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: child,
-          );
-        },
-        title: 'ISHTAPP',
-        initialRoute: Routes.splash,
-        onGenerateRoute: RouteGenerator.generateRoute,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          EasyLocalization.of(context).delegate,
-        ],
-        supportedLocales: EasyLocalization.of(context).supportedLocales,
-        locale: EasyLocalization.of(context).locale,
-        debugShowCheckedModeBanner: false,
-        theme: state.themeData,
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: child,
+        );
+      },
+      title: 'ISHTAPP',
+      initialRoute: Routes.splash,
+      onGenerateRoute: RouteGenerator.generateRoute,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        EasyLocalization.of(context).delegate,
+      ],
+      supportedLocales: EasyLocalization.of(context).supportedLocales,
+      locale: EasyLocalization.of(context).locale,
+      debugShowCheckedModeBanner: false,
+      theme: state.themeData,
     );
   }
-
 }
 
 class MyBehavior extends ScrollBehavior {

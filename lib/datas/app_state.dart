@@ -1,14 +1,13 @@
-import 'package:ishapp/datas/user.dart';
-import 'package:ishapp/datas/vacancy.dart';
-import 'package:ishapp/datas/chat.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/chat.dart';
 
 class AppState {
   VacancyState vacancy;
   UserState user;
   ChatState chat;
 
-  AppState(
-      {this.user, this.vacancy, this.chat});
+  AppState({this.user, this.vacancy, this.chat});
 
   AppState.fromAppState(AppState another) {
     vacancy = another.vacancy;
@@ -17,18 +16,15 @@ class AppState {
   }
 
   factory AppState.initial() => AppState(
-    vacancy: VacancyState.initial(),
-    user: UserState.initial(),
-    chat: ChatState.initial()
+      vacancy: VacancyState.initial(),
+      user: UserState.initial(),
+      chat: ChatState.initial()
   );
 
-  AppState copyWith({
-    VacancyState vacancy, UserState user, ChatState chat
-  }) {
+  AppState copyWith({VacancyState vacancy, UserState user, ChatState chat}) {
     return AppState(
-      vacancy: vacancy ?? this.vacancy,
-      user: user??this.user,
-      chat: chat??this.chat
-    );
+        vacancy: vacancy ?? this.vacancy,
+        user: user ?? this.user,
+        chat: chat ?? this.chat);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ishapp/datas/vacancy.dart';
-import 'package:ishapp/shopping_list.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/shopping_list.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 
@@ -40,14 +40,11 @@ class ShoppingCart extends StatelessWidget {
         child: new Icon(Icons.add),
       ),
       endDrawer: new Container(
-          width: 240.0,
-          color: Colors.white,
-          child: new ReduxDevTools(store)),
+          width: 240.0, color: Colors.white, child: new ReduxDevTools(store)),
     );
   }
 }
 
 _openAddItemDialog(BuildContext context) {
-  showDialog(
-      context: context, builder: (context) => new AddItemDialog());
+  showDialog(context: context, builder: (context) => new AddItemDialog());
 }

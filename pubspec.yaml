@@ -1,5 +1,5 @@
-name: ishapp
-description: Flutter app for jumush
+name: ishtapp
+description: ishtapp mobile app
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -40,7 +40,7 @@ dependencies:
   flutter_redux_dev_tools: ^0.3.0
   redux_api_middleware: ^0.1.9
   redux_thunk: ^0.2.1
-  dynamic_form: ^0.8.0
+  dynamic_form: any
   fluttertoast: ^6.0.1
   web_socket_channel: ^1.2.0
   masked_text: ^0.0.6
@@ -48,6 +48,7 @@ dependencies:
   url_launcher: any
   socket_io_client: ^0.9.12
   gx_file_picker: ^1.9.0+2
+  intl_phone_number_input: ^0.6.0
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:ishapp/components/custom_button.dart';
-import 'package:ishapp/datas/RSAA.dart';
-import 'package:ishapp/datas/app_state.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+import 'package:ishtapp/datas/app_state.dart';
 
-import 'package:ishapp/widgets/vacancy_view.dart';
-import 'package:ishapp/screens/profile_full_info_screen.dart';
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/datas/vacancy.dart';
-import 'package:ishapp/datas/user.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/widgets/profile_card.dart';
-import 'package:ishapp/widgets/submitted_user_card.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
-import 'package:ishapp/widgets/users_grid.dart';
+import 'package:ishtapp/widgets/vacancy_view.dart';
+import 'package:ishtapp/screens/profile_full_info_screen.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/widgets/profile_card.dart';
+import 'package:ishtapp/widgets/submitted_user_card.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:ishtapp/widgets/users_grid.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -26,7 +26,6 @@ class MatchesTab extends StatefulWidget {
 }
 
 class _MatchesTabState extends State<MatchesTab> {
-
   void handleInitialBuild(VacanciesScreenProps1 props) {
     props.getLikedVacancies();
   }
@@ -37,29 +36,32 @@ class _MatchesTabState extends State<MatchesTab> {
 
   @override
   Widget build(BuildContext context) {
-    if(Prefs.getString(Prefs.TOKEN) == "null" || Prefs.getString(Prefs.TOKEN) == null ){
+    if (Prefs.getString(Prefs.TOKEN) == "null" ||
+        Prefs.getString(Prefs.TOKEN) == null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
-              child: Text("you_cant_see_matches_please_sign_in".tr(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 20),),
+              child: Text(
+                "you_cant_see_matches_please_sign_in".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
-
-            CustomButton(text: "sign_in".tr(),
+            CustomButton(
+                text: "sign_in".tr(),
                 textColor: kColorPrimary,
                 color: Colors.white,
-                onPressed:(){
-                  Navigator.of(context)
-                      .popUntil((route) => route.isFirst);
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.pushNamed(context, Routes.start);
                 })
           ],
         ),
       );
-    }
-    else {
+    } else {
       if (Prefs.getString(Prefs.USER_TYPE) == 'COMPANY') {
         return StoreConnector<AppState, SubmittedUsersProps>(
           converter: (store) => mapStateToSubmittedUsersProps(store),
@@ -72,27 +74,33 @@ class _MatchesTabState extends State<MatchesTab> {
             if (loading) {
               body = Center(
                 child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               );
             } else {
               body = Column(
                 children: [
                   Expanded(
-                    child: data != null ? UsersGrid(
-                        children: data.map((user) {
-                          return GestureDetector(
-                            child: UserCard(user: user, /*page: 'match',*/),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext ctx) =>
-                                      ProfileInfoScreen(user_id: user.id))
-                              );
-                            },
-                          );
-                        }).toList()) : Center(
-                      child: Text(
-                        'empty'.tr(), style: TextStyle(color: Colors.white),),
-                    ),
+                    child: data != null
+                        ? UsersGrid(
+                            children: data.map((user) {
+                            return GestureDetector(
+                              child: UserCard(
+                                user: user, /*page: 'match',*/
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext ctx) =>
+                                        ProfileInfoScreen(user_id: user.id)));
+                              },
+                            );
+                          }).toList())
+                        : Center(
+                            child: Text(
+                              'empty'.tr(),
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
                   ),
                 ],
               );
@@ -101,8 +109,7 @@ class _MatchesTabState extends State<MatchesTab> {
             return body;
           },
         );
-      }
-      else {
+      } else {
         return StoreConnector<AppState, VacanciesScreenProps1>(
           converter: (store) => mapStateToProps(store),
           onInitialBuild: (props) => this.handleInitialBuild(props),
@@ -112,39 +119,57 @@ class _MatchesTabState extends State<MatchesTab> {
             Widget body;
             if (loading) {
               body = Center(
-                child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
               );
             } else {
               body = Column(
                 children: [
                   Expanded(
-                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length !=0?UsersGrid(
-                        children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
-                          return GestureDetector(
-                            child: ProfileCard(vacancy: vacancy, page: 'match',),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                    return Scaffold(
-                                      backgroundColor: kColorPrimary,
-                                      appBar: AppBar(
-                                        title: Text("vacancy_view".tr()),
-                                      ),
-                                      body: VacancyView(
-                                        page:"view",
-                                        vacancy: vacancy,
-                                      ),
-                                    );
-                                  }
-                                )
-                              );
-                            },
-                          );
-                        }).toList()):Center(
-                      child: Text('empty'.tr(), style: TextStyle(color: Colors.white),),
-                    ),
+                    child: StoreProvider.of<AppState>(context)
+                                .state
+                                .vacancy
+                                .liked_list
+                                .data
+                                .length !=
+                            0
+                        ? UsersGrid(
+                            children: StoreProvider.of<AppState>(context)
+                                .state
+                                .vacancy
+                                .liked_list
+                                .data
+                                .map((vacancy) {
+                            return GestureDetector(
+                              child: ProfileCard(
+                                vacancy: vacancy,
+                                page: 'match',
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return Scaffold(
+                                    backgroundColor: kColorPrimary,
+                                    appBar: AppBar(
+                                      title: Text("vacancy_view".tr()),
+                                    ),
+                                    body: VacancyView(
+                                      page: "view",
+                                      vacancy: vacancy,
+                                    ),
+                                  );
+                                }));
+                              },
+                            );
+                          }).toList())
+                        : Center(
+                            child: Text(
+                              'empty'.tr(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                   ),
-
                 ],
               );
             }
@@ -187,6 +212,6 @@ class SubmittedUsersProps {
 SubmittedUsersProps mapStateToSubmittedUsersProps(Store<AppState> store) {
   return SubmittedUsersProps(
     listResponse: store.state.user.submitted_user_list,
-    getSubmittedUsers: ()=>store.dispatch(getSubmittedUsers()),
+    getSubmittedUsers: () => store.dispatch(getSubmittedUsers()),
   );
 }

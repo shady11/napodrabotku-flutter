@@ -1,22 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/screens/change_language_screen.dart';
-import 'package:ishapp/screens/edit_profile_screen.dart';
-import 'package:ishapp/screens/home_screen.dart';
-import 'package:ishapp/screens/profile_screen.dart';
-import 'package:ishapp/screens/sign_in_screen.dart';
-import 'package:ishapp/screens/sign_up_screen.dart';
-import 'package:ishapp/screens/start_screen.dart';
-import 'package:ishapp/screens/splash_screen.dart';
-import 'package:ishapp/screens/choose_language.dart';
-import 'package:ishapp/screens/about_screen.dart';
-import 'package:ishapp/screens/user_policy_screen.dart';
-import 'package:ishapp/screens/validate_code_screen.dart';
-import 'package:ishapp/screens/forgot_password_email_screen.dart';
-import 'package:ishapp/screens/new_password_screen.dart';
-import 'package:ishapp/tabs/profile_tab.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/screens/change_language_screen.dart';
+import 'package:ishtapp/screens/edit_profile_screen.dart';
+import 'package:ishtapp/screens/home_screen.dart';
+import 'package:ishtapp/screens/profile_screen.dart';
+import 'package:ishtapp/screens/sign_in_screen.dart';
+import 'package:ishtapp/screens/sign_up_screen.dart';
+import 'package:ishtapp/screens/start_screen.dart';
+import 'package:ishtapp/screens/splash_screen.dart';
+import 'package:ishtapp/screens/choose_language.dart';
+import 'package:ishtapp/screens/about_screen.dart';
+import 'package:ishtapp/screens/user_policy_screen.dart';
+import 'package:ishtapp/screens/validate_code_screen.dart';
+import 'package:ishtapp/screens/forgot_password_email_screen.dart';
+import 'package:ishtapp/screens/new_password_screen.dart';
+import 'package:ishtapp/tabs/profile_tab.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

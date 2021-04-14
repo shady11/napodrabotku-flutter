@@ -1,9 +1,9 @@
-// String API_IP = "http://ishtapp.kg/api/";
-String API_IP = "http://138.68.79.49/api/";
+String API_IP = "https://ishtapp.kg/api/";
+// String API_IP = "http://138.68.79.49/api/";
 // String API_IP = "http://192.168.0.105:8000/api/";
 //String API_IP = "http://10.0.2.2:8000/api/";
-// String SERVER_IP = "http://ishtapp.kg/";
-String SERVER_IP = "http://138.68.79.49/";
+String SERVER_IP = "https://ishtapp.kg/";
+// String SERVER_IP = "http://138.68.79.49/";
 // String SERVER_IP = "http://192.168.0.105:8000/";
 //String SERVER_IP = "http://10.0.2.2:8000/";
 String API_GET_USER = "user";
@@ -33,7 +33,6 @@ String API_USER_CV_COURSE_SAVE = 'user_cv_course';
 String API_USER_CV_COURSE_UPDATE = 'user/course/update/';
 String API_USER_CV_COURSE_DELETE = 'user/course/delete/';
 
-
 String API_LOGIN = 'login';
 String API_VACANCY_LIST = 'vacancy';
 String API_LIKED_USER_VACANCY_LIST = 'user_vacancy/LIKED';
@@ -52,7 +51,7 @@ String API_SUBMITTED_USERS = 'company/submitted_users/';
 String API_USER_FULL_INFO = 'users/full_info/';
 
 //chat
- String API_CHAT_LIST = 'chats';
- String API_CHAT_DELETE = 'chats/delete';
- String API_MESSAGE_LIST = 'messages';
- String API_SEND_MESSAGE = 'messages';
+String API_CHAT_LIST = 'chats';
+String API_CHAT_DELETE = 'chats/delete';
+String API_MESSAGE_LIST = 'messages';
+String API_SEND_MESSAGE = 'messages';

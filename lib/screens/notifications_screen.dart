@@ -1,8 +1,8 @@
 //import 'package:flutter/material.dart';
-//import 'package:ishapp/datas/demo_users.dart';
-//import 'package:ishapp/datas/user.dart';
-//import 'package:ishapp/widgets/badge.dart';
-//import 'package:ishapp/widgets/svg_icon.dart';
+//import 'package:ishtapp/datas/demo_users.dart';
+//import 'package:ishtapp/datas/user.dart';
+//import 'package:ishtapp/widgets/badge.dart';
+//import 'package:ishtapp/widgets/svg_icon.dart';
 //
 //
 //class NotificationsScreen extends StatefulWidget {

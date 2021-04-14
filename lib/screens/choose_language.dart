@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:ishapp/components/custom_button.dart';
-import 'package:ishapp/datas/pref_manager.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/utils/constants.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/utils/constants.dart';
 
 class ChooseLanguageScreen extends StatelessWidget {
   @override
@@ -34,11 +34,10 @@ class ChooseLanguageScreen extends StatelessWidget {
                         child: Text(
                           'ishtapp',
                           style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.italic
-                          ),
+                              fontSize: 40,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontStyle: FontStyle.italic),
                         ),
                       ),
                       SizedBox(
@@ -75,15 +74,17 @@ class ChooseLanguageScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CustomButton(
-                              height:50.0,
+                              height: 50.0,
                               padding: EdgeInsets.all(10),
                               color: Colors.white,
                               textColor: kColorBlue,
                               onPressed: () {
                                 Prefs.setString(Prefs.LANGUAGE, 'ky');
                                 EasyLocalization.of(context).locale =
-                                EasyLocalization.of(context).supportedLocales[0];
-                                Navigator.of(context).popAndPushNamed(Routes.start);
+                                    EasyLocalization.of(context)
+                                        .supportedLocales[0];
+                                Navigator.of(context)
+                                    .popAndPushNamed(Routes.start);
                               },
                               text: 'Кыргыз тили',
                             ),
@@ -91,15 +92,17 @@ class ChooseLanguageScreen extends StatelessWidget {
                               height: 20,
                             ),
                             CustomButton(
-                              height:50.0,
+                              height: 50.0,
                               padding: EdgeInsets.all(10),
                               color: Colors.white,
                               textColor: kColorBlue,
                               onPressed: () {
                                 Prefs.setString(Prefs.LANGUAGE, 'ru');
                                 EasyLocalization.of(context).locale =
-                                EasyLocalization.of(context).supportedLocales[1];
-                                Navigator.of(context).popAndPushNamed(Routes.start);
+                                    EasyLocalization.of(context)
+                                        .supportedLocales[1];
+                                Navigator.of(context)
+                                    .popAndPushNamed(Routes.start);
                               },
                               text: 'Русский язык',
                             ),
@@ -111,7 +114,6 @@ class ChooseLanguageScreen extends StatelessWidget {
                           height: 20,
                         ),
                       ),
-
                       SizedBox(
                         height: 10,
                       )

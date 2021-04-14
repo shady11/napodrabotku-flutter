@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:redux_api_middleware/redux_api_middleware.dart';
-import 'package:ishapp/datas/chat.dart';
+import 'package:ishtapp/datas/chat.dart';
 
 import 'RSAA.dart';
 
@@ -45,11 +45,11 @@ ChatState chatReducer(ChatState state, FSA action) {
       newState.message_list.data = null;
       return newState;
 
-
     default:
       return newState;
   }
 }
+
 List<ChatView> chatViewsFromJsonStr(dynamic payload) {
   Iterable jsonArray = json.decode(payload);
   return jsonArray.map((j) => ChatView.fromJson(j)).toList();

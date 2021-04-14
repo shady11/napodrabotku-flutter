@@ -4,18 +4,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:ishapp/constants/constants.dart';
-import 'package:ishapp/routes/routes.dart';
-import 'package:ishapp/screens/home_screen.dart';
-import 'package:ishapp/screens/sign_up_screen.dart';
-// import 'package:ishapp/widgets/app_logo.dart';
-import 'package:ishapp/widgets/cicle_button.dart';
-import 'package:ishapp/widgets/default_button.dart';
-import 'package:ishapp/widgets/svg_icon.dart';
-import 'package:ishapp/utils/some_painter.dart';
-import 'package:ishapp/utils/constants.dart';
-import 'package:ishapp/components/custom_button.dart';
-import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/constants.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/screens/home_screen.dart';
+import 'package:ishtapp/screens/sign_up_screen.dart';
+// import 'package:ishtapp/widgets/app_logo.dart';
+import 'package:ishtapp/widgets/cicle_button.dart';
+import 'package:ishtapp/widgets/default_button.dart';
+import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:ishtapp/utils/some_painter.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 
 class StartScreen extends StatefulWidget {
   @override
@@ -23,7 +23,6 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-
   DateTime currentBackPressTime;
 
   Future<bool> onWillPop() {
@@ -31,7 +30,7 @@ class _StartScreenState extends State<StartScreen> {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(context,msg: 'click_once_to_exit'.tr());
+      Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
       return Future.value(false);
     }
     return Future.value(true);
@@ -39,31 +38,28 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(child: Material(
-      child: Scaffold(
-        bottomSheet: Container(
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 15),
-                child: InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text(
-                        'guest'.tr(),
-                        style:  TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18
-                        )
+    return WillPopScope(
+        child: Material(
+          child: Scaffold(
+            bottomSheet: Container(
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text('guest'.tr(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 18)),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(Routes.home);
+                      },
                     ),
                   ),
-                  onTap: (){
-                    Navigator.of(context).pushNamed(Routes.home);
-                  },
-                ),
-              ),
 //            CustomButton(
 //              padding: EdgeInsets.all(10),
 //              color: Colors.transparent,
@@ -73,59 +69,60 @@ class _StartScreenState extends State<StartScreen> {
 //              },
 //              text: 'sign_up'.tr(),
 //            ),
-            ],
-          ),
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-              color: Colors.white
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Align(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Image.asset('assets/images/welcome.png', fit: BoxFit.cover,),
-                ),
-              ),
-
-              /// Sign in with Phone Number
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomButton(
-                    padding: EdgeInsets.all(10),
-                    color: Color(0xffF2F2F5),
-                    textColor: kColorBlue,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.signup);
-                    },
-                    text: 'sign_up'.tr(),
-                  ),
-                  CustomButton(
-                    padding: EdgeInsets.all(10),
-                    color: kColorPrimary,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.signin);
-                    },
-                    text: 'sign_in'.tr(),
-                  ),
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+            ),
+            body: Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Align(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Image.asset(
+                        'assets/images/welcome.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
 
-              /*Text("sign_in_with_social_apps".tr(),
+                  /// Sign in with Phone Number
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomButton(
+                        padding: EdgeInsets.all(10),
+                        color: Color(0xffF2F2F5),
+                        textColor: kColorBlue,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(Routes.signup);
+                        },
+                        text: 'sign_up'.tr(),
+                      ),
+                      CustomButton(
+                        padding: EdgeInsets.all(10),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(Routes.signin);
+                        },
+                        text: 'sign_in'.tr(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
+                  /*Text("sign_in_with_social_apps".tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: Colors.black45)),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),*/
 
-              /// Social login
-              /*Row(
+                  /// Social login
+                  /*Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -164,11 +161,11 @@ class _StartScreenState extends State<StartScreen> {
                   ),
                 ],
               ),*/
-
-            ],
+                ],
+              ),
+            ),
           ),
         ),
-      ),
-    ), onWillPop: onWillPop);
+        onWillPop: onWillPop);
   }
 }

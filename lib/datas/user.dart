@@ -6,12 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ishapp/constants/configs.dart';
-import 'package:ishapp/datas/pref_manager.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishapp/datas/app_state.dart';
+import 'package:ishtapp/datas/app_state.dart';
 
 import 'RSAA.dart';
 
@@ -59,7 +59,7 @@ class User {
         is_company: json['type'] == 'COMPANY',
       );
 
-  String uploadImage1(_image){
+  String uploadImage1(_image) {
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER1);
 
@@ -99,17 +99,16 @@ class User {
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
         var response = json.decode(value);
-        if(response['status'] == 200){
+        if (response['status'] == 200) {
           Prefs.setString(Prefs.PASSWORD, password);
           Prefs.setString(Prefs.TOKEN, response["token"]);
           Prefs.setInt(Prefs.USER_ID, response["id"]);
           Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
           Prefs.setString(Prefs.USER_TYPE, response["user_type"]);
-          mm="OK";
+          mm = "OK";
 //          return "OK";
-        }
-        else{
-          mm="ERROR";
+        } else {
+          mm = "ERROR";
 //          return "ERROR";
         }
       });
@@ -118,9 +117,10 @@ class User {
     });
     return mm;
   }
+
   void uploadImage2(_image) async {
     // string to uri
-    var uri = Uri.parse(API_IP + API_REGISTER+'/${this.id.toString()}');
+    var uri = Uri.parse(API_IP + API_REGISTER + '/${this.id.toString()}');
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -137,7 +137,7 @@ class User {
     // open a byteStream
     if (_image != null) {
       var stream =
-      new http.ByteStream(DelegatingStream.typed(_image.openRead()));
+          new http.ByteStream(DelegatingStream.typed(_image.openRead()));
       // get file length
       var length = await _image.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
@@ -163,10 +163,10 @@ class User {
     }).catchError((e) {
       print(e);
     });
-        // .then((value){
-        //   var response = json.decode(value);
-        //   Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-        // });
+    // .then((value){
+    //   var response = json.decode(value);
+    //   Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+    // });
   }
 
   Future<void> register() async {
@@ -308,8 +308,7 @@ class User {
         }),
       );
       var body = json.decode(response.body);
-      if(body == 'user code does not exist')
-        return "ERROR";
+      if (body == 'user code does not exist') return "ERROR";
       Prefs.setString(Prefs.EMAIL, email);
       Prefs.setString(Prefs.USER_ID, body["id"].toString());
       Prefs.setString(Prefs.PROFILEIMAGE, body["avatar"]);
@@ -320,7 +319,8 @@ class User {
     }
   }
 
-  static Future<String> resetPassword({String email, String new_password}) async {
+  static Future<String> resetPassword(
+      {String email, String new_password}) async {
     final url = API_IP + API_RESET_PASSWORD;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
@@ -448,13 +448,8 @@ class UserState {
   UserCvState user_cv;
   UserFullInfoState user_full_info;
 
-
-  UserState({
-    this.user,
-    this.user_cv,
-    this.submitted_user_list,
-    this.user_full_info
-  });
+  UserState(
+      {this.user, this.user_cv, this.submitted_user_list, this.user_full_info});
 
   factory UserState.initial() => UserState(
         user: UserDetailState.initial(),
@@ -494,10 +489,10 @@ class ListUserDetailState {
   });
 
   factory ListUserDetailState.initial() => ListUserDetailState(
-    error: null,
-    loading: false,
-    data: [],
-  );
+        error: null,
+        loading: false,
+        data: [],
+      );
 }
 
 class UserCvState {
@@ -530,10 +525,10 @@ class UserFullInfoState {
   });
 
   factory UserFullInfoState.initial() => UserFullInfoState(
-    error: null,
-    loading: false,
-    data: new UserFullInfo(),
-  );
+        error: null,
+        loading: false,
+        data: new UserFullInfo(),
+      );
 }
 
 class EducationType {
@@ -590,7 +585,7 @@ class UserCv {
     // open a byteStream
     if (attachment != null) {
       var stream =
-      new http.ByteStream(DelegatingStream.typed(attachment.openRead()));
+          new http.ByteStream(DelegatingStream.typed(attachment.openRead()));
       // get file length
       var length = await attachment.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
@@ -649,8 +644,7 @@ class UserCv {
   }
 
   static List<UserCourse> coursesToList(var j) {
-    if(j ==null)
-      return null;
+    if (j == null) return null;
     List<UserCourse> result = [];
     print(j);
     for (var i in j) {
@@ -682,32 +676,32 @@ class UserFullInfo {
 
   UserFullInfo(
       {this.id,
-        this.experience_year,
-        this.job_title,
-        this.surname_name,
-        this.avatar,
-        this.email,
-        this.birth_date,
-        this.phone_number,
-        this.attachment,
-        this.user_experiences,
-        this.user_educations,
-        this.user_courses});
+      this.experience_year,
+      this.job_title,
+      this.surname_name,
+      this.avatar,
+      this.email,
+      this.birth_date,
+      this.phone_number,
+      this.attachment,
+      this.user_experiences,
+      this.user_educations,
+      this.user_courses});
 
   factory UserFullInfo.fromJson(Map<String, dynamic> json) => new UserFullInfo(
-    id: json["id"],
-    job_title: json["job_title"],
-    surname_name: json["surname_name"],
-    avatar: json["avatar"],
-    email: json["email"],
-    birth_date: DateTime.parse(json['birth_date']),
-    phone_number: json["phone_number"],
-    attachment: json["attachment"],
-    experience_year: json["experience_year"],
-    user_courses: coursesToList(json['courses']),
-    user_educations: educationsToList(json['educations']),
-    user_experiences: experiencesToList(json['experiences']),
-  );
+        id: json["id"],
+        job_title: json["job_title"],
+        surname_name: json["surname_name"],
+        avatar: json["avatar"],
+        email: json["email"],
+        birth_date: DateTime.parse(json['birth_date']),
+        phone_number: json["phone_number"],
+        attachment: json["attachment"],
+        experience_year: json["experience_year"],
+        user_courses: coursesToList(json['courses']),
+        user_educations: educationsToList(json['educations']),
+        user_experiences: experiencesToList(json['experiences']),
+      );
 
   static List<UserExperience> experiencesToList(var j) {
     List<UserExperience> result = new List<UserExperience>();
@@ -740,8 +734,7 @@ class UserFullInfo {
   }
 
   static List<UserCourse> coursesToList(var j) {
-    if(j ==null)
-      return null;
+    if (j == null) return null;
     List<UserCourse> result = [];
     print(j);
     for (var i in j) {
@@ -775,13 +768,13 @@ class UserExperience {
       this.description});
 
   Map toJson() => {
-    'id': id.toString(),
-    'job_title': job_title.toString(),
-    'start_date': start_date,
-    'end_date': end_date,
-    'organization_name': organization_name.toString(),
-    'description': description.toString(),
-  };
+        'id': id.toString(),
+        'job_title': job_title.toString(),
+        'start_date': start_date,
+        'end_date': end_date,
+        'organization_name': organization_name.toString(),
+        'description': description.toString(),
+      };
 
   Future<void> save(id) async {
     // string to uri
@@ -880,13 +873,13 @@ class UserEducation {
       this.end_year});
 
   Map toJson() => {
-    'id': id,
-    'type': type,
-    'title': title,
-    'faculty': faculty,
-    'speciality': speciality,
-    'end_year': end_year,
-  };
+        'id': id,
+        'type': type,
+        'title': title,
+        'faculty': faculty,
+        'speciality': speciality,
+        'end_year': end_year,
+      };
 
   Future<String> save(id) async {
     // string to uri
@@ -911,8 +904,7 @@ class UserEducation {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
-        if(value=="OK")
-          return value;
+        if (value == "OK") return value;
       });
     }).catchError((e) {
       return "ERROR";
@@ -985,12 +977,12 @@ class UserCourse {
       this.end_year});
 
   Map toJson() => {
-    'id': id,
-    'name': name,
-    'organization_name': organization_name,
-    'duration': duration,
-    'end_year': end_year,
-  };
+        'id': id,
+        'name': name,
+        'organization_name': organization_name,
+        'duration': duration,
+        'end_year': end_year,
+      };
 
   Future<void> save(id) async {
     // string to uri
