@@ -160,7 +160,7 @@ class _MatchesTabState extends State<MatchesTab> {
                                       title: Text("vacancy_view".tr()),
                                     ),
                                     body: VacancyView(
-                                      page: "view",
+                                      page: "user_match",
                                       vacancy: vacancy,
                                     ),
                                   );

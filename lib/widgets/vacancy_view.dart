@@ -240,82 +240,74 @@ class VacancyView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
+                    page != 'user_match' ?
                     SizedBox(
                       width: double.maxFinite,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          page == 'discover'
-                              ? Container()
-                              : page == 'submitted' ||
-                                      page == 'inactive' ||
-                                      page == 'company_view'
-                                  ? Container()
-                                  : Center(
-                                      child: CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        padding: EdgeInsets.all(5),
-                                        color: kColorPrimary,
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          Prefs.getString(Prefs.TOKEN) == null
-                                              ? _showDialog(context,
-                                                  'sign_in_to_submit'.tr())
-                                              : User.checkUserCv(Prefs.getInt(
-                                                      Prefs.USER_ID))
-                                                  .then((value) {
-                                                  if (value) {
-                                                    Vacancy.saveVacancyUser(
-                                                            vacancy_id:
-                                                                vacancy.id,
-                                                            type: "SUBMITTED")
-                                                        .then((value) {
-                                                      if (value == "OK") {
-                                                        _showDialog1(
-                                                            context,
-                                                            "successfully_submitted"
-                                                                .tr());
-                                                        StoreProvider.of<
-                                                                    AppState>(
-                                                                context)
-                                                            .state
-                                                            .vacancy
-                                                            .list
-                                                            .data
-                                                            .remove(vacancy);
-                                                        StoreProvider.of<
-                                                                    AppState>(
-                                                                context)
-                                                            .dispatch(
-                                                                getSubmittedVacancies());
-                                                        StoreProvider.of<
-                                                                    AppState>(
-                                                                context)
-                                                            .dispatch(
-                                                                getNumberOfSubmittedVacancies());
-                                                      } else {
-                                                        _showDialog(
-                                                            context,
-                                                            "some_errors_occured_try_again"
-                                                                .tr());
-                                                      }
-                                                    });
-                                                  } else {
-                                                    _showDialog(
-                                                        context,
-                                                        "please_fill_user_cv_to_submit"
-                                                            .tr());
-                                                  }
-                                                });
-                                        },
-                                        text: 'submit'.tr(),
-                                      ),
-                                    ),
+                          page == 'discover' ?
+                          Container() :
+                          page == 'submitted' || page == 'inactive' || page == 'company_view' ?
+                          Container() :
+                          Center(
+                            child: CustomButton(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              padding: EdgeInsets.all(5),
+                              color: kColorPrimary,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Prefs.getString(Prefs.TOKEN) == null ?
+                                _showDialog(context, 'sign_in_to_submit'.tr()) :
+                                User.checkUserCv(Prefs.getInt(
+                                            Prefs.USER_ID)) .then((value) {
+                                  if (value) {
+                                    Vacancy.saveVacancyUser(
+                                            vacancy_id:
+                                                vacancy.id,
+                                            type: "SUBMITTED")
+                                        .then((value) {
+                                      if (value == "OK") {
+                                        _showDialog1(
+                                            context,
+                                            "successfully_submitted"
+                                                .tr());
+                                        StoreProvider.of<
+                                                    AppState>(
+                                                context)
+                                            .state
+                                            .vacancy
+                                            .list
+                                            .data
+                                            .remove(vacancy);
+                                        StoreProvider.of<
+                                                    AppState>(
+                                                context)
+                                            .dispatch(
+                                                getSubmittedVacancies());
+                                        StoreProvider.of<
+                                                    AppState>(
+                                                context)
+                                            .dispatch(
+                                                getNumberOfSubmittedVacancies());
+                                      } else {
+                                        _showDialog(
+                                            context,
+                                            "some_errors_occured_try_again"
+                                                .tr());
+                                      }
+                                    });
+                                  } else {
+                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                  }
+                                });
+                              },
+                              text: 'submit'.tr(),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
+                    ) : Container(),
 
                     this.page == 'discover'
                         ? SizedBox(height: 0)

@@ -192,43 +192,43 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                             ),
                           ),
 
-                          Container(
-                            margin: EdgeInsets.only(bottom: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: Text("type".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
-                                ),
-                                TextFormField(
-                                  controller: type_controller,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
-                                    filled: true,
-                                    fillColor: Colors.grey[200],
-                                  ),
-                                  validator: (name) {
-                                    // Basic validation
-                                    if (name.isEmpty) {
-                                      return "please_fill_this_field".tr();
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   margin: EdgeInsets.only(bottom: 5),
+                          //   child: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: [
+                          //       Container(
+                          //         child: Text("type".tr(),
+                          //             softWrap: true,
+                          //             style: TextStyle(
+                          //                 fontSize: 16,
+                          //                 color: Colors.grey,
+                          //                 height: 2)),
+                          //       ),
+                          //       TextFormField(
+                          //         controller: type_controller,
+                          //         decoration: InputDecoration(
+                          //           contentPadding:
+                          //               EdgeInsets.fromLTRB(15, 5, 15, 5),
+                          //           border: OutlineInputBorder(
+                          //               borderRadius: BorderRadius.circular(10),
+                          //               borderSide: BorderSide.none),
+                          //           floatingLabelBehavior:
+                          //               FloatingLabelBehavior.always,
+                          //           filled: true,
+                          //           fillColor: Colors.grey[200],
+                          //         ),
+                          //         validator: (name) {
+                          //           // Basic validation
+                          //           if (name.isEmpty) {
+                          //             return "please_fill_this_field".tr();
+                          //           }
+                          //           return null;
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
 
                           Container(
                             margin: EdgeInsets.only(bottom: 30),
@@ -382,13 +382,7 @@ class _UserEducationInfoState extends State<UserEducationInfo> {
                                         color: kColorDark,
                                         height: 1.4)),
                                 Text(
-                                    i.type != null
-                                        ? i.type
-                                        : '' + ', ' + i.faculty != null
-                                            ? i.faculty
-                                            : '' + ', ' + i.speciality != null
-                                                ? i.speciality
-                                                : '',
+                                    i.faculty != null ? i.faculty : '' + ', ' + i.speciality != null  ? i.speciality  : '',
                                     softWrap: true,
                                     style: TextStyle(
                                         fontSize: 14,
