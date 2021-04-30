@@ -114,7 +114,6 @@ class Vacancy {
             'region_ids': region_ids,
             'busyness_ids': busyness_ids
           }));
-      print(response.body);
       List<Vacancy> result_list = [];
       for (var i in json.decode(utf8.decode(response.bodyBytes))) {
         Vacancy model = Vacancy.fromJson(i);
@@ -137,7 +136,8 @@ class Vacancy {
     List busyness_ids,
     List vacancy_type_ids,
   }) async {
-    final url = API_IP + API_VACANCY_LIST + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+    final url =
+        API_IP + API_VACANCY_LIST + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -155,7 +155,6 @@ class Vacancy {
             'region_ids': region_ids,
             'busyness_ids': busyness_ids
           }));
-      print(response.body);
       for (var i in json.decode(utf8.decode(response.bodyBytes))) {
         Vacancy model = Vacancy.fromJson(i);
         return model;
@@ -181,7 +180,6 @@ class Vacancy {
           headers: headers,
           body:
               json.encode({'limit': limit, 'offset': offset, 'type': 'LIKE'}));
-      print(response.body);
       List<Vacancy> result_list = [];
       for (var i in json.decode(utf8.decode(response.bodyBytes))) {
         Vacancy model = Vacancy.fromJson(i);
@@ -224,7 +222,6 @@ class Vacancy {
       };
       final response = await http.post(url,
           headers: headers, body: json.encode(vacancyToJsonMap(vacancy)));
-      print(response.body);
       return "OK";
     } catch (error) {
       return "ERROR";
@@ -243,7 +240,6 @@ class Vacancy {
       };
       final response = await http.post(url,
           headers: headers, body: json.encode({'vacancy_id': vacancy_id}));
-      print(response.body);
       return "OK";
     } catch (error) {
       return "ERROR";
@@ -262,7 +258,6 @@ class Vacancy {
       final response = await http.post(url,
           headers: headers,
           body: json.encode({'vacancy_id': vacancy_id, 'active': active}));
-      print(response.body);
       return "OK";
     } catch (error) {
       return "ERROR";

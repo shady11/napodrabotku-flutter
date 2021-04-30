@@ -4,14 +4,11 @@ import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/datas/vacancy.dart';
-import 'package:ishtapp/widgets/show_like_or_dislike.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/routes/routes.dart';
-import 'badge.dart';
 import 'default_card_border.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
@@ -103,7 +100,6 @@ class VacancyView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// User fullname
                     Row(
                       children: [
                         Align(
@@ -192,13 +188,6 @@ class VacancyView extends StatelessWidget {
                             style: TextStyle(color: Colors.black87),
                           ),
                         ),
-                        // Container(
-                        //   padding: EdgeInsets.all(5),
-                        //   decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(8)
-                        //   ),
-                        //   child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                        // ),
                       ],
                     ),
                     SizedBox(height: 15),
@@ -240,74 +229,92 @@ class VacancyView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    page != 'user_match' ?
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          page == 'discover' ?
-                          Container() :
-                          page == 'submitted' || page == 'inactive' || page == 'company_view' ?
-                          Container() :
-                          Center(
-                            child: CustomButton(
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              padding: EdgeInsets.all(5),
-                              color: kColorPrimary,
-                              textColor: Colors.white,
-                              onPressed: () {
-                                Prefs.getString(Prefs.TOKEN) == null ?
-                                _showDialog(context, 'sign_in_to_submit'.tr()) :
-                                User.checkUserCv(Prefs.getInt(
-                                            Prefs.USER_ID)) .then((value) {
-                                  if (value) {
-                                    Vacancy.saveVacancyUser(
-                                            vacancy_id:
-                                                vacancy.id,
-                                            type: "SUBMITTED")
-                                        .then((value) {
-                                      if (value == "OK") {
-                                        _showDialog1(
-                                            context,
-                                            "successfully_submitted"
-                                                .tr());
-                                        StoreProvider.of<
-                                                    AppState>(
-                                                context)
-                                            .state
-                                            .vacancy
-                                            .list
-                                            .data
-                                            .remove(vacancy);
-                                        StoreProvider.of<
-                                                    AppState>(
-                                                context)
-                                            .dispatch(
-                                                getSubmittedVacancies());
-                                        StoreProvider.of<
-                                                    AppState>(
-                                                context)
-                                            .dispatch(
-                                                getNumberOfSubmittedVacancies());
-                                      } else {
-                                        _showDialog(
-                                            context,
-                                            "some_errors_occured_try_again"
-                                                .tr());
-                                      }
-                                    });
-                                  } else {
-                                    _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                  }
-                                });
-                              },
-                              text: 'submit'.tr(),
+                    page != 'user_match'
+                        ? SizedBox(
+                            width: double.maxFinite,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                page == 'discover'
+                                    ? Container()
+                                    : page == 'submitted' ||
+                                            page == 'inactive' ||
+                                            page == 'company_view'
+                                        ? Container()
+                                        : Center(
+                                            child: CustomButton(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                              padding: EdgeInsets.all(5),
+                                              color: kColorPrimary,
+                                              textColor: Colors.white,
+                                              onPressed: () {
+                                                Prefs.getString(Prefs.TOKEN) ==
+                                                        null
+                                                    ? _showDialog(
+                                                        context,
+                                                        'sign_in_to_submit'
+                                                            .tr())
+                                                    : User.checkUserCv(
+                                                            Prefs.getInt(
+                                                                Prefs.USER_ID))
+                                                        .then((value) {
+                                                        if (value) {
+                                                          Vacancy.saveVacancyUser(
+                                                                  vacancy_id:
+                                                                      vacancy
+                                                                          .id,
+                                                                  type:
+                                                                      "SUBMITTED")
+                                                              .then((value) {
+                                                            if (value == "OK") {
+                                                              _showDialog1(
+                                                                  context,
+                                                                  "successfully_submitted"
+                                                                      .tr());
+                                                              StoreProvider.of<
+                                                                          AppState>(
+                                                                      context)
+                                                                  .state
+                                                                  .vacancy
+                                                                  .list
+                                                                  .data
+                                                                  .remove(
+                                                                      vacancy);
+                                                              StoreProvider.of<
+                                                                          AppState>(
+                                                                      context)
+                                                                  .dispatch(
+                                                                      getSubmittedVacancies());
+                                                              StoreProvider.of<
+                                                                          AppState>(
+                                                                      context)
+                                                                  .dispatch(
+                                                                      getNumberOfSubmittedVacancies());
+                                                            } else {
+                                                              _showDialog(
+                                                                  context,
+                                                                  "some_errors_occured_try_again"
+                                                                      .tr());
+                                                            }
+                                                          });
+                                                        } else {
+                                                          _showDialog(
+                                                              context,
+                                                              "please_fill_user_cv_to_submit"
+                                                                  .tr());
+                                                        }
+                                                      });
+                                              },
+                                              text: 'submit'.tr(),
+                                            ),
+                                          ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ) : Container(),
+                          )
+                        : Container(),
 
                     this.page == 'discover'
                         ? SizedBox(height: 0)
