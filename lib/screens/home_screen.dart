@@ -354,9 +354,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'fill_all_fields'.tr(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: kColorPrimary),
+                            style:
+                                TextStyle(fontSize: 14, color: kColorPrimary),
                           )),
                       SizedBox(
                         height: 30,
@@ -433,8 +432,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   'vacancy_description'.tr(),
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black),
-                                )
-                            ),
+                                )),
                             TextFormField(
                               controller: _vacancy_description_controller,
                               maxLines: 5,
@@ -466,14 +464,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
-                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
                                 ),
                               ),
-                              items: regionList.map<DropdownMenuItem<int>>((dynamic value) {
-                                var jj = new JobType(id: value['id'], name: value['name']);
+                              items: regionList
+                                  .map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(
+                                    id: value['id'], name: value['name']);
                                 return DropdownMenuItem<int>(
                                   value: jj.id,
                                   child: Text(value['name']),
@@ -491,7 +493,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
-                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
@@ -518,7 +522,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
-                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
@@ -545,7 +551,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
-                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
@@ -572,7 +580,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
-                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
                               decoration: InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey),
@@ -615,13 +625,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
-                                      if (_vacancyAddFormKey.currentState.validate()) {
+                                      if (_vacancyAddFormKey.currentState
+                                          .validate()) {
                                         // StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                                         // StoreProvider.of<AppState>(context).dispatch(getVacancies());
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
-                                          salary: _vacancy_salary_controller.text,
-                                          description: _vacancy_description_controller.text,
+                                          salary:
+                                              _vacancy_salary_controller.text,
+                                          description:
+                                              _vacancy_description_controller
+                                                  .text,
                                           type: _vacancy_type_id.toString(),
                                           busyness: _busyness_id.toString(),
                                           schedule: _schedule_id.toString(),
@@ -1036,18 +1050,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? kColorPrimary
                                   : Colors.grey),
                         )),
-                    BottomNavigationBarItem(
-                        icon: Icon(
-                          Boxicons.bx_book,
-                          color: _tabCurrentIndex == 3 ? kColorPrimary : null,
-                        ),
-                        title: Text(
-                          "school".tr(),
-                          style: TextStyle(
-                              color: _tabCurrentIndex == 3
-                                  ? kColorPrimary
-                                  : Colors.grey),
-                        )),
+                    // BottomNavigationBarItem(
+                    //     icon: Icon(
+                    //       Boxicons.bx_book,
+                    //       color: _tabCurrentIndex == 3 ? kColorPrimary : null,
+                    //     ),
+                    //     title: Text(
+                    //       "school".tr(),
+                    //       style: TextStyle(
+                    //           color: _tabCurrentIndex == 3
+                    //               ? kColorPrimary
+                    //               : Colors.grey),
+                    //     )),
                   ]),
             ),
             body: WillPopScope(
@@ -1058,7 +1072,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     DiscoverTab(),
                     MatchesTab(),
                     ConversationsTab(),
-                    SchoolTab(),
+                    // SchoolTab(),
                     ProfileTab(),
                   ],
                 ),
