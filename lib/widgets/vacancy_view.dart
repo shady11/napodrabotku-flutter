@@ -132,6 +132,7 @@ class VacancyView extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
+                                  fontFamily: 'GTEestiProDisplay',
                                   color: Colors.black),
                               children: <TextSpan>[
                                 TextSpan(
@@ -139,6 +140,7 @@ class VacancyView extends StatelessWidget {
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
+                                        fontFamily: 'GTEestiProDisplay',
                                         color: kColorDark)),
                               ],
                             ),
@@ -174,6 +176,7 @@ class VacancyView extends StatelessWidget {
                         )),
                       ],
                     ),
+                    SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -224,6 +227,7 @@ class VacancyView extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.normal,
+                                  fontFamily: 'GTEestiProDisplay',
                                   color: Colors.black45)),
                         ),
                       ),
