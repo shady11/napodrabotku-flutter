@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _showDataPicker(context) {
     var date = DateTime.now();
     DatePicker.showDatePicker(context,
-        maxTime: new DateTime(date.year - 13, date.month, date.day),
+        maxTime: new DateTime(date.year - 18, date.month, date.day),
         locale: Prefs.getString(Prefs.LANGUAGE) == 'ky'
             ? LocaleType.ky
             : LocaleType.ru,

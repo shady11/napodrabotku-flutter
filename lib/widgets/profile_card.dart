@@ -128,8 +128,9 @@ class ProfileCard extends StatelessWidget {
                             text: TextSpan(
                               text: vacancy.company_name.toString() + '\n',
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500,
+                                  fontFamily: 'GTEestiProDisplay',
                                   color: Colors.black),
                               children: <TextSpan>[
                                 TextSpan(
@@ -159,7 +160,9 @@ class ProfileCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8)),
                           child: Text(
                             vacancy.type.toString(),
-                            style: TextStyle(color: Colors.black87),
+                            style: TextStyle(
+                                color: Colors.black87,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -167,12 +170,13 @@ class ProfileCard extends StatelessWidget {
                         ),
                         Flexible(
                             child: Text(
-                          vacancy.salary != null ? vacancy.salary : '',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: kColorPrimary),
-                        )),
+                              vacancy.salary != null ? vacancy.salary : '',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'GTEestiProDisplay',
+                                  color: kColorPrimary),
+                            )),
                       ],
                     ),
                     // : Container(),
@@ -190,7 +194,10 @@ class ProfileCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8)),
                           child: Text(
                             vacancy.schedule.toString(),
-                            style: TextStyle(color: Colors.black87),
+                            style: TextStyle(
+                                fontFamily: 'GTEestiProDisplay',
+                                color: Colors.black87
+                            ),
                           ),
                         ),
                       ],
@@ -202,21 +209,26 @@ class ProfileCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          fontFamily: 'GTEestiProDisplay',
+                          color: Colors.black
+                      ),
                     ),
                     SizedBox(height: 10),
-                    page == 'discover'
-                        ? Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                  text: vacancy.description,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black45)),
-                            ),
-                          )
-                        : SizedBox(),
+                    page == 'discover' ?
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                            text: vacancy.description,
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'GTEestiProDisplay',
+                                color: Colors.black45
+                            )
+                        ),
+                      ),
+                    ) :
+                    SizedBox(),
                     SizedBox(height: 20),
                     // index == null || index <= 2
                     //     ?
