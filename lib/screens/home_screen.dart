@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
@@ -8,13 +7,13 @@ import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert' show utf8;
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:ishtapp/widgets/cicle_button.dart';
 import 'package:ishtapp/components/custom_button.dart';
-import 'package:ishtapp/constants/constants.dart';
 import 'package:ishtapp/tabs/conversations_tab.dart';
 import 'package:ishtapp/tabs/discover_tab.dart';
 import 'package:ishtapp/tabs/matches_tab.dart';
@@ -23,7 +22,7 @@ import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/widgets/badge.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/utils/textFormatter/lengthLimitingTextInputFormatter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -416,6 +415,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 filled: true,
                                 fillColor: Colors.grey[200],
                               ),
+                              maxLength: 20,
+                              buildCounter: (context,
+                                  {currentLength, isFocused, maxLength}) {
+                                int utf8Length = utf8
+                                    .encode(_vacancy_salary_controller.text)
+                                    .length;
+                                return Container(
+                                  child: Text(
+                                    '$utf8Length/$maxLength',
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                );
+                              },
+                              inputFormatters: [
+                                Utf8LengthLimitingTextInputFormatter(20)
+                              ],
                               validator: (name) {
                                 if (name.isEmpty) {
                                   return "please_fill_this_field".tr();

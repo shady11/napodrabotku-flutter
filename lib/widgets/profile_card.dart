@@ -147,8 +147,6 @@ class ProfileCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 20),
-                    // index == null || index <= 2
-                    //     ?
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -179,10 +177,7 @@ class ProfileCard extends StatelessWidget {
                             )),
                       ],
                     ),
-                    // : Container(),
                     SizedBox(height: 5),
-                    // index == null || index <= 2
-                    //     ?
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -202,7 +197,6 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // : Container(),
                     SizedBox(height: 15),
                     Text(
                       vacancy.name,
@@ -230,8 +224,6 @@ class ProfileCard extends StatelessWidget {
                     ) :
                     SizedBox(),
                     SizedBox(height: 20),
-                    // index == null || index <= 2
-                    //     ?
                     SizedBox(
                       width: double.maxFinite,
                       child: Row(
@@ -382,7 +374,6 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // : Container(),
                     this.page == 'discover'
                         ? SizedBox(height: 0)
                         : Container(width: 0, height: 0),
