@@ -1050,18 +1050,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? kColorPrimary
                                   : Colors.grey),
                         )),
-                    // BottomNavigationBarItem(
-                    //     icon: Icon(
-                    //       Boxicons.bx_book,
-                    //       color: _tabCurrentIndex == 3 ? kColorPrimary : null,
-                    //     ),
-                    //     title: Text(
-                    //       "school".tr(),
-                    //       style: TextStyle(
-                    //           color: _tabCurrentIndex == 3
-                    //               ? kColorPrimary
-                    //               : Colors.grey),
-                    //     )),
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Boxicons.bx_book,
+                          color: _tabCurrentIndex == 3 ? kColorPrimary : null,
+                        ),
+                        title: Text(
+                          "school".tr(),
+                          style: TextStyle(
+                              color: _tabCurrentIndex == 3
+                                  ? kColorPrimary
+                                  : Colors.grey),
+                        )),
                   ]),
             ),
             body: WillPopScope(
@@ -1072,7 +1072,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     DiscoverTab(),
                     MatchesTab(),
                     ConversationsTab(),
-                    // SchoolTab(),
+                    SchoolTab(),
                     ProfileTab(),
                   ],
                 ),
