@@ -31,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  final title_controller1 = TextEditingController();
+  final title_controller = TextEditingController();
   final experience_year_controller = TextEditingController();
   UserCv user_cv;
   User user;
@@ -49,6 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _email_controller = TextEditingController();
   final _phone_number_controller = TextEditingController();
   final _birth_date_controller = TextEditingController();
+  final _linkedin_controller = TextEditingController();
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -188,7 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
         user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
-        title_controller1.text = user_cv.job_title;
+        title_controller.text = user_cv.job_title;
         experience_year_controller.text = user_cv.experience_year == null
             ? '0'
             : user_cv.experience_year.toString();
@@ -197,6 +198,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _surnname_controller.text = user.surname;
       _email_controller.text = user.email;
       _phone_number_controller.text = user.phone_number;
+      _linkedin_controller.text = user.linkedin;
+
       if (user.birth_date != null)
         _birth_date_controller.text = formatter.format(user.birth_date);
       count = 2;
@@ -414,7 +417,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       fontSize: 16, color: Colors.black),
                                 )),
                             TextFormField(
-                              controller: title_controller1,
+                              controller: title_controller,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -458,6 +461,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 if (name.isEmpty) {
                                   return "please_fill_this_field".tr();
                                 }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Align(
+                              widthFactor: 10,
+                              heightFactor: 1.5,
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'linkedin_profile'.tr(),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _linkedin_controller,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                              ),
+                              validator: (name) {
                                 return null;
                               },
                             ),
@@ -505,8 +534,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           user.phone_number = _phone_number_controller.text;
                           user.birth_date =
                               formatter.parse(_birth_date_controller.text);
+                          user.linkedin = _linkedin_controller.text;
+
                           user.name = _name_controller.text;
                           user.surname = _surnname_controller.text;
+
+                          print('HL___________________');
+                          print(user.linkedin);
 
                           if (_imageFile != null)
                             user.uploadImage2(File(_imageFile.path));
@@ -516,7 +550,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
                             user_cv.experience_year =
                                 int.parse(experience_year_controller.text);
-                            user_cv.job_title = title_controller1.text;
+                            user_cv.job_title = title_controller.text;
 
                             if (attachment != null)
                               user_cv.save(attachment: attachment);

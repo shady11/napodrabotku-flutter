@@ -23,6 +23,7 @@ class User {
   String surname;
   String image;
   String email;
+  String linkedin;
   DateTime birth_date;
   String phone_number;
   String user_cv_name;
@@ -38,6 +39,7 @@ class User {
       this.surname,
       this.image,
       this.email,
+      this.linkedin,
       this.birth_date,
       this.phone_number,
       this.user_cv_name,
@@ -51,6 +53,7 @@ class User {
         surname: json["lastname"],
         image: json['avatar'],
         email: json['email'],
+        linkedin: json['linkedin'],
         birth_date: DateTime.parse(json['birth_date']),
         phone_number: json['phone_number'],
         vacancy_name: json['vacancy_name'],
@@ -118,6 +121,7 @@ class User {
     return mm;
   }
 
+  /// Method to upload Profile Image and Update User data
   void uploadImage2(_image) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER + '/${this.id.toString()}');
@@ -133,6 +137,7 @@ class User {
     request.fields["email"] = this.email;
     request.fields["birth_date"] = formatter.format(this.birth_date);
     request.fields["phone_number"] = this.phone_number;
+    request.fields["linkedin"] = this.linkedin;
 
     // open a byteStream
     if (_image != null) {
@@ -153,20 +158,10 @@ class User {
       response.stream.transform(utf8.decoder).listen((value) {
         print(value);
         var response = json.decode(value);
-//        Prefs.setString('username', username);
-//        Prefs.setString('password', password);
-//        Prefs.setString(Prefs.USERNAME, username);
-//        Prefs.setString(Prefs.PASSWORD, password);
-//        Prefs.setString(Prefs.TOKEN, response["token"]);
-//         Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
       });
     }).catchError((e) {
       print(e);
     });
-    // .then((value){
-    //   var response = json.decode(value);
-    //   Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-    // });
   }
 
   Future<void> register() async {
