@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -8,12 +7,6 @@ import 'package:intl/intl.dart';
 
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishtapp/datas/app_state.dart';
-
-import 'RSAA.dart';
 
 class User {
   int id;
@@ -30,22 +23,25 @@ class User {
   String vacancy_name;
   String experience_year;
   bool is_company;
+  int is_migrant;
 
-  User(
-      {this.id,
-      this.token,
-      this.password,
-      this.name,
-      this.surname,
-      this.image,
-      this.email,
-      this.linkedin,
-      this.birth_date,
-      this.phone_number,
-      this.user_cv_name,
-      this.experience_year,
-      this.vacancy_name,
-      this.is_company});
+  User({
+    this.id,
+    this.token,
+    this.password,
+    this.name,
+    this.surname,
+    this.image,
+    this.email,
+    this.linkedin,
+    this.birth_date,
+    this.phone_number,
+    this.user_cv_name,
+    this.experience_year,
+    this.vacancy_name,
+    this.is_company,
+    this.is_migrant,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
         id: json["id"],
@@ -60,6 +56,7 @@ class User {
         user_cv_name: json['job_title'],
         experience_year: json['experience_year'].toString(),
         is_company: json['type'] == 'COMPANY',
+        is_migrant: json['is_migrant'],
       );
 
   String uploadImage1(_image) {
@@ -80,6 +77,7 @@ class User {
     request.fields["active"] = '1';
     request.fields["phone_number"] = this.phone_number;
     request.fields["type"] = this.is_company ? 'COMPANY' : 'USER';
+    request.fields["is_migrant"] = this.is_migrant.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -109,10 +107,8 @@ class User {
           Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
           Prefs.setString(Prefs.USER_TYPE, response["user_type"]);
           mm = "OK";
-//          return "OK";
         } else {
           mm = "ERROR";
-//          return "ERROR";
         }
       });
     }).catchError((e) {
@@ -138,6 +134,7 @@ class User {
     request.fields["birth_date"] = formatter.format(this.birth_date);
     request.fields["phone_number"] = this.phone_number;
     request.fields["linkedin"] = this.linkedin;
+    request.fields["is_migrant"] = this.is_migrant.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -194,6 +191,7 @@ class User {
         'email': user.email,
         'birth_date': user.birth_date,
         'phone_number': user.phone_number,
+        'is_migrant': user.is_migrant,
       };
 
   bool get isAuth {

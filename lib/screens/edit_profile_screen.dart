@@ -1,6 +1,5 @@
 import 'dart:io';
 
-//import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,18 +7,12 @@ import 'package:ishtapp/components/custom_button.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:path/path.dart';
-import 'package:ishtapp/datas/RSAA.dart';
 
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/routes/routes.dart';
-import 'package:ishtapp/screens/profile_screen.dart';
 import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/widgets/show_scaffold_msg.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
-import 'package:ishtapp/widgets/user_experience_form.dart';
 import 'package:gx_file_picker/gx_file_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -117,28 +110,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-//  void onDelete(int index){
-//    setState(() {
-//      user_cv.user_experiences.removeAt(index);
-//    });
-//  }
-//
-//  void onAddForm(){
-//    setState(() {
-//      user_cv.user_experiences.add(UserExperience());
-//    });
-//  }
-//
-//  void onSave(){
-//    user_experience_forms.forEach((form) => form.isValid());
-//  }
-
-  /*Widget buildList(var experiences){
-    for(var i=0;i<experiences.length;i++){
-      return UserExperienceForm(experience: experiences[i], onDelete: ()=>onDelete(i),);
-    }
-  }*/
-
   void _showDataPicker(context) {
     DatePicker.showDatePicker(context,
         locale: LocaleType.ru,
@@ -157,11 +128,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-//  @override
-//  void initState() {
-//
-//    super.initState();
-//  }
   int count = 1;
 
   void _pickAttachment() async {
@@ -179,13 +145,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  bool is_migrant = false;
+
   @override
   Widget build(BuildContext context) {
     if (count == 1) {
       user = StoreProvider.of<AppState>(context).state.user.user.data;
-//    setState(() {
-
-      //    });
 
       if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
         user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
@@ -199,6 +164,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _email_controller.text = user.email;
       _phone_number_controller.text = user.phone_number;
       _linkedin_controller.text = user.linkedin;
+      is_migrant = user.is_migrant == 1;
 
       if (user.birth_date != null)
         _birth_date_controller.text = formatter.format(user.birth_date);
@@ -402,11 +368,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Prefs.getString(Prefs.USER_TYPE) == 'USER'
                       ? Column(
                           children: [
-//                    AppBar(
-//                      leading: Container(),
-//                      title: Text("cv".tr()),
-//                    ),
-//                    SizedBox(height: 20),
                             Align(
                                 widthFactor: 10,
                                 heightFactor: 1.5,
@@ -490,6 +451,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 20),
+                            CheckboxListTile(
+                              title: Text(
+                                'are_you_migrant'.tr(),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              value: is_migrant,
+                              onChanged: (value) {
+                                setState(() {
+                                  is_migrant = value;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 20),
                           ],
                         )
                       : Container(),
@@ -526,8 +503,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
-//                        onSave();
-                        /// Validate form
                         if (_formKey.currentState.validate()) {
                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
                           user.email = _email_controller.text;
@@ -538,9 +513,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                           user.name = _name_controller.text;
                           user.surname = _surnname_controller.text;
-
-                          print('HL___________________');
-                          print(user.linkedin);
+                          user.is_migrant = is_migrant ? 1 : 0;
 
                           if (_imageFile != null)
                             user.uploadImage2(File(_imageFile.path));
@@ -559,8 +532,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           }
 
                           Navigator.of(context).pop();
-                          // StoreProvider.of<AppState>(context).dispatch(getUser())
-                          // Navigator.of(context).popAndPushNamed(Routes.user_details);
                         } else {
                           return;
                         }

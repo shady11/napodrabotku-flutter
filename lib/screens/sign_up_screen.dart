@@ -13,17 +13,12 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ishtapp/widgets/default_button.dart';
-import 'package:ishtapp/widgets/show_scaffold_msg.dart';
 import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:masked_text/masked_text.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:ishtapp/constants/configs.dart';
-
-import 'home_screen.dart';
 
 enum is_company { Company, User }
 
@@ -39,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _name_controller = TextEditingController();
   final _surnname_controller = TextEditingController();
   final _email_controller = TextEditingController();
+  final _linkedin_controller = TextEditingController();
   // final _phone_number_controller = TextEditingController(text: '+(996)');
   final _password_controller = TextEditingController();
   final _password_confirm_controller = TextEditingController();
@@ -187,6 +183,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   is_company company = is_company.User;
   bool is_sending = false;
+  bool is_migrant = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -264,31 +262,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  /* /// Fullname field
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text('username'.tr(), style: TextStyle(fontSize: 16, color: Colors.black),)),
-                  TextFormField(
-                    controller: _username_controller,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),*/
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -473,7 +446,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return null;
                           },
                         ),
+
                   SizedBox(height: 20),
+                  company != is_company.Company
+                      ? Align(
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'linkedin_profile'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                        )
+                      : Container(),
+                  company != is_company.Company
+                      ? TextFormField(
+                          controller: _linkedin_controller,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                          validator: (name) {
+                            return null;
+                          },
+                        )
+                      : Container(),
+
+                  company != is_company.Company
+                      ? CheckboxListTile(
+                          title: Text(
+                            'are_you_migrant'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: is_migrant,
+                          onChanged: (value) {
+                            setState(() {
+                              is_migrant = value;
+                            });
+                          },
+                        )
+                      : Container(),
+
+                  SizedBox(height: 20),
+
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -517,21 +537,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                   ),
-                  // MaskedTextField(
-                  //   maskedTextFieldController: _phone_number_controller,
-                  //   mask: "+(996)xxx xx xx xx",
-                  //   maxLength: 18,
-                  //   keyboardType: TextInputType.number,
-                  //   inputDecoration: InputDecoration(
-                  //     hintText: '+(996)',
-                  //     border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //         borderSide: BorderSide.none),
-                  //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                  //     filled: true,
-                  //     fillColor: Colors.grey[200],
-                  //   ),
-                  // ),
                   company == is_company.Company
                       ? Container()
                       : Align(
@@ -592,6 +597,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           user.name = _name_controller.text;
                           user.surname = _surnname_controller.text;
                           user.is_company = company == is_company.Company;
+                          user.is_migrant = is_migrant ? 1 : 0;
+                          user.linkedin = _linkedin_controller.text;
 
                           var uri = Uri.parse(API_IP + API_REGISTER1);
 
@@ -610,6 +617,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           request.fields["phone_number"] = user.phone_number;
                           request.fields["type"] =
                               user.is_company ? 'COMPANY' : 'USER';
+                          request.fields["linkedin"] = user.linkedin;
+                          request.fields["is_migrant"] =
+                              user.is_migrant.toString();
 
                           // open a byteStream
                           if (_imageFile != null) {
