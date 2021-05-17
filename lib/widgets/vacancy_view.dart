@@ -35,19 +35,21 @@ class VacancyView extends StatelessWidget {
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              child: Text('back'.tr()),
+              child: Text('ok'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
               },
             ),
-            CustomButton(
-                text: "sign_in".tr(),
-                textColor: kColorPrimary,
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.pushNamed(context, Routes.start);
-                })
+            // CustomButton(
+            //     text: "sign_in".tr(),
+            //     textColor: kColorPrimary,
+            //     color: Colors.white,
+            //     onPressed: () {
+            //       Navigator.of(context).pop();
+            //       Navigator.of(context).popUntil((route) => route.isFirst);
+            //       Navigator.pushNamed(context, Routes.start);
+            //     }
+            // )
           ],
         ),
       ),

@@ -133,7 +133,7 @@ class ProfileTab extends StatelessWidget {
                                       Navigator.of(context)
                                           .pushNamed(Routes.user_details);
                                     },
-                                    text: 'view'.tr(),
+                                    text: 'cv'.tr(),
                                   ),
                                 )
                               : Container(),
@@ -148,7 +148,7 @@ class ProfileTab extends StatelessWidget {
                                       Navigator.of(context)
                                           .pushNamed(Routes.user_edit);
                                     },
-                                    text: 'edit'.tr(),
+                                    text: 'profile'.tr(),
                                   ),
                                 )
                               : Container(),

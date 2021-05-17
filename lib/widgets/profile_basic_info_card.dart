@@ -81,7 +81,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28)),
                       icon: Icon(Icons.remove_red_eye),
-                      label: Text("view".tr(), style: TextStyle(fontSize: 13)),
+                      label: Text("cv".tr(), style: TextStyle(fontSize: 13)),
                       textColor: Colors.white,
                       onPressed: () {
                         /// Go to profile screen
@@ -101,7 +101,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       icon: Icon(Icons.edit),
                       textColor: Theme.of(context).primaryColor,
                       color: Colors.white,
-                      label: Text("edit".tr(), style: TextStyle(fontSize: 13)),
+                      label: Text("profile".tr(), style: TextStyle(fontSize: 13)),
                       onPressed: () {
                         /// Go to edit profile screen
                         Navigator.push(

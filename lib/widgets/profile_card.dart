@@ -201,7 +201,7 @@ class ProfileCard extends StatelessWidget {
                     Text(
                       vacancy.name,
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'GTEestiProDisplay',
                           color: Colors.black

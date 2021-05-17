@@ -234,9 +234,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                           /// Remove previous screens
                           User user = new User();
-                          user
-                              .login(_username_controller.text,
-                                  _password_controller.text)
+                          user.login(_username_controller.text, _password_controller.text)
                               .then((value) {
                             if (value == "OK") {
                               Navigator.of(context)

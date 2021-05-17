@@ -223,11 +223,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             backgroundImage:
                                 Prefs.getString(Prefs.PROFILEIMAGE) != null
                                     ? NetworkImage(
-                                        SERVER_IP +
-                                            Prefs.getString(Prefs.PROFILEIMAGE),
+                                        SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE),
                                         headers: {
-                                            "Authorization":
-                                                Prefs.getString(Prefs.TOKEN)
+                                            "Authorization": Prefs.getString(Prefs.TOKEN)
                                           })
                                     : null,
                           )
@@ -404,63 +402,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 //                      title: Text("cv".tr()),
 //                    ),
 //                    SizedBox(height: 20),
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'resume_title'.tr(),
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: title_controller1,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                // Basic validation
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 20),
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'experience_year'.tr(),
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: experience_year_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                // Basic validation
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
-                            ),
+//                             Align(
+//                                 widthFactor: 10,
+//                                 heightFactor: 1.5,
+//                                 alignment: Alignment.topLeft,
+//                                 child: Text(
+//                                   'resume_title'.tr(),
+//                                   style: TextStyle(
+//                                       fontSize: 16, color: Colors.black),
+//                                 )),
+//                             TextFormField(
+//                               controller: title_controller1,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(
+//                                     borderRadius: BorderRadius.circular(10),
+//                                     borderSide: BorderSide.none),
+//                                 floatingLabelBehavior:
+//                                     FloatingLabelBehavior.always,
+//                                 filled: true,
+//                                 fillColor: Colors.grey[200],
+//                               ),
+//                               validator: (name) {
+//                                 // Basic validation
+//                                 if (name.isEmpty) {
+//                                   return "please_fill_this_field".tr();
+//                                 }
+//                                 return null;
+//                               },
+//                             ),
+                            // SizedBox(height: 20),
+                            // Align(
+                            //     widthFactor: 10,
+                            //     heightFactor: 1.5,
+                            //     alignment: Alignment.topLeft,
+                            //     child: Text(
+                            //       'experience_year'.tr(),
+                            //       style: TextStyle(
+                            //           fontSize: 16, color: Colors.black),
+                            //     )),
+                            // TextFormField(
+                            //   controller: experience_year_controller,
+                            //   decoration: InputDecoration(
+                            //     border: OutlineInputBorder(
+                            //         borderRadius: BorderRadius.circular(10),
+                            //         borderSide: BorderSide.none),
+                            //     floatingLabelBehavior:
+                            //         FloatingLabelBehavior.always,
+                            //     filled: true,
+                            //     fillColor: Colors.grey[200],
+                            //   ),
+                            //   validator: (name) {
+                            //     // Basic validation
+                            //     if (name.isEmpty) {
+                            //       return "please_fill_this_field".tr();
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
                           ],
                         )
                       : Container(),
