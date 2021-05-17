@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/tabs/discover_tab.dart';
-import 'package:ishtapp/widgets/show_like_or_dislike.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import 'package:ishtapp/datas/app_state.dart';
-import 'package:ishtapp/components/custom_button.dart';
-import 'package:ishtapp/routes/routes.dart';
-import 'badge.dart';
 import 'default_card_border.dart';
 import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
 
 class UserCard extends StatelessWidget {
@@ -179,13 +166,6 @@ class UserCard extends StatelessWidget {
                                       ),
                                     )
                                   : Container(),
-                              /*Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8)
-                          ),
-                          child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                        ),*/
                             ],
                           )
                         : Container(),

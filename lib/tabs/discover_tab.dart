@@ -258,9 +258,6 @@ class _DiscoverTabState extends State<DiscoverTab>
                             },
                             swipeCompleteCallback:
                                 (CardSwipeOrientation orientation, int index) {
-                              print('Hello __==+++==__');
-                              print(_index);
-
                               if (orientation.index ==
                                   CardSwipeOrientation.LEFT.index) {
                                 print('Left');
@@ -365,10 +362,6 @@ class _DiscoverTabState extends State<DiscoverTab>
                                         : 'week'));
                             StoreProvider.of<AppState>(context)
                                 .dispatch(getVacancies());
-                            //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                            //                      setState(() {
-                            //                        button == 2? button =0:button=2;
-                            //                      });
                           },
                           text: StoreProvider.of<AppState>(context)
                                       .state

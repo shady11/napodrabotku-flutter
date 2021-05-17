@@ -146,8 +146,15 @@ class VacancyView extends StatelessWidget {
                             ),
                           ),
                         ),
+                        vacancy.is_disability_person_vacancy == 1
+                            ? Icon(
+                                Icons.accessible,
+                                size: 20,
+                              )
+                            : Container(),
                       ],
                     ),
+
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
