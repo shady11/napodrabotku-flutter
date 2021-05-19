@@ -85,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _vacancy_description_controller =
       TextEditingController();
 
+  bool is_disability_person_vacancy = false;
+
   openFilterDialog(context) {
     showDialog(
         context: context,
@@ -333,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.9),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: ListView(
                     shrinkWrap: true,
                     children: [
@@ -438,6 +440,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 return null;
                               },
                             ),
+
                             SizedBox(height: 20),
                             Align(
                                 widthFactor: 10,
@@ -469,8 +472,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             SizedBox(height: 20),
+
                             DropdownButtonFormField<int>(
-                              // isExpanded: true,
                               hint: Text("regions".tr()),
                               value: _region_id,
                               onChanged: (int newValue) {
@@ -613,6 +616,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               }).toList(),
                             ),
+
+                            SizedBox(height: 20),
+                            CheckboxListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(
+                                'for_disabilities_people'.tr(),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              value: is_disability_person_vacancy,
+                              onChanged: (value) {
+                                setState(() {
+                                  is_disability_person_vacancy = value;
+                                });
+                              },
+                            ),
                             SizedBox(height: 30),
 
                             /// Sign In button
@@ -642,12 +662,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onPressed: () {
                                       if (_vacancyAddFormKey.currentState
                                           .validate()) {
-                                        // StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
-                                        // StoreProvider.of<AppState>(context).dispatch(getVacancies());
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
                                           salary:
                                               _vacancy_salary_controller.text,
+                                          is_disability_person_vacancy:
+                                              is_disability_person_vacancy
+                                                  ? 1
+                                                  : 0,
                                           description:
                                               _vacancy_description_controller
                                                   .text,
@@ -708,7 +730,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _tabCurrentIndex = tabIndex);
     setState(() => is_profile = true);
     // Update page index
-//    if(!is_profile)
     _pageController.animateToPage(tabIndex,
         duration: Duration(microseconds: 500), curve: Curves.ease);
   }
@@ -837,10 +858,6 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             'school'.tr(),
-            /*style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600)*/
           ),
           GestureDetector(
             child: CircleButton(
@@ -914,21 +931,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     toolbarHeight: 80,
                     automaticallyImplyLeading: false,
                     title: Container(
-//          padding: EdgeInsets.fromLTRB(20, 15, 20, 10),
                       width: MediaQuery.of(context).size.width * 1.0,
                       child: app_bar_titles[_tabCurrentIndex],
                     ),
-                    actions: [
-//          IconButton(
-//              icon: SvgIcon("assets/icons/bell_icon.svg"),
-//              onPressed: () {
-//                /// Go to Notifications Screen
-//                Navigator.push(
-//                    context,
-//                    MaterialPageRoute(
-//                        builder: (context) => NotificationsScreen()));
-//              })
-                    ],
+                    actions: [],
                   ),
             bottomNavigationBar: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -1006,43 +1012,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Positioned(
                                   top: -1.0,
                                   left: 0.0,
-                                  right: StoreProvider.of<AppState>(context)
-                                              .state
-                                              .vacancy
-                                              .number_of_likeds ==
-                                          null
-                                      ? 0.0
-                                      : null,
+                                  right: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null ? 0.0 : null,
                                   child: Icon(
                                     Boxicons.bx_like,
-                                    color: _tabCurrentIndex == 1
-                                        ? kColorPrimary
-                                        : null,
+                                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                                   ),
                                 ),
-                                StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_likeds ==
-                                        null
+                                StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
                                     ? Container()
                                     : Positioned(
                                         top: 0.0,
                                         right: 0.0,
-                                        child: Badge(
-                                            text: StoreProvider.of<AppState>(
-                                                            context)
-                                                        .state
-                                                        .vacancy
-                                                        .number_of_likeds ==
-                                                    0
-                                                ? ''
-                                                : StoreProvider.of<AppState>(
-                                                        context)
-                                                    .state
-                                                    .vacancy
-                                                    .number_of_likeds
-                                                    .toString()),
+                                        child: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds > 0 ?
+                                          Badge(
+                                              text: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()
+                                          ) : Container (),
                                       ),
                               ]),
                             ),

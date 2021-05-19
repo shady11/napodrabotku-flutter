@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
@@ -14,7 +13,6 @@ import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/widgets/profile_card.dart';
 import 'package:ishtapp/widgets/submitted_user_card.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:ishtapp/widgets/users_grid.dart';
 import 'package:redux/redux.dart';
 
@@ -81,32 +79,31 @@ class _MatchesTabState extends State<MatchesTab> {
               body = Column(
                 children: [
                   Expanded(
-                    child: data != null
-                        ? UsersGrid(
-                            children: data.map((user) {
-                            return GestureDetector(
-                              child: UserCard(
-                                user: user, /*page: 'match',*/
+                      child: data != null
+                          ? UsersGrid(
+                              children: data.map((user) {
+                              return GestureDetector(
+                                child: UserCard(
+                                  user: user, /*page: 'match',*/
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext ctx) =>
+                                          ProfileInfoScreen(user_id: user.id)));
+                                },
+                              );
+                            }).toList())
+                          : Container(
+                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                              child: Center(
+                                child: Text(
+                                  'cvs_empty'.tr(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
                               ),
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext ctx) =>
-                                        ProfileInfoScreen(user_id: user.id)));
-                              },
-                            );
-                          }).toList())
-                        :
-                    Container(
-                      padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: Center(
-                        child: Text(
-                          'cvs_empty'.tr(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                    )
-                  ),
+                            )),
                 ],
               );
             }

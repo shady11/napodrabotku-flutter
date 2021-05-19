@@ -148,8 +148,15 @@ class VacancyView extends StatelessWidget {
                             ),
                           ),
                         ),
+                        vacancy.is_disability_person_vacancy == 1
+                            ? Icon(
+                                Icons.accessible,
+                                size: 20,
+                              )
+                            : Container(),
                       ],
                     ),
+
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,61 +264,52 @@ class VacancyView extends StatelessWidget {
                                               color: kColorPrimary,
                                               textColor: Colors.white,
                                               onPressed: () {
-                                                Prefs.getString(Prefs.TOKEN) ==
-                                                        null
-                                                    ? _showDialog(
-                                                        context,
-                                                        'sign_in_to_submit'
-                                                            .tr())
-                                                    : User.checkUserCv(
-                                                            Prefs.getInt(
-                                                                Prefs.USER_ID))
+                                                Prefs.getString(Prefs.TOKEN) ==  null
+                                                    ? _showDialog(context, 'sign_in_to_submit'.tr())
+                                                    : User.checkUserCv(Prefs.getInt(Prefs.USER_ID))
                                                         .then((value) {
-                                                        if (value) {
-                                                          Vacancy.saveVacancyUser(
-                                                                  vacancy_id:
-                                                                      vacancy
-                                                                          .id,
-                                                                  type:
-                                                                      "SUBMITTED")
-                                                              .then((value) {
-                                                            if (value == "OK") {
-                                                              _showDialog1(
-                                                                  context,
-                                                                  "successfully_submitted"
-                                                                      .tr());
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .state
-                                                                  .vacancy
-                                                                  .list
-                                                                  .data
-                                                                  .remove(
-                                                                      vacancy);
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .dispatch(
-                                                                      getSubmittedVacancies());
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .dispatch(
-                                                                      getNumberOfSubmittedVacancies());
-                                                            } else {
-                                                              _showDialog(
-                                                                  context,
-                                                                  "some_errors_occured_try_again"
-                                                                      .tr());
-                                                            }
-                                                          });
-                                                        } else {
-                                                          _showDialog(
-                                                              context,
-                                                              "please_fill_user_cv_to_submit"
-                                                                  .tr());
-                                                        }
+                                                          if (value) {
+                                                            Vacancy.saveVacancyUser(vacancy_id:
+                                                                        vacancy
+                                                                            .id,
+                                                                    type:
+                                                                        "SUBMITTED")
+                                                                .then((value) {
+                                                              if (value == "OK") {
+                                                                _showDialog1(context,"successfully_submitted"
+                                                                        .tr());
+                                                                StoreProvider.of<
+                                                                            AppState>(
+                                                                        context)
+                                                                    .state
+                                                                    .vacancy
+                                                                    .list
+                                                                    .data
+                                                                    .remove(
+                                                                        vacancy);
+                                                                StoreProvider.of<
+                                                                            AppState>(
+                                                                        context)
+                                                                    .dispatch(
+                                                                        getSubmittedVacancies());
+                                                                StoreProvider.of<
+                                                                            AppState>(
+                                                                        context)
+                                                                    .dispatch(
+                                                                        getNumberOfSubmittedVacancies());
+                                                              } else {
+                                                                _showDialog(
+                                                                    context,
+                                                                    "some_errors_occured_try_again"
+                                                                        .tr());
+                                                              }
+                                                            });
+                                                          } else {
+                                                            _showDialog(
+                                                                context,
+                                                                "please_fill_user_cv_to_submit"
+                                                                    .tr());
+                                                          }
                                                       });
                                               },
                                               text: 'submit'.tr(),

@@ -20,22 +20,25 @@ class Vacancy {
   String job_type;
   String type;
   int company;
+  int is_disability_person_vacancy;
 
-  Vacancy(
-      {this.id,
-      this.company_name,
-      this.company_logo,
-      this.name,
-      this.title,
-      this.description,
-      this.address,
-      this.salary,
-      this.busyness,
-      this.schedule,
-      this.job_type,
-      this.region,
-      this.type,
-      this.company});
+  Vacancy({
+    this.id,
+    this.company_name,
+    this.company_logo,
+    this.name,
+    this.title,
+    this.description,
+    this.address,
+    this.salary,
+    this.busyness,
+    this.schedule,
+    this.job_type,
+    this.region,
+    this.type,
+    this.company,
+    this.is_disability_person_vacancy,
+  });
 
   static Future<List<dynamic>> getLists(String model) async {
     final url = API_IP + model + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
@@ -56,6 +59,7 @@ class Vacancy {
         description: json["description"],
         address: json["address"],
         salary: json['salary'],
+        is_disability_person_vacancy: json['is_disability_person_vacancy'],
         company: json['company'],
         company_name: json['company_name'],
         company_logo: json['company_logo'],
@@ -70,6 +74,7 @@ class Vacancy {
         'company_id': Prefs.getInt(Prefs.USER_ID).toString(),
         'name': vacancy.name,
         'salary': vacancy.salary,
+        'is_disability_person_vacancy': vacancy.is_disability_person_vacancy,
         'description': vacancy.description,
         'region': vacancy.region,
         'busyness': vacancy.busyness,

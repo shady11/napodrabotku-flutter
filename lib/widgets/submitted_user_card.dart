@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/tabs/discover_tab.dart';
-import 'package:ishtapp/widgets/show_like_or_dislike.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:swipe_stack/swipe_stack.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import 'package:ishtapp/datas/app_state.dart';
-import 'package:ishtapp/components/custom_button.dart';
-import 'package:ishtapp/routes/routes.dart';
-import 'badge.dart';
 import 'default_card_border.dart';
 import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/screens/chat_screen.dart';
 
 class UserCard extends StatelessWidget {
   /// User object
@@ -66,7 +55,7 @@ class UserCard extends StatelessWidget {
                       : (index == 4
                           ? MediaQuery.of(context).size.width * 0.8
                           : MediaQuery.of(context).size.width * 0.75)))),
-      height: MediaQuery.of(context).size.height * 0.62,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Stack(
@@ -179,13 +168,6 @@ class UserCard extends StatelessWidget {
                                       ),
                                     )
                                   : Container(),
-                              /*Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8)
-                          ),
-                          child: Text('по собеседованию', style: TextStyle(color: Colors.grey[500]),),
-                        ),*/
                             ],
                           )
                         : Container(),
@@ -215,9 +197,35 @@ class UserCard extends StatelessWidget {
                           )
                         : SizedBox(),
                     SizedBox(height: 20),
-                    this.page == 'discover'
-                        ? SizedBox(height: 0)
-                        : Container(width: 0, height: 0),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: CustomButton(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              padding: EdgeInsets.all(5),
+                              color: kColorPrimary,
+                              textColor: Colors.white,
+                              onPressed: () async {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder:
+                                        (BuildContext context) {
+                                      return ChatScreen(
+                                        user_id: user.id,
+                                        name: user.name,
+                                        avatar: user.image,
+                                      );
+                                    }));
+                              },
+                              text: 'write_to'.tr(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

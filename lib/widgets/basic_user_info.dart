@@ -98,45 +98,77 @@ class BasicUserCvInfo extends StatelessWidget {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text("job_title".tr(),
-                    //         softWrap: true,
-                    //         style: TextStyle(
-                    //             fontSize: 16, color: Colors.grey, height: 2)),
-                    //     SizedBox(
-                    //       width: 5,
-                    //     ),
-                    //     Flexible(
-                    //       child: Text(
-                    //           (user_cv.job_title == null ||
-                    //                   user_cv.job_title == '')
-                    //               ? '-'
-                    //               : user_cv.job_title.toString(),
-                    //           softWrap: true,
-                    //           style:
-                    //               TextStyle(fontSize: 16, color: kColorDark)),
-                    //     ),
-                    //   ],
-                    // ),
-                    // Divider(),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text("experience_year".tr(),
-                    //         softWrap: true,
-                    //         style: TextStyle(
-                    //             fontSize: 16, color: Colors.grey, height: 2)),
-                    //     Text(
-                    //         user_cv.experience_year == null
-                    //             ? '-'
-                    //             : user_cv.experience_year.toString(),
-                    //         softWrap: true,
-                    //         style: TextStyle(fontSize: 16, color: kColorDark)),
-                    //   ],
-                    // ),
-                    // Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("job_title".tr(),
+                            softWrap: true,
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey, height: 2)),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          child: Text(
+                              (user_cv.job_title == null ||
+                                      user_cv.job_title == '')
+                                  ? '-'
+                                  : user_cv.job_title.toString(),
+                              softWrap: true,
+                              style:
+                                  TextStyle(fontSize: 16, color: kColorDark)),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("experience_year".tr(),
+                            softWrap: true,
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey, height: 2)),
+                        Text(
+                            user_cv.experience_year == null
+                                ? '-'
+                                : user_cv.experience_year.toString(),
+                            softWrap: true,
+                            style: TextStyle(fontSize: 16, color: kColorDark)),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("linkedin_profile".tr(),
+                            softWrap: true,
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey, height: 2)),
+                        Text(
+                            user.linkedin == null
+                                ? '-'
+                                : user.linkedin.toString(),
+                            softWrap: true,
+                            style: TextStyle(fontSize: 16, color: kColorDark)),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("are_you_migrant".tr(),
+                            softWrap: true,
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey, height: 2)),
+                        Text(
+                            user.is_migrant == 0
+                                ? 'no'.tr()
+                                : 'yes'.tr(),
+                            softWrap: true,
+                            style: TextStyle(fontSize: 16, color: kColorDark)),
+                      ],
+                    ),
+                    Divider(),
                     user_cv.attachment == null
                         ? Container()
                         : Container(

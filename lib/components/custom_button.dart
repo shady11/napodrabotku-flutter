@@ -46,8 +46,7 @@ class CustomButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 10)),
         child: Padding(
-          padding: padding ??
-              const EdgeInsets.only(top: 9, bottom: 10, left: 16, right: 16),
+          padding: padding ?? const EdgeInsets.only(top: 9, bottom: 10, left: 16, right: 16),
           child: Row(
             mainAxisAlignment: mainAxisAlignment != null ? mainAxisAlignment : MainAxisAlignment.center,
             children: <Widget>[

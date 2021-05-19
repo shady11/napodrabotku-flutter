@@ -144,6 +144,12 @@ class ProfileCard extends StatelessWidget {
                             ),
                           ),
                         ),
+                        vacancy.is_disability_person_vacancy == 1
+                            ? Icon(
+                                Icons.accessible,
+                                size: 20,
+                              )
+                            : Container(),
                       ],
                     ),
                     SizedBox(height: 20),
@@ -159,7 +165,7 @@ class ProfileCard extends StatelessWidget {
                           child: Text(
                             vacancy.type.toString(),
                             style: TextStyle(
-                                color: Colors.black87,
+                              color: Colors.black87,
                             ),
                           ),
                         ),
@@ -168,13 +174,13 @@ class ProfileCard extends StatelessWidget {
                         ),
                         Flexible(
                             child: Text(
-                              vacancy.salary != null ? vacancy.salary : '',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: kColorPrimary),
-                            )),
+                          vacancy.salary != null ? vacancy.salary : '',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'GTEestiProDisplay',
+                              color: kColorPrimary),
+                        )),
                       ],
                     ),
                     SizedBox(height: 5),
@@ -191,8 +197,7 @@ class ProfileCard extends StatelessWidget {
                             vacancy.schedule.toString(),
                             style: TextStyle(
                                 fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black87
-                            ),
+                                color: Colors.black87),
                           ),
                         ),
                       ],
@@ -204,27 +209,24 @@ class ProfileCard extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'GTEestiProDisplay',
-                          color: Colors.black
-                      ),
+                          color: Colors.black),
                     ),
                     SizedBox(height: 10),
-                    page == 'discover' ?
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                            text: vacancy.description,
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black45
-                            )
-                        ),
-                      ),
-                    ) :
-                    SizedBox(),
-                    SizedBox(height: 20),
-                    SizedBox(
+                    page == 'discover'
+                        ? Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                  text: vacancy.description,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'GTEestiProDisplay',
+                                      color: Colors.black45)),
+                            ),
+                          )
+                        : SizedBox(),
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
                       width: double.maxFinite,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

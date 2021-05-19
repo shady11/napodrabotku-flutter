@@ -5,10 +5,8 @@ import 'package:ishtapp/datas/app_state.dart';
 
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/datas/vacancy.dart';
-import 'package:ishtapp/screens/profile_screen.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/widgets/profile_card.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:ishtapp/widgets/users_grid.dart';
 import 'package:redux/redux.dart';
 
@@ -63,10 +61,7 @@ class ProfileLikesScreen extends StatelessWidget {
                                   vacancy: vacancy,
                                   page: 'company',
                                 ),
-                                onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
-                                },
+                                onTap: () {},
                               );
                             }).toList())
                           : Center(
@@ -113,10 +108,7 @@ class ProfileLikesScreen extends StatelessWidget {
                             vacancy: vacancy,
                             page: 'match',
                           ),
-                          onTap: () {
-//                  Navigator.of(context).push(MaterialPageRoute(
-//                    builder: (context) => ProfileScreen(user: user)));
-                          },
+                          onTap: () {},
                         );
                       }).toList()),
                     )

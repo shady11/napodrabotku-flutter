@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -8,12 +7,6 @@ import 'package:intl/intl.dart';
 
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ishtapp/datas/app_state.dart';
-
-import 'RSAA.dart';
 
 class User {
   int id;
@@ -23,27 +16,32 @@ class User {
   String surname;
   String image;
   String email;
+  String linkedin;
   DateTime birth_date;
   String phone_number;
   String user_cv_name;
   String vacancy_name;
   String experience_year;
   bool is_company;
+  int is_migrant;
 
-  User(
-      {this.id,
-      this.token,
-      this.password,
-      this.name,
-      this.surname,
-      this.image,
-      this.email,
-      this.birth_date,
-      this.phone_number,
-      this.user_cv_name,
-      this.experience_year,
-      this.vacancy_name,
-      this.is_company});
+  User({
+    this.id,
+    this.token,
+    this.password,
+    this.name,
+    this.surname,
+    this.image,
+    this.email,
+    this.linkedin,
+    this.birth_date,
+    this.phone_number,
+    this.user_cv_name,
+    this.experience_year,
+    this.vacancy_name,
+    this.is_company,
+    this.is_migrant,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
         id: json["id"],
@@ -51,12 +49,14 @@ class User {
         surname: json["lastname"],
         image: json['avatar'],
         email: json['email'],
+        linkedin: json['linkedin'],
         birth_date: DateTime.parse(json['birth_date']),
         phone_number: json['phone_number'],
         vacancy_name: json['vacancy_name'],
         user_cv_name: json['job_title'],
         experience_year: json['experience_year'].toString(),
         is_company: json['type'] == 'COMPANY',
+        is_migrant: json['is_migrant'],
       );
 
   String uploadImage1(_image) {
@@ -77,6 +77,7 @@ class User {
     request.fields["active"] = '1';
     request.fields["phone_number"] = this.phone_number;
     request.fields["type"] = this.is_company ? 'COMPANY' : 'USER';
+    request.fields["is_migrant"] = this.is_migrant.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -106,10 +107,8 @@ class User {
           Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
           Prefs.setString(Prefs.USER_TYPE, response["user_type"]);
           mm = "OK";
-//          return "OK";
         } else {
           mm = "ERROR";
-//          return "ERROR";
         }
       });
     }).catchError((e) {
@@ -118,6 +117,7 @@ class User {
     return mm;
   }
 
+  /// Method to upload Profile Image and Update User data
   void uploadImage2(_image) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER + '/${this.id.toString()}');
@@ -133,6 +133,8 @@ class User {
     request.fields["email"] = this.email;
     request.fields["birth_date"] = formatter.format(this.birth_date);
     request.fields["phone_number"] = this.phone_number;
+    request.fields["linkedin"] = this.linkedin;
+    request.fields["is_migrant"] = this.is_migrant.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -151,22 +153,13 @@ class User {
     await request.send().then((response) async {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-        var response = json.decode(value);
-//        Prefs.setString('username', username);
-//        Prefs.setString('password', password);
-//        Prefs.setString(Prefs.USERNAME, username);
-//        Prefs.setString(Prefs.PASSWORD, password);
-//        Prefs.setString(Prefs.TOKEN, response["token"]);
-//         Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+        var data = json.decode(value);
+        print(data["avatar"]);
+        Prefs.setString(Prefs.PROFILEIMAGE, data["avatar"]);
       });
     }).catchError((e) {
       print(e);
     });
-    // .then((value){
-    //   var response = json.decode(value);
-    //   Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-    // });
   }
 
   Future<void> register() async {
@@ -199,6 +192,7 @@ class User {
         'email': user.email,
         'birth_date': user.birth_date,
         'phone_number': user.phone_number,
+        'is_migrant': user.is_migrant,
       };
 
   bool get isAuth {
@@ -671,6 +665,8 @@ class UserFullInfo {
   String attachment;
   DateTime birth_date;
   String phone_number;
+  String linkedin;
+  int is_migrant;
   List<UserExperience> user_experiences;
   List<UserEducation> user_educations;
   List<UserCourse> user_courses;
@@ -685,6 +681,8 @@ class UserFullInfo {
       this.email,
       this.birth_date,
       this.phone_number,
+      this.linkedin,
+      this.is_migrant,
       this.attachment,
       this.user_experiences,
       this.user_educations,
@@ -699,6 +697,8 @@ class UserFullInfo {
         email: json["email"],
         birth_date: DateTime.parse(json['birth_date']),
         phone_number: json["phone_number"],
+        linkedin: json["linkedin"],
+        is_migrant: json["is_migrant"],
         attachment: json["attachment"],
         experience_year: json["experience_year"],
         user_courses: coursesToList(json['courses']),

@@ -3,19 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishtapp/components/custom_button.dart';
 
-import 'package:ishtapp/datas/demo_users.dart';
 import 'package:ishtapp/routes/routes.dart';
-import 'package:ishtapp/screens/edit_profile_screen.dart';
 import 'package:ishtapp/screens/profile_likes_screen.dart';
-import 'package:ishtapp/screens/profile_screen.dart';
 import 'package:ishtapp/screens/profile_visits_screen.dart';
-import 'package:ishtapp/tabs/kk.dart';
 import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/widgets/app_section_card.dart';
-import 'package:ishtapp/widgets/badge.dart';
-import 'package:ishtapp/widgets/profile_basic_info_card.dart';
-import 'package:ishtapp/widgets/profile_statistics_card.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
 import 'package:redux/redux.dart';
@@ -120,10 +111,11 @@ class ProfileTab extends StatelessWidget {
 
                       /// Buttons
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: Prefs.getString(Prefs.USER_TYPE) == "USER" ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
                         children: [
                           Prefs.getString(Prefs.TOKEN) != null
-                              ? SizedBox(
+                              ? Prefs.getString(Prefs.USER_TYPE) == "USER" ?
+                                SizedBox(
                                   child: CustomButton(
                                     height: 50.0,
                                     padding: EdgeInsets.all(10),
@@ -136,7 +128,7 @@ class ProfileTab extends StatelessWidget {
                                     text: 'cv'.tr(),
                                   ),
                                 )
-                              : Container(),
+                              : Container() : Container(),
                           Prefs.getString(Prefs.TOKEN) != null
                               ? SizedBox(
                                   child: CustomButton(
@@ -145,8 +137,7 @@ class ProfileTab extends StatelessWidget {
                                     color: Color(0xffF2F2F5),
                                     textColor: kColorPrimary,
                                     onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(Routes.user_edit);
+                                      Navigator.of(context).pushNamed(Routes.user_edit);
                                     },
                                     text: 'profile'.tr(),
                                   ),
