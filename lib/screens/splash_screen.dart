@@ -8,7 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/utils/app_themes.dart';
-import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/utils/themebloc/theme_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,7 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
     else if (Prefs.getString(Prefs.TOKEN) != null) {
       Navigator.of(context).pushReplacementNamed(Routes.home);
     } else {
-      Navigator.of(context).pushReplacementNamed(Routes.start);
+      Navigator.of(context).pushReplacementNamed(Routes.product_lab_sign_in);
+      // Navigator.of(context).pushReplacementNamed(Routes.start);
     }
   }
 

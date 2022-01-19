@@ -16,7 +16,7 @@ import 'package:ishtapp/screens/user_policy_screen.dart';
 import 'package:ishtapp/screens/validate_code_screen.dart';
 import 'package:ishtapp/screens/forgot_password_email_screen.dart';
 import 'package:ishtapp/screens/new_password_screen.dart';
-import 'package:ishtapp/tabs/profile_tab.dart';
+import 'package:ishtapp/screens_product_lab/product_lab_start_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -67,6 +67,9 @@ class RouteGenerator {
 
       case Routes.user_policy:
         return CupertinoPageRoute(builder: (_) => UserPolicyScreen());
+
+      case Routes.product_lab_sign_in:
+        return CupertinoPageRoute(builder: (_) => ProductLabSignIn());
 
       case Routes.error:
         return _errorRoute();
