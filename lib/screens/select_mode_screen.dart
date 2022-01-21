@@ -14,7 +14,6 @@ class SelectMode extends StatefulWidget {
 }
 
 class _SelectModeState extends State<SelectMode> {
-
   DateTime currentBackPressTime;
 
   Future<bool> onWillPop() {
@@ -44,12 +43,10 @@ class _SelectModeState extends State<SelectMode> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 38),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(
-                          child: SizedBox(
-                            height: 60,
-                          ),
+                          child: SizedBox(height: 60),
                         ),
                         Align(
                           alignment: Alignment.topLeft,
@@ -69,6 +66,7 @@ class _SelectModeState extends State<SelectMode> {
                             children: <Widget>[
                               CustomButton(
                                 height: 50.0,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 padding: EdgeInsets.all(10),
                                 color: Colors.white,
                                 textColor: kColorBlue,
@@ -84,6 +82,7 @@ class _SelectModeState extends State<SelectMode> {
                               ),
                               CustomButton(
                                 height: 70.0,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 padding: EdgeInsets.all(10),
                                 color: Colors.white,
                                 textColor: kColorBlue,
@@ -93,6 +92,22 @@ class _SelectModeState extends State<SelectMode> {
                                   //     .popAndPushNamed(Routes.start);
                                 },
                                 text: 'Хочу повысить \nквалификацию',
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomButton(
+                                height: 50.0,
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                padding: EdgeInsets.all(10),
+                                color: Colors.white,
+                                textColor: kColorBlue,
+                                textAlign: TextAlign.center,
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .popAndPushNamed(Routes.start);
+                                },
+                                text: 'Вход для компании',
                               ),
                             ],
                           ),
