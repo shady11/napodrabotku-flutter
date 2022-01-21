@@ -1,22 +1,25 @@
 String API_IP = "https://ishtapp.kg/api/";
 // String API_IP = "http://138.68.79.49/api/";
 // String API_IP = "http://192.168.0.105:8000/api/";
-//String API_IP = "http://10.0.2.2:8000/api/";
+// String API_IP = "http://10.0.2.2:8000/api/";
 String SERVER_IP = "https://ishtapp.kg/";
 // String SERVER_IP = "http://138.68.79.49/";
 // String SERVER_IP = "http://192.168.0.105:8000/";
-//String SERVER_IP = "http://10.0.2.2:8000/";
+// String SERVER_IP = "http://10.0.2.2:8000/";
 String API_GET_USER = "user";
 String API_CHECK_USER_EMAIL = "users/email_check";
 String API_CHECK_USER_CV = "users/user_cv_check";
 String API_FORGOT_PASSWORD = "users/send_mail";
 String API_VALIDATE_CODE = "users/validate_code";
 String API_RESET_PASSWORD = "users/reset_password";
+String API_RESET_SETTINGS = "users/reset_settings";
 String API_GET_USER_CV = "user_cv";
 String API_GET_PROFILE_IMAGE = "auth/avatar/";
 String API_GET_COMPANY_AVATAR = "users/company_image";
 String API_REGISTER1 = 'users';
 String API_REGISTER = 'users/update';
+String API_SAVE_FILTER = 'users/filters';
+String API_GET_FILTERS = 'users/filters';
 
 // CV Routes
 String API_USER_CV_SAVE = 'user_cv';

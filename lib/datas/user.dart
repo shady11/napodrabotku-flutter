@@ -24,6 +24,10 @@ class User {
   String experience_year;
   bool is_company;
   int is_migrant;
+  int gender;
+  String region;
+  String district;
+  String job_type;
 
   User({
     this.id,
@@ -41,6 +45,10 @@ class User {
     this.vacancy_name,
     this.is_company,
     this.is_migrant,
+    this.gender,
+    this.region,
+    this.district,
+    this.job_type,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
@@ -57,6 +65,10 @@ class User {
         experience_year: json['experience_year'].toString(),
         is_company: json['type'] == 'COMPANY',
         is_migrant: json['is_migrant'],
+        gender: json['gender'],
+        region: json['region'],
+        district: json['district'],
+        job_type: json['job_type'],
       );
 
   String uploadImage1(_image) {
@@ -78,6 +90,10 @@ class User {
     request.fields["phone_number"] = this.phone_number;
     request.fields["type"] = this.is_company ? 'COMPANY' : 'USER';
     request.fields["is_migrant"] = this.is_migrant.toString();
+    request.fields["gender"] = this.gender.toString();
+    request.fields["region"] = this.region.toString();
+    request.fields["district"] = this.district.toString();
+    request.fields["job_type"] = this.job_type.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -135,6 +151,10 @@ class User {
     request.fields["phone_number"] = this.phone_number;
     request.fields["linkedin"] = this.linkedin;
     request.fields["is_migrant"] = this.is_migrant.toString();
+    request.fields["gender"] = this.gender.toString();
+    request.fields["region"] = this.region.toString();
+    request.fields["district"] = this.district.toString();
+    request.fields["job_type"] = this.job_type.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -154,7 +174,6 @@ class User {
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         var data = json.decode(value);
-        print(data["avatar"]);
         Prefs.setString(Prefs.PROFILEIMAGE, data["avatar"]);
       });
     }).catchError((e) {
@@ -193,6 +212,10 @@ class User {
         'birth_date': user.birth_date,
         'phone_number': user.phone_number,
         'is_migrant': user.is_migrant,
+        'gender': user.gender,
+        'region': user.region,
+        'district': user.district,
+        'job_type': user.job_type,
       };
 
   bool get isAuth {
@@ -283,6 +306,7 @@ class User {
           'language': Prefs.getString(Prefs.LANGUAGE),
         }),
       );
+      print(response.body);
       return response.body;
     } catch (error) {
       throw error;
@@ -324,6 +348,26 @@ class User {
         body: json.encode({
           'email': email,
           'new_password': new_password,
+        }),
+      );
+      var body = json.decode(response.body);
+      Prefs.setString(Prefs.TOKEN, body['token']);
+
+      return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> resetSettings({String email}) async {
+    final url = API_IP + API_RESET_SETTINGS;
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode({
+          'email': email
         }),
       );
       var body = json.decode(response.body);
@@ -430,6 +474,46 @@ class User {
       );
       final responseData = json.decode(response.body);
       if (responseData == "successfully") {}
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /// Method to upload Profile Image and Update User data
+  void saveFilters(List regions, List districts, List activities, List types, List busyness, List schedules) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_SAVE_FILTER + '/${this.id.toString()}');
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    request.fields["id"] = this.id.toString();
+    request.fields["regions"] = regions.toString();
+    request.fields["districts"] = districts.toString();
+    request.fields["activities"] = activities.toString();
+    request.fields["types"] = types.toString();
+    request.fields["busyness"] = busyness.toString();
+    request.fields["schedules"] = schedules.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        var data = json.decode(value);
+        print(data);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  static Future<List<dynamic>> getFilters(model, id) async {
+    final url = API_IP + API_GET_FILTERS + '/${id.toString()}/${model.toString()}';
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(url, headers: headers);
+      // print(model + ' - ' + utf8.decode(response.bodyBytes));
+      return json.decode(utf8.decode(response.bodyBytes));
     } catch (error) {
       throw error;
     }

@@ -271,6 +271,7 @@ class ProfileCard extends StatelessWidget {
                                       });
                                     } else if (page == 'company' ||
                                         page == 'company_inactive') {
+                                      print(11);
                                       Dialogs.showOnDeleteDialog(context,
                                           'delete_are_you_sure'.tr(), vacancy);
                                     }

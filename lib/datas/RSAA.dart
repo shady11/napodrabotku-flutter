@@ -16,6 +16,7 @@ const LIST_VACANCIES_FAILURE = 'LIST_VACANCIES_FAILURE';
 RSAA getVacanciesRequest(
     {List job_type_ids,
     List region_ids,
+    List district_ids,
     List schedule_ids,
     List busyness_ids,
     List vacancy_type_ids,
@@ -32,6 +33,7 @@ RSAA getVacanciesRequest(
       'job_type_ids': job_type_ids,
       'schedule_ids': schedule_ids,
       'region_ids': region_ids,
+      'district_ids': district_ids,
       'busyness_ids': busyness_ids
     }),
     types: [
@@ -50,6 +52,7 @@ ThunkAction<AppState> getVacancies() =>
     (Store<AppState> store) => store.dispatch(getVacanciesRequest(
         job_type_ids: store.state.vacancy.job_type_ids,
         region_ids: store.state.vacancy.region_ids,
+        district_ids: store.state.vacancy.district_ids,
         schedule_ids: store.state.vacancy.schedule_ids,
         busyness_ids: store.state.vacancy.busyness_ids,
         vacancy_type_ids: store.state.vacancy.vacancy_type_ids,
@@ -60,6 +63,7 @@ ThunkAction<AppState> deleteItem() =>
 ThunkAction<AppState> setFilter({
   List job_type_ids,
   List region_ids,
+  List district_ids,
   List schedule_ids,
   List busyness_ids,
   List vacancy_type_ids,
@@ -68,6 +72,7 @@ ThunkAction<AppState> setFilter({
       store.state.vacancy.job_type_ids = job_type_ids;
       store.state.vacancy.schedule_ids = schedule_ids;
       store.state.vacancy.region_ids = region_ids;
+      store.state.vacancy.district_ids = district_ids;
       store.state.vacancy.vacancy_type_ids = vacancy_type_ids;
       store.state.vacancy.busyness_ids = busyness_ids;
     };
@@ -185,7 +190,7 @@ const GET_USER_FAILURE = 'GET_USER_FAILURE';
 RSAA getUserRequest() {
   return RSAA(
     method: 'GET',
-    endpoint: API_IP + API_GET_USER,
+    endpoint: API_IP + API_GET_USER + '?lang=' + Prefs.getString(Prefs.LANGUAGE),
     types: [
       GET_USER_REQUEST,
       GET_USER_SUCCESS,

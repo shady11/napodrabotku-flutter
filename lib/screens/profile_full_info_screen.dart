@@ -1145,83 +1145,87 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                             fontSize: 16, color: kColorDark)),
                                   ],
                                 ),
-                                Divider(),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("experience_year".tr(),
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                                height: 2)),
-                                        Text(
-                                            data.experience_year != null
-                                                ? data.experience_year
-                                                    .toString()
-                                                : '0',
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: kColorDark)),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("linkedin_profile".tr(),
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                                height: 2)),
-                                        Text(
-                                            data.linkedin != null
-                                                ? data.linkedin
-                                                    .toString()
-                                                : '-',
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: kColorDark)),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("are_you_migrant".tr(),
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                                height: 2)),
-                                        Text(
-                                            data.is_migrant != 0
-                                                ? 'yes'.tr()
-                                                : 'no'.tr(),
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: kColorDark)),
-                                      ],
-                                    )
-                                  ],
-                                ),
+
+                                // Divider(),
+                                // Column(
+                                //   children: [
+                                //     Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceBetween,
+                                //       children: [
+                                //         Text("experience_year".tr(),
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: Colors.grey,
+                                //                 height: 2)),
+                                //         Text(
+                                //             data.experience_year != null
+                                //                 ? data.experience_year
+                                //                     .toString()
+                                //                 : '0',
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: kColorDark)),
+                                //       ],
+                                //     )
+                                //   ],
+                                // ),
+
+                                // Divider(),
+                                // Column(
+                                //   children: [
+                                //     Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceBetween,
+                                //       children: [
+                                //         Text("linkedin_profile".tr(),
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: Colors.grey,
+                                //                 height: 2)),
+                                //         Text(
+                                //             data.linkedin != null
+                                //                 ? data.linkedin
+                                //                     .toString()
+                                //                 : '-',
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: kColorDark)),
+                                //       ],
+                                //     )
+                                //   ],
+                                // ),
+
+                                // Divider(),
+                                // Column(
+                                //   children: [
+                                //     Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceBetween,
+                                //       children: [
+                                //         Text("are_you_migrant".tr(),
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: Colors.grey,
+                                //                 height: 2)),
+                                //         Text(
+                                //             data.is_migrant != 0
+                                //                 ? 'yes'.tr()
+                                //                 : 'no'.tr(),
+                                //             softWrap: true,
+                                //             style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: kColorDark)),
+                                //       ],
+                                //     )
+                                //   ],
+                                // ),
+
                                 Divider(),
                                 data.attachment == null
                                     ? Container()

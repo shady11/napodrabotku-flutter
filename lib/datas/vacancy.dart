@@ -14,10 +14,14 @@ class Vacancy {
   String description;
   String address;
   String salary;
+  String salary_from;
+  String salary_to;
   String busyness;
   String schedule;
   String region;
+  String district;
   String job_type;
+  String currency;
   String type;
   int company;
   int is_disability_person_vacancy;
@@ -31,20 +35,52 @@ class Vacancy {
     this.description,
     this.address,
     this.salary,
+    this.salary_from,
+    this.salary_to,
     this.busyness,
     this.schedule,
     this.job_type,
     this.region,
+    this.district,
+    this.currency,
     this.type,
     this.company,
     this.is_disability_person_vacancy,
   });
 
-  static Future<List<dynamic>> getLists(String model) async {
-    final url = API_IP + model + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+  static Future<List<dynamic>> getLists(String model, String region) async {
+
+    String url = '';
+
+    if(region == null){
+      url = API_IP + model + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+    } else {
+      url = API_IP + model + '?region=$region' + '&lang=' + Prefs.getString(Prefs.LANGUAGE);
+    }
+
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(url, headers: headers);
+
+      print(model + ' - ' + utf8.decode(response.bodyBytes));
+
+      return json.decode(utf8.decode(response.bodyBytes));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static Future<List<dynamic>> getDistrictsById(String model, int region) async {
+
+    String url = '';
+
+    url = API_IP + 'districts_by_region_id' + '?region=$region' + '&lang=' + Prefs.getString(Prefs.LANGUAGE);
+
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(url, headers: headers);
+
+      print(model + ' - ' + utf8.decode(response.bodyBytes));
 
       return json.decode(utf8.decode(response.bodyBytes));
     } catch (error) {
@@ -59,6 +95,8 @@ class Vacancy {
         description: json["description"],
         address: json["address"],
         salary: json['salary'],
+        salary_from: json['salary_from'],
+        salary_to: json['salary_to'],
         is_disability_person_vacancy: json['is_disability_person_vacancy'],
         company: json['company'],
         company_name: json['company_name'],
@@ -67,19 +105,25 @@ class Vacancy {
         schedule: json['schedule'],
         job_type: json['job_type'],
         region: json['region'],
+        district: json['district'],
         type: json['type'],
+        currency: json['currency'],
       );
 
   static Map<String, dynamic> vacancyToJsonMap(Vacancy vacancy) => {
         'company_id': Prefs.getInt(Prefs.USER_ID).toString(),
         'name': vacancy.name,
         'salary': vacancy.salary,
+        'salary_from': vacancy.salary_from,
+        'salary_to': vacancy.salary_to,
         'is_disability_person_vacancy': vacancy.is_disability_person_vacancy,
         'description': vacancy.description,
         'region': vacancy.region,
+        'district': vacancy.district,
         'busyness': vacancy.busyness,
         'schedule': vacancy.schedule,
         'job_type': vacancy.job_type,
+        'currency': vacancy.currency,
         'type': vacancy.type,
       };
 
@@ -225,8 +269,13 @@ class Vacancy {
         "Content-type": "application/json",
         "Authorization": Prefs.getString(Prefs.TOKEN)
       };
-      final response = await http.post(url,
-          headers: headers, body: json.encode(vacancyToJsonMap(vacancy)));
+      final response = await http.post(
+          url,
+          headers: headers,
+          body: json.encode(vacancyToJsonMap(vacancy))
+      );
+
+      print(utf8.decode(response.bodyBytes));
       return "OK";
     } catch (error) {
       return "ERROR";
@@ -286,6 +335,7 @@ class VacancyState {
   int number_of_active_vacancies;
   int number_of_inactive_vacancies;
   List region_ids;
+  List district_ids;
   List schedule_ids;
   List busyness_ids;
   List vacancy_type_ids;
