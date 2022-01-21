@@ -35,9 +35,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _username_controller = TextEditingController();
   final _name_controller = TextEditingController();
+  final _address_controller = TextEditingController();
   final _surnname_controller = TextEditingController();
   final _email_controller = TextEditingController();
   final _linkedin_controller = TextEditingController();
+
   // final _phone_number_controller = TextEditingController(text: '+(996)');
   final _password_controller = TextEditingController();
   final _password_confirm_controller = TextEditingController();
@@ -467,6 +469,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                         )
                       : Container(),
+                  SizedBox(height: 20),
+                  company == is_company.Company
+                      ? Align(
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Адрес организации',
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ))
+                      : Container(),
+                  company == is_company.Company
+                      ? TextFormField(
+                          controller: _address_controller,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                          validator: (name) {
+                            // Basic validation
+                            if (name.isEmpty) {
+                              return "please_fill_this_field".tr();
+                            }
+                            return null;
+                          },
+                        )
+                      : Container(),
                   company == is_company.Company
                       ? Container()
                       : Align(
@@ -501,36 +534,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 20),
                   company == is_company.Company
                       ? Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        company == is_company.Company
-                            ? 'job_type'.tr()
-                            : 'job_type'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ))
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            company == is_company.Company
+                                ? 'job_type'.tr()
+                                : 'job_type'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ))
                       : Container(),
                   company == is_company.Company
                       ? DropdownSearch<String>(
-                      showSelectedItem: true,
-                      items: jobTypes,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedJobType = value;
-                        });
-                      },
-                      dropdownSearchDecoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
-                      ),
-                      selectedItem: selectedJobType
-                  )
+                          showSelectedItem: true,
+                          items: jobTypes,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedJobType = value;
+                            });
+                          },
+                          dropdownSearchDecoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 12)),
+                          selectedItem: selectedJobType)
                       : Container(),
 
                   SizedBox(height: 20),
@@ -587,8 +619,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Text(
                         'region'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   DropdownSearch<String>(
                       showSelectedItem: true,
                       items: items,
@@ -605,10 +636,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
-                      ),
-                      selectedItem: selectedRegion
-                  ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 12)),
+                      selectedItem: selectedRegion),
                   SizedBox(height: 20),
 
                   Align(
@@ -618,26 +648,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Text(
                         'district'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   DropdownSearch<String>(
-                      showSelectedItem: true,
-                      items: districts,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedDistrict = value;
-                        });
-                      },
-                      dropdownSearchDecoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
-                      ),
-                      selectedItem: selectedDistrict,
+                    showSelectedItem: true,
+                    items: districts,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedDistrict = value;
+                      });
+                    },
+                    dropdownSearchDecoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                    selectedItem: selectedDistrict,
                   ),
                   SizedBox(height: 20),
 
@@ -648,8 +677,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Text(
                         'phone_number'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: InternationalPhoneNumberInput(
@@ -712,43 +740,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }),
                   SizedBox(height: 20),
 
-                  company == is_company.Company ? Container() :
-                  Row(
-                      children: [
-                        Text(
-                          'gender'.tr(),
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        )
-                      ]
-                  ),
+                  company == is_company.Company
+                      ? Container()
+                      : Row(children: [
+                          Text(
+                            'gender'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )
+                        ]),
 
-                  company == is_company.Company ? Container() : Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Radio(
-                        value: user_gender.Male,
-                        groupValue: gender,
-                        activeColor: Colors.grey,
-                        onChanged: (user_gender value) {
-                          setState(() {
-                            gender = value;
-                          });
-                        },
-                      ),
-                      Text('male'.tr(), style: TextStyle(color: Colors.black)),
-                      Radio(
-                        value: user_gender.Female,
-                        groupValue: gender,
-                        activeColor: Colors.grey,
-                        onChanged: (user_gender value) {
-                          setState(() {
-                            gender = value;
-                          });
-                        },
-                      ),
-                      Text('female'.tr(), style: TextStyle(color: Colors.black)),
-                    ],
-                  ),
+                  company == is_company.Company
+                      ? Container()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Radio(
+                              value: user_gender.Male,
+                              groupValue: gender,
+                              activeColor: Colors.grey,
+                              onChanged: (user_gender value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('male'.tr(),
+                                style: TextStyle(color: Colors.black)),
+                            Radio(
+                              value: user_gender.Female,
+                              groupValue: gender,
+                              activeColor: Colors.grey,
+                              onChanged: (user_gender value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('female'.tr(),
+                                style: TextStyle(color: Colors.black)),
+                          ],
+                        ),
                   SizedBox(height: 40),
 
                   /// Sign Up button
@@ -791,7 +822,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           user.district = selectedDistrict;
                           user.job_type = selectedJobType;
 
-                          var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
+                          var uri = Uri.parse(API_IP +
+                              API_REGISTER1 +
+                              '?lang=' +
+                              Prefs.getString(Prefs.LANGUAGE));
 
                           // create multipart request
                           var request = new http.MultipartRequest("POST", uri);
@@ -811,8 +845,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           request.fields["linkedin"] = user.linkedin;
                           request.fields["is_migrant"] =
                               user.is_migrant.toString();
-                          request.fields["gender"] =
-                              user.gender.toString();
+                          request.fields["gender"] = user.gender.toString();
                           request.fields["region"] = user.region.toString();
                           request.fields["district"] = user.district.toString();
                           request.fields["job_type"] = user.job_type.toString();

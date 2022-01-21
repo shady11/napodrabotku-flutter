@@ -100,8 +100,7 @@ class _SelectModeState extends State<SelectMode> {
                                 height: 50.0,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                textColor: kColorBlue,
+                                textColor: Colors.white,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
                                   Navigator.of(context)
