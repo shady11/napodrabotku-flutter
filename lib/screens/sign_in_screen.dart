@@ -137,13 +137,14 @@ class _SignInScreenState extends State<SignInScreen> {
                 children: <Widget>[
                   /// Fullname field
                   Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'email'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                    widthFactor: 10,
+                    heightFactor: 1.5,
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'email'.tr(),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ),
                   TextFormField(
                     controller: _username_controller,
                     decoration: InputDecoration(
@@ -234,7 +235,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
                           /// Remove previous screens
                           User user = new User();
-                          user.login(_username_controller.text, _password_controller.text)
+                          user
+                              .login(_username_controller.text,
+                                  _password_controller.text)
                               .then((value) {
                             if (value == "OK") {
                               Navigator.of(context)

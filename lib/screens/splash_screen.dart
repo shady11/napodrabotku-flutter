@@ -33,8 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     else if (Prefs.getString(Prefs.TOKEN) != null) {
       Navigator.of(context).pushReplacementNamed(Routes.home);
     } else {
-      Navigator.of(context).pushReplacementNamed(Routes.product_lab_sign_in);
-      // Navigator.of(context).pushReplacementNamed(Routes.start);
+      Navigator.of(context).pushReplacementNamed(Routes.select_mode);
     }
   }
 

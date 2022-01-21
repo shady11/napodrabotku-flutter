@@ -84,7 +84,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                     EasyLocalization.of(context)
                                         .supportedLocales[0];
                                 Navigator.of(context)
-                                    .popAndPushNamed(Routes.start);
+                                    .popAndPushNamed(Routes.select_mode);
                               },
                               text: 'Кыргыз тили',
                             ),
@@ -102,7 +102,7 @@ class ChooseLanguageScreen extends StatelessWidget {
                                     EasyLocalization.of(context)
                                         .supportedLocales[1];
                                 Navigator.of(context)
-                                    .popAndPushNamed(Routes.start);
+                                    .popAndPushNamed(Routes.select_mode);
                               },
                               text: 'Русский язык',
                             ),
