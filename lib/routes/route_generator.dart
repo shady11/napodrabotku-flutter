@@ -16,7 +16,7 @@ import 'package:ishtapp/screens/user_policy_screen.dart';
 import 'package:ishtapp/screens/validate_code_screen.dart';
 import 'package:ishtapp/screens/forgot_password_email_screen.dart';
 import 'package:ishtapp/screens/new_password_screen.dart';
-import 'package:ishtapp/screens/select_mode.dart';
+import 'package:ishtapp/screens/select_mode_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
