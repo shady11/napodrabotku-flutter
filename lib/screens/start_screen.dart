@@ -41,25 +41,25 @@ class _StartScreenState extends State<StartScreen> {
     return WillPopScope(
         child: Material(
           child: Scaffold(
-            bottomSheet: Container(
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 15),
-                    child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text('guest'.tr(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 18)),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(Routes.home);
-                      },
-                    ),
-                  ),
+            // bottomSheet: Container(
+            //   color: Colors.white,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Container(
+            //         margin: EdgeInsets.only(bottom: 15),
+            //         child: InkWell(
+            //           child: Padding(
+            //             padding: const EdgeInsets.all(20),
+            //             child: Text('guest'.tr(),
+            //                 style: TextStyle(
+            //                     fontWeight: FontWeight.normal, fontSize: 18)),
+            //           ),
+            //           onTap: () {
+            //             Navigator.of(context).pushNamed(Routes.home);
+            //           },
+            //         ),
+            //       ),
 //            CustomButton(
 //              padding: EdgeInsets.all(10),
 //              color: Colors.transparent,
@@ -69,9 +69,9 @@ class _StartScreenState extends State<StartScreen> {
 //              },
 //              text: 'sign_up'.tr(),
 //            ),
-                ],
-              ),
-            ),
+//                 ],
+//               ),
+//             ),
             body: Container(
               decoration: BoxDecoration(color: Colors.white),
               child: Column(
@@ -113,13 +113,54 @@ class _StartScreenState extends State<StartScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
-                  /*Text("sign_in_with_social_apps".tr(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.black45)),
+                  SizedBox(height: 10),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),*/
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text('guest'.tr(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 18)),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.home);
+                    },
+                  ),
+
+                  SizedBox(height: 10),
+
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: 60,
+                            child:
+                            Image.asset('assets/images/partners/japan.png'),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: 60,
+                            child:
+                            Image.asset('assets/images/partners/giz.gif'),
+                          ),
+                        ),
+                        Container(
+                          child: SizedBox(
+                            height: 60,
+                            child:
+                            Image.asset('assets/images/partners/undp.png'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
                   /// Social login
                   /*Row(

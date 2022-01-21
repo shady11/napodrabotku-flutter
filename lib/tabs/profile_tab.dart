@@ -17,6 +17,9 @@ import 'package:ishtapp/datas/user.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class ProfileTab extends StatelessWidget {
+
+  User user;
+
   void handleInitialBuild(ProfileScreenProps props) {
     if (Prefs.getString(Prefs.TOKEN) == "null" ||
         Prefs.getString(Prefs.TOKEN) == null) {
@@ -294,6 +297,15 @@ class ProfileTab extends StatelessWidget {
                         Navigator.pushNamed(context, Routes.user_policy);
                       },
                     ),
+                    Prefs.getString(Prefs.USER_TYPE) == 'USER' ? ListTile(
+                      title: Text("reset_settings".tr(), style: _textStyle),
+                      onTap: () async {
+                        user = StoreProvider.of<AppState>(context).state.user.user.data;
+                        user.resetSettings(email: user.email);
+                        _showDialog(
+                            context, 'successful_reset'.tr(), false);
+                      },
+                    ) : Container(),
                     Prefs.getString(Prefs.TOKEN) != null
                         ? ListTile(
                             title: Text(
@@ -336,6 +348,28 @@ class ProfileTab extends StatelessWidget {
           body: body,
         );
       },
+    );
+  }
+
+  void _showDialog(context, String message, bool error) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('continue'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                if (!error)
+                  Navigator.pushReplacementNamed(context, Routes.home);
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }

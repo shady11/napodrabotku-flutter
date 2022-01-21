@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/routes/routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -19,8 +20,10 @@ import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:ishtapp/constants/configs.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 enum is_company { Company, User }
+enum user_gender { Male, Female }
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -53,6 +56,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   String initialCountry = 'KG';
   PhoneNumber number = PhoneNumber(isoCode: 'KG');
+
+  is_company company = is_company.User;
+  bool is_sending = false;
+  bool is_migrant = false;
+
+  user_gender gender = user_gender.Male;
 
   void _showDataPicker(context) {
     var date = DateTime.now();
@@ -181,9 +190,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  is_company company = is_company.User;
-  bool is_sending = false;
-  bool is_migrant = false;
+  List<dynamic> jobTypeList = [];
+  List<dynamic> regionList = [];
+  List<dynamic> districtList = [];
+  List<String> jobTypes = [];
+  List<String> items = [];
+  List<String> districts = [];
+  String selectedJobType;
+  String selectedRegion;
+  String selectedDistrict;
+
+  getJobTypes() async {
+    jobTypeList = await Vacancy.getLists('job_type', null);
+    jobTypeList.forEach((jobType) {
+      setState(() {
+        jobTypes.add(jobType['name']);
+      });
+    });
+  }
+
+  getRegions() async {
+    regionList = await Vacancy.getLists('region', null);
+    regionList.forEach((region) {
+      setState(() {
+        items.add(region['name']);
+      });
+    });
+  }
+
+  getDistricts(region) async {
+    districts = [];
+    districtList = await Vacancy.getLists('districts', region);
+    districtList.forEach((district) {
+      setState(() {
+        districts.add(district['name']);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getRegions();
+    getJobTypes();
+    // getDistricts('all');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -448,6 +499,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
 
                   SizedBox(height: 20),
+                  company == is_company.Company
+                      ? Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        company == is_company.Company
+                            ? 'job_type'.tr()
+                            : 'job_type'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ))
+                      : Container(),
+                  company == is_company.Company
+                      ? DropdownSearch<String>(
+                      showSelectedItem: true,
+                      items: jobTypes,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedJobType = value;
+                        });
+                      },
+                      dropdownSearchDecoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
+                      ),
+                      selectedItem: selectedJobType
+                  )
+                      : Container(),
+
+                  SizedBox(height: 20),
                   // company != is_company.Company
                   //     ? Align(
                   //         widthFactor: 10,
@@ -499,9 +585,71 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text(
+                        'region'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )
+                  ),
+                  DropdownSearch<String>(
+                      showSelectedItem: true,
+                      items: items,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedRegion = value;
+                          getDistricts(value);
+                        });
+                      },
+                      dropdownSearchDecoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
+                      ),
+                      selectedItem: selectedRegion
+                  ),
+                  SizedBox(height: 20),
+
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'district'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      )
+                  ),
+                  DropdownSearch<String>(
+                      showSelectedItem: true,
+                      items: districts,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedDistrict = value;
+                        });
+                      },
+                      dropdownSearchDecoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
+                      ),
+                      selectedItem: selectedDistrict,
+                  ),
+                  SizedBox(height: 20),
+
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text(
                         'phone_number'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                      )
+                  ),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: InternationalPhoneNumberInput(
@@ -562,6 +710,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onPressed: () {
                             _showDataPicker(context);
                           }),
+                  SizedBox(height: 20),
+
+                  company == is_company.Company ? Container() :
+                  Row(
+                      children: [
+                        Text(
+                          'gender'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )
+                      ]
+                  ),
+
+                  company == is_company.Company ? Container() : Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Radio(
+                        value: user_gender.Male,
+                        groupValue: gender,
+                        activeColor: Colors.grey,
+                        onChanged: (user_gender value) {
+                          setState(() {
+                            gender = value;
+                          });
+                        },
+                      ),
+                      Text('male'.tr(), style: TextStyle(color: Colors.black)),
+                      Radio(
+                        value: user_gender.Female,
+                        groupValue: gender,
+                        activeColor: Colors.grey,
+                        onChanged: (user_gender value) {
+                          setState(() {
+                            gender = value;
+                          });
+                        },
+                      ),
+                      Text('female'.tr(), style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
                   SizedBox(height: 40),
 
                   /// Sign Up button
@@ -599,8 +786,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           user.is_company = company == is_company.Company;
                           user.is_migrant = is_migrant ? 1 : 0;
                           user.linkedin = _linkedin_controller.text;
+                          user.gender = gender == user_gender.Male ? 0 : 1;
+                          user.region = selectedRegion;
+                          user.district = selectedDistrict;
+                          user.job_type = selectedJobType;
 
-                          var uri = Uri.parse(API_IP + API_REGISTER1);
+                          var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
 
                           // create multipart request
                           var request = new http.MultipartRequest("POST", uri);
@@ -620,6 +811,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           request.fields["linkedin"] = user.linkedin;
                           request.fields["is_migrant"] =
                               user.is_migrant.toString();
+                          request.fields["gender"] =
+                              user.gender.toString();
+                          request.fields["region"] = user.region.toString();
+                          request.fields["district"] = user.district.toString();
+                          request.fields["job_type"] = user.job_type.toString();
 
                           // open a byteStream
                           if (_imageFile != null) {

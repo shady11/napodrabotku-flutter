@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
+import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -44,18 +45,27 @@ class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> busynessList = [];
   List<dynamic> scheduleList = [];
   List<dynamic> regionList = [];
+  List<dynamic> districtList = [];
+  List<dynamic> currencyList = [];
 
   List _job_types = [];
   List _vacancy_types = [];
   List _busynesses = [];
   List _schedules = [];
   List _regions = [];
+  List _districts = [];
+  List _currencies = [];
+
+  List<DropdownMenuItem<int>> districts;
 
   int _job_type_id;
   int _vacancy_type_id;
   int _busyness_id;
   int _schedule_id;
   int _region_id;
+  int _district_id;
+  int _currency_id;
+
   JobType vacancy_region = new JobType(id: 1, name: 'Бишкек');
   int c = 0;
 
@@ -73,260 +83,408 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getLists() async {
-    jobTypeList = await Vacancy.getLists('job_type');
-    vacancyTypeList = await Vacancy.getLists('vacancy_type');
-    busynessList = await Vacancy.getLists('busyness');
-    scheduleList = await Vacancy.getLists('schedule');
-    regionList = await Vacancy.getLists('region');
+    jobTypeList = await Vacancy.getLists('job_type', null);
+    vacancyTypeList = await Vacancy.getLists('vacancy_type', null);
+    busynessList = await Vacancy.getLists('busyness', null);
+    scheduleList = await Vacancy.getLists('schedule', null);
+    regionList = await Vacancy.getLists('region', null);
+    districtList = await Vacancy.getLists('districts', null);
+    currencyList = await Vacancy.getLists('currencies', null);
+  }
+
+  getFilters(id) async {
+    _job_types = await User.getFilters('activities', id);
+    _vacancy_types = await User.getFilters('types', id);
+    _busynesses = await User.getFilters('busyness', id);
+    _schedules = await User.getFilters('schedules', id);
+    _regions = await User.getFilters('regions', id);
+    // _districts = await User.getFilters('districts', id);
+  }
+
+  getDistrictsById(region) async {
+    this.districtList = await Vacancy.getDistrictsById('districts', region);
   }
 
   TextEditingController _vacancy_name_controller = TextEditingController();
   TextEditingController _vacancy_salary_controller = TextEditingController();
-  TextEditingController _vacancy_description_controller =
-      TextEditingController();
+  TextEditingController _vacancy_salary_from_controller = TextEditingController();
+  TextEditingController _vacancy_salary_to_controller = TextEditingController();
+  TextEditingController _vacancy_description_controller = TextEditingController();
 
   bool is_disability_person_vacancy = false;
 
-  openFilterDialog(context) {
-    showDialog(
+  User user;
+
+  bool salary_by_agreement;
+
+  Future<void> openFilterDialog(context) async {
+
+    user = StoreProvider.of<AppState>(context).state.user.user.data;
+
+    if(user != null){
+      getFilters(user.id);
+    }
+
+    return await showDialog(
         context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'search_filter'.tr(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        )),
-                    SizedBox(
-                      height: 30,
-                    ),
-
-                    /// Form
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text(
-                              'regions'.tr(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: regionList,
-                            textField: 'name',
-                            valueField: 'id',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _regions,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _regions = value;
-                              });
-                            },
-                          ),
-//                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text(
-                              'job_types'.tr(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: jobTypeList,
-                            textField: 'name',
-                            valueField: 'id',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _job_types,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _job_types = value;
-                              });
-                            },
-                          ),
-//                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text(
-                              'vacancy_types'.tr(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: vacancyTypeList,
-                            textField: 'name',
-                            valueField: 'id',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _vacancy_types,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _vacancy_types = value;
-                              });
-                            },
-                          ),
-//                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text(
-                              'busynesses'.tr(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: busynessList,
-                            textField: 'name',
-                            valueField: 'id',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _busynesses,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _busynesses = value;
-                              });
-                            },
-                          ),
-//                          SizedBox(height: 20),
-                          MultiSelectFormField(
-                            autovalidate: false,
-                            title: Text(
-                              'schedules'.tr(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.length == 0) {
-                                return 'select_one_or_more'.tr();
-                              }
-                            },
-                            dataSource: scheduleList,
-                            textField: 'name',
-                            valueField: 'id',
-                            okButtonLabel: 'ok'.tr(),
-                            cancelButtonLabel: 'cancel'.tr(),
-                            // required: true,
-                            hintWidget: Text('select_one_or_more'.tr()),
-                            initialValue: _schedules,
-                            onSaved: (value) {
-                              if (value == null) return;
-                              setState(() {
-                                _schedules = value;
-                              });
-                            },
-                          ),
-                          SizedBox(height: 30),
-
-                          /// Sign In button
-                          SizedBox(
-                            width: double.maxFinite,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  padding: EdgeInsets.all(10),
-                                  color: Colors.grey[200],
-                                  textColor: kColorPrimary,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'cancel'.tr(),
-                                ),
-                                CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  padding: EdgeInsets.all(10),
-                                  color: kColorPrimary,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    StoreProvider.of<AppState>(context)
-                                        .dispatch(setFilter(
-                                            schedule_ids: _schedules,
-                                            busyness_ids: _busynesses,
-                                            region_ids: _regions,
-                                            vacancy_type_ids: _vacancy_types,
-                                            job_type_ids: _job_types));
-                                    StoreProvider.of<AppState>(context)
-                                        .dispatch(getVacancies());
-                                    Navigator.of(context).pop();
-                                    _nextTab(0);
-                                  },
-                                  text: 'search'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.9),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'search_filter'.tr(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )),
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                  ],
+
+                      /// Form
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            DropdownButtonFormField<int>(
+                              style: TextStyle(
+                                color: kColorPrimary,
+                                fontFamily: 'GTEestiProDisplay',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              hint: Text(
+                                "region".tr(),
+                                style: TextStyle(
+                                  color: kColorPrimary,
+                                ),
+                              ),
+                              value: _region_id,
+                              onChanged: (int newValue) async {
+                                await getDistrictsById(newValue);
+                                setState(() {
+                                  _region_id = newValue;
+                                });
+                              },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              items: regionList
+                                  .map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(
+                                    id: value['id'], name: value['name']);
+                                return DropdownMenuItem<int>(
+                                  value: jj.id,
+                                  child: Text(value['name']),
+                                );
+                              }).toList(),
+                            ),
+                            // MultiSelectFormField(
+                            //   autovalidate: false,
+                            //   title: Text(
+                            //     'region'.tr(),
+                            //     style: TextStyle(
+                            //         fontSize: 13,
+                            //         fontWeight: FontWeight.bold,
+                            //         color: Colors.black),
+                            //   ),
+                            //   validator: (value) {
+                            //     if (value == null || value.length == 0) {
+                            //       return 'select_one_or_more'.tr();
+                            //     }
+                            //     return '';
+                            //   },
+                            //   dataSource: regionList,
+                            //   textField: 'name',
+                            //   valueField: 'id',
+                            //   okButtonLabel: 'ok'.tr(),
+                            //   cancelButtonLabel: 'cancel'.tr(),
+                            //   // required: true,
+                            //   hintWidget: Text('select_one_or_more'.tr()),
+                            //   initialValue: _regions,
+                            //   onSaved: (value) async {
+                            //     if (value == null) return;
+                            //     await getDistrictsById(value[0]);
+                            //     setState(() {
+                            //       _regions = value;
+                            //     });
+                            //   },
+                            //   fillColor: Colors.white,
+                            //   checkBoxCheckColor: Colors.white,
+                            //   checkBoxActiveColor: Colors.white,
+                            // ),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'district'.tr(),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                                return '';
+                              },
+                              dataSource: districtList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              // required: true,
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _districts,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _districts = value;
+                                });
+                              },
+                            ),
+//                          SizedBox(height: 20),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'job_types'.tr(),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                              },
+                              dataSource: jobTypeList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              // required: true,
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _job_types,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _job_types = value;
+                                });
+                              },
+                            ),
+//                          SizedBox(height: 20),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'vacancy_types'.tr(),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                              },
+                              dataSource: vacancyTypeList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              // required: true,
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _vacancy_types,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _vacancy_types = value;
+                                });
+                              },
+                            ),
+//                          SizedBox(height: 20),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'busynesses'.tr(),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                              },
+                              dataSource: busynessList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              // required: true,
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _busynesses,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _busynesses = value;
+                                });
+                              },
+                            ),
+//                          SizedBox(height: 20),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'schedules'.tr(),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                              },
+                              dataSource: scheduleList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              // required: true,
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _schedules,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _schedules = value;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 30),
+
+                            /// Sign In button
+                            SizedBox(
+                              width: double.maxFinite,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  CustomButton(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.3,
+                                    padding: EdgeInsets.all(10),
+                                    color: Colors.grey[200],
+                                    textColor: kColorPrimary,
+                                    onPressed: () {
+
+                                      setState(() {
+                                        _region_id = null;
+                                        _regions = [];
+                                        _districts = [];
+                                        _job_types = [];
+                                        _vacancy_types = [];
+                                        _busynesses = [];
+                                        _schedules = [];
+                                      });
+
+                                      if(user != null){
+                                        user.saveFilters(_regions, _districts, _job_types, _vacancy_types, _busynesses, _schedules);
+                                      }
+
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(setFilter(
+                                          schedule_ids: _schedules,
+                                          busyness_ids: _busynesses,
+                                          region_ids: [_region_id],
+                                          district_ids: _districts,
+                                          vacancy_type_ids: _vacancy_types,
+                                          job_type_ids: _job_types));
+
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getVacancies());
+
+                                      Navigator.of(context).pop();
+                                      _nextTab(0);
+
+                                    },
+                                    text: 'change'.tr(),
+                                  ),
+                                  CustomButton(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.3,
+                                    padding: EdgeInsets.all(10),
+                                    color: kColorPrimary,
+                                    textColor: Colors.white,
+                                    onPressed: () {
+
+                                      if(user != null){
+                                        user.saveFilters(_regions, _districts, _job_types, _vacancy_types, _busynesses, _schedules);
+                                      }
+
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(setFilter(
+                                          schedule_ids: _schedules,
+                                          busyness_ids: _busynesses,
+                                          region_ids: [_region_id],
+                                          district_ids: _districts,
+                                          vacancy_type_ids: _vacancy_types,
+                                          job_type_ids: _job_types));
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getVacancies());
+                                      Navigator.of(context).pop();
+                                      _nextTab(0);
+
+                                    },
+                                    text: 'save'.tr(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          });
         });
   }
 
-  openVacancyForm(context) {
-    showDialog(
+  Future<void> openVacancyForm(context) async {
+
+    _job_type_id = null;
+    _vacancy_type_id = null;
+    _busyness_id = null;
+    _schedule_id = null;
+    _region_id = null;
+    _district_id = null;
+    _currency_id = null;
+
+    salary_by_agreement = false;
+    print(salary_by_agreement);
+
+    return await showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
               shape: RoundedRectangleBorder(
@@ -396,6 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             SizedBox(height: 20),
+
                             Align(
                                 widthFactor: 10,
                                 heightFactor: 1.5,
@@ -405,43 +564,174 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.black),
                                 )),
-                            TextFormField(
-                              controller: _vacancy_salary_controller,
+                            salary_by_agreement ? DropdownButtonFormField<int>(
+                              hint: Text("currency".tr()),
+                              value: _currency_id,
+                              onChanged: (int newValue) async {
+                                await getDistrictsById(newValue);
+                                setState(() {
+                                  _currency_id = newValue;
+                                });
+                              },
                               focusNode: FocusNode(canRequestFocus: false),
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
                               ),
-                              maxLength: 20,
-                              buildCounter: (context,
-                                  {currentLength, isFocused, maxLength}) {
-                                int utf8Length = utf8
-                                    .encode(_vacancy_salary_controller.text)
-                                    .length;
-                                return Container(
-                                  child: Text(
-                                    '$utf8Length/$maxLength',
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
+                              items: currencyList
+                                  .map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(
+                                    id: value['id'], name: value['name']);
+                                return DropdownMenuItem<int>(
+                                  value: jj.id,
+                                  child: Text(value['name']),
                                 );
+                              }).toList(),
+                            ) : DropdownButtonFormField<int>(
+                              hint: Text("currency".tr()),
+                              value: _currency_id,
+                              onChanged: (int newValue) async {
+                                await getDistrictsById(newValue);
+                                setState(() {
+                                  _currency_id = newValue;
+                                });
                               },
-                              inputFormatters: [
-                                Utf8LengthLimitingTextInputFormatter(20)
-                              ],
-                              validator: (name) {
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null ? "please_fill_this_field".tr() : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              items: currencyList
+                                  .map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(
+                                    id: value['id'], name: value['name']);
+                                return DropdownMenuItem<int>(
+                                  value: jj.id,
+                                  child: Text(value['name']),
+                                );
+                              }).toList(),
                             ),
-
                             SizedBox(height: 20),
+
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  // optional flex property if flex is 1 because the default flex is 1
+                                  flex: 1,
+                                  child: salary_by_agreement ? TextFormField(
+                                    enabled: false,
+                                    controller: _vacancy_salary_from_controller,
+                                    focusNode: FocusNode(canRequestFocus: false),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none),
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    inputFormatters: [
+                                      Utf8LengthLimitingTextInputFormatter(20)
+                                    ],
+                                    validator: (name) {
+                                      return null;
+                                    },
+                                  ) : TextFormField(
+                                    controller: _vacancy_salary_from_controller,
+                                    focusNode: FocusNode(canRequestFocus: false),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none),
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    inputFormatters: [
+                                      Utf8LengthLimitingTextInputFormatter(20)
+                                    ],
+                                    validator: (name) {
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Text('__'),
+                                ),
+                                Expanded(
+                                  // optional flex property if flex is 1 because the default flex is 1
+                                  flex: 1,
+                                  child: salary_by_agreement ? TextFormField(
+                                    enabled: false,
+                                    controller: _vacancy_salary_to_controller,
+                                    focusNode: FocusNode(canRequestFocus: false),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none),
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    inputFormatters: [
+                                      Utf8LengthLimitingTextInputFormatter(20)
+                                    ],
+                                    validator: (name) {
+                                      return null;
+                                    },
+                                  ) : TextFormField(
+                                    controller: _vacancy_salary_to_controller,
+                                    focusNode: FocusNode(canRequestFocus: false),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none),
+                                      floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                      filled: true,
+                                      fillColor: Colors.grey[200],
+                                    ),
+                                    inputFormatters: [
+                                      Utf8LengthLimitingTextInputFormatter(20)
+                                    ],
+                                    validator: (name) {
+                                      if (name.isEmpty) {
+                                        return "please_fill_this_field".tr();
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+
+                            CustomButton(
+                              width: MediaQuery.of(context).size.width * 1,
+                              padding: EdgeInsets.all(10),
+                              color: salary_by_agreement ? kColorPrimary : Colors.grey[200],
+                              textColor: salary_by_agreement ? Colors.white : kColorPrimary,
+                              onPressed: () {
+                                setState(() {
+                                  salary_by_agreement = !salary_by_agreement;
+                                });
+                                salary_by_agreement ? _vacancy_salary_controller.text = 'По договоренности' : TextEditingController();
+                              },
+                              text: 'by_agreement'.tr(),
+                            ),
+                            SizedBox(height: 20),
+
                             Align(
                                 widthFactor: 10,
                                 heightFactor: 1.5,
@@ -474,11 +764,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 20),
 
                             DropdownButtonFormField<int>(
-                              hint: Text("regions".tr()),
+                              hint: Text("region".tr()),
                               value: _region_id,
-                              onChanged: (int newValue) {
+                              onChanged: (int newValue) async {
+                                await getDistrictsById(newValue);
                                 setState(() {
                                   _region_id = newValue;
+                                  _district_id = null;
                                 });
                               },
                               focusNode: FocusNode(canRequestFocus: false),
@@ -501,6 +793,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               }).toList(),
                             ),
                             SizedBox(height: 20),
+
+                            DropdownButtonFormField<int>(
+                              hint: Text("district".tr()),
+                              value: _district_id,
+                              onChanged: (int newValue) {
+                                setState(() {
+                                  _district_id = newValue;
+                                });
+                              },
+                              focusNode: FocusNode(canRequestFocus: false),
+                              validator: (value) => value == null
+                                  ? "please_fill_this_field".tr()
+                                  : null,
+                              decoration: InputDecoration(
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              items: districtList
+                                  .map<DropdownMenuItem<int>>((dynamic value) {
+                                var jj = new JobType(
+                                    id: value['id'], name: value['name']);
+                                return DropdownMenuItem<int>(
+                                  value: jj.id,
+                                  child: Text(value['name']),
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(height: 20),
+
                             DropdownButtonFormField<int>(
                               isExpanded: true,
                               hint: Text("job_types".tr()),
@@ -649,6 +971,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey[200],
                                     textColor: kColorPrimary,
                                     onPressed: () {
+                                      setState(() {
+                                        _schedule_id = null;
+                                        _busyness_id = null;
+                                        _job_type_id = null;
+                                        _vacancy_type_id = null;
+                                        _region_id = null;
+                                        _district_id = null;
+                                      });
                                       Navigator.of(context).pop();
                                     },
                                     text: 'cancel'.tr(),
@@ -660,25 +990,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
-                                      if (_vacancyAddFormKey.currentState
-                                          .validate()) {
+                                      print(_currency_id);
+                                      if (_vacancyAddFormKey.currentState.validate()) {
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
-                                          salary:
-                                              _vacancy_salary_controller.text,
-                                          is_disability_person_vacancy:
-                                              is_disability_person_vacancy
-                                                  ? 1
-                                                  : 0,
-                                          description:
-                                              _vacancy_description_controller
-                                                  .text,
+                                          salary: _vacancy_salary_controller.text,
+                                          salary_from: _vacancy_salary_from_controller.text,
+                                          salary_to: _vacancy_salary_to_controller.text,
+                                          is_disability_person_vacancy: is_disability_person_vacancy ? 1 : 0,
+                                          description: _vacancy_description_controller.text,
                                           type: _vacancy_type_id.toString(),
                                           busyness: _busyness_id.toString(),
                                           schedule: _schedule_id.toString(),
                                           job_type: _job_type_id.toString(),
                                           region: _region_id.toString(),
+                                          district: _district_id.toString(),
+                                          currency: _currency_id != null ? _currency_id.toString() : '',
+
                                         );
+
+                                        print(company_vacancy);
+
                                         Vacancy.saveCompanyVacancy(
                                                 vacancy: company_vacancy)
                                             .then((value) {
@@ -687,19 +1019,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Navigator.of(context).pop();
                                         });
                                         // clear inputs
-                                        _vacancy_name_controller =
-                                            TextEditingController();
-                                        _vacancy_salary_controller =
-                                            TextEditingController();
-                                        _vacancy_description_controller =
-                                            TextEditingController();
+                                        _vacancy_name_controller = TextEditingController();
+                                        _vacancy_salary_controller = TextEditingController();
+                                        _vacancy_salary_from_controller = TextEditingController();
+                                        _vacancy_salary_to_controller = TextEditingController();
+                                        _vacancy_description_controller = TextEditingController();
                                         setState(() {
                                           _schedule_id = null;
                                           _busyness_id = null;
                                           _job_type_id = null;
                                           _vacancy_type_id = null;
                                           _region_id = null;
+                                          _district_id = null;
+                                          _currency_id = null;
                                         });
+                                      } else {
+                                        print('invalid');
                                       }
                                     },
                                     text: 'add'.tr(),
@@ -769,10 +1104,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   size: 35,
                 )),
-            onTap: () {
+            onTap: () async {
               Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-                  ? openVacancyForm(context)
-                  : openFilterDialog(context);
+                  ? await openVacancyForm(context)
+                  : await openFilterDialog(context);
             },
           ),
           GestureDetector(
@@ -857,7 +1192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'school'.tr(),
+            'training'.tr(),
           ),
           GestureDetector(
             child: CircleButton(
@@ -896,9 +1231,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    getLists();
     super.initState();
     buildSome(context);
-    getLists();
   }
 
   bool is_special = false;
@@ -1055,7 +1390,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: _tabCurrentIndex == 3 ? kColorPrimary : null,
                         ),
                         title: Text(
-                          "school".tr(),
+                          "training".tr(),
                           style: TextStyle(
                               color: _tabCurrentIndex == 3
                                   ? kColorPrimary
