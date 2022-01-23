@@ -304,6 +304,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
+  //TODO Realize this method
   getDistricts(region) async {
     districts = [];
     districtList = await Vacancy.getLists('districts', region);
@@ -313,7 +314,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     });
   }
-
+//TODO Realize this method
   getSocialOrientations() async {
     socialOrientations = [
       "Дружественные к молодежи - готовность нанимать и привлекать молодежь из регионов и старше 14 лет",
@@ -321,7 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "Дружественны к людям с инвалидностью"
     ];
   }
-
+//TODO Realize this method
   getOpportunities() async {
     opportunities = [
       "Волонтерство (Volunteering)",
@@ -339,7 +340,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "Вакансия для молодежи",
     ];
   }
-
+//TODO Realize this method
   getOpportunityTypes() async {
     opportunityTypes = [
       "Оплачивается",
@@ -347,7 +348,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       "Другой вид вознаграждения",
     ];
   }
-
+//TODO Realize this method
   getOpportunityDurations() async {
     opportunityDurations = [
       "Разовая",

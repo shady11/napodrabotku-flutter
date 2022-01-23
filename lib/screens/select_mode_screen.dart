@@ -72,8 +72,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .popAndPushNamed(Routes.start);
+                                  Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Ищу работу',
                               ),
@@ -88,8 +87,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
-                                  // Navigator.of(context)
-                                  //     .popAndPushNamed(Routes.start);
+                                  Navigator.of(context).pushNamed(Routes.product_lab_start);
                                 },
                                 text: 'Хочу повысить \nквалификацию',
                               ),
@@ -103,8 +101,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: Colors.white,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
-                                  Navigator.of(context)
-                                      .popAndPushNamed(Routes.start);
+                                  Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Вход для компании',
                               ),
