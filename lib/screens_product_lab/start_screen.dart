@@ -51,7 +51,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                     color: kColorPrimary,
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.product_lab_home);
+                      Navigator.of(context).pushNamed(Routes.product_lab_sign_in);
                     },
                     text: 'sign_in'.tr(),
                   ),

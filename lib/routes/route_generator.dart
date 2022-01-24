@@ -20,6 +20,7 @@ import 'package:ishtapp/screens/select_mode_screen.dart';
 import 'package:ishtapp/screens_product_lab/start_screen.dart';
 import 'package:ishtapp/screens_product_lab/home_screen.dart';
 import 'package:ishtapp/screens_product_lab/sign_up_screen.dart';
+import 'package:ishtapp/screens_product_lab/sing_in.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -82,6 +83,9 @@ class RouteGenerator {
 
       case Routes.product_lab_sign_up:
         return CupertinoPageRoute(builder: (_) => ProductLabSignUp());
+
+      case Routes.product_lab_sign_in:
+        return CupertinoPageRoute(builder: (_) => ProductLabSignIn());
 
       case Routes.error:
         return _errorRoute();
