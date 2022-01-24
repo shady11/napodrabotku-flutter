@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/routes/routes.dart';
 
 class ProductLabStart extends StatefulWidget {
   const ProductLabStart({Key key}) : super(key: key);
@@ -24,7 +25,10 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
               Align(
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.6,
-                  child: Text("Product Lab LOGO", style: TextStyle(fontSize: 36),),
+                  child: Image.asset(
+                    'assets/images/welcome.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
 
@@ -47,7 +51,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                     color: kColorPrimary,
                     textColor: Colors.white,
                     onPressed: () {
-                      // Navigator.of(context).pushNamed(Routes.signin);
+                      Navigator.of(context).pushNamed(Routes.product_lab_home);
                     },
                     text: 'sign_in'.tr(),
                   ),
@@ -59,45 +63,11 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
               InkWell(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
-                  child: Text('guest'.tr(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 18)),
+                  child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                 ),
                 onTap: () {
                   // Navigator.of(context).pushNamed(Routes.home);
                 },
-              ),
-
-              SizedBox(height: 10),
-
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: SizedBox(
-                        height: 60,
-                        child:
-                        Image.asset('assets/images/partners/japan.png'),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: SizedBox(
-                        height: 60,
-                        child: Image.asset('assets/images/partners/giz.gif'),
-                      ),
-                    ),
-                    Container(
-                      child: SizedBox(
-                        height: 60,
-                        child: Image.asset('assets/images/partners/undp.png'),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

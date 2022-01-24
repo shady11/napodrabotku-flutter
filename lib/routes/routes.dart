@@ -17,4 +17,5 @@ class Routes {
   static const String user_policy = '/user_policy';
   static const String select_mode = '/select_mode';
   static const String product_lab_start = '/product_lab_start';
+  static const String product_lab_home = '/product_lab_home';
 }

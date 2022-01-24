@@ -8,7 +8,6 @@ import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:convert' show utf8;
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -1255,7 +1254,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? AppBar(
                     automaticallyImplyLeading: false,
                     title: Container(
-//          padding: EdgeInsets.fromLTRB(20, 15, 20, 10),
                       width: MediaQuery.of(context).size.width * 1.0,
                       child: app_bar_titles[_tabCurrentIndex],
                     ),
