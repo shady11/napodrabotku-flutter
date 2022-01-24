@@ -593,42 +593,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       : Container(),
 
                   //endregion
-
                   SizedBox(height: 20),
 
-                  //region Адрес организации
-
-                  company == is_company.Company
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Адрес организации',
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
-                      : Container(),
-                  company == is_company.Company
-                      ? TextFormField(
-                          controller: _address_controller,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                          ),
-                          validator: (name) {
-                            // Basic validation
-                            if (name.isEmpty) {
-                              return "please_fill_this_field".tr();
-                            }
-                            return null;
-                          },
-                        )
-                      : Container(),
-
-                  //endregion
+                  // //region Адрес организации
+                  //
+                  // company == is_company.Company
+                  //     ? Align(
+                  //         widthFactor: 10,
+                  //         heightFactor: 1.5,
+                  //         alignment: Alignment.topLeft,
+                  //         child: Text(
+                  //           'Адрес организации',
+                  //           style: TextStyle(fontSize: 16, color: Colors.black),
+                  //         ))
+                  //     : Container(),
+                  // company == is_company.Company
+                  //     ? TextFormField(
+                  //         controller: _address_controller,
+                  //         decoration: InputDecoration(
+                  //           border: OutlineInputBorder(
+                  //               borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                  //           floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //           filled: true,
+                  //           fillColor: Colors.grey[200],
+                  //         ),
+                  //         validator: (name) {
+                  //           // Basic validation
+                  //           if (name.isEmpty) {
+                  //             return "please_fill_this_field".tr();
+                  //           }
+                  //           return null;
+                  //         },
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
 
                   //region Name
 
@@ -665,79 +664,113 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   //endregion
 
-                  SizedBox(height: 20),
 
                   //region Сфера деятельности
 
                   company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  company == is_company.Company ? 'job_type'.tr() : 'job_type'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            DropdownSearch<String>(
-                              showSelectedItem: true,
-                              items: jobTypes,
-                              onChanged: (value) {
-                                selectDepartments(value);
-                                setState(() {
-                                  selectedJobType = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: selectedJobType,
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
+                      ? Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        company == is_company.Company
+                            ? 'job_type'.tr()
+                            : 'job_type'.tr(),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ))
+                      : Container(),
+                  company == is_company.Company
+                      ? DropdownSearch<String>(
+                      showSelectedItem: true,
+                      items: jobTypes,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedJobType = value;
+                        });
+                      },
+                      dropdownSearchDecoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 12)),
+                      selectedItem: selectedJobType)
                       : Container(),
 
-                  selectedJobType != null
-                      ? Column(
-                    children: <Widget>[
-                      Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Выбор отрасли'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                      DropdownSearch<String>(
-                        showSelectedItem: true,
-                        items: departments,
-                        onChanged: (value) {
-                          selectDepartments(value);
-                          setState(() {
-                            selectedDepartment = value;
-                          });
-                        },
-                        dropdownSearchDecoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                        selectedItem: selectedDepartment,
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  )
-                      : Container(),
+                  SizedBox(height: 20),
+
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           Align(
+                  //               widthFactor: 10,
+                  //               heightFactor: 1.5,
+                  //               alignment: Alignment.topLeft,
+                  //               child: Text(
+                  //                 company == is_company.Company ? 'job_type'.tr() : 'job_type'.tr(),
+                  //                 style: TextStyle(fontSize: 16, color: Colors.black),
+                  //               )),
+                  //           DropdownSearch<String>(
+                  //             showSelectedItem: true,
+                  //             items: jobTypes,
+                  //             onChanged: (value) {
+                  //               selectDepartments(value);
+                  //               setState(() {
+                  //                 selectedJobType = value;
+                  //               });
+                  //             },
+                  //             dropdownSearchDecoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 filled: true,
+                  //                 fillColor: Colors.grey[200],
+                  //                 contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //             selectedItem: selectedJobType,
+                  //           ),
+                  //           SizedBox(height: 20),
+                  //         ],
+                  //       )
+                  //     : Container(),
+
+                  // selectedJobType != null
+                  //     ? Column(
+                  //   children: <Widget>[
+                  //     Align(
+                  //         widthFactor: 10,
+                  //         heightFactor: 1.5,
+                  //         alignment: Alignment.topLeft,
+                  //         child: Text(
+                  //           'Выбор отрасли'.tr(),
+                  //           style: TextStyle(fontSize: 16, color: Colors.black),
+                  //         )),
+                  //     DropdownSearch<String>(
+                  //       showSelectedItem: true,
+                  //       items: departments,
+                  //       onChanged: (value) {
+                  //         selectDepartments(value);
+                  //         setState(() {
+                  //           selectedDepartment = value;
+                  //         });
+                  //       },
+                  //       dropdownSearchDecoration: InputDecoration(
+                  //           border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(10),
+                  //             borderSide: BorderSide.none,
+                  //           ),
+                  //           filled: true,
+                  //           fillColor: Colors.grey[200],
+                  //           contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //       selectedItem: selectedDepartment,
+                  //     ),
+                  //     SizedBox(height: 20),
+                  //   ],
+                  // )
+                  //     : Container(),
 
                   //endregion
 
@@ -861,320 +894,320 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   SizedBox(height: 20),
 
-                  //region Социально-ориентированность
-
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Социально-ориентированность',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            DropdownSearch<String>(
-                              mode: Mode.MENU,
-                              showSelectedItem: true,
-                              items: socialOrientations,
-                              onChanged: (value) {
-                                setState(() {
-                                  socialOrientation = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: socialOrientation,
-                            ),
-                          ],
-                        )
-                      : Container(),
-
-                  //endregion
-
-                  //region Выбор возможностей
-
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            SizedBox(height: 20),
-                            Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Выбор возможностей',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            DropdownSearch<String>(
-                              showSelectedItem: true,
-                              items: opportunities,
-                              onChanged: (value) {
-                                setState(() {
-                                  opportunity = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: opportunity,
-                            ),
-                          ],
-                        )
-                      : Container(),
-
-                  //endregion
-
-                  //region Описание стажировки
-
-                  /// Вид возможности:
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            SizedBox(height: 20),
-                            Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Вид возможности',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            DropdownSearch<String>(
-                              mode: Mode.MENU,
-                              showSelectedItem: true,
-                              items: opportunityTypes,
-                              onChanged: (value) {
-                                setState(() {
-                                  opportunityType = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: opportunityType,
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Продолжительность возможности - возможность указать срок -
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Продолжительность возможности',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            DropdownSearch<String>(
-                              showSelectedItem: true,
-                              items: opportunityDurations,
-                              onChanged: (value) {
-                                setState(() {
-                                  opportunityDuration = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: opportunityDuration,
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Возраст, для которого предназначена возможность
-                  company == is_company.Company
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Возраст, для которого предназначена возможность',
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
-                      : Container(),
-                  company == is_company.Company
-                      ? Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'От',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                width: 60,
-                                child: TextFormField(
-                                  controller: _ageFromController,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                                  ],
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                                    filled: true,
-                                    fillColor: Colors.grey[200],
-                                  ),
-                                  validator: (name) {
-                                    // Basic validation
-                                    if (name.isEmpty) {
-                                      return "please_fill_this_field".tr();
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'До',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                width: 60,
-                                child: TextFormField(
-                                  controller: _ageToController,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                                  ],
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                                    filled: true,
-                                    fillColor: Colors.grey[200],
-                                  ),
-                                  validator: (name) {
-                                    // Basic validation
-                                    if (name.isEmpty) {
-                                      return "please_fill_this_field".tr();
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Container(),
-
-                  //endregion
-
-                  //region ФИО Контактного лица
-
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            SizedBox(height: 20),
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'ФИО Контактного лица',
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: _contact_person_full_name_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                // Basic validation
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  //endregion
-
-                  //region Должность контактного лица
-
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Должность контактного лица',
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: _contact_person_position_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                // Basic validation
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  //endregion
+                  // //region Социально-ориентированность
+                  //
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           Align(
+                  //             widthFactor: 10,
+                  //             heightFactor: 1.5,
+                  //             alignment: Alignment.topLeft,
+                  //             child: Text(
+                  //               'Социально-ориентированность',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           DropdownSearch<String>(
+                  //             mode: Mode.MENU,
+                  //             showSelectedItem: true,
+                  //             items: socialOrientations,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 socialOrientation = value;
+                  //               });
+                  //             },
+                  //             dropdownSearchDecoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 filled: true,
+                  //                 fillColor: Colors.grey[200],
+                  //                 contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //             selectedItem: socialOrientation,
+                  //           ),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
+                  //
+                  // //region Выбор возможностей
+                  //
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           SizedBox(height: 20),
+                  //           Align(
+                  //             widthFactor: 10,
+                  //             heightFactor: 1.5,
+                  //             alignment: Alignment.topLeft,
+                  //             child: Text(
+                  //               'Выбор возможностей',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           DropdownSearch<String>(
+                  //             showSelectedItem: true,
+                  //             items: opportunities,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 opportunity = value;
+                  //               });
+                  //             },
+                  //             dropdownSearchDecoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 filled: true,
+                  //                 fillColor: Colors.grey[200],
+                  //                 contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //             selectedItem: opportunity,
+                  //           ),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
+                  //
+                  // //region Описание стажировки
+                  //
+                  // /// Вид возможности:
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           SizedBox(height: 20),
+                  //           Align(
+                  //             widthFactor: 10,
+                  //             heightFactor: 1.5,
+                  //             alignment: Alignment.topLeft,
+                  //             child: Text(
+                  //               'Вид возможности',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           DropdownSearch<String>(
+                  //             mode: Mode.MENU,
+                  //             showSelectedItem: true,
+                  //             items: opportunityTypes,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 opportunityType = value;
+                  //               });
+                  //             },
+                  //             dropdownSearchDecoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 filled: true,
+                  //                 fillColor: Colors.grey[200],
+                  //                 contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //             selectedItem: opportunityType,
+                  //           ),
+                  //           SizedBox(height: 20),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // /// Продолжительность возможности - возможность указать срок -
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           Align(
+                  //             widthFactor: 10,
+                  //             heightFactor: 1.5,
+                  //             alignment: Alignment.topLeft,
+                  //             child: Text(
+                  //               'Продолжительность возможности',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           DropdownSearch<String>(
+                  //             showSelectedItem: true,
+                  //             items: opportunityDurations,
+                  //             onChanged: (value) {
+                  //               setState(() {
+                  //                 opportunityDuration = value;
+                  //               });
+                  //             },
+                  //             dropdownSearchDecoration: InputDecoration(
+                  //                 border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 filled: true,
+                  //                 fillColor: Colors.grey[200],
+                  //                 contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                  //             selectedItem: opportunityDuration,
+                  //           ),
+                  //           SizedBox(height: 20),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // /// Возраст, для которого предназначена возможность
+                  // company == is_company.Company
+                  //     ? Align(
+                  //         widthFactor: 10,
+                  //         heightFactor: 1.5,
+                  //         alignment: Alignment.topLeft,
+                  //         child: Text(
+                  //           'Возраст, для которого предназначена возможность',
+                  //           style: TextStyle(fontSize: 16, color: Colors.black),
+                  //         ))
+                  //     : Container(),
+                  // company == is_company.Company
+                  //     ? Row(
+                  //         children: <Widget>[
+                  //           Padding(
+                  //             padding: EdgeInsets.symmetric(horizontal: 10),
+                  //             child: Text(
+                  //               'От',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           Expanded(
+                  //             child: Container(
+                  //               width: 60,
+                  //               child: TextFormField(
+                  //                 controller: _ageFromController,
+                  //                 keyboardType: TextInputType.number,
+                  //                 inputFormatters: <TextInputFormatter>[
+                  //                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  //                 ],
+                  //                 decoration: InputDecoration(
+                  //                   border: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                  //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //                   filled: true,
+                  //                   fillColor: Colors.grey[200],
+                  //                 ),
+                  //                 validator: (name) {
+                  //                   // Basic validation
+                  //                   if (name.isEmpty) {
+                  //                     return "please_fill_this_field".tr();
+                  //                   }
+                  //                   return null;
+                  //                 },
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           Padding(
+                  //             padding: EdgeInsets.symmetric(horizontal: 10),
+                  //             child: Text(
+                  //               'До',
+                  //               style: TextStyle(fontSize: 16, color: Colors.black),
+                  //             ),
+                  //           ),
+                  //           Expanded(
+                  //             child: Container(
+                  //               width: 60,
+                  //               child: TextFormField(
+                  //                 controller: _ageToController,
+                  //                 keyboardType: TextInputType.number,
+                  //                 inputFormatters: <TextInputFormatter>[
+                  //                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  //                 ],
+                  //                 decoration: InputDecoration(
+                  //                   border: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                  //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //                   filled: true,
+                  //                   fillColor: Colors.grey[200],
+                  //                 ),
+                  //                 validator: (name) {
+                  //                   // Basic validation
+                  //                   if (name.isEmpty) {
+                  //                     return "please_fill_this_field".tr();
+                  //                   }
+                  //                   return null;
+                  //                 },
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
+                  //
+                  // //region ФИО Контактного лица
+                  //
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           SizedBox(height: 20),
+                  //           Align(
+                  //               widthFactor: 10,
+                  //               heightFactor: 1.5,
+                  //               alignment: Alignment.topLeft,
+                  //               child: Text(
+                  //                 'ФИО Контактного лица',
+                  //                 style: TextStyle(fontSize: 16, color: Colors.black),
+                  //               )),
+                  //           TextFormField(
+                  //             controller: _contact_person_full_name_controller,
+                  //             decoration: InputDecoration(
+                  //               border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                  //               floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //               filled: true,
+                  //               fillColor: Colors.grey[200],
+                  //             ),
+                  //             validator: (name) {
+                  //               // Basic validation
+                  //               if (name.isEmpty) {
+                  //                 return "please_fill_this_field".tr();
+                  //               }
+                  //               return null;
+                  //             },
+                  //           ),
+                  //           SizedBox(height: 20),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
+                  //
+                  // //region Должность контактного лица
+                  //
+                  // company == is_company.Company
+                  //     ? Column(
+                  //         children: <Widget>[
+                  //           Align(
+                  //               widthFactor: 10,
+                  //               heightFactor: 1.5,
+                  //               alignment: Alignment.topLeft,
+                  //               child: Text(
+                  //                 'Должность контактного лица',
+                  //                 style: TextStyle(fontSize: 16, color: Colors.black),
+                  //               )),
+                  //           TextFormField(
+                  //             controller: _contact_person_position_controller,
+                  //             decoration: InputDecoration(
+                  //               border: OutlineInputBorder(
+                  //                   borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                  //               floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //               filled: true,
+                  //               fillColor: Colors.grey[200],
+                  //             ),
+                  //             validator: (name) {
+                  //               // Basic validation
+                  //               if (name.isEmpty) {
+                  //                 return "please_fill_this_field".tr();
+                  //               }
+                  //               return null;
+                  //             },
+                  //           ),
+                  //           SizedBox(height: 20),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  //
+                  // //endregion
 
                   //region Номер телефона
 
@@ -1311,7 +1344,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () async {
                         User.checkUsername(_email_controller.text).then((value) {
                           setState(() {
-                            isUserExists = value;
+                            isUserExists = false;
                           });
                         });
 
