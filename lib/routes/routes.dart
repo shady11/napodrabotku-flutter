@@ -18,4 +18,5 @@ class Routes {
   static const String select_mode = '/select_mode';
   static const String product_lab_start = '/product_lab_start';
   static const String product_lab_home = '/product_lab_home';
+  static const String product_lab_sign_up = '/product_lab_sign_up';
 }

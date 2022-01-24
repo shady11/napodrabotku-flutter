@@ -19,6 +19,7 @@ import 'package:ishtapp/screens/new_password_screen.dart';
 import 'package:ishtapp/screens/select_mode_screen.dart';
 import 'package:ishtapp/screens_product_lab/product_lab_start_screen.dart';
 import 'package:ishtapp/screens_product_lab/product_lab_home_screen.dart';
+import 'package:ishtapp/screens_product_lab/product_lab_sign_up.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -78,6 +79,9 @@ class RouteGenerator {
 
       case Routes.product_lab_home:
         return CupertinoPageRoute(builder: (_) => ProductLabHome());
+
+      case Routes.product_lab_sign_up:
+        return CupertinoPageRoute(builder: (_) => ProductLabSignUp());
 
       case Routes.error:
         return _errorRoute();
