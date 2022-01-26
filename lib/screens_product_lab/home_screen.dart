@@ -6,17 +6,15 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:redux/redux.dart';
-import 'package:ishtapp/tabs/discover_tab.dart';
+import 'package:ishtapp/tabs_product_lab/discover_tab.dart';
 import 'package:ishtapp/widgets/cicle_button.dart';
 import 'package:ishtapp/tabs/matches_tab.dart';
 import 'package:ishtapp/tabs/profile_tab.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ishtapp/datas/app_state.dart';
-import 'package:ishtapp/datas/RSAA.dart';
-import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/widgets/badge.dart';
+import 'package:ishtapp/tabs/conversations_tab.dart';
+import 'package:ishtapp/tabs/school_tab.dart';
 
 class ProductLabHome extends StatefulWidget {
   const ProductLabHome({Key key}) : super(key: key);
@@ -30,6 +28,8 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   final _pageController = new PageController();
   List<Widget> app_bar_titles = [];
   int _tabCurrentIndex = 0;
+  bool is_profile = false;
+  bool is_special = false;
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
@@ -78,9 +78,9 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               ),
             ),
             onTap: () {
-              // _nextTab(4);
+              _nextTab(4);
               setState(() {
-                // is_profile = true;
+                is_profile = true;
               });
             },
           ),
@@ -102,9 +102,9 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               ),
             ),
             onTap: () {
-              // _nextTab(4);
+              _nextTab(4);
               setState(() {
-                // is_profile = true;
+                is_profile = true;
               });
             },
           ),
@@ -194,16 +194,26 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        backgroundColor: kColorPrimary,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: kColorPrimary,
-          elevation: 0,
-          title: Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            child: app_bar_titles[_tabCurrentIndex],
-          ),
-        ),
+        backgroundColor: is_profile ? Colors.white : kColorPrimary,
+        appBar: is_special
+            ? AppBar(
+                automaticallyImplyLeading: false,
+                title: Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  child: app_bar_titles[_tabCurrentIndex],
+                ),
+              )
+            : AppBar(
+                backgroundColor: is_profile ? Colors.white : kColorPrimary,
+                elevation: 0,
+                toolbarHeight: 80,
+                automaticallyImplyLeading: false,
+                title: Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  child: app_bar_titles[_tabCurrentIndex],
+                ),
+                actions: [],
+              ),
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(25),
@@ -214,52 +224,87 @@ class _ProductLabHomeState extends State<ProductLabHome> {
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
             selectedItemColor: Colors.grey[600],
+            selectedFontSize: _tabCurrentIndex == 4 ? 13 : 14,
             currentIndex: _tabCurrentIndex == 4 ? 0 : _tabCurrentIndex,
             onTap: (index) {
               _nextTab(index);
+              if (index == 3 || index == 2) {
+                setState(() {
+                  is_special = true;
+                  is_profile = true;
+                });
+              } else {
+                setState(() {
+                  is_special = false;
+                  is_profile = false;
+                });
+              }
             },
             items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Boxicons.bx_search,
-                  color: _tabCurrentIndex == 0 ? kColorPrimary : null,
-                ),
-                title: Text(
-                  "search".tr(),
-                  style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey),
-                ),
-              ),
-              BottomNavigationBarItem(
-                  icon: Container(
-                    width: 50,
-                    height: 30,
-                    child: Stack(children: [
-                      Positioned(
-                        top: -1.0,
-                        left: 0.0,
-                        right: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null ? 0.0 : null,
-                        child: Icon(
-                          Boxicons.bx_like,
-                          color: _tabCurrentIndex == 1 ? kColorPrimary : null,
-                        ),
+              Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
+                  ? BottomNavigationBarItem(
+                      icon: Icon(
+                        Boxicons.bx_briefcase,
+                        color: _tabCurrentIndex == 0 ? kColorPrimary : null,
                       ),
-                      StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
-                          ? Container()
-                          : Positioned(
-                              top: 0.0,
-                              right: 0.0,
-                              child: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds > 0
-                                  ? Badge(
-                                      text:
-                                          StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString())
-                                  : Container(),
+                      title: Text(
+                        "vacancies".tr(),
+                        style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : null),
+                      ))
+                  : BottomNavigationBarItem(
+                      icon: Icon(
+                        Boxicons.bx_search,
+                        color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                      ),
+                      title: Text(
+                        "search".tr(),
+                        style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey),
+                      )),
+              Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
+                  ? BottomNavigationBarItem(
+                      icon: Icon(
+                        Boxicons.bx_folder,
+                        color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                      ),
+                      title: Text(
+                        "cvs".tr(),
+                        style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
+                      ))
+                  : BottomNavigationBarItem(
+                      icon: Container(
+                        width: 50,
+                        height: 30,
+                        child: Stack(children: [
+                          Positioned(
+                            top: -1.0,
+                            left: 0.0,
+                            right:
+                                StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null ? 0.0 : null,
+                            child: Icon(
+                              Boxicons.bx_like,
+                              color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                             ),
-                    ]),
-                  ),
-                  title: Text(
-                    "matches".tr(),
-                    style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
-                  )),
+                          ),
+                          StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
+                              ? Container()
+                              : Positioned(
+                                  top: 0.0,
+                                  right: 0.0,
+                                  child: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds > 0
+                                      ? Badge(
+                                          text: StoreProvider.of<AppState>(context)
+                                              .state
+                                              .vacancy
+                                              .number_of_likeds
+                                              .toString())
+                                      : Container(),
+                                ),
+                        ]),
+                      ),
+                      title: Text(
+                        "matches".tr(),
+                        style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
+                      )),
               BottomNavigationBarItem(
                   icon: Icon(
                     Boxicons.bx_comment_detail,
@@ -267,22 +312,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                   ),
                   title: Text(
                     "chat".tr(),
-                    style: TextStyle(
-                        color: _tabCurrentIndex == 2
-                            ? kColorPrimary
-                            : Colors.grey),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Boxicons.bx_book,
-                    color: _tabCurrentIndex == 3 ? kColorPrimary : null,
-                  ),
-                  title: Text(
-                    "training".tr(),
-                    style: TextStyle(
-                        color: _tabCurrentIndex == 3
-                            ? kColorPrimary
-                            : Colors.grey),
+                    style: TextStyle(color: _tabCurrentIndex == 2 ? kColorPrimary : Colors.grey),
                   )),
               BottomNavigationBarItem(
                   icon: Icon(
@@ -291,10 +321,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                   ),
                   title: Text(
                     "profile".tr(),
-                    style: TextStyle(
-                        color: _tabCurrentIndex == 4
-                            ? kColorPrimary
-                            : Colors.grey),
+                    style: TextStyle(color: _tabCurrentIndex == 4 ? kColorPrimary : Colors.grey),
                   )),
             ],
           ),
@@ -304,18 +331,11 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               controller: _pageController,
               physics: NeverScrollableScrollPhysics(),
               children: [
-                Container(
-                  child: Text("asdfasd", style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  child: Text("12ssssssssss3", style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  child: Text("12ssssssssss3", style: TextStyle(color: Colors.black)),
-                ),
-                Container(
-                  child: Text("12ssssssssss3", style: TextStyle(color: Colors.black)),
-                ),
+                DiscoverTab(),
+                MatchesTab(),
+                ConversationsTab(),
+                SchoolTab(),
+                ProfileTab(),
                 // DiscoverTab(),
                 // MatchesTab(),
                 // ConversationsTab(),

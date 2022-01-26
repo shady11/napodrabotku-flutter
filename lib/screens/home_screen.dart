@@ -1681,7 +1681,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  // Variables
   final _pageController = new PageController();
   int _tabCurrentIndex = 0;
   var discoverPage = DiscoverTab();
