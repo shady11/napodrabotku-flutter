@@ -28,6 +28,7 @@ class User {
   String region;
   String district;
   String job_type;
+  bool is_product_lab_user;
 
   User({
     this.id,
@@ -49,6 +50,7 @@ class User {
     this.region,
     this.district,
     this.job_type,
+    this.is_product_lab_user,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
@@ -69,6 +71,7 @@ class User {
         region: json['region'],
         district: json['district'],
         job_type: json['job_type'],
+        is_product_lab_user: json['is_product_lab_user'],
       );
 
   String uploadImage1(_image) {
@@ -94,6 +97,7 @@ class User {
     request.fields["region"] = this.region.toString();
     request.fields["district"] = this.district.toString();
     request.fields["job_type"] = this.job_type.toString();
+    request.fields["is_product_lab_user"] = this.is_product_lab_user.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -155,6 +159,7 @@ class User {
     request.fields["region"] = this.region.toString();
     request.fields["district"] = this.district.toString();
     request.fields["job_type"] = this.job_type.toString();
+    request.fields["is_product_lab_user"] = this.is_product_lab_user.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -216,6 +221,7 @@ class User {
         'region': user.region,
         'district': user.district,
         'job_type': user.job_type,
+        "is_product_lab_user": user.is_product_lab_user,
       };
 
   bool get isAuth {

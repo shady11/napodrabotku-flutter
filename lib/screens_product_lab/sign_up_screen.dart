@@ -1,86 +1,129 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ishtapp/constants/constants.dart';
-import 'dart:convert';
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:async/async.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:ishtapp/components/custom_button.dart';
-import 'package:ishtapp/constants/configs.dart';
-import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/routes/routes.dart';
-import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 
+import 'package:ishtapp/widgets/svg_icon.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
+enum is_company { Company, User }
 enum user_gender { Male, Female }
 
-
 class ProductLabSignUp extends StatefulWidget {
-  const ProductLabSignUp({Key key}) : super(key: key);
-
   @override
   _ProductLabSignUpState createState() => _ProductLabSignUpState();
 }
 
 class _ProductLabSignUpState extends State<ProductLabSignUp> {
+  // Variables
   final _formKey = GlobalKey<FormState>();
+  final _username_controller = TextEditingController();
+  final _name_controller = TextEditingController();
+  final _surnname_controller = TextEditingController();
+  final _email_controller = TextEditingController();
+  final _linkedin_controller = TextEditingController();
+  // final _phone_number_controller = TextEditingController(text: '+(996)');
+  final _password_controller = TextEditingController();
+  final _password_confirm_controller = TextEditingController();
+  final _birth_date_controller = TextEditingController();
+  bool _obscureText = true;
+
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   dynamic _pickImageError;
+  String _retrieveDataError;
+  String _birth_date;
   bool isValid = false;
   bool isUserExists = false;
-  bool _obscureText = true;
 
-  List<String> regions = [];
-  List<String> districts = [];
-
-  String selectedRegion;
-  String selectedDistrict;
-
-  final TextEditingController _email_controller = new TextEditingController();
-  final TextEditingController _password_controller = new TextEditingController();
-  final TextEditingController _password_confirm_controller = new TextEditingController();
-  final TextEditingController _name_controller = new TextEditingController();
-  final TextEditingController _birth_date_controller = new TextEditingController();
-  final TextEditingController _phone_number_controller = TextEditingController();
-
+  final TextEditingController _phone_number_controller =
+  TextEditingController();
   String initialCountry = 'KG';
   PhoneNumber number = PhoneNumber(isoCode: 'KG');
 
+  is_company company = is_company.User;
+  bool is_sending = false;
+  bool is_migrant = false;
+
   user_gender gender = user_gender.Male;
 
-
-  /// Запрос областей
-  getRegions() async {
-    var regionList = await Vacancy.getLists('region', null);
-    regionList.forEach((region) {
-      setState(() {
-        regions.add(region['name']);
-      });
-    });
+  void _showDataPicker(context) {
+    var date = DateTime.now();
+    DatePicker.showDatePicker(context,
+        maxTime: new DateTime(date.year - 14, date.month, date.day),
+        locale: Prefs.getString(Prefs.LANGUAGE) == 'ky'
+            ? LocaleType.ky
+            : LocaleType.ru,
+        theme: DatePickerTheme(
+          headerColor: kColorPrimary,
+          cancelStyle: const TextStyle(color: Colors.white, fontSize: 17),
+          doneStyle: const TextStyle(color: Colors.white, fontSize: 17),
+        ), onConfirm: (date) {
+          print(date);
+          // Change state
+          setState(() {
+            _birth_date_controller.text = date.toString().split(" ")[0];
+          });
+        });
   }
 
-  getDistricts(region) async {
-    districts = [];
-    var districtList = await Vacancy.getLists('districts', region);
-    districtList.forEach((district) {
-      setState(() {
-        districts.add(district['name']);
-      });
-    });
+  void _showDialog(context, String message, bool error) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        child: AlertDialog(
+          title: Text(''),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('continue'.tr()),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                if (!error)
+                  Navigator.pushReplacementNamed(context, Routes.product_lab_home);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            content: Container(
+                color: Colors.transparent,
+                height: 50,
+                width: 50,
+                child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
+                    ))),
+          ),
+        );
+      },
+    );
   }
 
   void _showPicker(context) {
@@ -95,14 +138,16 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       leading: new Icon(Icons.photo_library),
                       title: new Text('from_gallery'.tr()),
                       onTap: () {
-                        _onImageButtonPressed(ImageSource.gallery, context: context);
+                        _onImageButtonPressed(ImageSource.gallery,
+                            context: context);
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('camera'.tr()),
                     onTap: () {
-                      _onImageButtonPressed(ImageSource.camera, context: context);
+                      _onImageButtonPressed(ImageSource.camera,
+                          context: context);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -131,26 +176,63 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
     }
   }
 
-  void _showDataPicker(context) {
-    var date = DateTime.now();
-    DatePicker.showDatePicker(context,
-        maxTime: new DateTime(date.year - 14, date.month, date.day),
-        locale: Prefs.getString(Prefs.LANGUAGE) == 'ky' ? LocaleType.ky : LocaleType.ru,
-        theme: DatePickerTheme(
-          headerColor: kColorPrimary,
-          cancelStyle: const TextStyle(color: Colors.white, fontSize: 17),
-          doneStyle: const TextStyle(color: Colors.white, fontSize: 17),
-        ), onConfirm: (date) {
-          // Change state
-          setState(() {
-            _birth_date_controller.text = date.toString().split(" ")[0];
-          });
-        });
+  Future<void> retrieveLostData() async {
+    final LostData response = await _picker.getLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        _imageFile = response.file;
+      });
+    } else {
+      _retrieveDataError = response.exception.code;
+    }
+  }
+
+  List<dynamic> jobTypeList = [];
+  List<dynamic> regionList = [];
+  List<dynamic> districtList = [];
+  List<String> jobTypes = [];
+  List<String> items = [];
+  List<String> districts = [];
+  String selectedJobType;
+  String selectedRegion;
+  String selectedDistrict;
+
+  getJobTypes() async {
+    jobTypeList = await Vacancy.getLists('job_type', null);
+    jobTypeList.forEach((jobType) {
+      setState(() {
+        jobTypes.add(jobType['name']);
+      });
+    });
+  }
+
+  getRegions() async {
+    regionList = await Vacancy.getLists('region', null);
+    regionList.forEach((region) {
+      setState(() {
+        items.add(region['name']);
+      });
+    });
+  }
+
+  getDistricts(region) async {
+    districts = [];
+    districtList = await Vacancy.getLists('districts', region);
+    districtList.forEach((district) {
+      setState(() {
+        districts.add(district['name']);
+      });
+    });
   }
 
   @override
   void initState() {
     getRegions();
+    getJobTypes();
+    // getDistricts('all');
     super.initState();
   }
 
@@ -167,35 +249,37 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text("create_account".tr(),
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
             ),
             SizedBox(height: 20),
 
-            /// Product Lab Profile photo
+            /// Profile photo
             GestureDetector(
               child: _imageFile == null
                   ? CircleAvatar(
-                      backgroundColor: kColorPrimary,
-                      radius: 50,
-                      child: SvgIcon("assets/icons/camera_icon.svg", width: 40, height: 40, color: Colors.white),
-                    )
+                backgroundColor: kColorPrimary,
+                radius: 50,
+                child: SvgIcon("assets/icons/camera_icon.svg",
+                    width: 40, height: 40, color: Colors.white),
+              )
                   : CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      radius: 50,
-                      backgroundImage: Image.file(
-                        File(_imageFile.path),
-                        fit: BoxFit.cover,
-                      ).image,
-                    ),
+                backgroundColor: Theme.of(context).primaryColor,
+                radius: 50,
+                backgroundImage: Image.file(
+                  File(_imageFile.path),
+                  fit: BoxFit.cover,
+                ).image,
+              ),
               onTap: () {
                 _showPicker(context);
               },
             ),
             SizedBox(height: 10),
 
-            SizedBox(height: 22),
-
-            ///Form
+            /// Form
             Form(
               key: _formKey,
               child: Column(
@@ -211,7 +295,9 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                   TextFormField(
                     controller: _email_controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
@@ -243,16 +329,22 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                     obscureText: _obscureText,
                     controller: _password_controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.grey,
                         ),
                         onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
                           setState(() {
                             _obscureText = !_obscureText;
                           });
@@ -260,6 +352,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       ),
                     ),
                     validator: (name) {
+                      // Basic validation
                       if (name.isEmpty) {
                         return "please_fill_this_field".tr();
                       }
@@ -279,16 +372,22 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                     controller: _password_confirm_controller,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
+                          // Based on passwordVisible state choose the icon
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.grey,
                         ),
                         onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
                           setState(() {
                             _obscureText = !_obscureText;
                           });
@@ -299,13 +398,15 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       // Basic validation
                       if (name.isEmpty) {
                         return "please_fill_this_field".tr();
-                      } else if (_password_confirm_controller.text != _password_controller.text) {
+                      } else if (_password_confirm_controller.text !=
+                          _password_controller.text) {
                         return "passwords_dont_satisfy".tr();
                       }
                       return null;
                     },
                   ),
                   SizedBox(height: 20),
+
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -314,24 +415,28 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                         'name'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       )),
+
                   TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                     ),
                     validator: (name) {
                       // Basic validation
-                      if (name.isEmpty) {
+                      if (name.isEmpty && company == is_company.User) {
                         return "please_fill_this_field".tr();
                       }
                       return null;
                     },
                   ),
+
                   SizedBox(height: 20),
+
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -339,10 +444,11 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'region'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                      )
+                  ),
                   DropdownSearch<String>(
                       showSelectedItem: true,
-                      items: regions,
+                      items: items,
                       onChanged: (value) {
                         setState(() {
                           selectedRegion = value;
@@ -356,9 +462,12 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           ),
                           filled: true,
                           fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                      selectedItem: selectedRegion),
+                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
+                      ),
+                      selectedItem: selectedRegion
+                  ),
                   SizedBox(height: 20),
+
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -366,7 +475,8 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'district'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                      )
+                  ),
                   DropdownSearch<String>(
                     showSelectedItem: true,
                     items: districts,
@@ -382,11 +492,12 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                         ),
                         filled: true,
                         fillColor: Colors.grey[200],
-                        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
+                    ),
                     selectedItem: selectedDistrict,
                   ),
+                  SizedBox(height: 20),
 
-                  ///Номер телефона
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -394,7 +505,8 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'phone_number'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                      )
+                  ),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: InternationalPhoneNumberInput(
@@ -414,10 +526,12 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       initialValue: number,
                       textFieldController: _phone_number_controller,
                       formatInput: false,
-                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                      keyboardType: TextInputType.numberWithOptions(
+                          signed: true, decimal: true),
                       inputDecoration: InputDecoration(
-                        border:
-                        OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -428,8 +542,6 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       },
                     ),
                   ),
-
-                  ///Дата рождения (+14)
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
@@ -451,16 +563,17 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       onPressed: () {
                         _showDataPicker(context);
                       }),
-
                   SizedBox(height: 20),
 
-                  /// Пол
-                  Row(children: [
-                    Text(
-                      'gender'.tr(),
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    )
-                  ]),
+                  Row(
+                      children: [
+                        Text(
+                          'gender'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )
+                      ]
+                  ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -499,95 +612,108 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
-                        // User.checkUsername(_email_controller.text).then((value) {
-                        //   setState(() {
-                        //     isUserExists = value;
-                        //   });
-                        // });
+                        User.checkUsername(_email_controller.text)
+                            .then((value) {
+                          setState(() {
+                            isUserExists = value;
+                          });
+                        });
 
                         /// Validate form
                         if (_formKey.currentState.validate()) {
-// //                           Navigator.of(context)
-// //                               .popUntil((route) => route.isFirst);
-//                           _openLoadingDialog(context);
-//                           final DateFormat formatter = DateFormat('yyyy-MM-dd');
-//
-//                           User user = new User();
-//                           user.password = _password_controller.text;
-//                           user.email = _email_controller.text;
-//                           user.phone_number = _phone_number_controller.text;
-//                           user.birth_date = company == is_company.Company
-//                               ? DateTime.now()
-//                               : formatter.parse(_birth_date_controller.text);
-//                           user.name = _name_controller.text;
-//                           user.surname = _surnname_controller.text;
-//                           user.is_company = company == is_company.Company;
-//                           user.is_migrant = is_migrant ? 1 : 0;
-//                           user.linkedin = _linkedin_controller.text;
-//                           user.gender = gender == user_gender.Male ? 0 : 1;
-//                           user.region = selectedRegion;
-//                           user.district = selectedDistrict;
-//                           user.job_type = selectedJobType;
-//
-//                           var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
-//
-//                           // create multipart request
-//                           var request = new http.MultipartRequest("POST", uri);
-//
-//                           // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
-//                           request.fields["id"] = user.id.toString();
-//                           request.fields["password"] = user.password;
-//                           request.fields["name"] = user.name;
-//                           request.fields["lastname"] = user.surname;
-//                           request.fields["email"] = user.email;
-//                           request.fields["birth_date"] = formatter.format(user.birth_date);
-//                           request.fields["active"] = '1';
-//                           request.fields["phone_number"] = user.phone_number;
-//                           request.fields["type"] = user.is_company ? 'COMPANY' : 'USER';
-//                           request.fields["linkedin"] = user.linkedin;
-//                           request.fields["is_migrant"] = user.is_migrant.toString();
-//                           request.fields["gender"] = user.gender.toString();
-//                           request.fields["region"] = user.region.toString();
-//                           request.fields["district"] = user.district.toString();
-//                           request.fields["job_type"] = user.job_type.toString();
-//
-//                           // open a byteStream
-//                           if (_imageFile != null) {
-//                             var _image = File(_imageFile.path);
-//                             var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
-//                             // get file length
-//                             var length = await _image.length();
-//                             // multipart that takes file.. here this "image_file" is a key of the API request
-//                             var multipartFile =
-//                             new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
-//                             // add file to multipart
-//                             request.files.add(multipartFile);
-//                           }
-//                           request.send().then((response) {
-//                             print(response);
-//                             response.stream.transform(utf8.decoder).listen((value) {
-//                               print(value);
-//                               var response = json.decode(value);
-//                               if (response['status'] == 200) {
-//                                 Prefs.setString(Prefs.PASSWORD, user.password);
-//                                 Prefs.setString(Prefs.TOKEN, response["token"]);
-//                                 Prefs.setString(Prefs.EMAIL, response["email"]);
-//                                 Prefs.setInt(Prefs.USER_ID, response["id"]);
-//                                 Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
-//                                 Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-//                                 _showDialog(context, 'successfull_sign_up'.tr(), false);
-//                               } else {
-//                                 _showDialog(context, 'some_errors_occured_plese_try_again'.tr(), true);
-//                               }
-//                             });
-//                           }).catchError((e) {
-//                             print(e);
-//                           });
-//                         } else {
-//                           return;
-//                         }
-                        }
+//                           Navigator.of(context)
+//                               .popUntil((route) => route.isFirst);
+                          _openLoadingDialog(context);
+                          final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
+                          User user = new User();
+                          user.password = _password_controller.text;
+                          user.email = _email_controller.text;
+                          user.phone_number = _phone_number_controller.text;
+                          user.birth_date = formatter.parse(_birth_date_controller.text);
+                          user.name = _name_controller.text;
+                          user.surname = _surnname_controller.text;
+                          user.is_company = false;
+                          user.is_migrant = is_migrant ? 1 : 0;
+                          user.linkedin = _linkedin_controller.text;
+                          user.gender = gender == user_gender.Male ? 0 : 1;
+                          user.region = selectedRegion;
+                          user.district = selectedDistrict;
+                          user.job_type = selectedJobType;
+                          user.is_product_lab_user = true;
+
+                          var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
+
+                          // create multipart request
+                          var request = new http.MultipartRequest("POST", uri);
+
+                          // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
+                          request.fields["id"] = user.id.toString();
+                          request.fields["password"] = user.password;
+                          request.fields["name"] = user.name;
+                          request.fields["lastname"] = user.surname;
+                          request.fields["email"] = user.email;
+                          request.fields["birth_date"] =
+                              formatter.format(user.birth_date);
+                          request.fields["active"] = '1';
+                          request.fields["phone_number"] = user.phone_number;
+                          request.fields["type"] =
+                          user.is_company ? 'COMPANY' : 'USER';
+                          request.fields["linkedin"] = user.linkedin;
+                          request.fields["is_migrant"] =
+                              user.is_migrant.toString();
+                          request.fields["gender"] =
+                              user.gender.toString();
+                          request.fields["region"] = user.region.toString();
+                          request.fields["district"] = user.district.toString();
+                          request.fields["job_type"] = user.job_type.toString();
+                          request.fields["is_product_lab_user"] = user.is_product_lab_user.toString();
+
+                          // open a byteStream
+                          if (_imageFile != null) {
+                            var _image = File(_imageFile.path);
+                            var stream = new http.ByteStream(
+                                DelegatingStream.typed(_image.openRead()));
+                            // get file length
+                            var length = await _image.length();
+                            // multipart that takes file.. here this "image_file" is a key of the API request
+                            var multipartFile = new http.MultipartFile(
+                                'avatar', stream, length,
+                                filename: basename(_image.path));
+                            // add file to multipart
+                            request.files.add(multipartFile);
+                          }
+                          request.send().then((response) {
+                            print(response);
+                            response.stream
+                                .transform(utf8.decoder)
+                                .listen((value) {
+                              print(value);
+                              var response = json.decode(value);
+                              if (response['status'] == 200) {
+                                Prefs.setString(Prefs.PASSWORD, user.password);
+                                Prefs.setString(Prefs.TOKEN, response["token"]);
+                                Prefs.setString(Prefs.EMAIL, response["email"]);
+                                Prefs.setInt(Prefs.USER_ID, response["id"]);
+                                Prefs.setString(Prefs.USER_TYPE,
+                                    user.is_company ? 'COMPANY' : 'USER');
+                                Prefs.setString(
+                                    Prefs.PROFILEIMAGE, response["avatar"]);
+                                _showDialog(
+                                    context, 'successfull_sign_up'.tr(), false);
+                              } else {
+                                _showDialog(
+                                    context,
+                                    'some_errors_occured_plese_try_again'.tr(),
+                                    true);
+                              }
+                            });
+                          }).catchError((e) {
+                            print(e);
+                          });
+                        } else {
+                          return;
+                        }
                       },
                       text: 'create'.tr(),
                     ),
