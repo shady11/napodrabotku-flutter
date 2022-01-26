@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 
 class ProductLabStart extends StatefulWidget {
   const ProductLabStart({Key key}) : super(key: key);
@@ -51,7 +52,8 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                     color: kColorPrimary,
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.product_lab_sign_in);
+                      Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
+                      Navigator.of(context).pushNamed(Routes.signin);
                     },
                     text: 'sign_in'.tr(),
                   ),

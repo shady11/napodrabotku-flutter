@@ -5,6 +5,7 @@ import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/routes/routes.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 
 class SelectMode extends StatefulWidget {
   const SelectMode({Key key}) : super(key: key);
@@ -72,6 +73,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
+                                  Prefs.setString(Prefs.ROUTE, "WORKER");
                                   Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Ищу работу',
@@ -101,6 +103,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: Colors.white,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
+                                  Prefs.setString(Prefs.ROUTE, "COMPANY");
                                   Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Вход для компании',

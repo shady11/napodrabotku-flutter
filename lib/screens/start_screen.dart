@@ -26,15 +26,22 @@ class StartScreen extends StatefulWidget {
 class _StartScreenState extends State<StartScreen> {
   DateTime currentBackPressTime;
 
+  String mode;
+
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+    if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
       Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
       return Future.value(false);
     }
     return Future.value(true);
+  }
+
+  @override
+  void initState() {
+    mode = Prefs.getString(Prefs.ROUTE);
+    super.initState();
   }
 
   @override
@@ -106,6 +113,7 @@ class _StartScreenState extends State<StartScreen> {
                     color: kColorPrimary,
                     textColor: Colors.white,
                     onPressed: () {
+                      Prefs.setString(Prefs.ROUTE, "ISHTAPP");
                       Navigator.of(context).pushNamed(Routes.signin);
                     },
                     text: 'sign_in'.tr(),
@@ -115,17 +123,20 @@ class _StartScreenState extends State<StartScreen> {
 
               SizedBox(height: 10),
 
-              InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('guest'.tr(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 18)),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushNamed(Routes.home);
-                },
-              ),
+              mode == "COMPANY"
+                  ? Container()
+                  : InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
+                      ),
+                      onTap: () {
+                        if(mode == "PRODUCT_LAB")
+                          Navigator.of(context).pushNamed(Routes.product_lab_home);
+                        else
+                          Navigator.of(context).pushNamed(Routes.home);
+                      },
+                    ),
 
               SizedBox(height: 10),
 
@@ -138,8 +149,7 @@ class _StartScreenState extends State<StartScreen> {
                       padding: EdgeInsets.only(right: 10),
                       child: SizedBox(
                         height: 60,
-                        child:
-                            Image.asset('assets/images/partners/japan.png'),
+                        child: Image.asset('assets/images/partners/japan.png'),
                       ),
                     ),
                     Container(

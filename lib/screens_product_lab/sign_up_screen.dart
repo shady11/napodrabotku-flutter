@@ -38,6 +38,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
   final _surnname_controller = TextEditingController();
   final _email_controller = TextEditingController();
   final _linkedin_controller = TextEditingController();
+
   // final _phone_number_controller = TextEditingController(text: '+(996)');
   final _password_controller = TextEditingController();
   final _password_confirm_controller = TextEditingController();
@@ -52,8 +53,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
   bool isValid = false;
   bool isUserExists = false;
 
-  final TextEditingController _phone_number_controller =
-  TextEditingController();
+  final TextEditingController _phone_number_controller = TextEditingController();
   String initialCountry = 'KG';
   PhoneNumber number = PhoneNumber(isoCode: 'KG');
 
@@ -67,20 +67,18 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
     var date = DateTime.now();
     DatePicker.showDatePicker(context,
         maxTime: new DateTime(date.year - 14, date.month, date.day),
-        locale: Prefs.getString(Prefs.LANGUAGE) == 'ky'
-            ? LocaleType.ky
-            : LocaleType.ru,
+        locale: Prefs.getString(Prefs.LANGUAGE) == 'ky' ? LocaleType.ky : LocaleType.ru,
         theme: DatePickerTheme(
           headerColor: kColorPrimary,
           cancelStyle: const TextStyle(color: Colors.white, fontSize: 17),
           doneStyle: const TextStyle(color: Colors.white, fontSize: 17),
         ), onConfirm: (date) {
-          print(date);
-          // Change state
-          setState(() {
-            _birth_date_controller.text = date.toString().split(" ")[0];
-          });
-        });
+      print(date);
+      // Change state
+      setState(() {
+        _birth_date_controller.text = date.toString().split(" ")[0];
+      });
+    });
   }
 
   void _showDialog(context, String message, bool error) {
@@ -95,8 +93,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
               child: Text('continue'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
-                if (!error)
-                  Navigator.pushReplacementNamed(context, Routes.product_lab_home);
+                if (!error) Navigator.pushReplacementNamed(context, Routes.product_lab_home);
               },
             )
           ],
@@ -118,8 +115,8 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                 width: 50,
                 child: Center(
                     child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
-                    ))),
+                  valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
+                ))),
           ),
         );
       },
@@ -138,16 +135,14 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       leading: new Icon(Icons.photo_library),
                       title: new Text('from_gallery'.tr()),
                       onTap: () {
-                        _onImageButtonPressed(ImageSource.gallery,
-                            context: context);
+                        _onImageButtonPressed(ImageSource.gallery, context: context);
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('camera'.tr()),
                     onTap: () {
-                      _onImageButtonPressed(ImageSource.camera,
-                          context: context);
+                      _onImageButtonPressed(ImageSource.camera, context: context);
                       Navigator.of(context).pop();
                     },
                   ),
@@ -249,10 +244,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text("create_account".tr(),
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
             ),
             SizedBox(height: 20),
 
@@ -260,19 +252,18 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
             GestureDetector(
               child: _imageFile == null
                   ? CircleAvatar(
-                backgroundColor: kColorPrimary,
-                radius: 50,
-                child: SvgIcon("assets/icons/camera_icon.svg",
-                    width: 40, height: 40, color: Colors.white),
-              )
+                      backgroundColor: kColorPrimary,
+                      radius: 50,
+                      child: SvgIcon("assets/icons/camera_icon.svg", width: 40, height: 40, color: Colors.white),
+                    )
                   : CircleAvatar(
-                backgroundColor: Theme.of(context).primaryColor,
-                radius: 50,
-                backgroundImage: Image.file(
-                  File(_imageFile.path),
-                  fit: BoxFit.cover,
-                ).image,
-              ),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      radius: 50,
+                      backgroundImage: Image.file(
+                        File(_imageFile.path),
+                        fit: BoxFit.cover,
+                      ).image,
+                    ),
               onTap: () {
                 _showPicker(context);
               },
@@ -295,9 +286,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                   TextFormField(
                     controller: _email_controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
@@ -329,18 +318,14 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                     obscureText: _obscureText,
                     controller: _password_controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          _obscureText ? Icons.visibility : Icons.visibility_off,
                           color: Colors.grey,
                         ),
                         onPressed: () {
@@ -372,18 +357,14 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                     controller: _password_confirm_controller,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
                       suffixIcon: IconButton(
                         icon: Icon(
                           // Based on passwordVisible state choose the icon
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          _obscureText ? Icons.visibility : Icons.visibility_off,
                           color: Colors.grey,
                         ),
                         onPressed: () {
@@ -398,8 +379,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       // Basic validation
                       if (name.isEmpty) {
                         return "please_fill_this_field".tr();
-                      } else if (_password_confirm_controller.text !=
-                          _password_controller.text) {
+                      } else if (_password_confirm_controller.text != _password_controller.text) {
                         return "passwords_dont_satisfy".tr();
                       }
                       return null;
@@ -419,9 +399,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                   TextFormField(
                     controller: _name_controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true,
                       fillColor: Colors.grey[200],
@@ -444,8 +422,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'region'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   DropdownSearch<String>(
                       showSelectedItem: true,
                       items: items,
@@ -462,10 +439,8 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           ),
                           filled: true,
                           fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
-                      ),
-                      selectedItem: selectedRegion
-                  ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                      selectedItem: selectedRegion),
                   SizedBox(height: 20),
 
                   Align(
@@ -475,8 +450,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'district'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   DropdownSearch<String>(
                     showSelectedItem: true,
                     items: districts,
@@ -492,8 +466,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                         ),
                         filled: true,
                         fillColor: Colors.grey[200],
-                        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)
-                    ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
                     selectedItem: selectedDistrict,
                   ),
                   SizedBox(height: 20),
@@ -505,8 +478,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       child: Text(
                         'phone_number'.tr(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
-                      )
-                  ),
+                      )),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: InternationalPhoneNumberInput(
@@ -526,12 +498,10 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       initialValue: number,
                       textFieldController: _phone_number_controller,
                       formatInput: false,
-                      keyboardType: TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
+                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                       inputDecoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none),
+                        border:
+                            OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -565,14 +535,12 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       }),
                   SizedBox(height: 20),
 
-                  Row(
-                      children: [
-                        Text(
-                          'gender'.tr(),
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        )
-                      ]
-                  ),
+                  Row(children: [
+                    Text(
+                      'gender'.tr(),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    )
+                  ]),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -612,8 +580,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
-                        User.checkUsername(_email_controller.text)
-                            .then((value) {
+                        User.checkUsername(_email_controller.text).then((value) {
                           setState(() {
                             isUserExists = value;
                           });
@@ -653,17 +620,13 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           request.fields["name"] = user.name;
                           request.fields["lastname"] = user.surname;
                           request.fields["email"] = user.email;
-                          request.fields["birth_date"] =
-                              formatter.format(user.birth_date);
+                          request.fields["birth_date"] = formatter.format(user.birth_date);
                           request.fields["active"] = '1';
                           request.fields["phone_number"] = user.phone_number;
-                          request.fields["type"] =
-                          user.is_company ? 'COMPANY' : 'USER';
+                          request.fields["type"] = user.is_company ? 'COMPANY' : 'USER';
                           request.fields["linkedin"] = user.linkedin;
-                          request.fields["is_migrant"] =
-                              user.is_migrant.toString();
-                          request.fields["gender"] =
-                              user.gender.toString();
+                          request.fields["is_migrant"] = user.is_migrant.toString();
+                          request.fields["gender"] = user.gender.toString();
                           request.fields["region"] = user.region.toString();
                           request.fields["district"] = user.district.toString();
                           request.fields["job_type"] = user.job_type.toString();
@@ -672,22 +635,18 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           // open a byteStream
                           if (_imageFile != null) {
                             var _image = File(_imageFile.path);
-                            var stream = new http.ByteStream(
-                                DelegatingStream.typed(_image.openRead()));
+                            var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
                             // get file length
                             var length = await _image.length();
                             // multipart that takes file.. here this "image_file" is a key of the API request
-                            var multipartFile = new http.MultipartFile(
-                                'avatar', stream, length,
-                                filename: basename(_image.path));
+                            var multipartFile =
+                                new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
                             // add file to multipart
                             request.files.add(multipartFile);
                           }
                           request.send().then((response) {
                             print(response);
-                            response.stream
-                                .transform(utf8.decoder)
-                                .listen((value) {
+                            response.stream.transform(utf8.decoder).listen((value) {
                               print(value);
                               var response = json.decode(value);
                               if (response['status'] == 200) {
@@ -695,17 +654,11 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                                 Prefs.setString(Prefs.TOKEN, response["token"]);
                                 Prefs.setString(Prefs.EMAIL, response["email"]);
                                 Prefs.setInt(Prefs.USER_ID, response["id"]);
-                                Prefs.setString(Prefs.USER_TYPE,
-                                    user.is_company ? 'COMPANY' : 'USER');
-                                Prefs.setString(
-                                    Prefs.PROFILEIMAGE, response["avatar"]);
-                                _showDialog(
-                                    context, 'successfull_sign_up'.tr(), false);
+                                Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
+                                Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+                                _showDialog(context, 'successfull_sign_up'.tr(), false);
                               } else {
-                                _showDialog(
-                                    context,
-                                    'some_errors_occured_plese_try_again'.tr(),
-                                    true);
+                                _showDialog(context, 'some_errors_occured_plese_try_again'.tr(), true);
                               }
                             });
                           }).catchError((e) {

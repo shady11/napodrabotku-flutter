@@ -71,7 +71,7 @@ class User {
         region: json['region'],
         district: json['district'],
         job_type: json['job_type'],
-        is_product_lab_user: json['is_product_lab_user'],
+        is_product_lab_user: json['is_product_lab_user'] == 1,
       );
 
   String uploadImage1(_image) {

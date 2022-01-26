@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/routes/routes.dart';
-import 'package:ishtapp/widgets/default_button.dart';
-import 'package:ishtapp/widgets/svg_icon.dart';
-import 'package:ishtapp/widgets/cicle_button.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
 
 class SignInScreen extends StatefulWidget {
+
+  final String routeFrom;
+  SignInScreen({this.routeFrom});
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -135,7 +136,6 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  /// Fullname field
                   Align(
                     widthFactor: 10,
                     heightFactor: 1.5,
@@ -239,13 +239,16 @@ class _SignInScreenState extends State<SignInScreen> {
                               .login(_username_controller.text,
                                   _password_controller.text)
                               .then((value) {
-                            if (value == "OK") {
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                              Navigator.of(context).pushNamed(Routes.home);
+                            if(value == "OK") {
+                              if(Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB") {
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context).pushNamed(Routes.product_lab_home);
+                              } else {
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context).pushNamed(Routes.home);
+                              }
                             } else {
-                              _showDialog(context,
-                                  "password_or_email_is_incorrect".tr());
+                              _showDialog(context, "password_or_email_is_incorrect".tr());
                             }
                           });
                         } else {
