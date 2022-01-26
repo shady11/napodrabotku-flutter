@@ -113,7 +113,6 @@ class _StartScreenState extends State<StartScreen> {
                     color: kColorPrimary,
                     textColor: Colors.white,
                     onPressed: () {
-                      Prefs.setString(Prefs.ROUTE, "ISHTAPP");
                       Navigator.of(context).pushNamed(Routes.signin);
                     },
                     text: 'sign_in'.tr(),

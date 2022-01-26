@@ -68,7 +68,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                   child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                 ),
                 onTap: () {
-                  // Navigator.of(context).pushNamed(Routes.home);
+                  Navigator.of(context).pushNamed(Routes.product_lab_home);
                 },
               ),
             ],
