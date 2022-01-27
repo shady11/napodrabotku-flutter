@@ -57,7 +57,6 @@ class Vacancy {
     } else {
       url = API_IP + model + '?region=$region' + '&lang=' + Prefs.getString(Prefs.LANGUAGE);
     }
-    print(url);
 
     try {
       Map<String, String> headers = {"Content-type": "application/json"};

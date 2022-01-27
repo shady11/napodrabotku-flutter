@@ -263,12 +263,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  getSocialOrientations() {
-    socialOrientations = [
-      "Дружественные к молодежи - готовность нанимать и привлекать молодежь из регионов и старше 14 лет",
-      "Дружественны к девушкам и женщинам",
-      "Дружественны к людям с инвалидностью"
-    ];
+  getSocialOrientations() async {
+    var list = await Vacancy.getLists('social_orientation', null);
+    list.forEach((item) {
+      setState(() {
+        socialOrientations.add(item['name']);
+      });
+    });
   }
 
   @override

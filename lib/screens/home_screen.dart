@@ -586,7 +586,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         user.saveFilters(
                                             _regions, _districts, _job_types, _vacancy_types, _busynesses, _schedules);
                                       }
-
                                       StoreProvider.of<AppState>(context).dispatch(setFilter(
                                           schedule_ids: _schedules,
                                           busyness_ids: _busynesses,
