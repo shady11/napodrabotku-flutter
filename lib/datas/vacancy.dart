@@ -25,6 +25,14 @@ class Vacancy {
   String type;
   int company;
   int is_disability_person_vacancy;
+  String opportunity;
+  String opportunityType;
+  String internshipLanguage;
+  String opportunityDuration;
+  String ageFrom;
+  String ageTo;
+  String typeOfRecommendedLetter;
+  bool isProductLabVacancy;
 
   Vacancy({
     this.id,
@@ -46,6 +54,14 @@ class Vacancy {
     this.type,
     this.company,
     this.is_disability_person_vacancy,
+    this.opportunity,
+    this.opportunityType,
+    this.internshipLanguage,
+    this.opportunityDuration,
+    this.ageFrom,
+    this.ageTo,
+    this.typeOfRecommendedLetter,
+    this.isProductLabVacancy,
   });
 
   static Future<List<dynamic>> getLists(String model, String region) async {
@@ -125,7 +141,15 @@ class Vacancy {
         'job_type': vacancy.job_type,
         'currency': vacancy.currency,
         'type': vacancy.type,
-      };
+        'opportunity': vacancy.opportunity,
+        'opportunity_type': vacancy.opportunityType,
+        'internship_language': vacancy.internshipLanguage,
+        'opportunity_duration': vacancy.opportunityDuration,
+        'age_from': vacancy.ageFrom,
+        'age_to': vacancy.ageTo,
+        'type_of_recommended_letter': vacancy.typeOfRecommendedLetter,
+        'is_product_lab_vacancy': vacancy.isProductLabVacancy,
+  };
 
   static List<Vacancy> getListOfVacancies() {
     getVacancyList(
@@ -269,10 +293,11 @@ class Vacancy {
         "Content-type": "application/json",
         "Authorization": Prefs.getString(Prefs.TOKEN)
       };
+      var body = vacancyToJsonMap(vacancy);
       final response = await http.post(
           url,
           headers: headers,
-          body: json.encode(vacancyToJsonMap(vacancy))
+          body: json.encode(body)
       );
 
       print(utf8.decode(response.bodyBytes));
@@ -315,98 +340,6 @@ class Vacancy {
       return "OK";
     } catch (error) {
       return "ERROR";
-      throw error;
-    }
-  }
-}
-
-class Qualification {
-  int id;
-  String organization_name;
-  String organization_address;
-  String phone_number;
-  String email;
-  String fullname_of_contact_person;
-  String position_of_contact_person;
-  int district_id;
-  int department_id;
-  int social_orientation_id;
-  int opportunity_id;
-  int opportunity_type_id;
-  int opportunity_duration_id;
-  String opportunity_from;
-  String opportunity_to;
-  bool is_product_lab_vacancy;
-
-  Qualification({
-    this.id,
-    this.organization_name,
-    this.organization_address,
-    this.phone_number,
-    this.email,
-    this.fullname_of_contact_person,
-    this.position_of_contact_person,
-    this.district_id,
-    this.department_id,
-    this.social_orientation_id,
-    this.opportunity_id,
-    this.opportunity_type_id,
-    this.opportunity_duration_id,
-    this.opportunity_from,
-    this.opportunity_to,
-    this.is_product_lab_vacancy,
-  });
-
-  static Map<String, dynamic> vacancyToJsonMap(Qualification qualification) => {
-    'id': qualification.id,
-    'organization_name': qualification.organization_name,
-    'organization_address': qualification.organization_address,
-    'phone_number': qualification.phone_number,
-    'email': qualification.email,
-    'fullname_of_contact_person': qualification.fullname_of_contact_person,
-    'position_of_contact_person': qualification.position_of_contact_person,
-    'district_id': qualification.district_id,
-    'department_id': qualification.department_id,
-    'social_orientation_id': qualification.social_orientation_id,
-    'opportunity_id': qualification.opportunity_id,
-    'opportunity_type_id': qualification.opportunity_type_id,
-    'opportunity_duration_id': qualification.opportunity_duration_id,
-    'opportunity_from': qualification.opportunity_from,
-    'opportunity_to': qualification.opportunity_to,
-    'is_product_lab_vacancy': qualification.is_product_lab_vacancy,
-  };
-
-  static Future<List<Qualification>> save(Qualification qualification) async {
-
-    String url = API_IP + "qualification/save";
-
-    try {
-      Map<String, String> headers = {"Content-type": "application/json"};
-      final response = await http.post(
-          url,
-          body: json.encode(vacancyToJsonMap(qualification)),
-          headers: headers,
-      );
-
-      return json.decode(utf8.decode(response.bodyBytes));
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static Future<List<Qualification>> getVacancyList() async {
-    final url = API_IP + API_QUALIFICATION_LIST;
-    try {
-      Map<String, String> headers = {"Content-type": "application/json"};
-      final response = await http.get(url);
-      var result_list;
-      for (var i in json.decode(utf8.decode(response.bodyBytes))) {
-        Vacancy model = Vacancy.fromJson(i);
-        result_list.add(model);
-      }
-
-      return result_list;
-    } catch (error) {
       throw error;
     }
   }

@@ -1501,47 +1501,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
-                                      Qualification qualification = new Qualification(
-                                        organization_name: _name_controller.text,
-                                        organization_address: _address_controller.text,
-                                        email: _email_controller.text,
-                                        phone_number: _phone_number_controller.text,
-                                        fullname_of_contact_person: _contact_person_full_name_controller.text,
-                                        position_of_contact_person: _contact_person_position_controller.text,
-                                        is_product_lab_vacancy: true,
-                                        opportunity_from: _ageFromController.text,
-                                        opportunity_to: _ageToController.text,
-                                        department_id: 1,
-                                        district_id: 1,
-                                        opportunity_duration_id: 1,
-                                        opportunity_id: 1,
-                                        opportunity_type_id: 1,
-                                        social_orientation_id: 1,
-                                      );
-                                      if (work == work_mode.isTraining) {
-                                        Qualification qualification = new Qualification(
-                                          organization_name: _name_controller.text,
-                                          organization_address: _address_controller.text,
-                                          email: _email_controller.text,
-                                          phone_number: _phone_number_controller.text,
-                                          fullname_of_contact_person: _contact_person_full_name_controller.text,
-                                          position_of_contact_person: _contact_person_position_controller.text,
-                                          is_product_lab_vacancy: true,
-                                          opportunity_from: _ageFromController.text,
-                                          opportunity_to: _ageToController.text,
-                                          department_id: 1,
-                                          district_id: 1,
-                                          opportunity_duration_id: 1,
-                                          opportunity_id: 1,
-                                          opportunity_type_id: 1,
-                                          social_orientation_id: 1,
-                                        );
-                                        Qualification.save(qualification).then((value) {
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        });
-                                      } else {
-                                        // if (_vacancyAddFormKey.currentState.validate()) {
+                                      if (_vacancyAddFormKey.currentState.validate()) {
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
                                           salary: _vacancy_salary_controller.text,
@@ -1549,16 +1509,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                           salary_to: _vacancy_salary_to_controller.text,
                                           is_disability_person_vacancy: is_disability_person_vacancy ? 1 : 0,
                                           description: _vacancy_description_controller.text,
-                                          type: _vacancy_type_id.toString(),
-                                          busyness: _busyness_id.toString(),
-                                          schedule: _schedule_id.toString(),
-                                          job_type: _job_type_id.toString(),
-                                          region: _region_id.toString(),
-                                          district: _district_id.toString(),
-                                          currency: _currency_id != null ? _currency_id.toString() : '',
+                                          type: _vacancy_type_id != null ? _vacancy_type_id.toString() : null,
+                                          busyness: _busyness_id != null ? _busyness_id.toString() : null,
+                                          schedule: _schedule_id != null ? _schedule_id.toString() : null,
+                                          job_type: _job_type_id != null ? _job_type_id.toString() : null,
+                                          region: _region_id != null ? _region_id.toString() : null,
+                                          district: _district_id != null ? _district_id.toString() : null,
+                                          currency: _currency_id != null ? _currency_id.toString() : null,
+                                          opportunity: opportunity,
+                                          opportunityType: opportunityType,
+                                          opportunityDuration: opportunityDuration,
+                                          internshipLanguage: selectedInternshipType,
+                                          typeOfRecommendedLetter: selectedTypeOfRecommendedLetter,
+                                          ageFrom: _ageFromController.text,
+                                          ageTo: _ageToController.text,
+                                          isProductLabVacancy: work_mode.isTraining == work,
                                         );
-
-                                        print(company_vacancy);
 
                                         Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
                                           StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
@@ -1571,6 +1537,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _vacancy_salary_from_controller = TextEditingController();
                                         _vacancy_salary_to_controller = TextEditingController();
                                         _vacancy_description_controller = TextEditingController();
+                                        _ageFromController = TextEditingController();
+                                        _ageToController = TextEditingController();
                                         setState(() {
                                           _schedule_id = null;
                                           _busyness_id = null;
@@ -1579,12 +1547,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           _region_id = null;
                                           _district_id = null;
                                           _currency_id = null;
+                                          opportunity = null;
+                                          opportunityType = null;
+                                          opportunityDuration = null;
+                                          selectedInternshipType = null;
+                                          selectedTypeOfRecommendedLetter = null;
                                         });
-                                        // } else {
-                                        //   print('invalid');
-                                        // }
+                                      } else {
+                                        print('invalid');
                                       }
-                                      print(_currency_id);
                                     },
                                     text: 'add'.tr(),
                                   ),
@@ -1770,6 +1741,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getOpportunityDurations();
     getJobs();
     getRecommendationLetterType();
+    getInternshipLanguages();
     super.initState();
     buildSome(context);
   }
