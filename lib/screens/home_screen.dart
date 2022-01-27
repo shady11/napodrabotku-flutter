@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> opportunities = [];
   List<String> opportunityTypes = [];
   List<String> opportunityDurations = [];
-  List<String> internshipTypes = [];
+  List<String> internshipLanguageTypes = [];
   List<String> typeOfRecommendedLetters = [];
 
   List _job_types = [];
@@ -121,7 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     // districtList = await Vacancy.getLists('districts', null);
     currencyList = await Vacancy.getLists('currencies', null);
-    internshipTypes = ["Кыргызский", "Русский", "Английский"];
   }
 
   getFilters(id) async {
@@ -244,35 +243,49 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  //TODO Realize this method
-  getSocialOrientations() async {
-    socialOrientations = [
-      "Дружественные к молодежи - готовность нанимать и привлекать молодежь из регионов и старше 14 лет",
-      "Дружественны к девушкам и женщинам",
-      "Дружественны к людям с инвалидностью"
-    ];
+  getOpportunities() async {
+    var list = await Vacancy.getLists('opportunity', null);
+    list.forEach((item) {
+      setState(() {
+        opportunities.add(item["name"]);
+      });
+    });
   }
 
-  //TODO Realize this method
   getOpportunityTypes() async {
-    opportunityTypes = [
-      "Оплачивается",
-      "Не оплачивается",
-      "Другой вид вознаграждения",
-    ];
+    var list = await Vacancy.getLists('opportunity_type', null);
+    list.forEach((item) {
+      setState(() {
+        opportunityTypes.add(item["name"]);
+      });
+    });
   }
 
-  //TODO Realize this method
   getOpportunityDurations() async {
-    opportunityDurations = [
-      "Разовая",
-      "1 неделя",
-      "1 месяц",
-      "2 месяца",
-      "3 месяца",
-      "постоянная",
-      "временная",
-    ];
+    var list = await Vacancy.getLists('opportunity_duration', null);
+    list.forEach((item) {
+      setState(() {
+        opportunityDurations.add(item["name"]);
+      });
+    });
+  }
+
+  getInternshipLanguages() async {
+    var list = await Vacancy.getLists('intership_language', null);
+    list.forEach((item) {
+      setState(() {
+        internshipLanguageTypes.add(item["name"]);
+      });
+    });
+  }
+
+  getRecommendationLetterType() async {
+    var list = await Vacancy.getLists('recommendation_letter_type', null);
+    list.forEach((item) {
+      setState(() {
+        typeOfRecommendedLetters.add(item["name"]);
+      });
+    });
   }
 
   selectDepartments(String jobType) {
@@ -286,24 +299,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
-  }
-
-  getOpportunities() async {
-    opportunities = [
-      "Волонтерство (Volunteering)",
-      "Производственная практика/ Стажировки (Internship)",
-      "Мероприятие (Event)",
-      "Проект (Project)",
-      "Клуб (Club)",
-      "Стипендия (Stipend)",
-      "Программа по обмену (Exchange program)",
-      "Наставничество (Mentorship)",
-      "Вызов (Challenge)",
-      "Конкурс (Contest)",
-      "Оплачиваемое внештатное короткое задание (Paid freelance short assignment)",
-      "Олимпиады",
-      "Вакансия для молодежи",
-    ];
   }
 
   TextEditingController _vacancy_name_controller = TextEditingController();
@@ -789,7 +784,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       DropdownSearch<String>(
                                         mode: Mode.MENU,
                                         showSelectedItem: true,
-                                        items: internshipTypes,
+                                        items: internshipLanguageTypes,
                                         onChanged: (value) {
                                           setState(() {
                                             selectedInternshipType = value;
@@ -1771,10 +1766,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     getLists();
     getOpportunities();
-    getSocialOrientations();
     getOpportunityTypes();
     getOpportunityDurations();
     getJobs();
+    getRecommendationLetterType();
     super.initState();
     buildSome(context);
   }
