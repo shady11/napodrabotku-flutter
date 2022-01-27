@@ -48,7 +48,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Product Lab'.tr(),
+            'Ishtapp'.tr(),
             style:
                 TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.w700, fontStyle: FontStyle.italic),
           ),

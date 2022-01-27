@@ -161,6 +161,8 @@ class User {
     request.fields["job_type"] = this.job_type.toString();
     request.fields["is_product_lab_user"] = this.is_product_lab_user.toString();
 
+    print(request.fields);
+
     // open a byteStream
     if (_image != null) {
       var stream =

@@ -322,7 +322,7 @@ class ProfileTab extends StatelessWidget {
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
                               Navigator.pushReplacementNamed(
-                                  context, Routes.start);
+                                  context, Routes.select_mode);
                             },
                           )
                         : ListTile(

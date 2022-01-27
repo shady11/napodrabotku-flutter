@@ -130,7 +130,7 @@ class _StartScreenState extends State<StartScreen> {
                         child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                       ),
                       onTap: () {
-                        if(mode == "PRODUCT_LAB")
+                        if (mode == "PRODUCT_LAB")
                           Navigator.of(context).pushNamed(Routes.product_lab_home);
                         else
                           Navigator.of(context).pushNamed(Routes.home);
@@ -139,34 +139,36 @@ class _StartScreenState extends State<StartScreen> {
 
               SizedBox(height: 10),
 
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: SizedBox(
-                        height: 60,
-                        child: Image.asset('assets/images/partners/japan.png'),
+              mode != "COMPANY"
+                  ? Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: SizedBox(
+                              height: 60,
+                              child: Image.asset('assets/images/partners/japan.png'),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: SizedBox(
+                              height: 60,
+                              child: Image.asset('assets/images/partners/giz.gif'),
+                            ),
+                          ),
+                          Container(
+                            child: SizedBox(
+                              height: 60,
+                              child: Image.asset('assets/images/partners/undp.png'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: SizedBox(
-                        height: 60,
-                        child: Image.asset('assets/images/partners/giz.gif'),
-                      ),
-                    ),
-                    Container(
-                      child: SizedBox(
-                        height: 60,
-                        child: Image.asset('assets/images/partners/undp.png'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : Container(),
 
               /// Social login
               /*Row(

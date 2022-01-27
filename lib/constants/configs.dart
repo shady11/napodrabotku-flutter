@@ -40,6 +40,7 @@ String API_USER_CV_COURSE_DELETE = 'user/course/delete/';
 
 String API_LOGIN = 'login';
 String API_VACANCY_LIST = 'vacancy';
+String API_QUALIFICATION_LIST = 'qualification';
 String API_LIKED_USER_VACANCY_LIST = 'user_vacancy/LIKED';
 String API_SUBMITTED_USER_VACANCY_LIST = 'user_vacancy/SUBMITTED';
 String API_VACANCY_USER_SAVE = 'user_vacancy';

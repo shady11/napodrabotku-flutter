@@ -74,42 +74,6 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*bottomSheet: Container(
-        color: Colors.white,
-        padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("dont_have_account".tr(),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: Colors.black45)),
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: InkWell(
-                child: Text(
-                    'sign_up'.tr(),
-                    style:  TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18
-                    )
-                ),
-                onTap: (){
-                  Navigator.of(context).popAndPushNamed(Routes.signup);
-                },
-              ),
-            ),
-//            CustomButton(
-//              padding: EdgeInsets.all(10),
-//              color: Colors.transparent,
-//              textColor: kColorPrimary,
-//              onPressed: () {
-//                Navigator.of(context).popAndPushNamed(Routes.signup);
-//              },
-//              text: 'sign_up'.tr(),
-//            ),
-          ],
-        ),
-      ),*/
       appBar: AppBar(
         title: Text("sign_in_title".tr()),
       ),

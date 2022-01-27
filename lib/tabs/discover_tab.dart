@@ -18,9 +18,9 @@ class DiscoverTab extends StatefulWidget {
   _DiscoverTabState createState() => _DiscoverTabState();
 }
 
-class _DiscoverTabState extends State<DiscoverTab>
-    with SingleTickerProviderStateMixin {
+class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStateMixin {
   CardController cardController = CardController();
+
   void handleInitialBuild(VacanciesScreenProps props) {
     props.getVacancies();
   }
@@ -51,8 +51,7 @@ class _DiscoverTabState extends State<DiscoverTab>
         props.addOneToMatches();
       }
       Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type).then((value) {
-        StoreProvider.of<AppState>(context)
-            .dispatch(getNumberOfLikedVacancies());
+        StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
       });
       setState(() {
         props.listResponse.data.remove(props.listResponse.data[0]);
@@ -65,18 +64,11 @@ class _DiscoverTabState extends State<DiscoverTab>
 
     Vacancy.getVacancyByOffset(
             offset: offset,
-            job_type_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-            region_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-            schedule_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-            busyness_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-            vacancy_type_ids: StoreProvider.of<AppState>(context)
-                .state
-                .vacancy
-                .vacancy_type_ids,
+            job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+            region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+            schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+            busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+            vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
             type: StoreProvider.of<AppState>(context).state.vacancy.type)
         .then((value) {
       if (value != null) {
@@ -94,8 +86,7 @@ class _DiscoverTabState extends State<DiscoverTab>
     return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
         ? StoreConnector<AppState, CompanyVacanciesScreenProps>(
             converter: (store) => mapStateToVacancyProps(store),
-            onInitialBuild: (props) =>
-                this.handleInitialBuildOfCompanyVacancy(props),
+            onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
             builder: (context, props) {
               List<Vacancy> data = props.listResponse.data;
               bool loading = props.listResponse.loading;
@@ -113,30 +104,25 @@ class _DiscoverTabState extends State<DiscoverTab>
                     Expanded(
                       child: StoreProvider.of<AppState>(context).state.vacancy.list.data.length > 0
                           ? UsersGrid(
-                              children:
-                                StoreProvider.of<AppState>(context).state.vacancy.list.data.map((vacancy) {
-                                  return GestureDetector(
-                                    child: ProfileCard(
+                              children: StoreProvider.of<AppState>(context).state.vacancy.list.data.map((vacancy) {
+                              return GestureDetector(
+                                child: ProfileCard(vacancy: vacancy, page: 'company', offset: offset),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                    return Scaffold(
+                                      backgroundColor: kColorPrimary,
+                                      appBar: AppBar(
+                                        title: Text("vacancy_view".tr()),
+                                      ),
+                                      body: VacancyView(
+                                        page: "company_view",
                                         vacancy: vacancy,
-                                        page: 'company',
-                                        offset: offset),
-                                    onTap: () {
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (BuildContext context) {
-                                        return Scaffold(
-                                          backgroundColor: kColorPrimary,
-                                          appBar: AppBar(
-                                            title: Text("vacancy_view".tr()),
-                                          ),
-                                          body: VacancyView(
-                                            page: "company_view",
-                                            vacancy: vacancy,
-                                          ),
-                                        );
-                                      }));
-                                    },
-                                  );
-                                }).toList())
+                                      ),
+                                    );
+                                  }));
+                                },
+                              );
+                            }).toList())
                           : Container(
                               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: Center(
@@ -194,15 +180,12 @@ class _DiscoverTabState extends State<DiscoverTab>
                                   ? Stack(
                                       children: <Widget>[
                                         Container(
-                                          padding:
-                                              EdgeInsets.fromLTRB(40, 0, 40, 0),
+                                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                                           child: Center(
                                             child: Text(
                                               "vacancies_empty".tr(),
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
+                                              style: TextStyle(color: Colors.white, fontSize: 20),
                                             ),
                                           ),
                                         ),
@@ -215,7 +198,8 @@ class _DiscoverTabState extends State<DiscoverTab>
                                             cardController: cardController,
                                           ),
                                           onTap: () {
-                                            Navigator.of(context).push(MaterialPageRoute(builder:(BuildContext context) {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(builder: (BuildContext context) {
                                               return Scaffold(
                                                 backgroundColor: kColorPrimary,
                                                 appBar: AppBar(
@@ -223,7 +207,11 @@ class _DiscoverTabState extends State<DiscoverTab>
                                                 ),
                                                 body: VacancyView(
                                                   page: "view",
-                                                  vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[index],
+                                                  vacancy: StoreProvider.of<AppState>(context)
+                                                      .state
+                                                      .vacancy
+                                                      .list
+                                                      .data[index],
                                                 ),
                                               );
                                             }));
@@ -233,10 +221,8 @@ class _DiscoverTabState extends State<DiscoverTab>
                                     )
                                   : Container();
                             },
-                            swipeCompleteCallback:
-                                (CardSwipeOrientation orientation, int index) {
-                              if (orientation.index ==
-                                  CardSwipeOrientation.LEFT.index) {
+                            swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
+                              if (orientation.index == CardSwipeOrientation.LEFT.index) {
                                 print('Left');
                                 removeCards(
                                     props: props,
@@ -274,8 +260,7 @@ class _DiscoverTabState extends State<DiscoverTab>
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Align(
-                    alignment: Alignment.lerp(
-                        new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
+                    alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
                     widthFactor: MediaQuery.of(context).size.width * 1,
                     heightFactor: MediaQuery.of(context).size.height * 0.4,
                     child: Row(
@@ -288,10 +273,12 @@ class _DiscoverTabState extends State<DiscoverTab>
                           textColor: kColorPrimary,
                           onPressed: () {
                             Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
                             StoreProvider.of<AppState>(context).dispatch(getVacancies());
                           },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                          text:
+                              StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
                         ),
                         CustomButton(
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -300,10 +287,14 @@ class _DiscoverTabState extends State<DiscoverTab>
                           textColor: kColorPrimary,
                           onPressed: () {
                             Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(type: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type:
+                                    StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
                             StoreProvider.of<AppState>(context).dispatch(getVacancies());
                           },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all'.tr() : 'week'.tr(),
+                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
+                              ? 'all'.tr()
+                              : 'week'.tr(),
                         ),
                         CustomButton(
                           width: MediaQuery.of(context).size.width * 0.3,
@@ -312,15 +303,19 @@ class _DiscoverTabState extends State<DiscoverTab>
                           textColor: kColorPrimary,
                           onPressed: () {
                             Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(
-                                setTimeFilter(type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all' : 'month'));
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                                    ? 'all'
+                                    : 'month'));
                             StoreProvider.of<AppState>(context).dispatch(getVacancies());
                             //                      Navigator.of(context).popAndPushNamed(Routes.signup);
                             setState(() {
                               button == 3 ? button = 0 : button = 3;
                             });
                           },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all'.tr() : 'month'.tr(),
+                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                              ? 'all'.tr()
+                              : 'month'.tr(),
                         ),
                       ],
                     ),
@@ -358,11 +353,7 @@ class VacanciesScreenProps {
   final Function addOneToMatches;
   final ListVacancysState listResponse;
 
-  VacanciesScreenProps(
-      {this.getVacancies,
-      this.listResponse,
-      this.deleteItem,
-      this.addOneToMatches});
+  VacanciesScreenProps({this.getVacancies, this.listResponse, this.deleteItem, this.addOneToMatches});
 }
 
 VacanciesScreenProps mapStateToProps(Store<AppState> store) {

@@ -109,15 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
     busynessList = await Vacancy.getLists('busyness', null);
     scheduleList = await Vacancy.getLists('schedule', null);
     regionList = await Vacancy.getLists('region', null);
-    districtList = await Vacancy.getLists('districts', null);
+    // districtList = await Vacancy.getLists('districts', null);
     currencyList = await Vacancy.getLists('currencies', null);
-
-    var spheres = await getSpheres();
-    spheres.forEach((item) {
-      setState(() {
-        jobs.add(item['jobType']);
-      });
-    });
   }
 
   getFilters(id) async {
@@ -178,6 +171,64 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     ];
     return spheres;
+  }
+
+  // var spheres = getSpheres();
+  // spheres.forEach((item) {
+  // setState(() {
+  // jobs.add(item['jobType']);
+  // });
+  // });
+
+  getJobs() async {
+    spheres = [
+      {
+        "id": 1,
+        "jobType": "Коммерческий (Commercial)",
+        "departments": ["все бизнес компании"]
+      },
+      {
+        "id": 2,
+        "jobType": "Цифровое и ИТ (Digital)",
+        "departments": ["все ИТ и стартапы"]
+      },
+      {
+        "id": 3,
+        "jobType": "Социальное (Social)",
+        "departments": [
+          "НПО",
+          "МО",
+          "Гос. Учреждения",
+          "Соц. Проекты и инициативы",
+        ]
+      },
+      {
+        "id": 4,
+        "jobType": "Экология (Ecological)",
+        "departments": [
+          "НПО",
+          "МО",
+          "Гос. Учреждения",
+          "Экологические проекты и инициативы",
+        ]
+      },
+      {
+        "id": 5,
+        "jobType": "Некоммерческие организации",
+        "departments": [
+          "Test1",
+          "Test1",
+          "Test1",
+          "Test1",
+        ]
+      }
+    ];
+
+    spheres.forEach((item) {
+      setState(() {
+        jobs.add(item['jobType']);
+      });
+    });
   }
 
   //TODO Realize this method
@@ -1591,7 +1642,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : Container(),
                             SizedBox(height: 30),
 
-                            /// Sign In button
                             SizedBox(
                               width: double.maxFinite,
                               child: Row(
@@ -1621,8 +1671,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
-                                      print(_currency_id);
-                                      if (_vacancyAddFormKey.currentState.validate()) {
+                                      Qualification qualification = new Qualification(
+                                        organization_name: _name_controller.text,
+                                        organization_address: _address_controller.text,
+                                        email: _email_controller.text,
+                                        phone_number: _phone_number_controller.text,
+                                        fullname_of_contact_person: _contact_person_full_name_controller.text,
+                                        position_of_contact_person: _contact_person_position_controller.text,
+                                        is_product_lab_vacancy: true,
+                                        opportunity_from: _ageFromController.text,
+                                        opportunity_to: _ageToController.text,
+                                        department_id: 1,
+                                        district_id: 1,
+                                        opportunity_duration_id: 1,
+                                        opportunity_id: 1,
+                                        opportunity_type_id: 1,
+                                        social_orientation_id: 1,
+                                      );
+                                      if(work == work_mode.isTraining) {
+                                        Qualification qualification = new Qualification(
+                                          organization_name: _name_controller.text,
+                                          organization_address: _address_controller.text,
+                                          email: _email_controller.text,
+                                          phone_number: _phone_number_controller.text,
+                                          fullname_of_contact_person: _contact_person_full_name_controller.text,
+                                          position_of_contact_person: _contact_person_position_controller.text,
+                                          is_product_lab_vacancy: true,
+                                          opportunity_from: _ageFromController.text,
+                                          opportunity_to: _ageToController.text,
+                                          department_id: 1,
+                                          district_id: 1,
+                                          opportunity_duration_id: 1,
+                                          opportunity_id: 1,
+                                          opportunity_type_id: 1,
+                                          social_orientation_id: 1,
+                                        );
+                                        Qualification.save(qualification).then((value) {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        });
+                                      } else {
+                                        // if (_vacancyAddFormKey.currentState.validate()) {
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
                                           salary: _vacancy_salary_controller.text,
@@ -1645,6 +1734,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                                           Navigator.of(context).pop();
                                         });
+
                                         // clear inputs
                                         _vacancy_name_controller = TextEditingController();
                                         _vacancy_salary_controller = TextEditingController();
@@ -1660,9 +1750,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           _district_id = null;
                                           _currency_id = null;
                                         });
-                                      } else {
-                                        print('invalid');
+                                        // } else {
+                                        //   print('invalid');
+                                        // }
                                       }
+                                      print(_currency_id);
                                     },
                                     text: 'add'.tr(),
                                   ),
@@ -1843,9 +1935,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     getLists();
+    getOpportunities();
     getSocialOrientations();
     getOpportunityTypes();
     getOpportunityDurations();
+    getJobs();
     super.initState();
     buildSome(context);
   }

@@ -1,30 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
-import 'package:ishtapp/datas/RSAA.dart';
-import 'package:ishtapp/datas/app_state.dart';
-
-import 'package:ishtapp/datas/user.dart';
-import 'package:ishtapp/datas/pref_manager.dart';
-import 'package:ishtapp/utils/constants.dart';
-import 'package:ishtapp/constants/configs.dart';
-import 'package:ishtapp/routes/routes.dart';
-
-import 'package:ishtapp/widgets/basic_user_info.dart';
-import 'package:ishtapp/widgets/user_course_info.dart';
-import 'package:ishtapp/widgets/user_education_info.dart';
-import 'package:ishtapp/widgets/user_experience_info.dart';
-import 'package:ishtapp/widgets/cicle_button.dart';
-
-import 'package:ishtapp/components/custom_button.dart';
-
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'chat_screen.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+import 'package:ishtapp/datas/app_state.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/utils/constants.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/widgets/basic_user_info.dart';
+import 'package:ishtapp/widgets/user_course_info.dart';
+import 'package:ishtapp/widgets/user_education_info.dart';
+import 'package:ishtapp/widgets/user_experience_info.dart';
+import 'package:ishtapp/components/custom_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
