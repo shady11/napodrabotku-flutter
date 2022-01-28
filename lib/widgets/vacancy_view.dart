@@ -78,8 +78,6 @@ class VacancyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(vacancy.region);
-
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
@@ -88,7 +86,6 @@ class VacancyView extends StatelessWidget {
         child: Stack(
           children: [
             /// User Card
-
             Card(
               clipBehavior: Clip.antiAlias,
               elevation: 4.0,
@@ -111,10 +108,7 @@ class VacancyView extends StatelessWidget {
                             child: vacancy.company_logo != null
                                 ? Image.network(
                                     SERVER_IP + vacancy.company_logo.toString(),
-                                    headers: {
-                                      "Authorization":
-                                          Prefs.getString(Prefs.TOKEN)
-                                    },
+                                    headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
                                     width: 50,
                                     height: 50,
                                   )
@@ -130,7 +124,7 @@ class VacancyView extends StatelessWidget {
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              text: vacancy.company_name.toString() + '\n',
+                              text: vacancy.company_name != null ? vacancy.company_name.toString() + '\n' : "",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -138,7 +132,7 @@ class VacancyView extends StatelessWidget {
                                   color: Colors.black),
                               children: <TextSpan>[
                                 TextSpan(
-                                    text: vacancy.region,
+                                    text: vacancy.region != null ? vacancy.region : "",
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
@@ -158,89 +152,241 @@ class VacancyView extends StatelessWidget {
                     ),
 
                     SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Text(
-                            vacancy.type.toString(),
-                            style: TextStyle(color: Colors.black87),
+                    vacancy.isProductLabVacancy
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    "Выбор возможностей:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  vacancy.type != null ? vacancy.type.toString() : "",
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Flexible(
+                                  child: Text(
+                                vacancy.salary != null ? vacancy.salary : '',
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                              )),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                            child: Text(
-                          vacancy.salary != null ? vacancy.salary : '',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: kColorPrimary),
-                        )),
-                      ],
-                    ),
                     SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Text(
-                            vacancy.schedule.toString(),
-                            style: TextStyle(color: Colors.black87),
+
+                    vacancy.isProductLabVacancy
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    "Вид возможности:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  vacancy.opportunityType != null ? vacancy.opportunityType.toString() : "",
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
+                    vacancy.isProductLabVacancy
+                        ? Column(
+                            children: [
+                              SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Язык для стажировки:",
+                                        style:
+                                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      vacancy.internshipLanguage != null ? vacancy.internshipLanguage.toString() : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Container(),
+                    vacancy.isProductLabVacancy
+                        ? Column(
+                            children: [
+                              SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Продолжительность:",
+                                        style:
+                                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  vacancy.schedule != null ? vacancy.schedule.toString() : "",
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
                     SizedBox(height: 15),
 
-                    /// User job title
-                    Text(
-                      vacancy.name,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                    SizedBox(height: 10),
+                    /// Uer job title
                     page == 'discover'
                         ? Expanded(
                             child: RichText(
                               text: TextSpan(
-                                  text: vacancy.description,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black45)),
+                                  text: vacancy.description != null ? vacancy.description : "",
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                             ),
                           )
                         : SizedBox(),
                     SizedBox(height: 20),
-                    Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: RichText(
-                          text: TextSpan(
-                              text: vacancy.description,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: Colors.black45)),
-                        ),
-                      ),
-                    ),
+                    vacancy.isProductLabVacancy
+                        ? Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Готовность выдать",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "рекомендательное письмо:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      vacancy.typeOfRecommendedLetter != null
+                                          ? vacancy.typeOfRecommendedLetter.toString()
+                                          : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Container(),
+                    vacancy.isProductLabVacancy
+                        ? Column(
+                            children: [
+                              SizedBox(height: 10),
+                              Text(
+                                "Возраст, для которого предназначена возможность: ${vacancy.ageFrom}-${vacancy.ageTo}",
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                              )
+                            ],
+                          )
+                        : Container(),
+                    vacancy.isProductLabVacancy
+                        ? Container()
+                        : Expanded(
+                            flex: 1,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: vacancy.description != null ? vacancy.description : "",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: 'GTEestiProDisplay',
+                                        color: Colors.black45)),
+                              ),
+                            ),
+                          ),
                     SizedBox(height: 20),
                     page != 'user_match'
                         ? SizedBox(
@@ -250,66 +396,42 @@ class VacancyView extends StatelessWidget {
                               children: [
                                 page == 'discover'
                                     ? Container()
-                                    : page == 'submitted' ||
-                                            page == 'inactive' ||
-                                            page == 'company_view'
+                                    : page == 'submitted' || page == 'inactive' || page == 'company_view'
                                         ? Container()
                                         : Center(
                                             child: CustomButton(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.35,
+                                              width: MediaQuery.of(context).size.width * 0.35,
                                               padding: EdgeInsets.all(5),
                                               color: kColorPrimary,
                                               textColor: Colors.white,
                                               onPressed: () {
-                                                Prefs.getString(Prefs.TOKEN) ==  null
+                                                Prefs.getString(Prefs.TOKEN) == null
                                                     ? _showDialog(context, 'sign_in_to_submit'.tr())
-                                                    : User.checkUserCv(Prefs.getInt(Prefs.USER_ID))
-                                                        .then((value) {
-                                                          if (value) {
-                                                            Vacancy.saveVacancyUser(vacancy_id:
-                                                                        vacancy
-                                                                            .id,
-                                                                    type:
-                                                                        "SUBMITTED")
-                                                                .then((value) {
-                                                              if (value == "OK") {
-                                                                _showDialog1(context,"successfully_submitted"
-                                                                        .tr());
-                                                                StoreProvider.of<
-                                                                            AppState>(
-                                                                        context)
-                                                                    .state
-                                                                    .vacancy
-                                                                    .list
-                                                                    .data
-                                                                    .remove(
-                                                                        vacancy);
-                                                                StoreProvider.of<
-                                                                            AppState>(
-                                                                        context)
-                                                                    .dispatch(
-                                                                        getSubmittedVacancies());
-                                                                StoreProvider.of<
-                                                                            AppState>(
-                                                                        context)
-                                                                    .dispatch(
-                                                                        getNumberOfSubmittedVacancies());
-                                                              } else {
-                                                                _showDialog(
-                                                                    context,
-                                                                    "some_errors_occured_try_again"
-                                                                        .tr());
-                                                              }
-                                                            });
-                                                          } else {
-                                                            _showDialog(
-                                                                context,
-                                                                "please_fill_user_cv_to_submit"
-                                                                    .tr());
-                                                          }
+                                                    : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                                        if (value) {
+                                                          Vacancy.saveVacancyUser(
+                                                                  vacancy_id: vacancy.id, type: "SUBMITTED")
+                                                              .then((value) {
+                                                            if (value == "OK") {
+                                                              _showDialog1(context, "successfully_submitted".tr());
+                                                              StoreProvider.of<AppState>(context)
+                                                                  .state
+                                                                  .vacancy
+                                                                  .list
+                                                                  .data
+                                                                  .remove(vacancy);
+                                                              StoreProvider.of<AppState>(context)
+                                                                  .dispatch(getSubmittedVacancies());
+                                                              StoreProvider.of<AppState>(context)
+                                                                  .dispatch(getNumberOfSubmittedVacancies());
+                                                            } else {
+                                                              _showDialog(
+                                                                  context, "some_errors_occured_try_again".tr());
+                                                            }
+                                                          });
+                                                        } else {
+                                                          _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                                        }
                                                       });
                                               },
                                               text: 'submit'.tr(),
@@ -320,9 +442,7 @@ class VacancyView extends StatelessWidget {
                           )
                         : Container(),
 
-                    this.page == 'discover'
-                        ? SizedBox(height: 0)
-                        : Container(width: 0, height: 0),
+                    this.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
                   ],
                 ),
               ),

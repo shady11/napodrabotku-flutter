@@ -124,6 +124,14 @@ class Vacancy {
         district: json['district'],
         type: json['type'],
         currency: json['currency'],
+        opportunity: json['opportunity'],
+        opportunityType: json['opportunity_type'],
+        internshipLanguage: json['internship_language'],
+        opportunityDuration: json['opportunity_duration'],
+        ageFrom: json['age_from'],
+        ageTo: json['age_to'],
+        typeOfRecommendedLetter: json['recommendation_letter_type'],
+        isProductLabVacancy: json['is_product_lab_vacancy'] == 1,
       );
 
   static Map<String, dynamic> vacancyToJsonMap(Vacancy vacancy) => {
