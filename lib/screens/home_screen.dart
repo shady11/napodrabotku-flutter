@@ -358,40 +358,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         key: _formKey,
                         child: Column(
                           children: <Widget>[
-                            // MultiSelectFormField(
-                            //   autovalidate: false,
-                            //   title: Text(
-                            //     'region'.tr(),
-                            //     style: TextStyle(
-                            //         fontSize: 13,
-                            //         fontWeight: FontWeight.bold,
-                            //         color: Colors.black),
-                            //   ),
-                            //   validator: (value) {
-                            //     if (value == null || value.length == 0) {
-                            //       return 'select_one_or_more'.tr();
-                            //     }
-                            //     return '';
-                            //   },
-                            //   dataSource: regionList,
-                            //   textField: 'name',
-                            //   valueField: 'id',
-                            //   okButtonLabel: 'ok'.tr(),
-                            //   cancelButtonLabel: 'cancel'.tr(),
-                            //   // required: true,
-                            //   hintWidget: Text('select_one_or_more'.tr()),
-                            //   initialValue: _regions,
-                            //   onSaved: (value) async {
-                            //     if (value == null) return;
-                            //     await getDistrictsById(value[0]);
-                            //     setState(() {
-                            //       _regions = value;
-                            //     });
-                            //   },
-                            //   fillColor: Colors.white,
-                            //   checkBoxCheckColor: Colors.white,
-                            //   checkBoxActiveColor: Colors.white,
-                            // ),
                             MultiSelectFormField(
                               autovalidate: false,
                               title: Text(
@@ -529,7 +495,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             SizedBox(height: 30),
 
-                            /// Sign In button
                             SizedBox(
                               width: double.maxFinite,
                               child: Row(

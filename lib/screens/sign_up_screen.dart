@@ -655,6 +655,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           user.gender = gender == user_gender.Male ? 0 : 1;
                           user.region = selectedRegion;
                           user.district = selectedDistrict;
+                          user.is_product_lab_user = Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB";
 
                           var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
 
@@ -677,6 +678,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           request.fields["region"] = user.region.toString();
                           request.fields["district"] = user.district.toString();
                           request.fields["job_type"] = user.job_type.toString();
+                          request.fields["is_product_lab_user"] = user.is_product_lab_user ? "1" : "0";
 
                           // open a byteStream
                           if (_imageFile != null) {

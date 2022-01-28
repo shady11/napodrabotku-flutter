@@ -511,111 +511,56 @@ class ProfileCardProductLab extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 20),
-                    isProductLabVacancy
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                  child: Text(
-                                vacancy.opportunityType != null ? vacancy.opportunityType : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.type != null ? vacancy.type.toString() : "",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                  child: Text(
-                                vacancy.salary != null ? vacancy.salary : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
+                            style: TextStyle(
+                              color: Colors.black87,
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                            child: Text(
+                          vacancy.opportunityType != null ? vacancy.opportunityType : '',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'GTEestiProDisplay',
+                              color: kColorPrimary),
+                        )),
+                      ],
+                    ),
                     SizedBox(height: 5),
-                    isProductLabVacancy
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
-                                  style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.schedule != null ? vacancy.schedule.toString() : "",
-                                  style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                                ),
-                              ),
-                            ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
+                            style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
                           ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 15),
-                    isProductLabVacancy
-                        ? Text(
-                            vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black),
-                          )
-                        : Text(
-                            vacancy.name != null ? vacancy.name : "",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black),
-                          ),
+                    Text(
+                      vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'GTEestiProDisplay',
+                          color: Colors.black),
+                    ),
                     SizedBox(height: 10),
                     page == 'discover'
                         ? Expanded(

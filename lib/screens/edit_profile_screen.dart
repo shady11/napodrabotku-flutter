@@ -203,63 +203,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  getJobSphere() {
-    jobSpheres = [
-      {
-        "id": 1,
-        "jobType": "Коммерческий (Commercial)",
-        "departments": ["все бизнес компании"]
-      },
-      {
-        "id": 2,
-        "jobType": "Цифровое и ИТ (Digital)",
-        "departments": ["все ИТ и стартапы"]
-      },
-      {
-        "id": 3,
-        "jobType": "Социальное (Social)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Соц. Проекты и инициативы",
-        ]
-      },
-      {
-        "id": 4,
-        "jobType": "Экология (Ecological)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Экологические проекты и инициативы",
-        ]
-      },
-      {
-        "id": 5,
-        "jobType": "Некоммерческие организации",
-        "departments": [
-          "Test1",
-          "Test1",
-          "Test1",
-          "Test1",
-        ]
-      }
-    ];
-
-    jobSpheres.forEach((item) {
+  getJobSphere() async {
+    var list = await Vacancy.getLists('job_sphere', null);
+    list.forEach((sphere) {
       setState(() {
-        spheres.add(item['jobType']);
+        spheres.add(sphere['name']);
       });
     });
   }
 
-  getDepartments(String sphere) {
-    jobSpheres.forEach((item) {
-      if (sphere == item["jobType"])
-        setState(() {
-          departments = item['departments'];
-        });
+  getDepartments(String sphere) async {
+    departments = [];
+    var list = await Vacancy.getLists2('department', sphere);
+    list.forEach((department) {
+      setState(() {
+        departments.add(department['name']);
+      });
     });
   }
 
@@ -300,6 +259,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       selectedRegion = user.region;
       getDistricts(user.region);
       selectedDistrict = user.district;
+
+      selectedJobSphere = user.job_sphere;
+      selectedDepartment = user.department;
+      selectedSocialOrientation = user.social_orientation;
+      _fullname_of_contact_person.text = user.contact_person_fullname;
+      _position_of_contact_person.text = user.contact_person_position;
 
       if (user.birth_date != null) _birth_date_controller.text = formatter.format(user.birth_date);
       count = 2;
@@ -545,14 +510,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   style: TextStyle(fontSize: 16, color: Colors.black),
                                 )),
                             TextFormField(
-                              enabled: false,
+                              enabled: true,
                               controller: _address_of_company,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                                 filled: true,
-                                fillColor: Colors.grey[100],
+                                fillColor: Colors.grey[200],
                               ),
                               style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
                             ),
@@ -574,14 +539,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   style: TextStyle(fontSize: 16, color: Colors.black),
                                 )),
                             TextFormField(
-                              enabled: false,
+                              enabled: true,
                               controller: _fullname_of_contact_person,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                                 filled: true,
-                                fillColor: Colors.grey[100],
+                                fillColor: Colors.grey[200],
                               ),
                               style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
                             ),
@@ -603,14 +568,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   style: TextStyle(fontSize: 16, color: Colors.black),
                                 )),
                             TextFormField(
-                              enabled: false,
+                              enabled: true,
                               controller: _position_of_contact_person,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                                 floatingLabelBehavior: FloatingLabelBehavior.always,
                                 filled: true,
-                                fillColor: Colors.grey[100],
+                                fillColor: Colors.grey[200],
                               ),
                               style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
                             ),
@@ -937,6 +902,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           user.gender = gender == user_gender.Male ? 0 : 1;
                           user.region = selectedRegion;
                           user.district = selectedDistrict;
+                          user.contact_person_fullname = _fullname_of_contact_person.text;
+                          user.contact_person_position = _position_of_contact_person.text;
+                          user.job_sphere = selectedJobSphere;
+                          user.department = selectedDepartment;
+                          user.social_orientation = selectedSocialOrientation;
 
                           if (_imageFile != null && _imageFile.path != null)
                             user.uploadImage2(File(_imageFile.path));

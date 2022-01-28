@@ -34,8 +34,7 @@ class _MatchesTabState extends State<MatchesTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (Prefs.getString(Prefs.TOKEN) == "null" ||
-        Prefs.getString(Prefs.TOKEN) == null) {
+    if (Prefs.getString(Prefs.TOKEN) == "null" || Prefs.getString(Prefs.TOKEN) == null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,8 +87,7 @@ class _MatchesTabState extends State<MatchesTab> {
                                 ),
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext ctx) =>
-                                          ProfileInfoScreen(user_id: user.id)));
+                                      builder: (BuildContext ctx) => ProfileInfoScreen(user_id: user.id)));
                                 },
                               );
                             }).toList())
@@ -99,8 +97,7 @@ class _MatchesTabState extends State<MatchesTab> {
                                 child: Text(
                                   'cvs_empty'.tr(),
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
+                                  style: TextStyle(color: Colors.white, fontSize: 20),
                                 ),
                               ),
                             )),
@@ -118,6 +115,7 @@ class _MatchesTabState extends State<MatchesTab> {
           builder: (context, props) {
             List<Vacancy> data = props.listResponse1.data;
             bool loading = props.listResponse1.loading;
+
             Widget body;
             if (loading) {
               body = Center(
@@ -129,28 +127,21 @@ class _MatchesTabState extends State<MatchesTab> {
               body = Column(
                 children: [
                   Expanded(
-                    child: StoreProvider.of<AppState>(context)
-                                .state
-                                .vacancy
-                                .liked_list
-                                .data
-                                .length !=
-                            0
+                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
                         ? UsersGrid(
-                            children: StoreProvider.of<AppState>(context)
-                                .state
-                                .vacancy
-                                .liked_list
-                                .data
-                                .map((vacancy) {
+                            children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
                             return GestureDetector(
-                              child: ProfileCard(
-                                vacancy: vacancy,
-                                page: 'match',
-                              ),
+                              child: Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                                  ? !vacancy.isProductLabVacancy ? ProfileCard(
+                                    vacancy: vacancy,
+                                    page: 'match',
+                                    ) : Container()
+                                  : ProfileCardProductLab(
+                                      vacancy: vacancy,
+                                      page: 'match',
+                                    ),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                   return Scaffold(
                                     backgroundColor: kColorPrimary,
                                     appBar: AppBar(

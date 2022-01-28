@@ -28,6 +28,11 @@ class User {
   String region;
   String district;
   String job_type;
+  String job_sphere;
+  String department;
+  String social_orientation;
+  String contact_person_fullname;
+  String contact_person_position;
   bool is_product_lab_user;
 
   User({
@@ -51,6 +56,11 @@ class User {
     this.district,
     this.job_type,
     this.is_product_lab_user,
+    this.contact_person_fullname,
+    this.contact_person_position,
+    this.department,
+    this.job_sphere,
+    this.social_orientation,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
@@ -71,6 +81,11 @@ class User {
         region: json['region'],
         district: json['district'],
         job_type: json['job_type'],
+        job_sphere: json['job_sphere'],
+        department: json['department'],
+        social_orientation: json['social_orientation'],
+        contact_person_fullname: json['contact_person_fullname'],
+        contact_person_position: json['contact_person_position'],
         is_product_lab_user: json['is_product_lab_user'] == 1,
       );
 
@@ -160,6 +175,11 @@ class User {
     request.fields["district"] = this.district.toString();
     request.fields["job_type"] = this.job_type.toString();
     request.fields["is_product_lab_user"] = this.is_product_lab_user.toString();
+    request.fields["contact_person_fullname"] = this.contact_person_fullname.toString();
+    request.fields["contact_person_position"] = this.contact_person_position.toString();
+    request.fields["job_sphere"] = this.job_sphere.toString();
+    request.fields["department"] = this.department.toString();
+    request.fields["social_orientation"] = this.social_orientation.toString();
 
     print(request.fields);
 
@@ -224,6 +244,11 @@ class User {
         'district': user.district,
         'job_type': user.job_type,
         "is_product_lab_user": user.is_product_lab_user,
+        "contact_person_fullname": user.contact_person_fullname,
+        "contact_person_position": user.contact_person_position,
+        "job_sphere": user.job_sphere,
+        "department": user.department,
+        "social_orientation": user.social_orientation,
       };
 
   bool get isAuth {

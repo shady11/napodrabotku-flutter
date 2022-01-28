@@ -630,7 +630,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           request.fields["region"] = user.region.toString();
                           request.fields["district"] = user.district.toString();
                           request.fields["job_type"] = user.job_type.toString();
-                          request.fields["is_product_lab_user"] = user.is_product_lab_user.toString();
+                          request.fields["is_product_lab_user"] = user.is_product_lab_user ? "1" : "0";
 
                           // open a byteStream
                           if (_imageFile != null) {

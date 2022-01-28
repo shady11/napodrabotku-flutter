@@ -86,6 +86,28 @@ class Vacancy {
     }
   }
 
+  static Future<List<dynamic>> getLists2(String model, String sphere) async {
+
+    String url = '';
+
+    if(sphere == null){
+      url = API_IP + model + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+    } else {
+      url = API_IP + model + '?job_sphere=$sphere' + '&lang=' + Prefs.getString(Prefs.LANGUAGE);
+    }
+
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(url, headers: headers);
+
+      print(model + ' - ' + utf8.decode(response.bodyBytes));
+
+      return json.decode(utf8.decode(response.bodyBytes));
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static Future<List<dynamic>> getDistrictsById(String model, int region) async {
 
     String url = '';
@@ -218,7 +240,7 @@ class Vacancy {
     List vacancy_type_ids,
   }) async {
     final url =
-        API_IP + API_VACANCY_LIST + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+        API_IP + API_VACANCY_LIST + '?lang=' + Prefs.getString(Prefs.LANGUAGE) + "&route=" + Prefs.getString(Prefs.ROUTE);
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
