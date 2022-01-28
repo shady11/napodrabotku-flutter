@@ -265,6 +265,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       selectedSocialOrientation = user.social_orientation;
       _fullname_of_contact_person.text = user.contact_person_fullname;
       _position_of_contact_person.text = user.contact_person_position;
+      _address_of_company.text = user.address;
 
       if (user.birth_date != null) _birth_date_controller.text = formatter.format(user.birth_date);
       count = 2;
@@ -751,114 +752,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         )
                       : Container(),
                   SizedBox(height: 20),
-//                   Prefs.getString(Prefs.USER_TYPE) == 'USER'
-//                       ? Column(
-//                           children: [
-//                             Align(
-//                                 widthFactor: 10,
-//                                 heightFactor: 1.5,
-//                                 alignment: Alignment.topLeft,
-//                                 child: Text(
-//                                   'resume_title'.tr(),
-//                                   style: TextStyle(
-//                                       fontSize: 16, color: Colors.black),
-//                                 )
-//                             ),
-//                             TextFormField(
-//                               controller: title_controller,
-//                               decoration: InputDecoration(
-//                                 border: OutlineInputBorder(
-//                                     borderRadius: BorderRadius.circular(10),
-//                                     borderSide: BorderSide.none),
-//                                 floatingLabelBehavior:
-//                                     FloatingLabelBehavior.always,
-//                                 filled: true,
-//                                 fillColor: Colors.grey[200],
-//                               ),
-//                               validator: (name) {
-//                                 // Basic validation
-//                                 if (name.isEmpty) {
-//                                   return "please_fill_this_field".tr();
-//                                 }
-//                                 return null;
-//                               },
-//                             ),
-//                             SizedBox(height: 20),
-//                             Align(
-//                                 widthFactor: 10,
-//                                 heightFactor: 1.5,
-//                                 alignment: Alignment.topLeft,
-//                                 child: Text(
-//                                   'experience_year'.tr(),
-//                                   style: TextStyle(
-//                                       fontSize: 16, color: Colors.black),
-//                                 )),
-//                             TextFormField(
-//                               controller: experience_year_controller,
-//                               decoration: InputDecoration(
-//                                 border: OutlineInputBorder(
-//                                     borderRadius: BorderRadius.circular(10),
-//                                     borderSide: BorderSide.none),
-//                                 floatingLabelBehavior:
-//                                     FloatingLabelBehavior.always,
-//                                 filled: true,
-//                                 fillColor: Colors.grey[200],
-//                               ),
-//                               validator: (name) {
-//                                 // Basic validation
-//                                 if (name.isEmpty) {
-//                                   return "please_fill_this_field".tr();
-//                                 }
-//                                 return null;
-//                               },
-//                             ),
-//                             SizedBox(height: 20),
-//                             Align(
-//                               widthFactor: 10,
-//                               heightFactor: 1.5,
-//                               alignment: Alignment.topLeft,
-//                               child: Text(
-//                                 'linkedin_profile'.tr(),
-//                                 style: TextStyle(
-//                                     fontSize: 16, color: Colors.black),
-//                               ),
-//                             ),
-//                             TextFormField(
-//                               controller: _linkedin_controller,
-//                               decoration: InputDecoration(
-//                                 border: OutlineInputBorder(
-//                                     borderRadius: BorderRadius.circular(10),
-//                                     borderSide: BorderSide.none),
-//                                 floatingLabelBehavior:
-//                                     FloatingLabelBehavior.always,
-//                                 filled: true,
-//                                 fillColor: Colors.grey[200],
-//                               ),
-//                               validator: (name) {
-//                                 return null;
-//                               },
-//                             ),
-//                             SizedBox(height: 20),
-//                             CheckboxListTile(
-//                               contentPadding: EdgeInsets.zero,
-//                               title: Text(
-//                                 'are_you_migrant'.tr(),
-//                                 style: TextStyle(
-//                                     fontSize: 16, color: Colors.black),
-//                               ),
-//                               controlAffinity: ListTileControlAffinity.leading,
-//                               value: is_migrant,
-//                               onChanged: (value) {
-//                                 setState(() {
-//                                   is_migrant = value;
-//                                 });
-//                               },
-//                             ),
-//                             SizedBox(height: 20),
-//                           ],
-//                         )
-//                       : Container(),
-                  // SizedBox(height: 30),
                   user_cv == null
                       ? Container()
                       : Align(
@@ -907,6 +800,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           user.job_sphere = selectedJobSphere;
                           user.department = selectedDepartment;
                           user.social_orientation = selectedSocialOrientation;
+                          user.address = _address_of_company.text;
+
 
                           if (_imageFile != null && _imageFile.path != null)
                             user.uploadImage2(File(_imageFile.path));
@@ -940,17 +835,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ],
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.check),
-        onPressed: () {
-          /// Save changes and go to profile screen
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ProfileScreen(
-//              user: currentUserDemo
-            )));
-        },
-      ),*/
     );
   }
 }

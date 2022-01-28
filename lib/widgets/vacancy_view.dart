@@ -100,254 +100,228 @@ class VacancyView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: vacancy.company_logo != null
-                                ? Image.network(
-                                    SERVER_IP + vacancy.company_logo.toString(),
-                                    headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
-                                    width: 50,
-                                    height: 50,
-                                  )
-                                : Image.asset(
-                                    'assets/images/default-user.jpg',
-                                    fit: BoxFit.cover,
-                                    width: 70,
-                                    height: 70,
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.62,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: vacancy.company_logo != null
+                                        ? Image.network(
+                                      SERVER_IP + vacancy.company_logo.toString(),
+                                      headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
+                                      width: 50,
+                                      height: 50,
+                                    )
+                                        : Image.asset(
+                                      'assets/images/default-user.jpg',
+                                      fit: BoxFit.cover,
+                                      width: 70,
+                                      height: 70,
+                                    ),
                                   ),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: vacancy.company_name != null ? vacancy.company_name.toString() + '\n' : "",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: vacancy.region != null ? vacancy.region : "",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'GTEestiProDisplay',
-                                        color: kColorDark)),
+                                ),
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: vacancy.company_name != null ? vacancy.company_name.toString() + '\n' : "",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'GTEestiProDisplay',
+                                          color: Colors.black),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: vacancy.region != null ? vacancy.region : "",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: 'GTEestiProDisplay',
+                                                color: kColorDark)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                vacancy.is_disability_person_vacancy == 1
+                                    ? Icon(
+                                  Icons.accessible,
+                                  size: 20,
+                                )
+                                    : Container(),
                               ],
                             ),
-                          ),
-                        ),
-                        vacancy.is_disability_person_vacancy == 1
-                            ? Icon(
-                                Icons.accessible,
-                                size: 20,
-                              )
-                            : Container(),
-                      ],
-                    ),
 
-                    SizedBox(height: 20),
-                    isProductLabVacancy
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
+                            SizedBox(height: 20),
+                            isProductLabVacancy
+                                ? Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
                                     "Выбор возможностей:",
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.type != null ? vacancy.type.toString() : "",
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                  child: Text(
-                                vacancy.salary != null ? vacancy.salary : '',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
-                              )),
-                            ],
-                          ),
-                    SizedBox(height: 5),
-
-                    isProductLabVacancy
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    "Вид возможности:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.opportunityType != null ? vacancy.opportunityType.toString() : "",
-                                  style: TextStyle(color: Colors.black87),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    isProductLabVacancy
-                        ? Column(
-                            children: [
-                              SizedBox(height: 5),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Язык для стажировки:",
-                                        style:
-                                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                      )
-                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
+                                ),
+                                Flexible(
+                                  child: Container(
                                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration:
-                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration:
+                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    vacancy.type != null ? vacancy.type.toString() : "",
+                                    style: TextStyle(color: Colors.black87),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Flexible(
+                                    child: Text(
+                                      vacancy.salary != null ? vacancy.salary : '',
+                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                    )),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+
+                            isProductLabVacancy
+                                ? Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Вид возможности:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      vacancy.opportunityType != null ? vacancy.opportunityType.toString() : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                                : Container(),
+                            isProductLabVacancy
+                                ? Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Язык для стажировки:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                     child: Text(
                                       vacancy.internshipLanguage != null ? vacancy.internshipLanguage.toString() : "",
                                       style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    isProductLabVacancy
-                        ? Column(
-                            children: [
-                              SizedBox(height: 5),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Продолжительность:",
-                                        style:
-                                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                      )
-                                    ],
+                                ),
+                              ],
+                            )
+                                : Container(),
+                            isProductLabVacancy
+                                ? Flex(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              direction: Axis.horizontal,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Продолжительность:",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
+                                ),
+                                Flexible(
+                                  child: Container(
                                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration:
-                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                     child: Text(
                                       vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
                                       style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  vacancy.schedule != null ? vacancy.schedule.toString() : "",
-                                  style: TextStyle(color: Colors.black87),
                                 ),
-                              ),
-                            ],
-                          ),
-                    SizedBox(height: 15),
-
-                    /// Uer job title
-                    page == 'discover'
-                        ? Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                  text: vacancy.description != null ? vacancy.description : "",
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                              ],
+                            )
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration:
+                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    vacancy.schedule != null ? vacancy.schedule.toString() : "",
+                                    style: TextStyle(color: Colors.black87),
+                                  ),
+                                ),
+                              ],
                             ),
-                          )
-                        : SizedBox(),
-                    SizedBox(height: 20),
-                    isProductLabVacancy
-                        ? Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Готовность выдать",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                ],
+                            SizedBox(height: 10),
+
+                            /// Uer job title
+                            page == 'discover'
+                                ? Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                    text: vacancy.description != null ? vacancy.description : "",
+                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "рекомендательное письмо:",
+                            )
+                                : SizedBox(),
+                            isProductLabVacancy
+                                ? Flex(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              direction: Axis.horizontal,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Готовность выдать рекомендательное письмо:",
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
                                   ),
-                                  Container(
+                                ),
+                                Flexible(
+                                  child: Container(
                                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration:
-                                        BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                     child: Text(
                                       vacancy.typeOfRecommendedLetter != null
                                           ? vacancy.typeOfRecommendedLetter.toString()
@@ -355,45 +329,64 @@ class VacancyView extends StatelessWidget {
                                       style: TextStyle(color: Colors.black87),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    isProductLabVacancy
-                        ? Column(
-                            children: [
-                              SizedBox(height: 10),
-                              Text(
-                                "Возраст, для которого предназначена возможность: ${vacancy.ageFrom}-${vacancy.ageTo}",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                              )
-                            ],
-                          )
-                        : Container(),
-                    isProductLabVacancy
-                        ? Container()
-                        : Expanded(
-                            flex: 1,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: RichText(
-                                text: TextSpan(
-                                    text: vacancy.description != null ? vacancy.description : "",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: 'GTEestiProDisplay',
-                                        color: Colors.black45)),
+                                ),
+                              ],
+                            )
+                                : Container(),
+                            SizedBox(height: 10),
+                            isProductLabVacancy
+                                ? Flex(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              direction: Axis.horizontal,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Возраст, для которого предназначена возможность",
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      "${vacancy.ageFrom}-${vacancy.ageTo}",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                                : Container(),
+                            isProductLabVacancy
+                                ? Container()
+                                : Expanded(
+                              flex: 1,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: vacancy.description != null ? vacancy.description : "",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: 'GTEestiProDisplay',
+                                          color: Colors.black45)),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
+                        ),
+                      ),
+                    ),
+
                     SizedBox(height: 20),
                     page != 'user_match'
                         ? SizedBox(
                             width: double.maxFinite,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 page == 'discover'
                                     ? Container()

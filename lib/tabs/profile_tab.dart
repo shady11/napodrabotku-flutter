@@ -318,6 +318,7 @@ class ProfileTab extends StatelessWidget {
                               Prefs.setString(Prefs.PASSWORD, null);
                               Prefs.setString(Prefs.TOKEN, null);
                               Prefs.setString(Prefs.USER_TYPE, "USER");
+                              Prefs.setString(Prefs.ROUTE, null);
                               Prefs.setInt(Prefs.USER_ID, null);
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
@@ -334,7 +335,7 @@ class ProfileTab extends StatelessWidget {
                               Navigator.of(context)
                                   .popUntil((route) => route.isFirst);
                               Navigator.pushReplacementNamed(
-                                  context, Routes.start);
+                                  context, Routes.select_mode);
                             },
                           ),
                   ],

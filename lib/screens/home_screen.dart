@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> regionList = [];
   List<dynamic> districtList = [];
   List<dynamic> currencyList = [];
+  List<dynamic> skillList = [];
 
   List<String> regions = [];
   List<String> districts = [];
@@ -72,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List _districts = [];
   List _currencies = [];
   List spheres = [];
+  List skills = [];
 
   String selectedRegion;
   String selectedDistrict;
@@ -109,6 +111,47 @@ class _HomeScreenState extends State<HomeScreen> {
     return Future.value(true);
   }
 
+  getSkills() {
+    setState(() {
+      this.skillList = [
+        {'id': 1, 'name': "Ученые и исследователи экологического топлива"},
+        {
+          'id': 2,
+          'name': "Анализ жизненного цикла: стоимость, социальные и экологические аспекты",
+        },
+        {
+          'id': 3,
+          'name': "Сотрудничество (онлайн и офлайн)",
+        },
+        {
+          'id': 4,
+          'name':
+              "Менеджер по вопросам обеспечения бесперебойного функционирования: восстановление операций/работы после сбоя",
+        },
+        {
+          'id': 5,
+          'name': "Мета-программирование",
+        },
+        {
+          'id': 6,
+          'name': "Навыки AR / VR / MR (использование / дизайн / инжинерия)",
+        },
+        {
+          'id': 7,
+          'name': "Проектирование систем блокчейн",
+        },
+        {
+          'id': 8,
+          'name': "Дизайн и интеграция робототехники",
+        },
+        {
+          'id': 9,
+          'name': "Роли в квантовых вычислениях",
+        },
+      ];
+    });
+  }
+
   getLists() async {
     jobTypeList = await Vacancy.getLists('job_type', null);
     vacancyTypeList = await Vacancy.getLists('vacancy_type', null);
@@ -141,104 +184,6 @@ class _HomeScreenState extends State<HomeScreen> {
     districtList.forEach((district) {
       setState(() {
         districts.add(district['name']);
-      });
-    });
-  }
-
-  //TODO Realize this method
-  getSpheres() async {
-    spheres = [
-      {
-        "id": 1,
-        "jobType": "Коммерческий (Commercial)",
-        "departments": ["все бизнес компании"]
-      },
-      {
-        "id": 2,
-        "jobType": "Цифровое и ИТ (Digital)",
-        "departments": ["все ИТ и стартапы"]
-      },
-      {
-        "id": 3,
-        "jobType": "Социальное (Social)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Соц. Проекты и инициативы",
-        ]
-      },
-      {
-        "id": 4,
-        "jobType": "Экология (Ecological)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Экологические проекты и инициативы",
-        ]
-      },
-      {
-        "id": 5,
-        "jobType": "Некоммерческие организации",
-        "departments": [
-          "Test1",
-          "Test1",
-          "Test1",
-          "Test1",
-        ]
-      }
-    ];
-    return spheres;
-  }
-
-  getJobs() async {
-    spheres = [
-      {
-        "id": 1,
-        "jobType": "Коммерческий (Commercial)",
-        "departments": ["все бизнес компании"]
-      },
-      {
-        "id": 2,
-        "jobType": "Цифровое и ИТ (Digital)",
-        "departments": ["все ИТ и стартапы"]
-      },
-      {
-        "id": 3,
-        "jobType": "Социальное (Social)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Соц. Проекты и инициативы",
-        ]
-      },
-      {
-        "id": 4,
-        "jobType": "Экология (Ecological)",
-        "departments": [
-          "НПО",
-          "МО",
-          "Гос. Учреждения",
-          "Экологические проекты и инициативы",
-        ]
-      },
-      {
-        "id": 5,
-        "jobType": "Некоммерческие организации",
-        "departments": [
-          "Test1",
-          "Test1",
-          "Test1",
-          "Test1",
-        ]
-      }
-    ];
-
-    spheres.forEach((item) {
-      setState(() {
-        jobs.add(item['jobType']);
       });
     });
   }
@@ -335,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
+              insetPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               child: Container(
                 constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
@@ -584,16 +530,21 @@ class _HomeScreenState extends State<HomeScreen> {
     _currency_id = null;
 
     salary_by_agreement = false;
-    print(salary_by_agreement);
+
+    getSkills();
+    print(skillList);
 
     return await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
+              insetPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               child: Container(
-                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.9,
+                    maxWidth: MediaQuery.of(context).size.width * 0.9),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: ListView(
@@ -606,7 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
                           )),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       Column(
                         children: <Widget>[
@@ -642,9 +593,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
+                      SizedBox(height: 10),
                       Align(
                           alignment: Alignment.topLeft,
                           child: Text(
@@ -652,9 +601,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(fontSize: 14, color: kColorPrimary),
                           )),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
-
                       /// Form
                       Form(
                         key: _vacancyAddFormKey,
@@ -900,63 +848,66 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Требуется до',
+                                          'Выбор скиллсетов для возможности',
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
-                                      // DropdownSearch<String>(
-                                      //   showSelectedItem: true,
-                                      //   items: typeOfRecommendedLetters,
-                                      //   onChanged: (value) {
-                                      //     setState(() {
-                                      //       selectedTypeOfRecommendedLetter = value;
-                                      //     });
-                                      //   },
-                                      //   dropdownSearchDecoration: InputDecoration(
-                                      //       border: OutlineInputBorder(
-                                      //         borderRadius: BorderRadius.circular(10),
-                                      //         borderSide: BorderSide.none,
-                                      //       ),
-                                      //       filled: true,
-                                      //       fillColor: Colors.grey[200],
-                                      //       contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                                      //   selectedItem: selectedTypeOfRecommendedLetter,
-                                      // ),
-                                      SizedBox(height: 20),
-                                    ],
-                                  )
-                                : Container(),
-                            work == work_mode.isTraining
-                                ? Column(
-                                    children: <Widget>[
-                                      SizedBox(height: 20),
-                                      Align(
-                                        widthFactor: 10,
-                                        heightFactor: 1.5,
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          'Могут развить',
-                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                      MultiSelectFormField(
+                                        autovalidate: false,
+                                        title: Text(
+                                          'Требуется до'.tr(),
+                                          style:
+                                              TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
                                         ),
+                                        validator: (value) {
+                                          if (value == null || value.length == 0) {
+                                            return 'select_one_or_more'.tr();
+                                          }
+                                          return "";
+                                        },
+                                        dataSource: skillList,
+                                        textField: 'name',
+                                        valueField: 'id',
+                                        okButtonLabel: 'ok'.tr(),
+                                        cancelButtonLabel: 'cancel'.tr(),
+                                        // required: true,
+                                        hintWidget: Text('select_one_or_more'.tr()),
+                                        initialValue: skills,
+                                        onSaved: (value) {
+                                          if (value == null) return;
+                                          setState(() {
+                                            skills = value;
+                                          });
+                                        },
                                       ),
-                                      // DropdownSearch<String>(
-                                      //   showSelectedItem: true,
-                                      //   items: typeOfRecommendedLetters,
-                                      //   onChanged: (value) {
-                                      //     setState(() {
-                                      //       selectedTypeOfRecommendedLetter = value;
-                                      //     });
-                                      //   },
-                                      //   dropdownSearchDecoration: InputDecoration(
-                                      //       border: OutlineInputBorder(
-                                      //         borderRadius: BorderRadius.circular(10),
-                                      //         borderSide: BorderSide.none,
-                                      //       ),
-                                      //       filled: true,
-                                      //       fillColor: Colors.grey[200],
-                                      //       contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                                      //   selectedItem: selectedTypeOfRecommendedLetter,
-                                      // ),
+                                      MultiSelectFormField(
+                                        autovalidate: false,
+                                        title: Text(
+                                          'Могут развить'.tr(),
+                                          style:
+                                              TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.length == 0) {
+                                            return 'select_one_or_more'.tr();
+                                          }
+                                          return "";
+                                        },
+                                        dataSource: skillList,
+                                        textField: 'name',
+                                        valueField: 'id',
+                                        okButtonLabel: 'ok'.tr(),
+                                        cancelButtonLabel: 'cancel'.tr(),
+                                        // required: true,
+                                        hintWidget: Text('select_one_or_more'.tr()),
+                                        initialValue: skills,
+                                        onSaved: (value) {
+                                          if (value == null) return;
+                                          setState(() {
+                                            skills = value;
+                                          });
+                                        },
+                                      ),
                                       SizedBox(height: 20),
                                     ],
                                   )
@@ -1418,7 +1369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )
                                 : Container(),
 
-                            SizedBox(height: 20),
+                            work == work_mode.isWork ? SizedBox(height: 20) : Container(),
                             work == work_mode.isWork
                                 ? CheckboxListTile(
                                     contentPadding: EdgeInsets.zero,
@@ -1435,8 +1386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                   )
                                 : Container(),
-                            SizedBox(height: 30),
-
+                            work == work_mode.isWork ? SizedBox(height: 20) : Container(),
                             SizedBox(
                               width: double.maxFinite,
                               child: Row(
@@ -1704,7 +1654,6 @@ class _HomeScreenState extends State<HomeScreen> {
     getOpportunities();
     getOpportunityTypes();
     getOpportunityDurations();
-    getJobs();
     getRecommendationLetterType();
     getInternshipLanguages();
     super.initState();
@@ -1776,11 +1725,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
                         ? BottomNavigationBarItem(
                             icon: Icon(
-                              Boxicons.bx_briefcase,
+                              Boxicons.bx_home,
                               color: _tabCurrentIndex == 0 ? kColorPrimary : null,
                             ),
                             title: Text(
-                              "vacancies".tr(),
+                              "home".tr(),
                               style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : null),
                             ))
                         : BottomNavigationBarItem(
@@ -1799,7 +1748,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                             ),
                             title: Text(
-                              "cvs".tr(),
+                              "received".tr(),
                               style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
                             ))
                         : BottomNavigationBarItem(

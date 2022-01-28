@@ -34,6 +34,7 @@ class User {
   String contact_person_fullname;
   String contact_person_position;
   bool is_product_lab_user;
+  String address;
 
   User({
     this.id,
@@ -61,6 +62,7 @@ class User {
     this.department,
     this.job_sphere,
     this.social_orientation,
+    this.address,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
@@ -87,6 +89,7 @@ class User {
         contact_person_fullname: json['contact_person_fullname'],
         contact_person_position: json['contact_person_position'],
         is_product_lab_user: json['is_product_lab_user'] == 1,
+        address: json['address'],
       );
 
   String uploadImage1(_image) {
@@ -180,8 +183,7 @@ class User {
     request.fields["job_sphere"] = this.job_sphere.toString();
     request.fields["department"] = this.department.toString();
     request.fields["social_orientation"] = this.social_orientation.toString();
-
-    print(request.fields);
+    request.fields["address"] = this.address.toString();
 
     // open a byteStream
     if (_image != null) {
@@ -249,6 +251,7 @@ class User {
         "job_sphere": user.job_sphere,
         "department": user.department,
         "social_orientation": user.social_orientation,
+        "address": user.address,
       };
 
   bool get isAuth {

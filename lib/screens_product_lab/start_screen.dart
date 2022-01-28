@@ -43,6 +43,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                     color: Color(0xffF2F2F5),
                     textColor: kColorBlue,
                     onPressed: () {
+                      Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
                       Navigator.of(context).pushNamed(Routes.product_lab_sign_up);
                     },
                     text: 'sign_up'.tr(),
@@ -68,6 +69,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                   child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                 ),
                 onTap: () {
+                  Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
                   Navigator.of(context).pushNamed(Routes.product_lab_home);
                 },
               ),

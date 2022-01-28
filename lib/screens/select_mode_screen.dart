@@ -57,7 +57,7 @@ class _SelectModeState extends State<SelectMode> {
                                 fontSize: 30,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.start,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         SizedBox(height: 40),
@@ -89,6 +89,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
+                                  Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
                                   Navigator.of(context).pushNamed(Routes.product_lab_start);
                                 },
                                 text: 'Хочу повысить \nквалификацию',

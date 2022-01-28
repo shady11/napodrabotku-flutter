@@ -248,7 +248,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                         color: _tabCurrentIndex == 0 ? kColorPrimary : null,
                       ),
                       title: Text(
-                        "vacancies".tr(),
+                        "Главная".tr(),
                         style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : null),
                       ))
                   : BottomNavigationBarItem(
@@ -257,7 +257,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                         color: _tabCurrentIndex == 0 ? kColorPrimary : null,
                       ),
                       title: Text(
-                        "search".tr(),
+                        "Главная".tr(),
                         style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey),
                       )),
               Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
@@ -267,7 +267,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                         color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                       ),
                       title: Text(
-                        "cvs".tr(),
+                        "received".tr(),
                         style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
                       ))
                   : BottomNavigationBarItem(
@@ -320,7 +320,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                     color: _tabCurrentIndex == 4 ? kColorPrimary : null,
                   ),
                   title: Text(
-                    "profile".tr(),
+                    "training".tr(),
                     style: TextStyle(color: _tabCurrentIndex == 4 ? kColorPrimary : Colors.grey),
                   )),
             ],
