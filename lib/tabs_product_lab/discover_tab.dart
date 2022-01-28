@@ -63,13 +63,13 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
     }
 
     Vacancy.getVacancyByOffset(
-            offset: offset,
-            job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-            region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-            schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-            busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-            vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
-            type: StoreProvider.of<AppState>(context).state.vacancy.type)
+        offset: offset,
+        job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+        region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+        schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+        busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+        vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+        type: StoreProvider.of<AppState>(context).state.vacancy.type)
         .then((value) {
       if (value != null) {
         offset = offset + 1;
@@ -82,468 +82,318 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
   }
 
   /// Simulated Vacancies
-  List<Vacancy> vacancies = <Vacancy>[
-    new Vacancy(
-      id: 1,
-      title: "Test Cvalification",
-      address: "Address",
-      busyness: "321",
-      company_name: "Test Company Name 1",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 2,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 3,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 3,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 3,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 3,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-    new Vacancy(
-      id: 3,
-      title: "Test Cvalification",
-      address: "123",
-      busyness: "321",
-      company_name: "Test Company Name",
-      description: "Desc",
-      company: 1,
-      is_disability_person_vacancy: 0,
-      name: "ddd",
-      currency: "123",
-      region: "fff",
-      district: "sss",
-      type: "1",
-      job_type: "d",
-      salary: "123",
-      salary_from: "3",
-      salary_to: "7",
-      schedule: "asd",
-    ),
-  ];
+  // List<Vacancy> vacancies = <Vacancy>[
+  //   new Vacancy(
+  //     id: 1,
+  //     title: "Test Cvalification",
+  //     address: "Address",
+  //     busyness: "321",
+  //     company_name: "Test Company Name 1",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 2,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 3,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 3,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 3,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 3,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  //   new Vacancy(
+  //     id: 3,
+  //     title: "Test Cvalification",
+  //     address: "123",
+  //     busyness: "321",
+  //     company_name: "Test Company Name",
+  //     description: "Desc",
+  //     company: 1,
+  //     is_disability_person_vacancy: 0,
+  //     name: "ddd",
+  //     currency: "123",
+  //     region: "fff",
+  //     district: "sss",
+  //     type: "1",
+  //     job_type: "d",
+  //     salary: "123",
+  //     salary_from: "3",
+  //     salary_to: "7",
+  //     schedule: "asd",
+  //   ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
-    return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-        ? StoreConnector<AppState, CompanyVacanciesScreenProps>(
-            converter: (store) => mapStateToVacancyProps(store),
-            onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
-            builder: (context, props) {
-              List<Vacancy> data = props.listResponse.data;
-              bool loading = props.listResponse.loading;
+    return StoreConnector<AppState, VacanciesScreenProps>(
+      converter: (store) => mapStateToProps(store),
+      onInitialBuild: (props) => this.handleInitialBuild(props),
+      builder: (context, props) {
+        List<Vacancy> data = props.listResponse.data;
+        bool loading = props.listResponse.loading;
 
-              Widget body;
-              if (loading) {
-                body = Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                );
-              } else {
-                body = Column(
-                  children: [
-                    Expanded(
-                      child: StoreProvider.of<AppState>(context).state.vacancy.list.data.length > 0
-                          ? UsersGrid(
-                              children: vacancies.map((vacancy) {
-                              return GestureDetector(
-                                child: ProfileCard(vacancy: vacancy, page: 'company', offset: offset),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                    return Scaffold(
-                                      backgroundColor: kColorPrimary,
-                                      appBar: AppBar(
-                                        title: Text("vacancy_view".tr()),
-                                      ),
-                                      body: VacancyView(
-                                        page: "company_view",
-                                        vacancy: vacancy,
-                                      ),
-                                    );
-                                  }));
-                                },
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
+        } else {
+          var _index = 0;
+          body = Center(
+            child: Container(
+              height: MediaQuery.of(context).size.width * 25,
+              child: TinderSwapCard(
+                orientation: AmassOrientation.BOTTOM,
+                totalNum: data.length,
+                stackNum: 5,
+                swipeEdge: 5.0,
+                maxWidth: MediaQuery.of(context).size.width * 0.97,
+                maxHeight: MediaQuery.of(context).size.width * 0.97,
+                minWidth: MediaQuery.of(context).size.width * 0.9,
+                minHeight: MediaQuery.of(context).size.width * 0.96,
+                cardController: cardController,
+                cardBuilder: (context, index) {
+                  _index = index;
+                  return
+                    // data != null && data.isNotEmpty
+                    // ?
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Center(
+                            child: Text(
+                              "vacancies_empty".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          child: ProfileCardProductLab(
+                            props: props,
+                            page: 'discover',
+                            vacancy: data[index],
+                            index: index,
+                            cardController: cardController,
+                          ),
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (BuildContext context) {
+                              return Scaffold(
+                                backgroundColor: kColorPrimary,
+                                appBar: AppBar(
+                                  title: Text("vacancy_view".tr()),
+                                ),
+                                body: VacancyView(
+                                  page: "view",
+                                  vacancy: data[index],
+                                ),
                               );
-                            }).toList())
-                          : Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Center(
-                                child: Text(
-                                  'company_vacancies_empty'.tr(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                    ),
-                  ],
-                );
-              }
-
-              return body;
-            },
-          )
-        : StoreConnector<AppState, VacanciesScreenProps>(
-            converter: (store) => mapStateToProps(store),
-            onInitialBuild: (props) => this.handleInitialBuild(props),
-            builder: (context, props) {
-              List<Vacancy> data = props.listResponse.data;
-              bool loading = props.listResponse.loading;
-
-              Widget body;
-              if (loading) {
-                body = Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                );
-              } else {
-                var _index = 0;
-                body = Center(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width * 25,
-                    child: TinderSwapCard(
-                      orientation: AmassOrientation.BOTTOM,
-                      totalNum: vacancies.length,
-                      stackNum: 5,
-                      swipeEdge: 5.0,
-                      maxWidth: MediaQuery.of(context).size.width * 0.97,
-                      maxHeight: MediaQuery.of(context).size.width * 0.97,
-                      minWidth: MediaQuery.of(context).size.width * 0.9,
-                      minHeight: MediaQuery.of(context).size.width * 0.96,
-                      cardController: cardController,
-                      cardBuilder: (context, index) {
-                        _index = index;
-                        return
-                          // data != null && data.isNotEmpty
-                        // ?
-                        Stack(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Center(
-                                child: Text(
-                                  "vacancies_empty".tr(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              child: ProfileCard(
-                                // props: props,
-                                page: 'discover',
-                                vacancy: vacancies[index],
-                                index: index,
-                                cardController: cardController,
-                              ),
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                                  return Scaffold(
-                                    backgroundColor: kColorPrimary,
-                                    appBar: AppBar(
-                                      title: Text("vacancy_view".tr()),
-                                    ),
-                                    body: VacancyView(
-                                      page: "view",
-                                      vacancy: vacancies[index],
-                                    ),
-                                  );
-                                }));
-                              },
-                            ),
-                          ],
-                        );
-                            // : Container();
-                      },
-                      swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
-                        if (orientation.index == CardSwipeOrientation.LEFT.index) {
-                          print('Left');
-                          removeCards(
-                              props: props,
-                              type: "DISLIKED",
-                              vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                              context: context);
-                        }
-
-                        if (orientation.index == CardSwipeOrientation.RIGHT.index) {
-                          print('Right');
-                          removeCards(
-                              props: props,
-                              type: "LIKED",
-                              vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                              context: context);
-                        }
-                      },
-                    ),
-                  ),
-                );
-                // body = data != null && data.isNotEmpty
-                //     ? Center(
-                //         child: Container(
-                //           height: MediaQuery.of(context).size.width * 25,
-                //           child: TinderSwapCard(
-                //             orientation: AmassOrientation.BOTTOM,
-                //             totalNum: vacancies.length,
-                //             stackNum: 2,
-                //             swipeEdge: 5.0,
-                //             maxWidth: MediaQuery.of(context).size.width * 0.97,
-                //             maxHeight: MediaQuery.of(context).size.width * 0.97,
-                //             minWidth: MediaQuery.of(context).size.width * 0.9,
-                //             minHeight: MediaQuery.of(context).size.width * 0.96,
-                //             cardController: cardController,
-                //             cardBuilder: (context, index) {
-                //               _index = index;
-                //               return data != null && data.isNotEmpty
-                //                   ? Stack(
-                //                       children: <Widget>[
-                //                         Container(
-                //                           padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                //                           child: Center(
-                //                             child: Text(
-                //                               "vacancies_empty".tr(),
-                //                               textAlign: TextAlign.center,
-                //                               style: TextStyle(color: Colors.white, fontSize: 20),
-                //                             ),
-                //                           ),
-                //                         ),
-                //                         GestureDetector(
-                //                           child: ProfileCard(
-                //                             // props: props,
-                //                             page: 'discover',
-                //                             vacancy: vacancies[index],
-                //                             index: index,
-                //                             cardController: cardController,
-                //                           ),
-                //                           onTap: () {
-                //                             Navigator.of(context)
-                //                                 .push(MaterialPageRoute(builder: (BuildContext context) {
-                //                               return Scaffold(
-                //                                 backgroundColor: kColorPrimary,
-                //                                 appBar: AppBar(
-                //                                   title: Text("vacancy_view".tr()),
-                //                                 ),
-                //                                 body: VacancyView(
-                //                                   page: "view",
-                //                                   vacancy: vacancies[index],
-                //                                 ),
-                //                               );
-                //                             }));
-                //                           },
-                //                         ),
-                //                       ],
-                //                     )
-                //                   : Container();
-                //             },
-                //             swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
-                //               if (orientation.index == CardSwipeOrientation.LEFT.index) {
-                //                 print('Left');
-                //                 removeCards(
-                //                     props: props,
-                //                     type: "DISLIKED",
-                //                     vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                //                     context: context);
-                //               }
-                //
-                //               if (orientation.index == CardSwipeOrientation.RIGHT.index) {
-                //                 print('Right');
-                //                 removeCards(
-                //                     props: props,
-                //                     type: "LIKED",
-                //                     vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                //                     context: context);
-                //               }
-                //             },
-                //           ),
-                //         ),
-                //       )
-                //     : Container(
-                //         padding: EdgeInsets.symmetric(horizontal: 40),
-                //         child: Center(
-                //           child: Text(
-                //             "vacancies_empty".tr(),
-                //             textAlign: TextAlign.center,
-                //             style: TextStyle(color: Colors.white, fontSize: 20),
-                //           ),
-                //         ),
-                //       );
-              }
-
-              return Stack(children: [
-                body,
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  child: Align(
-                    alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
-                    widthFactor: MediaQuery.of(context).size.width * 1,
-                    heightFactor: MediaQuery.of(context).size.height * 0.4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                            }));
                           },
-                          text:
-                              StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type:
-                                    StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                          },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
-                              ? 'all'.tr()
-                              : 'week'.tr(),
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                                    ? 'all'
-                                    : 'month'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                            //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                            setState(() {
-                              button == 3 ? button = 0 : button = 3;
-                            });
-                          },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                              ? 'all'.tr()
-                              : 'month'.tr(),
                         ),
                       ],
-                    ),
-                  ),
-                ),
-              ]);
-            },
+                    );
+                  // : Container();
+                },
+                swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
+                  if (orientation.index == CardSwipeOrientation.LEFT.index) {
+                    print('Left');
+                    removeCards(
+                        props: props,
+                        type: "DISLIKED",
+                        vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                        context: context);
+                  }
+
+                  if (orientation.index == CardSwipeOrientation.RIGHT.index) {
+                    print('Right');
+                    removeCards(
+                        props: props,
+                        type: "LIKED",
+                        vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                        context: context);
+                  }
+                },
+              ),
+            ),
           );
+        }
+
+        return Stack(children: [
+          body,
+          Container(
+            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            child: Align(
+              alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
+              widthFactor: MediaQuery.of(context).size.width * 1,
+              heightFactor: MediaQuery.of(context).size.height * 0.4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      Prefs.setInt(Prefs.OFFSET, 0);
+                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
+                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                    },
+                    text:
+                    StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                  ),
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      Prefs.setInt(Prefs.OFFSET, 0);
+                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                          type:
+                          StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
+                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                    },
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
+                        ? 'all'.tr()
+                        : 'week'.tr(),
+                  ),
+                  CustomButton(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    padding: EdgeInsets.all(2),
+                    color: Colors.white,
+                    textColor: kColorPrimary,
+                    onPressed: () {
+                      Prefs.setInt(Prefs.OFFSET, 0);
+                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                              ? 'all'
+                              : 'month'));
+                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                      //                      Navigator.of(context).popAndPushNamed(Routes.signup);
+                      setState(() {
+                        button == 3 ? button = 0 : button = 3;
+                      });
+                    },
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                        ? 'all'.tr()
+                        : 'month'.tr(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]);
+      },
+    );
   }
 }
 

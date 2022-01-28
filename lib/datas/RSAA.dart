@@ -23,7 +23,7 @@ RSAA getVacanciesRequest(
     String type}) {
   return RSAA(
     method: 'POST',
-    endpoint: API_IP + API_VACANCY_LIST + "?lang=" + Prefs.getString(Prefs.LANGUAGE),
+    endpoint: API_IP + API_VACANCY_LIST + "?lang=" + Prefs.getString(Prefs.LANGUAGE) + "&route=" + Prefs.getString(Prefs.ROUTE),
     body: json.encode({
       'limit': 5,
       'lang': Prefs.getString(Prefs.LANGUAGE),

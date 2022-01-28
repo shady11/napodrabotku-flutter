@@ -78,6 +78,7 @@ class VacancyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isProductLabVacancy = vacancy.isProductLabVacancy == null ? false : vacancy.isProductLabVacancy;
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
@@ -152,7 +153,7 @@ class VacancyView extends StatelessWidget {
                     ),
 
                     SizedBox(height: 20),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -202,7 +203,7 @@ class VacancyView extends StatelessWidget {
                           ),
                     SizedBox(height: 5),
 
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -229,7 +230,7 @@ class VacancyView extends StatelessWidget {
                             ],
                           )
                         : Container(),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Column(
                             children: [
                               SizedBox(height: 5),
@@ -262,7 +263,7 @@ class VacancyView extends StatelessWidget {
                             ],
                           )
                         : Container(),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Column(
                             children: [
                               SizedBox(height: 5),
@@ -321,7 +322,7 @@ class VacancyView extends StatelessWidget {
                           )
                         : SizedBox(),
                     SizedBox(height: 20),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Column(
                             children: [
                               Row(
@@ -359,7 +360,7 @@ class VacancyView extends StatelessWidget {
                             ],
                           )
                         : Container(),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Column(
                             children: [
                               SizedBox(height: 10),
@@ -370,7 +371,7 @@ class VacancyView extends StatelessWidget {
                             ],
                           )
                         : Container(),
-                    vacancy.isProductLabVacancy
+                    isProductLabVacancy
                         ? Container()
                         : Expanded(
                             flex: 1,
