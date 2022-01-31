@@ -222,5 +222,15 @@
     "fill_all_fields": "Необходимо заполнить все поля!",
     "successful_reset": "Все предпочтения сброшены!",
     "by_agreement": "По договоренности",
-    "select_mode": "Пожалуйста выберите"
+    "select_mode": "Пожалуйста выберите",
+    "can_improve": "Могут развить",
+    "required_up_to": "Требуется до",
+    "choose_opportunity_skill_sets": "Выбор скиллсетов для возможности",
+    "opportunity_age": "Возраст, для которого предназначена возможность",
+    "opportunity_duration": "Возраст, для которого предназначена возможность",
+    "internship_language": "Язык для стажировки",
+    "opportunity_type": "Язык для стажировки",
+    "choice_opportunity_options": "Выбор возможностей",
+    "improve_qualification": "Повышение квалификации",
+    "work": "Работа"
 }

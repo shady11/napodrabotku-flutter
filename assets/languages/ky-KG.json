@@ -219,5 +219,15 @@
     "fill_all_fields": "Сураныч, бардык талааларды толтуруңуз!",
     "successful_reset": "Тандоолор калыбына келтирилди!",
     "by_agreement": "Келишим боюнча",
-    "select_mode": "Пожалуйста выберите"
+    "select_mode": "Пожалуйста выберите",
+    "can_improve": "Өнүктүрө алат",
+    "required_up_to": "Талап кылынат",
+    "choose_opportunity_skill_sets": "Мүмкүнчүлүк үчүн көндүмдөрдү тандоо",
+    "opportunity_age": "Мүмкүнчүлүк каралган курак",
+    "opportunity_duration": "Мүмкүнчүлүктүн узактыгы",
+    "internship_language": "Практика үчүн тил",
+    "opportunity_type": "Мүмкүнчүлүк түрү",
+    "choice_opportunity_options": "Мүмкүнчүлүктөрдү тандоо",
+    "improve_qualification": "Квалификацияны жогорулатуу",
+    "work": "Иш"
 }

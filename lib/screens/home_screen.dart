@@ -577,7 +577,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 },
                               ),
-                              Text('Работа '.tr(), style: TextStyle(color: Colors.black)),
+                              Text('work'.tr(), style: TextStyle(color: Colors.black)),
                             ],
                           ),
                           Row(
@@ -592,7 +592,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 },
                               ),
-                              Text('Повышение квалификации'.tr(), style: TextStyle(color: Colors.black)),
+                              Text('training'.tr(), style: TextStyle(color: Colors.black)),
                             ],
                           ),
                         ],
@@ -621,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Выбор возможностей',
+                                          'choice_opportunity_options'.tr(),
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
@@ -657,7 +657,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Вид возможности',
+                                          'opportunity_type'.tr(),
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
@@ -694,7 +694,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Язык для стажировки',
+                                          'internship_language'.tr(),
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
@@ -731,7 +731,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Продолжительность возможности',
+                                          'opportunity_duration'.tr(),
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
@@ -765,7 +765,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     heightFactor: 1.5,
                                     alignment: Alignment.topLeft,
                                     child: Text(
-                                      'Возраст, для которого предназначена возможность',
+                                      'opportunity_age'.tr(),
                                       style: TextStyle(fontSize: 16, color: Colors.black),
                                     ))
                                 : Container(),
@@ -852,14 +852,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         heightFactor: 1.5,
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          'Выбор скиллсетов для возможности',
+                                          'choose_opportunity_skill_sets'.tr(),
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
                                       MultiSelectFormField(
                                         autovalidate: false,
                                         title: Text(
-                                          'Требуется до'.tr(),
+                                          'required_up_to'.tr(),
                                           style:
                                               TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
                                         ),
@@ -886,7 +886,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MultiSelectFormField(
                                         autovalidate: false,
                                         title: Text(
-                                          'Могут развить'.tr(),
+                                          'can_improve'.tr(),
                                           style:
                                               TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
                                         ),
@@ -1624,7 +1624,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'training'.tr(),
+            'improve_qualification'.tr(),
           ),
           GestureDetector(
             child: CircleButton(
