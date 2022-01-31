@@ -58,6 +58,8 @@ dependencies:
 
   dropdown_search: ^0.4.9
 
+  flutter_guid: ^0.1.0
+
   youtube_player_iframe: ^1.2.0+2
   cached_network_image: ^2.5.1
 

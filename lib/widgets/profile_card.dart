@@ -18,7 +18,9 @@ import 'package:ishtapp/screens/chat_screen.dart';
 import '../widgets/Dialogs/Dialogs.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 
-class ProfileCard extends StatelessWidget {
+import 'package:flutter_guid/flutter_guid.dart';
+
+class ProfileCard extends StatefulWidget {
   /// User object
   final Vacancy vacancy;
   final VacanciesScreenProps props;
@@ -32,6 +34,7 @@ class ProfileCard extends StatelessWidget {
   /// Swiper position
   final SwiperPosition position;
 
+
   ProfileCard({
     this.page,
     this.position,
@@ -41,6 +44,13 @@ class ProfileCard extends StatelessWidget {
     this.props,
     this.cardController,
   });
+
+  @override
+  _ProfileCardState createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
+  int counter = 0;
 
   void removeCards({String type, int vacancy_id, props, context}) {
     if (Prefs.getString(Prefs.TOKEN) != null) {
@@ -55,7 +65,7 @@ class ProfileCard extends StatelessWidget {
       props.listResponse.data.removeLast(props.listResponse.data[0]);
     }
     Vacancy.getVacancyByOffset(
-            offset: offset,
+            offset: widget.offset,
             job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
             region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
             schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
@@ -64,7 +74,7 @@ class ProfileCard extends StatelessWidget {
             type: StoreProvider.of<AppState>(context).state.vacancy.type)
         .then((value) {
       if (value != null) {
-        offset = offset + 1;
+        widget.offset = widget.offset + 1;
         props.listResponse.data.add(value);
       }
     });
@@ -72,7 +82,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isProductLabVacancy = vacancy.isProductLabVacancy == null ? false : vacancy.isProductLabVacancy;
+    bool isProductLabVacancy = widget.vacancy.isProductLabVacancy == null ? false : widget.vacancy.isProductLabVacancy;
     return Container(
       height: MediaQuery.of(context).size.height * 0.62,
       child: Padding(
@@ -98,9 +108,9 @@ class ProfileCard extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: vacancy.company_logo != null
+                            child: widget.vacancy.company_logo != null
                                 ? Image.network(
-                                    SERVER_IP + vacancy.company_logo,
+                                    SERVER_IP + widget.vacancy.company_logo + "?token=${Guid.newGuid}",
                                     headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
                                     width: 70,
                                     height: 70,
@@ -117,7 +127,7 @@ class ProfileCard extends StatelessWidget {
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              text: vacancy.company_name != null ? vacancy.company_name.toString() + '\n' : "",
+                              text: widget.vacancy.company_name != null ? widget.vacancy.company_name.toString() + '\n' : "",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -125,7 +135,7 @@ class ProfileCard extends StatelessWidget {
                                   color: Colors.black),
                               children: <TextSpan>[
                                 TextSpan(
-                                    text: vacancy.region != null ? vacancy.region : '',
+                                    text: widget.vacancy.region != null ? widget.vacancy.region : '',
                                     style: TextStyle(
                                         fontFamily: 'GTEestiProDisplay',
                                         fontSize: 14,
@@ -135,7 +145,7 @@ class ProfileCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        vacancy.is_disability_person_vacancy == 1
+                        widget.vacancy.is_disability_person_vacancy == 1
                             ? Icon(
                                 Icons.accessible,
                                 size: 20,
@@ -153,7 +163,7 @@ class ProfileCard extends StatelessWidget {
                                 decoration:
                                     BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                 child: Text(
-                                  vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
+                                  widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
                                   style: TextStyle(
                                     color: Colors.black87,
                                   ),
@@ -164,7 +174,7 @@ class ProfileCard extends StatelessWidget {
                               ),
                               Flexible(
                                   child: Text(
-                                vacancy.opportunityType != null ? vacancy.opportunityType : '',
+                                widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -181,7 +191,7 @@ class ProfileCard extends StatelessWidget {
                                 decoration:
                                     BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                 child: Text(
-                                  vacancy.type != null ? vacancy.type.toString() : "",
+                                  widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
                                   style: TextStyle(
                                     color: Colors.black87,
                                   ),
@@ -192,7 +202,7 @@ class ProfileCard extends StatelessWidget {
                               ),
                               Flexible(
                                   child: Text(
-                                vacancy.salary != null ? vacancy.salary : '',
+                                widget.vacancy.salary != null ? widget.vacancy.salary : '',
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -211,7 +221,7 @@ class ProfileCard extends StatelessWidget {
                                 decoration:
                                     BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                 child: Text(
-                                  vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
+                                  widget.vacancy.opportunityDuration != null ? widget.vacancy.opportunityDuration.toString() : "",
                                   style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
                                 ),
                               ),
@@ -225,7 +235,7 @@ class ProfileCard extends StatelessWidget {
                                 decoration:
                                     BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                 child: Text(
-                                  vacancy.schedule != null ? vacancy.schedule.toString() : "",
+                                  widget.vacancy.schedule != null ? widget.vacancy.schedule.toString() : "",
                                   style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
                                 ),
                               ),
@@ -234,7 +244,7 @@ class ProfileCard extends StatelessWidget {
                     SizedBox(height: 15),
                     isProductLabVacancy
                         ? Text(
-                            vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
+                            widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -242,7 +252,7 @@ class ProfileCard extends StatelessWidget {
                                 color: Colors.black),
                           )
                         : Text(
-                            vacancy.name != null ? vacancy.name : "",
+                            widget.vacancy.name != null ? widget.vacancy.name : "",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -250,11 +260,11 @@ class ProfileCard extends StatelessWidget {
                                 color: Colors.black),
                           ),
                     SizedBox(height: 10),
-                    page == 'discover'
+                    widget.page == 'discover'
                         ? Expanded(
                             child: RichText(
                               text: TextSpan(
-                                  text: vacancy.description != null ? vacancy.description : "",
+                                  text: widget.vacancy.description != null ? widget.vacancy.description : "",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal,
@@ -269,7 +279,7 @@ class ProfileCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          page == 'submit'
+                          widget.page == 'submit'
                               ? Container()
                               : CustomButton(
                                   width: MediaQuery.of(context).size.width * 0.35,
@@ -280,30 +290,30 @@ class ProfileCard extends StatelessWidget {
                                   onPressed: () async {
                                     if (Prefs.getString(Prefs.TOKEN) == null) {
                                       if (Prefs.getInt(Prefs.OFFSET) > 0 && Prefs.getInt(Prefs.OFFSET) != null) {
-                                        offset = Prefs.getInt(Prefs.OFFSET);
+                                        widget.offset = Prefs.getInt(Prefs.OFFSET);
                                       }
-                                      cardController.triggerLeft();
+                                      widget.cardController.triggerLeft();
 
                                       StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
-                                    } else if (page == 'discover') {
-                                      cardController.triggerLeft();
-                                    } else if (page == 'match') {
-                                      Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "LIKED_THEN_DELETED")
+                                    } else if (widget.page == 'discover') {
+                                      widget.cardController.triggerLeft();
+                                    } else if (widget.page == 'match') {
+                                      Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "LIKED_THEN_DELETED")
                                           .then((value) {
                                         StoreProvider.of<AppState>(context)
                                             .state
                                             .vacancy
                                             .liked_list
                                             .data
-                                            .remove(vacancy);
+                                            .remove(widget.vacancy);
                                         StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
                                       });
-                                    } else if (page == 'company' || page == 'company_inactive') {
+                                    } else if (widget.page == 'company' || widget.page == 'company_inactive') {
                                       print(11);
-                                      Dialogs.showOnDeleteDialog(context, 'delete_are_you_sure'.tr(), vacancy);
+                                      Dialogs.showOnDeleteDialog(context, 'delete_are_you_sure'.tr(), widget.vacancy);
                                     }
                                   },
-                                  text: page == 'discover' ? 'skip'.tr() : 'delete'.tr(),
+                                  text: widget.page == 'discover' ? 'skip'.tr() : 'delete'.tr(),
                                 ),
                           Prefs.getString(Prefs.TOKEN) != null
                               ? Container(
@@ -315,13 +325,13 @@ class ProfileCard extends StatelessWidget {
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () async {
-                                      if (page == 'discover') {
-                                        cardController.triggerRight();
-                                      } else if (page == 'match') {
+                                      if (widget.page == 'discover') {
+                                        widget.cardController.triggerRight();
+                                      } else if (widget.page == 'match') {
                                         Dialogs.openLoadingDialog(context);
                                         User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
                                           if (value) {
-                                            Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED")
+                                            Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
                                                 .then((value) {
                                               if (value == "OK") {
                                                 Dialogs.showDialogBox(context, "successfully_submitted".tr());
@@ -330,7 +340,7 @@ class ProfileCard extends StatelessWidget {
                                                     .vacancy
                                                     .liked_list
                                                     .data
-                                                    .remove(vacancy);
+                                                    .remove(widget.vacancy);
                                                 StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
                                                 StoreProvider.of<AppState>(context)
                                                     .dispatch(getNumberOfLikedVacancies());
@@ -342,29 +352,29 @@ class ProfileCard extends StatelessWidget {
                                             Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
                                           }
                                         });
-                                      } else if (page == 'company') {
+                                      } else if (widget.page == 'company') {
                                         Dialogs.showOnDeactivateDialog(
-                                            context, 'deactivate_are_you_sure'.tr(), false, vacancy);
-                                      } else if (page == 'company_inactive') {
+                                            context, 'deactivate_are_you_sure'.tr(), false, widget.vacancy);
+                                      } else if (widget.page == 'company_inactive') {
                                         Dialogs.showOnDeactivateDialog(
-                                            context, 'activate_are_you_sure'.tr(), true, vacancy);
-                                      } else if (page == 'submit') {
+                                            context, 'activate_are_you_sure'.tr(), true, widget.vacancy);
+                                      } else if (widget.page == 'submit') {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                           return ChatScreen(
-                                            user_id: vacancy.company,
-                                            name: vacancy.company_name,
-                                            avatar: vacancy.company_logo,
+                                            user_id: widget.vacancy.company,
+                                            name: widget.vacancy.company_name,
+                                            avatar: widget.vacancy.company_logo,
                                           );
                                         }));
                                       }
                                     },
-                                    text: page == 'discover'
+                                    text: widget.page == 'discover'
                                         ? 'like'.tr()
-                                        : (page == 'company'
+                                        : (widget.page == 'company'
                                             ? 'deactivate'.tr()
-                                            : page == 'company_inactive'
+                                            : widget.page == 'company_inactive'
                                                 ? 'activate'.tr()
-                                                : page == 'submit'
+                                                : widget.page == 'submit'
                                                     ? 'write_to'.tr()
                                                     : 'submit'.tr()),
                                   ),
@@ -373,7 +383,7 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    this.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
+                    this.widget.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
                   ],
                 ),
               ),

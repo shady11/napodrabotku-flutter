@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _region_id;
   int _district_id;
   int _currency_id;
-
+  bool loading = false;
   work_mode work = work_mode.isWork;
 
   JobType vacancy_region = new JobType(id: 1, name: 'Бишкек');
@@ -538,7 +538,11 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
+            return loading ? Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ): Dialog(
               insetPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               child: Container(
@@ -863,7 +867,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (value == null || value.length == 0) {
                                             return 'select_one_or_more'.tr();
                                           }
-                                          return "";
                                         },
                                         dataSource: skillList,
                                         textField: 'name',
@@ -891,7 +894,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (value == null || value.length == 0) {
                                             return 'select_one_or_more'.tr();
                                           }
-                                          return "";
                                         },
                                         dataSource: skillList,
                                         textField: 'name',
@@ -1417,6 +1419,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     textColor: Colors.white,
                                     onPressed: () {
                                       if (_vacancyAddFormKey.currentState.validate()) {
+
+                                        setState((){
+                                          loading = true;
+                                        });
                                         Vacancy company_vacancy = new Vacancy(
                                           name: _vacancy_name_controller.text,
                                           salary: _vacancy_salary_controller.text,
@@ -1443,6 +1449,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
                                           StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                          setState((){
+                                            loading = false;
+                                          });
                                           Navigator.of(context).pop();
                                         });
 

@@ -6,6 +6,7 @@ import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/screens/profile_likes_screen.dart';
 import 'package:ishtapp/screens/profile_visits_screen.dart';
+import 'package:ishtapp/screens/edit_profile_screen.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
@@ -16,9 +17,17 @@ import 'package:ishtapp/datas/user.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
-class ProfileTab extends StatelessWidget {
+import 'package:flutter_guid/flutter_guid.dart';
 
+class ProfileTab extends StatefulWidget {
+
+  @override
+  _ProfileTabState createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
   User user;
+  int counter = 0;
 
   void handleInitialBuild(ProfileScreenProps props) {
     if (Prefs.getString(Prefs.TOKEN) == "null" ||
@@ -30,7 +39,6 @@ class ProfileTab extends StatelessWidget {
     }
   }
 
-  // Variables
   final _textStyle = TextStyle(
     color: Colors.black,
     fontSize: 16.0,
@@ -74,10 +82,10 @@ class ProfileTab extends StatelessWidget {
                             backgroundColor: kColorPrimary,
                             radius: 60,
                             backgroundImage:
-                                Prefs.getString(Prefs.PROFILEIMAGE) != null
+                            Prefs.getString(Prefs.PROFILEIMAGE) != null
                                     ? NetworkImage(
                                         SERVER_IP +
-                                            Prefs.getString(Prefs.PROFILEIMAGE),
+                                            Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
                                         headers: {
                                             "Authorization":
                                                 Prefs.getString(Prefs.TOKEN)
@@ -139,8 +147,15 @@ class ProfileTab extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     color: Color(0xffF2F2F5),
                                     textColor: kColorPrimary,
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(Routes.user_edit);
+                                    onPressed: () async {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditProfileScreen()),
+                                        );
+                                      setState(() {
+
+                                      });
                                     },
                                     text: 'profile'.tr(),
                                   ),

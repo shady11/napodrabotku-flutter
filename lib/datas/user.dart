@@ -156,7 +156,7 @@ class User {
   }
 
   /// Method to upload Profile Image and Update User data
-  void uploadImage2(_image) async {
+  Future<String> uploadImage2(_image) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_REGISTER + '/${this.id.toString()}');
 
@@ -200,6 +200,7 @@ class User {
 
     // send request to upload image
     await request.send().then((response) async {
+
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         var data = json.decode(value);
@@ -208,6 +209,8 @@ class User {
     }).catchError((e) {
       print(e);
     });
+
+    return "OK";
   }
 
   Future<void> register() async {

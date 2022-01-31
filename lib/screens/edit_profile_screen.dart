@@ -18,6 +18,12 @@ import 'package:ishtapp/utils/constants.dart';
 import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:ishtapp/routes/routes.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+
+import 'package:ishtapp/tabs/profile_tab.dart';
+
+import 'package:flutter_guid/flutter_guid.dart';
 
 enum user_gender { Male, Female }
 
@@ -149,6 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   int count = 1;
+  int counter = 0;
 
   void _pickAttachment() async {
     File file = await FilePicker.getFile(
@@ -247,7 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
         user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
         // title_controller.text = user_cv.job_title;
-        // experience_year_controller.text = user_cv.experience_year == null ? '0' : user_cv.experience_year.toString();
+        //         // experience_year_controller.text = user_cv.experience_year == null ? '0' : user_cv.experience_year.toString();
       }
       _name_controller.text = user.name;
       _surnname_controller.text = user.surname;
@@ -290,7 +297,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             backgroundColor: kColorPrimary,
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
-                                ? NetworkImage(SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE),
+                                ? NetworkImage(
+                                SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
                                     headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
                                 : null,
                           )
@@ -804,7 +812,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 
                           if (_imageFile != null && _imageFile.path != null)
-                            user.uploadImage2(File(_imageFile.path));
+                            user.uploadImage2(File(_imageFile.path)).then((value) {
+                              StoreProvider.of<AppState>(context).dispatch(getUser());
+                              setState(() {
+                                Prefs.setString(Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
+                              });
+                              Navigator.pop(context);
+                            });
                           else
                             user.uploadImage2(null);
 
@@ -818,7 +832,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               user_cv.save();
                           }
 
-                          Navigator.of(context).pop();
                         } else {
                           return;
                         }
