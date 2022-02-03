@@ -8,11 +8,9 @@ import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-
 import 'package:ishtapp/widgets/cicle_button.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/tabs/conversations_tab.dart';
@@ -26,7 +24,6 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/utils/textFormatter/lengthLimitingTextInputFormatter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:email_validator/email_validator.dart';
 
 enum work_mode { isWork, isTraining }
 
@@ -157,13 +154,13 @@ class _HomeScreenState extends State<HomeScreen> {
     vacancyTypeList = await Vacancy.getLists('vacancy_type', null);
     busynessList = await Vacancy.getLists('busyness', null);
     scheduleList = await Vacancy.getLists('schedule', null);
+    districtList = await Vacancy.getLists('districts', null);
+    currencyList = await Vacancy.getLists('currencies', null);
     await Vacancy.getLists('region', null).then((value) {
       value.forEach((region) {
         regions.add(region["name"]);
       });
     });
-    // districtList = await Vacancy.getLists('districts', null);
-    currencyList = await Vacancy.getLists('currencies', null);
   }
 
   getFilters(id) async {
@@ -592,7 +589,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 },
                               ),
-                              Text('training'.tr(), style: TextStyle(color: Colors.black)),
+                              Text('improve_qualification'.tr(), style: TextStyle(color: Colors.black)),
                             ],
                           ),
                         ],

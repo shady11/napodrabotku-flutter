@@ -394,6 +394,10 @@ class VacancyState {
   List schedule_ids;
   List busyness_ids;
   List vacancy_type_ids;
+  List opportunity_ids;
+  List opportunity_type_ids;
+  List opportunity_duration_ids;
+  List internship_language_ids;
   ListVacancysState list;
   ListVacancysState inactive_list;
   LikedVacancyListState liked_list;
@@ -421,6 +425,10 @@ class VacancyState {
       this.schedule_ids,
       this.busyness_ids,
       this.vacancy_type_ids,
+      this.opportunity_ids,
+      this.opportunity_type_ids,
+      this.opportunity_duration_ids,
+      this.internship_language_ids,
       this.list,
       this.liked_list,
       this.type,

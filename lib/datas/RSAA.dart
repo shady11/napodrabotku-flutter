@@ -20,6 +20,10 @@ RSAA getVacanciesRequest(
     List schedule_ids,
     List busyness_ids,
     List vacancy_type_ids,
+    List opportunity_ids,
+    List opportunity_type_ids,
+    List opportunity_duration_ids,
+    List internship_language_ids,
     String type}) {
   return RSAA(
     method: 'POST',
@@ -34,7 +38,11 @@ RSAA getVacanciesRequest(
       'schedule_ids': schedule_ids,
       'region_ids': region_ids,
       'district_ids': district_ids,
-      'busyness_ids': busyness_ids
+      'busyness_ids': busyness_ids,
+      'opportunity_ids': opportunity_ids,
+      'opportunity_type_ids': opportunity_type_ids,
+      'opportunity_duration_ids': opportunity_duration_ids,
+      'internship_language_ids': internship_language_ids,
     }),
     types: [
       LIST_VACANCIES_REQUEST,
@@ -56,7 +64,12 @@ ThunkAction<AppState> getVacancies() =>
         schedule_ids: store.state.vacancy.schedule_ids,
         busyness_ids: store.state.vacancy.busyness_ids,
         vacancy_type_ids: store.state.vacancy.vacancy_type_ids,
-        type: store.state.vacancy.type));
+        type: store.state.vacancy.type,
+        opportunity_ids: store.state.vacancy.opportunity_ids,
+        opportunity_type_ids: store.state.vacancy.opportunity_type_ids,
+        opportunity_duration_ids: store.state.vacancy.opportunity_duration_ids,
+        internship_language_ids: store.state.vacancy.internship_language_ids,
+    ));
 ThunkAction<AppState> deleteItem() =>
     (Store<AppState> store) => store.state.vacancy.list.data.removeLast();
 
@@ -67,6 +80,10 @@ ThunkAction<AppState> setFilter({
   List schedule_ids,
   List busyness_ids,
   List vacancy_type_ids,
+  List opportunity_ids,
+  List opportunity_type_ids,
+  List opportunity_duration_ids,
+  List internship_language_ids,
 }) =>
     (Store<AppState> store) {
       store.state.vacancy.job_type_ids = job_type_ids;
@@ -75,6 +92,10 @@ ThunkAction<AppState> setFilter({
       store.state.vacancy.district_ids = district_ids;
       store.state.vacancy.vacancy_type_ids = vacancy_type_ids;
       store.state.vacancy.busyness_ids = busyness_ids;
+      store.state.vacancy.opportunity_ids = opportunity_ids;
+      store.state.vacancy.opportunity_type_ids = opportunity_type_ids;
+      store.state.vacancy.opportunity_duration_ids = opportunity_duration_ids;
+      store.state.vacancy.internship_language_ids = internship_language_ids;
     };
 
 ThunkAction<AppState> setTimeFilter({String type}) => (Store<AppState> store) {

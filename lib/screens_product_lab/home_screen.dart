@@ -15,6 +15,12 @@ import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/widgets/badge.dart';
 import 'package:ishtapp/tabs/conversations_tab.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/RSAA.dart';
+import 'package:ishtapp/datas/app_state.dart';
 
 class ProductLabHome extends StatefulWidget {
   const ProductLabHome({Key key}) : super(key: key);
@@ -24,12 +30,24 @@ class ProductLabHome extends StatefulWidget {
 }
 
 class _ProductLabHomeState extends State<ProductLabHome> {
+  final _formKey = GlobalKey<FormState>();
   DateTime currentBackPressTime;
   final _pageController = new PageController();
   List<Widget> app_bar_titles = [];
   int _tabCurrentIndex = 0;
   bool is_profile = false;
   bool is_special = false;
+  User user;
+
+  List<dynamic> opportunityList = [];
+  List<dynamic> opportunityTypeList = [];
+  List<dynamic> opportunityDurationList = [];
+  List<dynamic> internshipLanguageList = [];
+
+  List _opportunities = [];
+  List _opportunity_types = [];
+  List _opportunity_durations = [];
+  List _internship_languages = [];
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
@@ -39,6 +57,228 @@ class _ProductLabHomeState extends State<ProductLabHome> {
       return Future.value(false);
     }
     return Future.value(true);
+  }
+
+  getLists() async {
+    opportunityList = await Vacancy.getLists('opportunity', null);
+    opportunityTypeList = await Vacancy.getLists('opportunity_type', null);
+    opportunityDurationList = await Vacancy.getLists('opportunity_duration', null);
+    internshipLanguageList = await Vacancy.getLists('intership_language', null);
+  }
+
+  getFilters(id) async {
+    _opportunities = await User.getFilters('opportunities', id);
+    _opportunity_types = await User.getFilters('opportunity_types', id);
+    _opportunity_durations = await User.getFilters('opportunity_durations', id);
+    _internship_languages = await User.getFilters('internship_language', id);
+  }
+
+  Future<void> openFilterDialog(context) async {
+    user = StoreProvider.of<AppState>(context).state.user.user.data;
+
+    if (user != null) {
+      getFilters(user.id);
+    }
+
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              insetPadding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'search_filter'.tr(),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                          )),
+                      SizedBox(
+                        height: 30,
+                      ),
+
+                      /// Form
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'opportunity'.tr(),
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                                return '';
+                              },
+                              dataSource: opportunityList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _opportunities,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                print("hh");
+                                print(value);
+                                setState(() {
+                                  _opportunities = value;
+                                });
+                              },
+                            ),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'opportunity_type'.tr(),
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                                return '';
+                              },
+                              dataSource: opportunityTypeList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _opportunity_types,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _opportunity_types = value;
+                                });
+                              },
+                            ),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'opportunity_duration'.tr(),
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                                return '';
+                              },
+                              dataSource: opportunityDurationList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _opportunity_durations,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _opportunity_durations = value;
+                                });
+                              },
+                            ),
+                            MultiSelectFormField(
+                              autovalidate: false,
+                              title: Text(
+                                'internship_language'.tr(),
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.length == 0) {
+                                  return 'select_one_or_more'.tr();
+                                }
+                                return '';
+                              },
+                              dataSource: internshipLanguageList,
+                              textField: 'name',
+                              valueField: 'id',
+                              okButtonLabel: 'ok'.tr(),
+                              cancelButtonLabel: 'cancel'.tr(),
+                              hintWidget: Text('select_one_or_more'.tr()),
+                              initialValue: _internship_languages,
+                              onSaved: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  _internship_languages = value;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 30),
+                            SizedBox(
+                              width: double.maxFinite,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  CustomButton(
+                                    width: MediaQuery.of(context).size.width * 0.3,
+                                    padding: EdgeInsets.all(10),
+                                    color: Colors.grey[200],
+                                    textColor: kColorPrimary,
+                                    onPressed: () {
+                                      setState(() {
+                                        _opportunities = [];
+                                        _opportunity_types = [];
+                                        _opportunity_durations = [];
+                                        _internship_languages = [];
+                                      });
+
+                                      StoreProvider.of<AppState>(context).dispatch(setFilter(
+                                        opportunity_ids: _opportunities,
+                                        opportunity_type_ids: _opportunity_types,
+                                        opportunity_duration_ids: _opportunity_durations,
+                                        internship_language_ids: _internship_languages,
+                                      ));
+
+                                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                      Navigator.of(context).pop();
+                                      _nextTab(0);
+                                    },
+                                    text: 'change'.tr(),
+                                  ),
+                                  CustomButton(
+                                    width: MediaQuery.of(context).size.width * 0.3,
+                                    padding: EdgeInsets.all(10),
+                                    color: kColorPrimary,
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      StoreProvider.of<AppState>(context).dispatch(setFilter(
+                                        opportunity_ids: _opportunities,
+                                        opportunity_type_ids: _opportunity_types,
+                                        opportunity_duration_ids: _opportunity_durations,
+                                        internship_language_ids: _internship_languages,
+                                      ));
+
+                                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                      Navigator.of(context).pop();
+                                      _nextTab(0);
+                                    },
+                                    text: 'save'.tr(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+        });
   }
 
   buildSome(BuildContext context) {
@@ -57,14 +297,12 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                 bgColor: Colors.transparent,
                 padding: 12,
                 icon: Icon(
-                  Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ? Boxicons.bxs_plus_square : Boxicons.bx_filter,
+                  Boxicons.bx_filter,
                   color: Colors.white,
                   size: 35,
                 )),
             onTap: () async {
-              // Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-              //     ? await openVacancyForm(context)
-              //     : await openFilterDialog(context);
+              await openFilterDialog(context);
             },
           ),
           GestureDetector(
@@ -187,6 +425,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   @override
   void initState() {
     buildSome(context);
+    getLists();
     super.initState();
   }
 

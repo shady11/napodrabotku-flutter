@@ -227,10 +227,11 @@
     "required_up_to": "Требуется до",
     "choose_opportunity_skill_sets": "Выбор скиллсетов для возможности",
     "opportunity_age": "Возраст, для которого предназначена возможность",
-    "opportunity_duration": "Возраст, для которого предназначена возможность",
+    "opportunity_duration": "Продолжительность возможности",
     "internship_language": "Язык для стажировки",
-    "opportunity_type": "Язык для стажировки",
+    "opportunity_type": "Тип возможности",
     "choice_opportunity_options": "Выбор возможностей",
     "improve_qualification": "Повышение квалификации",
-    "work": "Работа"
+    "work": "Работа",
+    "opportunity": "Возможность"
 }

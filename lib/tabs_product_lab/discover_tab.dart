@@ -63,13 +63,13 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
     }
 
     Vacancy.getVacancyByOffset(
-        offset: offset,
-        job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-        region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-        schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-        busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-        vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
-        type: StoreProvider.of<AppState>(context).state.vacancy.type)
+            offset: offset,
+            job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+            region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+            schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+            busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+            vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
+            type: StoreProvider.of<AppState>(context).state.vacancy.type)
         .then((value) {
       if (value != null) {
         offset = offset + 1;
@@ -114,48 +114,45 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                 cardController: cardController,
                 cardBuilder: (context, index) {
                   _index = index;
-                  return
-                    // data != null && data.isNotEmpty
-                    // ?
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                          child: Center(
-                            child: Text(
-                              "vacancies_empty".tr(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white, fontSize: 20),
+                  return data != null && data.isNotEmpty
+                      ? Stack(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                              child: Center(
+                                child: Text(
+                                  "vacancies_empty".tr(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 20),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: ProfileCardProductLab(
-                            props: props,
-                            page: 'discover',
-                            vacancy: data[index],
-                            index: index,
-                            cardController: cardController,
-                          ),
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (BuildContext context) {
-                              return Scaffold(
-                                backgroundColor: kColorPrimary,
-                                appBar: AppBar(
-                                  title: Text("vacancy_view".tr()),
-                                ),
-                                body: VacancyView(
-                                  page: "view",
-                                  vacancy: data[index],
-                                ),
-                              );
-                            }));
-                          },
-                        ),
-                      ],
-                    );
-                  // : Container();
+                            GestureDetector(
+                              child: ProfileCardProductLab(
+                                props: props,
+                                page: 'discover',
+                                vacancy: data[index],
+                                index: index,
+                                cardController: cardController,
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                  return Scaffold(
+                                    backgroundColor: kColorPrimary,
+                                    appBar: AppBar(
+                                      title: Text("vacancy_view".tr()),
+                                    ),
+                                    body: VacancyView(
+                                      page: "view",
+                                      vacancy: data[index],
+                                    ),
+                                  );
+                                }));
+                              },
+                            ),
+                          ],
+                        )
+                      : Container();
                 },
                 swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
                   if (orientation.index == CardSwipeOrientation.LEFT.index) {
@@ -203,8 +200,7 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                           type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
                       StoreProvider.of<AppState>(context).dispatch(getVacancies());
                     },
-                    text:
-                    StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
                   ),
                   CustomButton(
                     width: MediaQuery.of(context).size.width * 0.3,
@@ -214,13 +210,10 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                     onPressed: () {
                       Prefs.setInt(Prefs.OFFSET, 0);
                       StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                          type:
-                          StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
+                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
                       StoreProvider.of<AppState>(context).dispatch(getVacancies());
                     },
-                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
-                        ? 'all'.tr()
-                        : 'week'.tr(),
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all'.tr() : 'week'.tr(),
                   ),
                   CustomButton(
                     width: MediaQuery.of(context).size.width * 0.3,
@@ -230,18 +223,14 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                     onPressed: () {
                       Prefs.setInt(Prefs.OFFSET, 0);
                       StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                              ? 'all'
-                              : 'month'));
+                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all' : 'month'));
                       StoreProvider.of<AppState>(context).dispatch(getVacancies());
                       //                      Navigator.of(context).popAndPushNamed(Routes.signup);
                       setState(() {
                         button == 3 ? button = 0 : button = 3;
                       });
                     },
-                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                        ? 'all'.tr()
-                        : 'month'.tr(),
+                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all'.tr() : 'month'.tr(),
                   ),
                 ],
               ),

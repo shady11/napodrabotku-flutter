@@ -28,10 +28,13 @@ class _SplashScreenState extends State<SplashScreen> {
         theme: Prefs.getBool(Prefs.DARKTHEME, def: false)
             ? AppTheme.DarkTheme
             : AppTheme.LightTheme));
+
     if (Prefs.getString('language') == null)
       Navigator.of(context).pushReplacementNamed(Routes.chooseLanguage);
     else if (Prefs.getString(Prefs.TOKEN) != null) {
-      Navigator.of(context).pushReplacementNamed(Routes.home);
+      Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+        ? Navigator.of(context).pushReplacementNamed(Routes.product_lab_home)
+        : Navigator.of(context).pushReplacementNamed(Routes.home);
     } else {
       Navigator.of(context).pushReplacementNamed(Routes.select_mode);
     }
