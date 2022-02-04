@@ -27,7 +27,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: Image.asset(
-                    'assets/images/welcome_without_face.png',
+                    'assets/images/welcome_product_lab.png',
                     fit: BoxFit.cover,
                   ),
                 ),
