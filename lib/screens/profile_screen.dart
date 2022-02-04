@@ -7,7 +7,7 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:expandable/expandable.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
@@ -50,11 +50,12 @@ class SkillCategory {
         headers: headers,
         body: json.encode({
           "user_id": Prefs.getInt(Prefs.USER_ID).toString(),
-          "skill_id": list,
+          "user_skills": list,
           "category_id": categoryId,
         }),
       );
       json.decode(response.body);
+      print(json.decode(response.body));
       return "OK";
     } catch (error) {
       throw error;
@@ -811,13 +812,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   openSkillDialog(context, List<String> options, int categoryId) {
     List<String> listTag = [];
 
-    List<String> options2 = [
-      'News', 'Entertainment', 'Politics',
-      'Automotive', 'Sports', 'Education',
-      'Fashion', 'Travel', 'Food', 'Tech',
-      'Science',
-    ];
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -843,16 +837,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       /// Form
                       Column(
                         children: <Widget>[
-                          // ChipsChoice<String>.multiple(
-                          //   value: tags,
-                          //   onChanged: (val) => setState(() => tags = val),
-                          //   choiceItems: C2Choice.listFrom<String, String>(
-                          //     source: options2,
-                          //     value: (i, v) => v,
-                          //     label: (i, v) => v,
-                          //     tooltip: (i, v) => v,
-                          //   ),
-                          // ),
                           ChipsChoice<String>.multiple(
                             padding: EdgeInsets.zero,
                             value: listTag,
@@ -898,7 +882,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onPressed: () {
                                     SkillCategory skillCategory = new SkillCategory();
 
-                                    skillCategory.saveUserSkills(tags, categoryId);
+                                    skillCategory.saveUserSkills(listTag, categoryId);
                                     Navigator.of(context).pop();
                                   },
                                   text: 'save'.tr(),
@@ -969,7 +953,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    SkillCategory skillCategory = new SkillCategory();
+
+                                    // skillCategory.saveUserSkills(tags, categoryId);
+                                    Navigator.of(context).pop();
+                                  },
                                   text: 'save'.tr(),
                                 ),
                               ],
@@ -987,6 +976,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getSkillSetCategories() async {
+    List<String> pi = [];
+    var controller = new ExpandableController(
+      initialExpanded: true,
+    );
     var list = await Vacancy.getLists('skillset_category', null);
     list.forEach((item) {
       List<String> skills = [];
@@ -995,31 +988,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
 
       skillsV1.add(
-        Column(
-          children: <Widget>[
-            Text(item["name"], style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-            ChipsChoice<String>.multiple(
-              padding: EdgeInsets.zero,
-              value: tags,
-              onChanged: (val) {
-                print(val);
-                return setState(() => tags = val);
-              },
-              choiceItems: C2Choice.listFrom<String, String>(
-                source: skills,
-                value: (i, v) => v,
-                label: (i, v) => v,
-              ),
-              wrapped: true,
-              choiceLabelBuilder: (item) {
-                return Text(
-                  item.label,
-                  softWrap: true,
-                  maxLines: 6,
-                );
-              },
-            ),
-          ],
+        StatefulBuilder(
+            builder: (context, setState) {
+              return Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Column(
+                  children: <Widget>[
+                    ExpandablePanel(
+                      controller: controller,
+                      header: Text(item["name"]),
+                      collapsed: ChipsChoice<String>.multiple(
+                        padding: EdgeInsets.zero,
+                        value: tags,
+                        onChanged: (val) {
+                          print(val);
+                          return setState(() => tags = val);
+                        },
+                        choiceItems: C2Choice.listFrom<String, String>(
+                          source: skills,
+                          value: (i, v) => v,
+                          label: (i, v) => v,
+                        ),
+                        wrapped: true,
+                        choiceLabelBuilder: (item) {
+                          return Text(
+                            item.label,
+                            softWrap: true,
+                            maxLines: 6,
+                          );
+                        },
+                      ),
+                      // expanded: Text(item["name"], softWrap: true, ),
+                      tapHeaderToExpand: false,
+                      hasIcon: true,
+                    ),
+
+
+                  ],
+                ),
+              );
+            }
         ),
       );
 
@@ -1346,39 +1354,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                               child: Text("empty".tr())),
                                                         ),
+
                                                   Prefs.getString(Prefs.USER_TYPE) == "USER"
                                                       ? Container(
                                                           margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                                                          child: Flex(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                            direction: Axis.horizontal,
+                                                          child: Column(
                                                             children: [
-                                                              Flexible(
-                                                                child: Text('Навыки'.tr().toUpperCase(),
-                                                                    style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        fontWeight: FontWeight.w700,
-                                                                        color: kColorDarkBlue)),
+                                                              Align(
+                                                                alignment: Alignment.bottomLeft,
+                                                                child: Text("ВЕРСИЯ 1"),
                                                               ),
-                                                              Flexible(
-                                                                child: CustomButton(
-                                                                  height: 40.0,
-                                                                  width: 100.0,
-                                                                  padding: EdgeInsets.all(5),
-                                                                  color: kColorPrimary,
-                                                                  textColor: Colors.white,
-                                                                  textSize: 14,
-                                                                  onPressed: () {
-                                                                    openSkillDialogV1(context);
-                                                                  },
-                                                                  text: 'add'.tr(),
-                                                                ),
+                                                              Flex(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                direction: Axis.horizontal,
+                                                                children: [
+
+
+                                                                  Flexible(
+                                                                    child: Text('Навыки'.tr().toUpperCase(),
+                                                                        style: TextStyle(
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w700,
+                                                                            color: kColorDarkBlue)),
+                                                                  ),
+                                                                  Flexible(
+                                                                    child: CustomButton(
+                                                                      height: 40.0,
+                                                                      width: 100.0,
+                                                                      padding: EdgeInsets.all(5),
+                                                                      color: kColorPrimary,
+                                                                      textColor: Colors.white,
+                                                                      textSize: 14,
+                                                                      onPressed: () {
+                                                                        openSkillDialogV1(context);
+                                                                      },
+                                                                      text: 'add'.tr(),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ],
                                                           ),
                                                         )
                                                       : Container(),
+
+                                                  Text("ВЕРСИЯ 2"),
                                                   Column(
                                                     children: categories,
                                                   ),

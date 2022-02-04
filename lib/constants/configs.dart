@@ -1,13 +1,7 @@
 String API_IP = "https://ishtapp.kg/api/";
-// String API_IP = "http://138.68.79.49/api/";
-// String API_IP = "http://192.168.0.105:8000/api/";
-// String API_IP = "http://127.0.0.1:8000/api/";
 // String API_IP = "http://10.0.2.2:8000/api/";
 String SERVER_IP = "https://ishtapp.kg/";
-// String SERVER_IP = "http://138.68.79.49/";
-// String SERVER_IP = "http://192.168.0.105:8000/";
 // String SERVER_IP = "http://10.0.2.2:8000/";
-// String SERVER_IP = "http://127.0.0.1:8000/";
 String API_GET_USER = "user";
 String API_CHECK_USER_EMAIL = "users/email_check";
 String API_CHECK_USER_CV = "users/user_cv_check";
@@ -29,6 +23,9 @@ String API_USER_CV_SAVE = 'user_cv';
 String API_USER_CV_EXPERIENCE_SAVE = 'user_cv_experience';
 String API_USER_CV_EXPERIENCE_UPDATE = 'user/experience/update/';
 String API_USER_CV_EXPERIENCE_DELETE = 'user/experience/delete/';
+
+String API_USER_SKILL_SAVE = 'user_skillset';
+
 
 String API_USER_CV_EDUCATION_SAVE = 'user_cv_education';
 String API_USER_CV_EDUCATION_UPDATE = 'user/education/update/';
