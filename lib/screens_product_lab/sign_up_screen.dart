@@ -618,18 +618,14 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                           request.fields["id"] = user.id.toString();
                           request.fields["password"] = user.password;
                           request.fields["name"] = user.name;
-                          request.fields["lastname"] = user.surname;
                           request.fields["email"] = user.email;
                           request.fields["birth_date"] = formatter.format(user.birth_date);
                           request.fields["active"] = '1';
                           request.fields["phone_number"] = user.phone_number;
                           request.fields["type"] = user.is_company ? 'COMPANY' : 'USER';
-                          request.fields["linkedin"] = user.linkedin;
-                          request.fields["is_migrant"] = user.is_migrant.toString();
                           request.fields["gender"] = user.gender.toString();
                           request.fields["region"] = user.region.toString();
                           request.fields["district"] = user.district.toString();
-                          request.fields["job_type"] = user.job_type.toString();
                           request.fields["is_product_lab_user"] = user.is_product_lab_user ? "1" : "0";
 
                           // open a byteStream

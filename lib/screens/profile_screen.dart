@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:chips_choice/chips_choice.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
@@ -16,6 +19,48 @@ import 'package:ishtapp/widgets/user_course_info.dart';
 import 'package:ishtapp/widgets/user_education_info.dart';
 import 'package:ishtapp/widgets/user_experience_info.dart';
 import 'package:ishtapp/components/custom_button.dart';
+import 'package:ishtapp/datas/vacancy.dart';
+
+class Skill {
+  int id;
+  int categoryId;
+  String name;
+
+  Skill({this.id, this.categoryId, this.name});
+}
+
+class SkillCategory {
+  int id;
+  String name;
+  List<Skill> skill = [];
+
+  SkillCategory({this.id, this.name, this.skill});
+
+  Future<String> saveUserSkills(List<String> list, int categoryId) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_USER_SKILL_SAVE);
+
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        "Authorization": Prefs.getString(Prefs.TOKEN)
+      };
+      final response = await http.post(
+        uri,
+        headers: headers,
+        body: json.encode({
+          "user_id": Prefs.getInt(Prefs.USER_ID).toString(),
+          "skill_id": list,
+          "category_id": categoryId,
+        }),
+      );
+      json.decode(response.body);
+      return "OK";
+    } catch (error) {
+      throw error;
+    }
+  }
+}
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -41,8 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController end_year_controller = TextEditingController();
 
   TextEditingController name_controller = TextEditingController();
-  TextEditingController course_organization_name_controller =
-      TextEditingController();
+  TextEditingController course_organization_name_controller = TextEditingController();
   TextEditingController duration_controller = TextEditingController();
   TextEditingController course_end_year_controller = TextEditingController();
 
@@ -60,16 +104,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final courseAddFormKey = GlobalKey<FormState>();
   final courseEditFormKey = GlobalKey<FormState>();
 
+  List<Widget> categories = [];
+  List<Widget> skillsV1 = [];
+  List<Skill> skillSets = [];
+  List<String> tags = [];
+
   openEducationDialog(context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -80,10 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_education_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -99,22 +143,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("university".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: title_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -137,24 +174,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("faculty".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2
-                                      )
-                                  ),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: faculty_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -177,22 +205,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("speciality".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: speciality_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -253,23 +274,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("end_year".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   keyboardType: TextInputType.number,
                                   controller: end_year_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -285,14 +299,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
 
-                          /// Sign In button
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
@@ -302,48 +314,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'cancel'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    if (educationAddFormKey.currentState
-                                        .validate()) {
-                                      this.userEducation.title =
-                                          title_controller.text;
-                                      this.userEducation.faculty =
-                                          faculty_controller.text;
-                                      this.userEducation.speciality =
-                                          speciality_controller.text;
-                                      this.userEducation.type =
-                                          type_controller.text;
-                                      this.userEducation.end_year =
-                                          end_year_controller.text;
+                                    if (educationAddFormKey.currentState.validate()) {
+                                      this.userEducation.title = title_controller.text;
+                                      this.userEducation.faculty = faculty_controller.text;
+                                      this.userEducation.speciality = speciality_controller.text;
+                                      this.userEducation.type = type_controller.text;
+                                      this.userEducation.end_year = end_year_controller.text;
 
                                       this
                                           .userEducation
-                                          .save(StoreProvider.of<AppState>(
-                                                  context)
-                                              .state
-                                              .user
-                                              .user_cv
-                                              .data
-                                              .id)
+                                          .save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id)
                                           .then((value) {
-                                        StoreProvider.of<AppState>(context)
-                                            .dispatch(getUserCv());
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
                                         Navigator.of(context).pop();
-                                        title_controller =
-                                            TextEditingController();
-                                        faculty_controller =
-                                            TextEditingController();
-                                        speciality_controller =
-                                            TextEditingController();
-                                        type_controller =
-                                            TextEditingController();
-                                        end_year_controller =
-                                            TextEditingController();
+                                        title_controller = TextEditingController();
+                                        faculty_controller = TextEditingController();
+                                        speciality_controller = TextEditingController();
+                                        type_controller = TextEditingController();
+                                        end_year_controller = TextEditingController();
                                       });
                                     }
                                   },
@@ -368,11 +361,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -383,10 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_experience_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -402,22 +390,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("position".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: this.job_title_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -440,24 +421,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("start_date".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 Container(
                                   child: TextFormField(
                                     controller: this.start_date_controller,
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide.none),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
+                                          borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
                                       filled: true,
                                       fillColor: Colors.grey[200],
                                     ),
@@ -481,24 +454,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("end_date".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 Container(
                                   child: TextFormField(
                                     controller: this.end_date_controller,
                                     decoration: InputDecoration(
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                      contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: BorderSide.none),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
+                                          borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
                                       filled: true,
                                       fillColor: Colors.grey[200],
                                     ),
@@ -522,22 +487,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("organization_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: this.organization_name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -560,22 +518,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("description".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: this.description_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -597,8 +548,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
@@ -608,48 +558,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'cancel'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    if (experienceAddFormKey.currentState
-                                        .validate()) {
-                                      this.userExperience.job_title =
-                                          job_title_controller.text;
-                                      this.userExperience.start_date =
-                                          (start_date_controller.text);
-                                      this.userExperience.end_date =
-                                          (end_date_controller.text);
-                                      this.userExperience.organization_name =
-                                          organization_name_controller.text;
-                                      this.userExperience.description =
-                                          description_controller.text;
+                                    if (experienceAddFormKey.currentState.validate()) {
+                                      this.userExperience.job_title = job_title_controller.text;
+                                      this.userExperience.start_date = (start_date_controller.text);
+                                      this.userExperience.end_date = (end_date_controller.text);
+                                      this.userExperience.organization_name = organization_name_controller.text;
+                                      this.userExperience.description = description_controller.text;
 
                                       this
                                           .userExperience
-                                          .save(StoreProvider.of<AppState>(
-                                                  context)
-                                              .state
-                                              .user
-                                              .user_cv
-                                              .data
-                                              .id)
+                                          .save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id)
                                           .then((value) {
-                                        StoreProvider.of<AppState>(context)
-                                            .dispatch(getUserCv());
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
                                         Navigator.of(context).pop();
-                                        job_title_controller =
-                                            TextEditingController();
-                                        start_date_controller =
-                                            TextEditingController();
-                                        end_date_controller =
-                                            TextEditingController();
-                                        organization_name_controller =
-                                            TextEditingController();
-                                        description_controller =
-                                            TextEditingController();
+                                        job_title_controller = TextEditingController();
+                                        start_date_controller = TextEditingController();
+                                        end_date_controller = TextEditingController();
+                                        organization_name_controller = TextEditingController();
+                                        description_controller = TextEditingController();
                                       });
                                     }
                                   },
@@ -674,11 +605,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -689,10 +618,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_course_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -708,22 +634,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("course_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -746,23 +665,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("organization_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
-                                  controller:
-                                      course_organization_name_controller,
+                                  controller: course_organization_name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -785,22 +696,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("duration".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: duration_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -823,22 +727,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Container(
                                   child: Text("end_year".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: course_end_year_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -860,8 +757,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: Colors.grey[200],
                                   textColor: kColorPrimary,
@@ -871,46 +767,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   text: 'cancel'.tr(),
                                 ),
                                 CustomButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.33,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   padding: EdgeInsets.all(10),
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    if (courseAddFormKey.currentState
-                                        .validate()) {
-                                      this.userCourse.name =
-                                          name_controller.text;
-                                      this.userCourse.organization_name =
-                                          course_organization_name_controller
-                                              .text;
-                                      this.userCourse.duration =
-                                          duration_controller.text;
-                                      this.userCourse.end_year =
-                                          course_end_year_controller.text;
+                                    if (courseAddFormKey.currentState.validate()) {
+                                      this.userCourse.name = name_controller.text;
+                                      this.userCourse.organization_name = course_organization_name_controller.text;
+                                      this.userCourse.duration = duration_controller.text;
+                                      this.userCourse.end_year = course_end_year_controller.text;
 
                                       this
                                           .userCourse
-                                          .save(StoreProvider.of<AppState>(
-                                                  context)
-                                              .state
-                                              .user
-                                              .user_cv
-                                              .data
-                                              .id)
+                                          .save(StoreProvider.of<AppState>(context).state.user.user_cv.data.id)
                                           .then((value) {
-                                        StoreProvider.of<AppState>(context)
-                                            .dispatch(getUserCv());
+                                        StoreProvider.of<AppState>(context).dispatch(getUserCv());
                                         Navigator.of(context).pop();
 
-                                        name_controller =
-                                            TextEditingController();
-                                        course_organization_name_controller =
-                                            TextEditingController();
-                                        duration_controller =
-                                            TextEditingController();
-                                        course_end_year_controller =
-                                            TextEditingController();
+                                        name_controller = TextEditingController();
+                                        course_organization_name_controller = TextEditingController();
+                                        duration_controller = TextEditingController();
+                                        course_end_year_controller = TextEditingController();
                                       });
                                     }
                                   },
@@ -930,19 +808,306 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  _launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+  openSkillDialog(context, List<String> options, int categoryId) {
+    List<String> listTag = [];
+
+    List<String> options2 = [
+      'News', 'Entertainment', 'Politics',
+      'Automotive', 'Sports', 'Education',
+      'Fashion', 'Travel', 'Food', 'Tech',
+      'Science',
+    ];
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              child: Container(
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text('Навыки'.tr().toUpperCase(),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                        ),
+                      ),
+
+                      /// Form
+                      Column(
+                        children: <Widget>[
+                          // ChipsChoice<String>.multiple(
+                          //   value: tags,
+                          //   onChanged: (val) => setState(() => tags = val),
+                          //   choiceItems: C2Choice.listFrom<String, String>(
+                          //     source: options2,
+                          //     value: (i, v) => v,
+                          //     label: (i, v) => v,
+                          //     tooltip: (i, v) => v,
+                          //   ),
+                          // ),
+                          ChipsChoice<String>.multiple(
+                            padding: EdgeInsets.zero,
+                            value: listTag,
+                            onChanged: (val) {
+                              return setState(() => listTag = val);
+                            },
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: options,
+                              value: (i, v) => v,
+                              label: (i, v) => v,
+                            ),
+                            wrapped: true,
+                            choiceLabelBuilder: (item) {
+                              return Text(
+                                item.label,
+                                softWrap: true,
+                                maxLines: 6,
+                              );
+                            },
+                          ),
+
+                          /// Sign In button
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.grey[200],
+                                  textColor: kColorPrimary,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'cancel'.tr(),
+                                ),
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    SkillCategory skillCategory = new SkillCategory();
+
+                                    skillCategory.saveUserSkills(tags, categoryId);
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'save'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  openSkillDialogV1(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Навыки'.tr().toUpperCase(),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                      ),
+                    ),
+
+                    /// Form
+                    Form(
+                      key: courseAddFormKey,
+                      child: Column(
+                        children: <Widget>[
+                          Column(
+                            children: skillsV1,
+                          ),
+
+                          /// Sign In button
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.grey[200],
+                                  textColor: kColorPrimary,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'cancel'.tr(),
+                                ),
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {},
+                                  text: 'save'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  getSkillSetCategories() async {
+    var list = await Vacancy.getLists('skillset_category', null);
+    list.forEach((item) {
+      List<String> skills = [];
+      item["skills"].forEach((skill) {
+        skills.add(skill);
+      });
+
+      skillsV1.add(
+        Column(
+          children: <Widget>[
+            Text(item["name"], style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+            ChipsChoice<String>.multiple(
+              padding: EdgeInsets.zero,
+              value: tags,
+              onChanged: (val) {
+                print(val);
+                return setState(() => tags = val);
+              },
+              choiceItems: C2Choice.listFrom<String, String>(
+                source: skills,
+                value: (i, v) => v,
+                label: (i, v) => v,
+              ),
+              wrapped: true,
+              choiceLabelBuilder: (item) {
+                return Text(
+                  item.label,
+                  softWrap: true,
+                  maxLines: 6,
+                );
+              },
+            ),
+          ],
+        ),
+      );
+
+      categories.add(
+        Container(
+          margin: EdgeInsets.only(bottom: 20),
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                flex: 2,
+                child: Container(
+                  margin: EdgeInsets.only(right: 20),
+                  width: 40,
+                  height: 40,
+                  child: Icon(
+                    Boxicons.bx_atom,
+                    size: 25,
+                    color: kColorPrimary,
+                  ),
+                  decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+              Flexible(
+                flex: 6,
+                child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(right: 10),
+                    child: Text(
+                      item['name'].toString(),
+                      style: _textStyle,
+                      textAlign: TextAlign.left,
+                    )),
+              ),
+              Flexible(
+                flex: 3,
+                child: CustomButton(
+                  height: 40.0,
+                  width: 100.0,
+                  padding: EdgeInsets.all(5),
+                  color: kColorPrimary,
+                  textColor: Colors.white,
+                  textSize: 14,
+                  onPressed: () {
+                    List<String> list = [];
+                    int id = item["id"];
+                    skillSets.forEach((item) {
+                      if (item.categoryId == id) {
+                        list.add(item.name);
+                      }
+                    });
+                    print(skillSets);
+                    openSkillDialog(context, list, id);
+                  },
+                  text: 'add'.tr(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  getSkillSets() async {
+    var list = await Vacancy.getLists('skillset', null);
+    list.forEach((item) {
+      skillSets.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+  }
+
+  final _textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+  );
+
+  @override
+  void initState() {
+    getSkillSets();
+    getSkillSetCategories();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     User user = StoreProvider.of<AppState>(context).state.user.user.data;
-//    UserCv user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
-//    userCv = user_cv;
 
     return StoreConnector<AppState, ProfileScreenProps>(
         converter: (store) => mapStateToProps(store),
@@ -971,21 +1136,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Center(
                       child: Container(
                         padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                         child: CircleAvatar(
                           backgroundColor: kColorPrimary,
                           radius: 60,
-                          backgroundImage:
-                              Prefs.getString(Prefs.PROFILEIMAGE) != null
-                                  ? NetworkImage(
-                                      SERVER_IP +
-                                          Prefs.getString(Prefs.PROFILEIMAGE),
-                                      headers: {
-                                          "Authorization":
-                                              Prefs.getString(Prefs.TOKEN)
-                                        })
-                                  : null,
+                          backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
+                              ? NetworkImage(SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE),
+                                  headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
+                              : null,
                         ),
                       ),
                     ),
@@ -999,105 +1157,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           /// Profile bio
                           Prefs.getString(Prefs.USER_TYPE) == "USER"
                               ? Center(
-                                  child: Text('cv'.tr(),
-                                      style: TextStyle(
-                                          fontSize: 20, color: kColorDark)),
+                                  child: Text('cv'.tr(), style: TextStyle(fontSize: 20, color: kColorDark)),
                                 )
                               : Container(),
 
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
                             child: Text('basic_info'.tr().toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    color: kColorDarkBlue)),
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                           ),
                           BasicUserCvInfo(
-                              user_cv: StoreProvider.of<AppState>(context)
-                                  .state
-                                  .user
-                                  .user_cv
-                                  .data,
-                              user: user),
-
-//                         StoreProvider.of<AppState>(context).state.user.user_cv.data == null ? Container() :
-//                         Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Container(
-//                               margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-//                               child: Text('attachment'.tr().toUpperCase(),
-//                                   style: TextStyle(
-//                                       fontSize: 14,
-//                                       fontWeight: FontWeight.w700,
-//                                       color: kColorDarkBlue)),
-//                             ),
-//                             StoreProvider.of<AppState>(context).state.user.user_cv.data== null ? Container() : CustomButton(text: StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment != null?'download_file'.tr():'file_doesnt_exist'.tr(), width: MediaQuery.of(context).size.width*1, color: Colors.grey[200], textColor: kColorPrimary, onPressed: (){
-//                               _launchURL(SERVER_IP+StoreProvider.of<AppState>(context).state.user.user_cv.data.attachment);
-// //            doSome1(user_cv.attachment);
-//                             }),
-//                           ],
-//                         ),
+                              user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
 
                           Prefs.getString(Prefs.USER_TYPE) == "USER"
                               ? Column(
                                   children: [
-                                    cv_loading ?
-                                    Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<
-                                                Color>(kColorPrimary),
-                                      ),
-                                    ) :
-                                    StoreProvider.of<AppState>(context).state.user.user_cv.data != null
+                                    cv_loading
+                                        ? Center(
+                                            child: CircularProgressIndicator(
+                                              valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
+                                            ),
+                                          )
+                                        : StoreProvider.of<AppState>(context).state.user.user_cv.data != null
                                             ? Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 20, 0, 10),
+                                                    margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
-                                                        Text(
-                                                            'user_education_info'
-                                                                .tr()
-                                                                .toUpperCase(),
+                                                        Text('user_education_info'.tr().toUpperCase(),
                                                             style: TextStyle(
                                                                 fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color:
-                                                                    kColorDarkBlue)),
+                                                                fontWeight: FontWeight.w700,
+                                                                color: kColorDarkBlue)),
                                                         CustomButton(
                                                           height: 40.0,
                                                           width: 100.0,
-                                                          padding:
-                                                              EdgeInsets.all(5),
+                                                          padding: EdgeInsets.all(5),
                                                           color: kColorPrimary,
-                                                          textColor:
-                                                              Colors.white,
+                                                          textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
-                                                            openEducationDialog(
-                                                                context);
+                                                            openEducationDialog(context);
                                                           },
                                                           text: 'add'.tr(),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                  (StoreProvider.of<AppState>(
-                                                                  context)
+                                                  (StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
@@ -1106,68 +1217,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .length >
                                                           0)
                                                       ? UserEducationInfo(
-                                                          user_educations:
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .state
-                                                                  .user
-                                                                  .user_cv
-                                                                  .data
-                                                                  .user_educations,
-                                                          userCv: StoreProvider
-                                                                  .of<AppState>(
-                                                                      context)
+                                                          user_educations: StoreProvider.of<AppState>(context)
+                                                              .state
+                                                              .user
+                                                              .user_cv
+                                                              .data
+                                                              .user_educations,
+                                                          userCv: StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
                                                               .data)
                                                       : Container(
                                                           child: Container(
-                                                              margin: EdgeInsets
-                                                                  .fromLTRB(
-                                                                      0,
-                                                                      15,
-                                                                      0,
-                                                                      15),
-                                                              child: Text(
-                                                                  "empty"
-                                                                      .tr())),
+                                                              margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                              child: Text("empty".tr())),
                                                         ),
                                                   Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 30, 0, 10),
+                                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
-                                                        Text(
-                                                            'user_experience_info'
-                                                                .tr()
-                                                                .toUpperCase(),
+                                                        Text('user_experience_info'.tr().toUpperCase(),
                                                             style: TextStyle(
                                                                 fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color:
-                                                                    kColorDarkBlue)),
+                                                                fontWeight: FontWeight.w700,
+                                                                color: kColorDarkBlue)),
                                                         CustomButton(
                                                           height: 40.0,
                                                           width: 100.0,
-                                                          padding:
-                                                              EdgeInsets.all(5),
+                                                          padding: EdgeInsets.all(5),
                                                           color: kColorPrimary,
-                                                          textColor:
-                                                              Colors.white,
+                                                          textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
-                                                            openExperienceDialog(
-                                                                context);
+                                                            openExperienceDialog(context);
                                                           },
                                                           text: 'add'.tr(),
                                                         ),
@@ -1179,8 +1264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     //         fontWeight: FontWeight.w700,
                                                     //         color: kColorDarkBlue)),
                                                   ),
-                                                  StoreProvider.of<AppState>(
-                                                                  context)
+                                                  StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
@@ -1189,68 +1273,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .length >
                                                           0
                                                       ? UserExperienceInfo(
-                                                          user_experiences:
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .state
-                                                                  .user
-                                                                  .user_cv
-                                                                  .data
-                                                                  .user_experiences,
-                                                          userCv: StoreProvider
-                                                                  .of<AppState>(
-                                                                      context)
+                                                          user_experiences: StoreProvider.of<AppState>(context)
+                                                              .state
+                                                              .user
+                                                              .user_cv
+                                                              .data
+                                                              .user_experiences,
+                                                          userCv: StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
                                                               .data)
                                                       : Container(
                                                           child: Container(
-                                                              margin: EdgeInsets
-                                                                  .fromLTRB(
-                                                                      0,
-                                                                      15,
-                                                                      0,
-                                                                      15),
-                                                              child: Text(
-                                                                  "empty"
-                                                                      .tr())),
+                                                              margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                              child: Text("empty".tr())),
                                                         ),
                                                   Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 30, 0, 10),
+                                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
-                                                        Text(
-                                                            'user_course_info'
-                                                                .tr()
-                                                                .toUpperCase(),
+                                                        Text('user_course_info'.tr().toUpperCase(),
                                                             style: TextStyle(
                                                                 fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                color:
-                                                                    kColorDarkBlue)),
+                                                                fontWeight: FontWeight.w700,
+                                                                color: kColorDarkBlue)),
                                                         CustomButton(
                                                           height: 40.0,
                                                           width: 100.0,
-                                                          padding:
-                                                              EdgeInsets.all(5),
+                                                          padding: EdgeInsets.all(5),
                                                           color: kColorPrimary,
-                                                          textColor:
-                                                              Colors.white,
+                                                          textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
-                                                            openCourseDialog(
-                                                                context);
+                                                            openCourseDialog(context);
                                                           },
                                                           text: 'add'.tr(),
                                                         ),
@@ -1262,8 +1320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     //         fontWeight: FontWeight.w700,
                                                     //         color: kColorDarkBlue)),
                                                   ),
-                                                  StoreProvider.of<AppState>(
-                                                                  context)
+                                                  StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
@@ -1272,18 +1329,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .length >
                                                           0
                                                       ? UserCourseInfo(
-                                                          user_courses:
-                                                              StoreProvider.of<
-                                                                          AppState>(
-                                                                      context)
-                                                                  .state
-                                                                  .user
-                                                                  .user_cv
-                                                                  .data
-                                                                  .user_courses,
-                                                          userCv: StoreProvider
-                                                                  .of<AppState>(
-                                                                      context)
+                                                          user_courses: StoreProvider.of<AppState>(context)
+                                                              .state
+                                                              .user
+                                                              .user_cv
+                                                              .data
+                                                              .user_courses,
+                                                          userCv: StoreProvider.of<AppState>(context)
                                                               .state
                                                               .user
                                                               .user_cv
@@ -1291,22 +1343,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         )
                                                       : Container(
                                                           child: Container(
-                                                              margin: EdgeInsets
-                                                                  .fromLTRB(
-                                                                      0,
-                                                                      15,
-                                                                      0,
-                                                                      15),
-                                                              child: Text(
-                                                                  "empty"
-                                                                      .tr())),
+                                                              margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                              child: Text("empty".tr())),
                                                         ),
+                                                  Prefs.getString(Prefs.USER_TYPE) == "USER"
+                                                      ? Container(
+                                                          margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                                                          child: Flex(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            direction: Axis.horizontal,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Text('Навыки'.tr().toUpperCase(),
+                                                                    style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        fontWeight: FontWeight.w700,
+                                                                        color: kColorDarkBlue)),
+                                                              ),
+                                                              Flexible(
+                                                                child: CustomButton(
+                                                                  height: 40.0,
+                                                                  width: 100.0,
+                                                                  padding: EdgeInsets.all(5),
+                                                                  color: kColorPrimary,
+                                                                  textColor: Colors.white,
+                                                                  textSize: 14,
+                                                                  onPressed: () {
+                                                                    openSkillDialogV1(context);
+                                                                  },
+                                                                  text: 'add'.tr(),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                  Column(
+                                                    children: categories,
+                                                  ),
                                                 ],
                                               )
                                             : Center(
                                                 child: Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 15, 0, 15),
+                                                    margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                     child: Text("empty".tr())),
                                               ),
                                   ],
@@ -1359,8 +1439,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Widget _rowProfileInfo(BuildContext context,
-      {@required Widget icon, @required String title}) {
+  Widget _rowProfileInfo(BuildContext context, {@required Widget icon, @required String title}) {
     return Row(
       children: [
         icon,
@@ -1377,8 +1456,7 @@ class ProfileScreenProps {
   final UserDetailState userResponse;
   final UserCvState userCvResponse;
 
-  ProfileScreenProps(
-      {this.getUserCv, this.getUser, this.userResponse, this.userCvResponse});
+  ProfileScreenProps({this.getUserCv, this.getUser, this.userResponse, this.userCvResponse});
 }
 
 ProfileScreenProps mapStateToProps(Store<AppState> store) {

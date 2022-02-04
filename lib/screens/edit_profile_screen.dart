@@ -1,4 +1,5 @@
-import 'dart:io';
+import
+'dart:io';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,8 @@ import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
-import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/datas/RSAA.dart';
-
-import 'package:ishtapp/tabs/profile_tab.dart';
-
 import 'package:flutter_guid/flutter_guid.dart';
-
 enum user_gender { Male, Female }
 
 class EditProfileScreen extends StatefulWidget {
@@ -186,6 +181,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String selectedDepartment;
   List<String> socialOrientations = [];
   String selectedSocialOrientation;
+  List<String> skillSetCategories = [];
+  List<String> skills = [];
 
   List<dynamic> districtList = [];
   List<String> districts = [];
@@ -298,7 +295,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                                 ? NetworkImage(
-                                SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
+                                    SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
                                     headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
                                 : null,
                           )
@@ -327,19 +324,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(height: 20),
 
                   /// Название компании
-                  Column(
-                    children: <Widget>[
-                      Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                          ? Align(
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'company_name'.tr(),
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ))
-                          : Container(),
-                      Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                          ? TextFormField(
+                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                      ? Column(
+                          children: <Widget>[
+                            Align(
+                                heightFactor: 1.5,
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'company_name'.tr(),
+                                  style: TextStyle(fontSize: 16, color: Colors.black),
+                                )),
+                            TextFormField(
                               controller: _name_controller,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -355,11 +350,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 }
                                 return null;
                               },
-                            )
-                          : Container(),
-                      SizedBox(height: 20),
-                    ],
-                  ),
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        )
+                      : Container(),
 
                   /// Контактный телефон
                   Align(
@@ -388,14 +383,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
 
                   Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'surname'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
+                      ? Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Align(
+                                widthFactor: 10,
+                                heightFactor: 1.5,
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'surname'.tr(),
+                                  style: TextStyle(fontSize: 16, color: Colors.black),
+                                )),
+                          ],
+                        )
                       : Container(),
                   Prefs.getString(Prefs.USER_TYPE) == "USER"
                       ? TextFormField(
@@ -663,37 +663,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   /// Социально-ориентированность
                   Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
                       ? Column(
-                    children: <Widget>[
-                      Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Социально-ориентированность'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                      DropdownSearch<String>(
-                          showSelectedItem: true,
-                          items: socialOrientations,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedSocialOrientation = value;
-                            });
-                          },
-                          dropdownSearchDecoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                          selectedItem: selectedSocialOrientation),
-                      SizedBox(height: 20),
-                    ],
-                  )
+                          children: <Widget>[
+                            Align(
+                                widthFactor: 10,
+                                heightFactor: 1.5,
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Социально-ориентированность'.tr(),
+                                  style: TextStyle(fontSize: 16, color: Colors.black),
+                                )),
+                            DropdownSearch<String>(
+                                showSelectedItem: true,
+                                items: socialOrientations,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedSocialOrientation = value;
+                                  });
+                                },
+                                dropdownSearchDecoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                    contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                                selectedItem: selectedSocialOrientation),
+                            SizedBox(height: 20),
+                          ],
+                        )
                       : Container(),
-
 
                   Prefs.getString(Prefs.USER_TYPE) == "USER"
                       ? Align(
@@ -810,12 +809,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           user.social_orientation = selectedSocialOrientation;
                           user.address = _address_of_company.text;
 
-
                           if (_imageFile != null && _imageFile.path != null)
                             user.uploadImage2(File(_imageFile.path)).then((value) {
                               StoreProvider.of<AppState>(context).dispatch(getUser());
                               setState(() {
-                                Prefs.setString(Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
+                                Prefs.setString(
+                                    Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
                               });
                               Navigator.pop(context);
                             });
@@ -831,7 +830,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             else
                               user_cv.save();
                           }
-
                         } else {
                           return;
                         }
