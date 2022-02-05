@@ -110,8 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var myGroup = AutoSizeGroup();
   List<Widget> skillsV1 = [];
+  List<Widget> skillsV2 = [];
   List<String> tags = [];
-  int selectedCategoryIdFromVersion1;
+  List<String> tags2 = [];
+  bool isRequiredSkill = false;
+  bool isUpgradableSkill = true;
+  int selectedCategoryIdFromFirstChip;
+  int selectedCategoryIdSecondChip;
 
   getSkillSetCategories() async {
     List<String> pi = [];
@@ -156,7 +161,72 @@ class _HomeScreenState extends State<HomeScreen> {
                           choiceItems: C2Choice.listFrom<String, String>(
                             source: skills,
                             value: (i, v) {
-                              setState(() => selectedCategoryIdFromVersion1 = item["id"]);
+                              setState(() => selectedCategoryIdFromFirstChip = item["id"]);
+                              return v;
+                            },
+                            label: (i, v) => v,
+                          ),
+                          wrapped: true,
+                          choiceLabelBuilder: (item) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.label,
+                                  softWrap: true,
+                                  maxLines: 4,
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        }),
+      );
+
+      skillsV2.add(
+        StatefulBuilder(builder: (context, setState) {
+          return Column(
+            children: <Widget>[
+              MsAccordion(
+                titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
+                showAccordion: false,
+                margin: const EdgeInsets.all(0),
+                expandedTitleBackgroundColor: Color(0xffF2F2F5),
+                titleBorderRadius: BorderRadius.circular(6),
+                textStyle: TextStyle(color: kColorWhite),
+                collapsedTitleBackgroundColor: Colors.white10,
+                contentBackgroundColor: Colors.white,
+                contentChild: Column(
+                  children: <Widget>[
+                    Wrap(
+                      children: [
+                        ChipsChoice<String>.multiple(
+                          choiceStyle: C2ChoiceStyle(
+                            margin: EdgeInsets.only(top: 4, bottom: 4),
+                            showCheckmark: false,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          choiceActiveStyle: C2ChoiceStyle(
+                            color: kColorPrimary,
+                          ),
+                          mainAxisSize: MainAxisSize.max,
+                          padding: EdgeInsets.zero,
+                          value: tags2,
+                          onChanged: (val) => setState(() => tags2 = val),
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: skills,
+                            value: (i, v) {
+                              // setState(() => selectedCategoryIdSecondChip = item["id"]);
                               return v;
                             },
                             label: (i, v) => v,
@@ -190,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  openSkillDialogV1(context) {
+  openSkillDialog(context, bool isRequired) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -219,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: <Widget>[
                           Column(
-                            children: skillsV1,
+                            children: isRequired ? skillsV1 : skillsV2,
                           ),
 
                           /// Sign In button
@@ -245,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
                                     setState(() {});
-                                    print(selectedCategoryIdFromVersion1);
+                                    print(selectedCategoryIdFromFirstChip);
                                     Navigator.of(context).pop();
                                   },
                                   text: 'save'.tr(),
@@ -1015,22 +1085,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ? Column(
                                           children: <Widget>[
                                             SizedBox(height: 20),
-                                            // Align(
-                                            //   widthFactor: 10,
-                                            //   heightFactor: 1.5,
-                                            //   alignment: Alignment.topLeft,
-                                            //   child: Text(
-                                            //     'choose_opportunity_skill_sets'.tr(),
-                                            //     style: TextStyle(fontSize: 16, color: Colors.black),
-                                            //   ),
-                                            // ),
-                                            FlatButton(
-                                                color: kColorPrimaryDark,
-                                                onPressed: () => openSkillDialogV1(context),
-                                                child: Text(
-                                                  "Выбрать навыки",
-                                                  style: TextStyle(fontSize: 16, color: Colors.white),
-                                                )),
+                                            Align(
+                                              widthFactor: 10,
+                                              heightFactor: 1.5,
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                'choose_opportunity_skill_sets'.tr(),
+                                                style: TextStyle(fontSize: 16, color: Colors.black),
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                FlatButton(
+                                                    color: kColorPrimaryDark,
+                                                    onPressed: () => openSkillDialog(context, true),
+                                                    child: Text(
+                                                      "Требуется до",
+                                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                                    )),
+
+                                                FlatButton(
+                                                    color: kColorPrimaryDark,
+                                                    onPressed: () => openSkillDialog(context, false),
+                                                    child: Text(
+                                                      "Могут развить",
+                                                      style: TextStyle(fontSize: 16, color: Colors.white),
+                                                    )),
+
+                                              ],
+                                            ),
 
                                             // MultiSelectFormField(
                                             //   autovalidate: false,
@@ -1628,19 +1712,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
-                                                skillCategory
-                                                    .saveVacancySkills(tags, selectedCategoryIdFromVersion1, value)
+                                                skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
+                                                skillCategory.saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
                                                     .then((value) {
-                                                  tags = [];
                                                   StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                                  Navigator.of(context).pop();
                                                 });
                                                 setState(() {
                                                   loading = false;
                                                 });
-                                                Navigator.of(context).pop();
                                               });
 
-                                              // clear inputs
                                               _vacancy_name_controller = TextEditingController();
                                               _vacancy_salary_controller = TextEditingController();
                                               _vacancy_salary_from_controller = TextEditingController();
