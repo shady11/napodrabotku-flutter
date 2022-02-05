@@ -489,11 +489,14 @@ class _VacancyViewState extends State<VacancyView> {
                                               constraints: BoxConstraints(
                                                 minHeight: 30,
                                               ),
-                                              child: Text(
-                                                "Пусто",
-                                                style: TextStyle(
-                                                    fontSize: 12, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                                textAlign: TextAlign.center,
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "Пусто",
+                                                  style: TextStyle(
+                                                      fontSize: 12, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ),
                                             )
                                           : Column(children: listings),

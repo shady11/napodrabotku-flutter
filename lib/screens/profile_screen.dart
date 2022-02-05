@@ -1320,6 +1320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             listSmartSelectDialog.add(S2Choice<String>(value: item.name, title: item.name));
           }
         });
+        print(listSmartSelectDialog.length);
         userSkills.forEach((item) {
           if (item.categoryId == id) {
             listSmartSelectDialogTag.add(item.name);
