@@ -155,22 +155,22 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                     SizedBox(height: 20),
                     isProductLabVacancy
-                        ? Row(
+                        ? Flex(
+                            direction: Axis.horizontal,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
-                                  style: TextStyle(
-                                    color: Colors.black87,
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration:
+                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 5,
                               ),
                               Flexible(
                                   child: Text(
@@ -213,16 +213,19 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                     SizedBox(height: 5),
                     isProductLabVacancy
-                        ? Row(
+                        ? Flex(
+                            direction: Axis.horizontal,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  widget.vacancy.opportunityDuration != null ? widget.vacancy.opportunityDuration.toString() : "",
-                                  style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration:
+                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    widget.vacancy.opportunityDuration != null ? widget.vacancy.opportunityDuration.toString() : "",
+                                    style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                                  ),
                                 ),
                               ),
                             ],
@@ -243,14 +246,16 @@ class _ProfileCardState extends State<ProfileCard> {
                           ),
                     SizedBox(height: 15),
                     isProductLabVacancy
-                        ? Text(
-                            widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black),
-                          )
+                        ? Flexible(
+                          child: Text(
+                              widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'GTEestiProDisplay',
+                                  color: Colors.black),
+                            ),
+                        )
                         : Text(
                             widget.vacancy.name != null ? widget.vacancy.name : "",
                             style: TextStyle(
@@ -274,7 +279,6 @@ class _ProfileCardState extends State<ProfileCard> {
                           )
                         : SizedBox(),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
                       width: double.maxFinite,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

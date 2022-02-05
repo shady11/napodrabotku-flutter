@@ -40,7 +40,7 @@ class ProfileLikesScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                body = Column(
+                body = data == null || data.isEmpty ? Container() : Column(
                   children: [
                     Expanded(
                       child: StoreProvider.of<AppState>(context)

@@ -99,83 +99,86 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
           );
         } else {
           var _index = 0;
-          body = Center(
-            child: Container(
-              height: MediaQuery.of(context).size.width * 25,
-              child: TinderSwapCard(
-                orientation: AmassOrientation.BOTTOM,
-                totalNum: data.length,
-                stackNum: 5,
-                swipeEdge: 5.0,
-                maxWidth: MediaQuery.of(context).size.width * 0.97,
-                maxHeight: MediaQuery.of(context).size.width * 0.97,
-                minWidth: MediaQuery.of(context).size.width * 0.9,
-                minHeight: MediaQuery.of(context).size.width * 0.96,
-                cardController: cardController,
-                cardBuilder: (context, index) {
-                  _index = index;
-                  return data != null && data.isNotEmpty
-                      ? Stack(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                              child: Center(
-                                child: Text(
-                                  "vacancies_empty".tr(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 20),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              child: ProfileCardProductLab(
-                                props: props,
-                                page: 'discover',
-                                vacancy: data[index],
-                                index: index,
-                                cardController: cardController,
-                              ),
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                  return Scaffold(
-                                    backgroundColor: kColorPrimary,
-                                    appBar: AppBar(
-                                      title: Text("vacancy_view".tr()),
+          body = data == null || data.isEmpty
+              ? Container()
+              : Center(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width * 25,
+                    child: TinderSwapCard(
+                      orientation: AmassOrientation.BOTTOM,
+                      totalNum: data.length,
+                      stackNum: 5,
+                      swipeEdge: 5.0,
+                      maxWidth: MediaQuery.of(context).size.width * 0.97,
+                      maxHeight: MediaQuery.of(context).size.width * 0.97,
+                      minWidth: MediaQuery.of(context).size.width * 0.9,
+                      minHeight: MediaQuery.of(context).size.width * 0.96,
+                      cardController: cardController,
+                      cardBuilder: (context, index) {
+                        _index = index;
+                        return data != null && data.isNotEmpty
+                            ? Stack(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                                    child: Center(
+                                      child: Text(
+                                        "vacancies_empty".tr(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                      ),
                                     ),
-                                    body: VacancyView(
-                                      page: "view",
+                                  ),
+                                  GestureDetector(
+                                    child: ProfileCardProductLab(
+                                      props: props,
+                                      page: 'discover',
                                       vacancy: data[index],
+                                      index: index,
+                                      cardController: cardController,
                                     ),
-                                  );
-                                }));
-                              },
-                            ),
-                          ],
-                        )
-                      : Container();
-                },
-                swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
-                  if (orientation.index == CardSwipeOrientation.LEFT.index) {
-                    print('Left');
-                    removeCards(
-                        props: props,
-                        type: "DISLIKED",
-                        vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                        context: context);
-                  }
+                                    onTap: () {
 
-                  if (orientation.index == CardSwipeOrientation.RIGHT.index) {
-                    print('Right');
-                    removeCards(
-                        props: props,
-                        type: "LIKED",
-                        vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                        context: context);
-                  }
-                },
-              ),
-            ),
-          );
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                        return Scaffold(
+                                          backgroundColor: kColorPrimary,
+                                          appBar: AppBar(
+                                            title: Text("vacancy_view".tr()),
+                                          ),
+                                          body: VacancyView(
+                                            page: "view",
+                                            vacancy: data[index],
+                                          ),
+                                        );
+                                      }));
+                                    },
+                                  ),
+                                ],
+                              )
+                            : Container();
+                      },
+                      swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
+                        if (orientation.index == CardSwipeOrientation.LEFT.index) {
+                          print('Left');
+                          removeCards(
+                              props: props,
+                              type: "DISLIKED",
+                              vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                              context: context);
+                        }
+
+                        if (orientation.index == CardSwipeOrientation.RIGHT.index) {
+                          print('Right');
+                          removeCards(
+                              props: props,
+                              type: "LIKED",
+                              vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                              context: context);
+                        }
+                      },
+                    ),
+                  ),
+                );
         }
 
         return Stack(children: [

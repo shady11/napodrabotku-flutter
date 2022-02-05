@@ -292,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: isRequired ? skillsV1 : skillsV2,
                           ),
 
-                          /// Sign In button
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Row(
@@ -314,8 +313,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: kColorPrimary,
                                   textColor: Colors.white,
                                   onPressed: () {
-                                    setState(() {});
-                                    print(selectedCategoryIdFromFirstChip);
                                     Navigator.of(context).pop();
                                   },
                                   text: 'save'.tr(),

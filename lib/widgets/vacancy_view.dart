@@ -13,8 +13,9 @@ import 'default_card_border.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
+import 'package:ishtapp/datas/Skill.dart';
 
-class VacancyView extends StatelessWidget {
+class VacancyView extends StatefulWidget {
   /// User object
   final Vacancy vacancy;
 
@@ -24,7 +25,19 @@ class VacancyView extends StatelessWidget {
   /// Swiper position
   final SwiperPosition position;
 
-  VacancyView({this.page, this.position, @required this.vacancy});
+  final List<VacancySkill> vacancySkill;
+
+  VacancyView({this.page, this.position, @required this.vacancy, this.vacancySkill});
+
+  @override
+  _VacancyViewState createState() => _VacancyViewState();
+}
+
+class _VacancyViewState extends State<VacancyView> {
+  List<Widget> listings = [];
+  List<Widget> requiredListings = [];
+
+  var data = [];
 
   void _showDialog(context, String message) {
     showDialog(
@@ -76,9 +89,59 @@ class VacancyView extends StatelessWidget {
     );
   }
 
+  initData() {
+    if(widget.vacancySkill != null) {
+      data = widget.vacancySkill;
+    } else {
+      VacancySkill.getVacancySkills(widget.vacancy.id).then((value) {
+        List<VacancySkill> vacancySkills = [];
+
+        for (var i in value) {
+          vacancySkills.add(new VacancySkill(
+            id: i.id,
+            name: i.name,
+            vacancyId: i.vacancyId,
+            isRequired: i.isRequired,
+          ));
+        }
+        data = vacancySkills;
+      });
+    }
+  }
+
+  void vacancySkills() {
+    print(data);
+    if (data == null) {
+      listings.add(Container());
+    } else {
+      for (var item in data) {
+        if (item.isRequired) {
+          requiredListings.add(Container(
+            alignment: Alignment.centerLeft,
+            child: Text(item.name, textAlign: TextAlign.left),
+          ));
+        } else {
+          listings.add(
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(item.name, textAlign: TextAlign.left),
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    initData();
+    vacancySkills();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isProductLabVacancy = vacancy.isProductLabVacancy == null ? false : vacancy.isProductLabVacancy;
+    bool isProductLabVacancy = widget.vacancy.isProductLabVacancy == null ? false : widget.vacancy.isProductLabVacancy;
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 1,
@@ -111,26 +174,28 @@ class VacancyView extends StatelessWidget {
                                   alignment: Alignment.topLeft,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: vacancy.company_logo != null
+                                    child: widget.vacancy.company_logo != null
                                         ? Image.network(
-                                      SERVER_IP + vacancy.company_logo.toString(),
-                                      headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
-                                      width: 50,
-                                      height: 50,
-                                    )
+                                            SERVER_IP + widget.vacancy.company_logo.toString(),
+                                            headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
+                                            width: 50,
+                                            height: 50,
+                                          )
                                         : Image.asset(
-                                      'assets/images/default-user.jpg',
-                                      fit: BoxFit.cover,
-                                      width: 70,
-                                      height: 70,
-                                    ),
+                                            'assets/images/default-user.jpg',
+                                            fit: BoxFit.cover,
+                                            width: 70,
+                                            height: 70,
+                                          ),
                                   ),
                                 ),
                                 SizedBox(width: 20),
                                 Expanded(
                                   child: RichText(
                                     text: TextSpan(
-                                      text: vacancy.company_name != null ? vacancy.company_name.toString() + '\n' : "",
+                                      text: widget.vacancy.company_name != null
+                                          ? widget.vacancy.company_name.toString() + '\n'
+                                          : "",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500,
@@ -138,7 +203,7 @@ class VacancyView extends StatelessWidget {
                                           color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: vacancy.region != null ? vacancy.region : "",
+                                            text: widget.vacancy.region != null ? widget.vacancy.region : "",
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w500,
@@ -148,11 +213,11 @@ class VacancyView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                vacancy.is_disability_person_vacancy == 1
+                                widget.vacancy.is_disability_person_vacancy == 1
                                     ? Icon(
-                                  Icons.accessible,
-                                  size: 20,
-                                )
+                                        Icons.accessible,
+                                        size: 20,
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -160,237 +225,315 @@ class VacancyView extends StatelessWidget {
                             SizedBox(height: 20),
                             isProductLabVacancy
                                 ? Flex(
-                              direction: Axis.horizontal,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Выбор возможностей:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      vacancy.opportunity != null ? vacancy.opportunity.toString() : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Выбор возможностей:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.opportunity != null
+                                                ? widget.vacancy.opportunity.toString()
+                                                : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration:
-                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    vacancy.type != null ? vacancy.type.toString() : "",
-                                    style: TextStyle(color: Colors.black87),
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                        child: Text(
+                                          widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                                          style: TextStyle(color: Colors.black87),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Flexible(
+                                          child: Text(
+                                        widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                                        style:
+                                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                      )),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Flexible(
-                                    child: Text(
-                                      vacancy.salary != null ? vacancy.salary : '',
-                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                    )),
-                              ],
-                            ),
                             SizedBox(height: 5),
 
                             isProductLabVacancy
                                 ? Flex(
-                              direction: Axis.horizontal,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Вид возможности:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      vacancy.opportunityType != null ? vacancy.opportunityType.toString() : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Вид возможности:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.opportunityType != null
+                                                ? widget.vacancy.opportunityType.toString()
+                                                : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
                             isProductLabVacancy
                                 ? Flex(
-                              direction: Axis.horizontal,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Язык для стажировки:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      vacancy.internshipLanguage != null ? vacancy.internshipLanguage.toString() : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Язык для стажировки:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.internshipLanguage != null
+                                                ? widget.vacancy.internshipLanguage.toString()
+                                                : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
+                            SizedBox(height: 10),
                             isProductLabVacancy
                                 ? Flex(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              direction: Axis.horizontal,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Продолжительность:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Продолжительность:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.opportunityDuration != null
+                                                ? widget.vacancy.opportunityDuration.toString()
+                                                : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration:
-                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    vacancy.schedule != null ? vacancy.schedule.toString() : "",
-                                    style: TextStyle(color: Colors.black87),
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                        child: Text(
+                                          widget.vacancy.schedule != null ? widget.vacancy.schedule.toString() : "",
+                                          style: TextStyle(color: Colors.black87),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
                             SizedBox(height: 10),
 
                             /// Uer job title
-                            page == 'discover'
+                            widget.page == 'discover'
                                 ? Expanded(
-                              child: RichText(
-                                text: TextSpan(
-                                    text: vacancy.description != null ? vacancy.description : "",
-                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
-                              ),
-                            )
+                                    child: RichText(
+                                      text: TextSpan(
+                                          text: widget.vacancy.description != null ? widget.vacancy.description : "",
+                                          style: TextStyle(
+                                              fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                    ),
+                                  )
                                 : SizedBox(),
                             isProductLabVacancy
                                 ? Flex(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              direction: Axis.horizontal,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Готовность выдать рекомендательное письмо:",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      vacancy.typeOfRecommendedLetter != null
-                                          ? vacancy.typeOfRecommendedLetter.toString()
-                                          : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Готовность выдать рекомендательное письмо:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.typeOfRecommendedLetter != null
+                                                ? widget.vacancy.typeOfRecommendedLetter.toString()
+                                                : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
                             SizedBox(height: 10),
                             isProductLabVacancy
                                 ? Flex(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              direction: Axis.horizontal,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Возраст, для которого предназначена возможность",
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      "${vacancy.ageFrom}-${vacancy.ageTo}",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Возраст, для которого предназначена возможность",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            "${widget.vacancy.ageFrom}-${widget.vacancy.ageTo}",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
+
+                            isProductLabVacancy ? Align(
+                              widthFactor: 10,
+                              heightFactor: 1.5,
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "Навыки",
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                              ),
+                            ) : Container(),
+
+                            isProductLabVacancy
+                                ? Column(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Требуется:'.tr(),
+                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                        ),
+                                      ),
+                                      requiredListings == null || requiredListings.isEmpty
+                                          ? Container(
+                                              alignment: Alignment.centerLeft,
+                                              constraints: BoxConstraints(
+                                                minHeight: 30,
+                                              ),
+                                              child: Text(
+                                                "Пусто",
+                                                style: TextStyle(
+                                                    fontSize: 12, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )
+                                          : Column(children: requiredListings),
+                                      SizedBox(height: 20),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Могут развить:'.tr(),
+                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                        ),
+                                      ),
+                                      listings == null || listings.isEmpty
+                                          ? Container(
+                                              constraints: BoxConstraints(
+                                                minHeight: 30,
+                                              ),
+                                              child: Text(
+                                                "Пусто",
+                                                style: TextStyle(
+                                                    fontSize: 12, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )
+                                          : Column(children: listings),
+                                    ],
+                                  )
+                                : Container(),
+
                             isProductLabVacancy
                                 ? Container()
                                 : Expanded(
-                              flex: 1,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                child: RichText(
-                                  text: TextSpan(
-                                      text: vacancy.description != null ? vacancy.description : "",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.normal,
-                                          fontFamily: 'GTEestiProDisplay',
-                                          color: Colors.black45)),
-                                ),
-                              ),
-                            ),
+                                    flex: 1,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: widget.vacancy.description != null ? widget.vacancy.description : "",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: 'GTEestiProDisplay',
+                                                color: Colors.black45)),
+                                      ),
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
                     ),
-
                     SizedBox(height: 20),
-                    page != 'user_match'
+                    widget.page != 'user_match'
                         ? SizedBox(
                             width: double.maxFinite,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                page == 'discover'
+                                widget.page == 'discover'
                                     ? Container()
-                                    : page == 'submitted' || page == 'inactive' || page == 'company_view'
+                                    : widget.page == 'submitted' ||
+                                            widget.page == 'inactive' ||
+                                            widget.page == 'company_view'
                                         ? Container()
                                         : Center(
                                             child: CustomButton(
@@ -404,7 +547,7 @@ class VacancyView extends StatelessWidget {
                                                     : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
                                                         if (value) {
                                                           Vacancy.saveVacancyUser(
-                                                                  vacancy_id: vacancy.id, type: "SUBMITTED")
+                                                                  vacancy_id: widget.vacancy.id, type: "SUBMITTED")
                                                               .then((value) {
                                                             if (value == "OK") {
                                                               _showDialog1(context, "successfully_submitted".tr());
@@ -413,7 +556,7 @@ class VacancyView extends StatelessWidget {
                                                                   .vacancy
                                                                   .list
                                                                   .data
-                                                                  .remove(vacancy);
+                                                                  .remove(widget.vacancy);
                                                               StoreProvider.of<AppState>(context)
                                                                   .dispatch(getSubmittedVacancies());
                                                               StoreProvider.of<AppState>(context)
@@ -435,8 +578,7 @@ class VacancyView extends StatelessWidget {
                             ),
                           )
                         : Container(),
-
-                    this.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
+                    this.widget.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
                   ],
                 ),
               ),

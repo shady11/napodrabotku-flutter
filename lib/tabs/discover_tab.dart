@@ -12,6 +12,13 @@ import 'package:ishtapp/widgets/profile_card.dart';
 import 'package:ishtapp/widgets/vacancy_view.dart';
 import 'package:ishtapp/widgets/users_grid.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:ishtapp/constants/configs.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:ishtapp/datas/user.dart';
+import 'package:ishtapp/datas/Skill.dart';
 
 class DiscoverTab extends StatefulWidget {
   @override
@@ -108,18 +115,32 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                               return GestureDetector(
                                 child: ProfileCard(vacancy: vacancy, page: 'company', offset: offset),
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                    return Scaffold(
-                                      backgroundColor: kColorPrimary,
-                                      appBar: AppBar(
-                                        title: Text("vacancy_view".tr()),
-                                      ),
-                                      body: VacancyView(
-                                        page: "company_view",
-                                        vacancy: vacancy,
-                                      ),
-                                    );
-                                  }));
+                                  VacancySkill.getVacancySkills(vacancy.id).then((value) {
+                                    List<VacancySkill> vacancySkills = [];
+
+                                    for (var i in value) {
+                                      vacancySkills.add(new VacancySkill(
+                                        id: i.id,
+                                        name: i.name,
+                                        vacancyId: i.vacancyId,
+                                        isRequired: i.isRequired,
+                                      ));
+                                    }
+
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                      return Scaffold(
+                                        backgroundColor: kColorPrimary,
+                                        appBar: AppBar(
+                                          title: Text("vacancy_view".tr()),
+                                        ),
+                                        body: VacancyView(
+                                          page: "company_view",
+                                          vacancy: vacancy,
+                                          vacancySkill: vacancySkills,
+                                        ),
+                                      );
+                                    }));
+                                  });
                                 },
                               );
                             }).toList())
@@ -198,23 +219,42 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                             cardController: cardController,
                                           ),
                                           onTap: () {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(builder: (BuildContext context) {
-                                              return Scaffold(
-                                                backgroundColor: kColorPrimary,
-                                                appBar: AppBar(
-                                                  title: Text("vacancy_view".tr()),
-                                                ),
-                                                body: VacancyView(
-                                                  page: "view",
-                                                  vacancy: StoreProvider.of<AppState>(context)
-                                                      .state
-                                                      .vacancy
-                                                      .list
-                                                      .data[index],
-                                                ),
-                                              );
-                                            }));
+                                            VacancySkill.getVacancySkills(StoreProvider.of<AppState>(context)
+                                                    .state
+                                                    .vacancy
+                                                    .list
+                                                    .data[index]
+                                                    .id)
+                                                .then((value) {
+                                              List<VacancySkill> vacancySkills = [];
+
+                                              for (var i in value) {
+                                                vacancySkills.add(new VacancySkill(
+                                                  id: i.id,
+                                                  name: i.name,
+                                                  vacancyId: i.vacancyId,
+                                                  isRequired: i.isRequired,
+                                                ));
+                                              }
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                                                return Scaffold(
+                                                  backgroundColor: kColorPrimary,
+                                                  appBar: AppBar(
+                                                    title: Text("vacancy_view".tr()),
+                                                  ),
+                                                  body: VacancyView(
+                                                    page: "view",
+                                                    vacancy: StoreProvider.of<AppState>(context)
+                                                        .state
+                                                        .vacancy
+                                                        .list
+                                                        .data[index],
+                                                    vacancySkill: vacancySkills,
+                                                  ),
+                                                );
+                                              }));
+                                            });
                                           },
                                         ),
                                       ],

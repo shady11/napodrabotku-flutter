@@ -4,6 +4,36 @@ import 'dart:convert';
 
 import 'package:ishtapp/datas/pref_manager.dart';
 
+class VacancySkill {
+  int id;
+  int vacancyId;
+  String name;
+  bool isRequired;
+
+  VacancySkill({this.id, this.vacancyId, this.name, this.isRequired});
+
+  factory VacancySkill.fromJson(Map<String, dynamic> json) => new VacancySkill(
+    id: json["id"],
+    vacancyId: json["vacancy_id"],
+    name: json["name"],
+    isRequired: json["is_required"] == 1,
+  );
+
+  static Future<List<VacancySkill>> getVacancySkills(int vacancyId) async {
+    final url = API_IP + API_VACANCY_SKILL_GET + "?vacancy_id=$vacancyId";
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(url, headers: headers);
+
+      Iterable l = json.decode(response.body);
+      List<VacancySkill> data = List<VacancySkill>.from(l.map((model)=> VacancySkill.fromJson(model)));
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
 class Skill {
   int id;
   int categoryId;
