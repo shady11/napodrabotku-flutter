@@ -20,48 +20,10 @@ import 'package:ishtapp/widgets/user_education_info.dart';
 import 'package:ishtapp/widgets/user_experience_info.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/vacancy.dart';
-
-class Skill {
-  int id;
-  int categoryId;
-  String name;
-
-  Skill({this.id, this.categoryId, this.name});
-}
-
-class SkillCategory {
-  int id;
-  String name;
-  List<Skill> skill = [];
-
-  SkillCategory({this.id, this.name, this.skill});
-
-  Future<String> saveUserSkills(List<String> list, int categoryId) async {
-    // string to uri
-    var uri = Uri.parse(API_IP + API_USER_SKILL_SAVE);
-
-    try {
-      Map<String, String> headers = {
-        "Content-type": "application/json",
-        "Authorization": Prefs.getString(Prefs.TOKEN)
-      };
-      final response = await http.post(
-        uri,
-        headers: headers,
-        body: json.encode({
-          "user_id": Prefs.getInt(Prefs.USER_ID).toString(),
-          "user_skills": list,
-          "category_id": categoryId,
-        }),
-      );
-      json.decode(response.body);
-      print(json.decode(response.body));
-      return "OK";
-    } catch (error) {
-      throw error;
-    }
-  }
-}
+import 'package:ishtapp/datas/Skill.dart';
+import 'package:ms_accordion/ms_accordion.dart';
+import 'package:smart_select/smart_select.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -109,6 +71,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Widget> skillsV1 = [];
   List<Skill> skillSets = [];
   List<String> tags = [];
+
+  List<Map<String, dynamic>> SkillsV3 = [];
+
+  getS() async {
+    var list = await Vacancy.getLists('skillset', null);
+    list.forEach((item) {
+      SkillsV3.add({"id": item["id"].toString(), "name": item["name"], "categoryId": item["category_id"].toString()});
+    });
+  }
+
+  List<String> _car = [];
+
+  List<Map<String, dynamic>> cars = [
+    {
+      'value': 'honda-crv',
+      'title': 'Многообразие, равенство, культурная осведомленность',
+      'brand': 'Honda',
+      'body': 'SUV'
+    },
+    {
+      'value': 'honda-hrv',
+      'title': 'Обучение / Программирование Искусственого интеллекта',
+      'brand': 'Honda',
+      'body': 'SUV'
+    },
+    {
+      'value': 'mercedes-gcl',
+      'title': 'Mercedes-Benz G-class',
+      'brand': 'Mercedes',
+      'body': 'SUV'
+    },
+    {
+      'value': 'mercedes-gle',
+      'title': 'Mercedes-Benz GLE',
+      'brand': 'Mercedes',
+      'body': 'SUV'
+    },
+    {
+      'value': 'mercedes-ecq',
+      'title': 'Mercedes-Benz ECQ',
+      'brand': 'Mercedes',
+      'body': 'SUV'
+    },
+    {
+      'value': 'mercedes-glcc',
+      'title': 'Mercedes-Benz GLC Coupe',
+      'brand': 'Mercedes',
+      'body': 'SUV'
+    },
+    {
+      'value': 'lr-ds',
+      'title': 'Land Rover Discovery Sport',
+      'brand': 'Land Rover',
+      'body': 'SUV'
+    },
+    {
+      'value': 'lr-rre',
+      'title': 'Land Rover Range Rover Evoque',
+      'brand': 'Land Rover',
+      'body': 'SUV'
+    },
+    {
+      'value': 'honda-jazz',
+      'title': 'Кибербезопасность',
+      'brand': 'Honda',
+      'body': 'Hatchback'
+    },
+    {
+      'value': 'honda-jazz',
+      'title': 'Кибербезопасность',
+      'brand': 'Honda',
+      'body': 'Hatchback'
+    },
+    {
+      'value': 'honda-civic',
+      'title': 'Приоритет благополучия (физического / психического / эмоционального / духовного)',
+      'brand': 'Honda',
+      'body': 'Hatchback'
+    },
+    {
+      'value': 'mercedes-ac',
+      'title': 'Mercedes-Benz A-class',
+      'brand': 'Mercedes',
+      'body': 'Hatchback'
+    },
+    {
+      'value': 'hyundai-i30f',
+      'title': 'Hyundai i30 Fastback',
+      'brand': 'Hyundai',
+      'body': 'Hatchback'
+    },
+  ];
+
+
 
   openEducationDialog(context) {
     showDialog(
@@ -817,6 +873,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
+              insetPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
               child: Container(
                 constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
@@ -881,7 +938,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
                                     SkillCategory skillCategory = new SkillCategory();
-
                                     skillCategory.saveUserSkills(listTag, categoryId);
                                     Navigator.of(context).pop();
                                   },
@@ -906,6 +962,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
+            insetPadding: EdgeInsets.zero,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
@@ -955,8 +1012,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
                                     SkillCategory skillCategory = new SkillCategory();
+                                    print(selectedCategoryIdFromVersion1);
 
-                                    // skillCategory.saveUserSkills(tags, categoryId);
+                                    skillCategory.saveUserSkills(tags, selectedCategoryIdFromVersion1);
+                                    setState(() {
+                                      tags = [];
+                                    });
                                     Navigator.of(context).pop();
                                   },
                                   text: 'save'.tr(),
@@ -975,6 +1036,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  int selectedCategoryIdFromVersion1;
+
+  int selectedTest;
+
   getSkillSetCategories() async {
     List<String> pi = [];
     var controller = new ExpandableController(
@@ -988,47 +1053,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
 
       skillsV1.add(
-        StatefulBuilder(
-            builder: (context, setState) {
-              return Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Column(
+        StatefulBuilder(builder: (context, setState) {
+          return Column(
+            children: <Widget>[
+              MsAccordion(
+                titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
+                showAccordion: false,
+                margin: const EdgeInsets.all(0),
+                expandedTitleBackgroundColor: Color(0xffF2F2F5),
+                titleBorderRadius: BorderRadius.circular(6),
+                textStyle: TextStyle(
+                  color: kColorWhite
+                ),
+                collapsedTitleBackgroundColor: Colors.white10,
+                contentBackgroundColor: Colors.white,
+                contentChild: Column(
                   children: <Widget>[
-                    ExpandablePanel(
-                      controller: controller,
-                      header: Text(item["name"]),
-                      collapsed: ChipsChoice<String>.multiple(
-                        padding: EdgeInsets.zero,
-                        value: tags,
-                        onChanged: (val) {
-                          print(val);
-                          return setState(() => tags = val);
-                        },
-                        choiceItems: C2Choice.listFrom<String, String>(
-                          source: skills,
-                          value: (i, v) => v,
-                          label: (i, v) => v,
+                    Wrap(
+                      children: [
+                        ChipsChoice<String>.multiple(
+                          choiceStyle: C2ChoiceStyle(
+                            margin: EdgeInsets.only(top: 4, bottom: 4),
+                            showCheckmark: false,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          choiceActiveStyle: C2ChoiceStyle(
+                            color: kColorPrimary,
+                          ),
+                          mainAxisSize: MainAxisSize.max,
+                          padding: EdgeInsets.zero,
+                          value: tags,
+                          onChanged: (val) => setState(() => tags = val),
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: skills,
+                            value: (i, v) {
+                              setState(() => selectedCategoryIdFromVersion1 = item["id"]);
+                              return v;
+                            },
+                            label: (i, v) => v,
+                          ),
+                          wrapped: true,
+                          choiceLabelBuilder: (item) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.label,
+                                  softWrap: true,
+                                  maxLines: 4,
+                                  style: TextStyle(
+                                    fontSize: 15
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        wrapped: true,
-                        choiceLabelBuilder: (item) {
-                          return Text(
-                            item.label,
-                            softWrap: true,
-                            maxLines: 6,
-                          );
-                        },
-                      ),
-                      // expanded: Text(item["name"], softWrap: true, ),
-                      tapHeaderToExpand: false,
-                      hasIcon: true,
-                    ),
-
-
+                      ],
+                    )
                   ],
                 ),
-              );
-            }
-        ),
+              ),
+            ],
+          );
+        }),
       );
 
       categories.add(
@@ -1109,6 +1199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     getSkillSets();
+    getS();
     getSkillSetCategories();
     super.initState();
   }
@@ -1116,6 +1207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     User user = StoreProvider.of<AppState>(context).state.user.user.data;
+    var myGroup = AutoSizeGroup();
 
     return StoreConnector<AppState, ProfileScreenProps>(
         converter: (store) => mapStateToProps(store),
@@ -1154,6 +1246,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : null,
                         ),
                       ),
+                    ),
+
+                    SmartSelect<String>.multiple(
+                      title: 'Car',
+                      value: _car,
+                      onChange: (selected) => setState(() => _car = selected.value),
+                      choiceItems: S2Choice.listFrom<String, Map>(
+                        source: SkillsV3,
+                        value: (index, item) => item['id'],
+                        title: (index, item) => item['name'],
+                        group: (index, item) => item['categoryId'],
+                      ),
+                      choiceTitleBuilder: (context, item, title){
+                        return AutoSizeText(
+                          item.title,
+                          maxLines: 4,
+                          softWrap: true,
+                          group: myGroup,
+                          style: TextStyle(fontSize: 14),
+                        );
+                      },
+                      choiceType: S2ChoiceType.chips,
+                      choiceGrouped: true,
+                      modalFilter: true,
+                      tileBuilder: (context, state) {
+                        return S2Tile.fromState(
+                          state,
+                          isTwoLine: true,
+                          leading: const CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              'https://source.unsplash.com/yeVtxxPxzbw/100x100',
+                            ),
+                          ),
+                        );
+                      },
                     ),
 
                     /// Profile details
@@ -1354,7 +1481,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                               child: Text("empty".tr())),
                                                         ),
-
                                                   Prefs.getString(Prefs.USER_TYPE) == "USER"
                                                       ? Container(
                                                           margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
@@ -1369,8 +1495,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                                 direction: Axis.horizontal,
                                                                 children: [
-
-
                                                                   Flexible(
                                                                     child: Text('Навыки'.tr().toUpperCase(),
                                                                         style: TextStyle(
@@ -1398,7 +1522,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           ),
                                                         )
                                                       : Container(),
-
                                                   Text("ВЕРСИЯ 2"),
                                                   Column(
                                                     children: categories,
