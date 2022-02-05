@@ -26,6 +26,7 @@ String API_USER_CV_EXPERIENCE_DELETE = 'user/experience/delete/';
 
 String API_USER_SKILL_SAVE = 'user_skillset';
 String API_VACANCY_SKILL_SAVE = 'vacancy_skillset';
+String API_GET_USER_SKILLS = 'user/skills/';
 
 
 String API_USER_CV_EDUCATION_SAVE = 'user_cv_education';

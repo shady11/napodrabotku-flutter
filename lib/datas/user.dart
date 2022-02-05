@@ -518,7 +518,7 @@ class User {
     }
   }
 
-  /// Method to upload Profile Image and Update User data
+  /// Filters
   void saveFilters(List regions, List districts, List activities, List types, List busyness, List schedules) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_SAVE_FILTER + '/${this.id.toString()}');
@@ -548,6 +548,19 @@ class User {
 
   static Future<List<dynamic>> getFilters(model, id) async {
     final url = API_IP + API_GET_FILTERS + '/${id.toString()}/${model.toString()}';
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(url, headers: headers);
+      // print(model + ' - ' + utf8.decode(response.bodyBytes));
+      return json.decode(utf8.decode(response.bodyBytes));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /// Skills
+  static Future<List<dynamic>> getSkills(email) async {
+    final url = API_IP + API_GET_USER_SKILLS + '?email=' + email;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(url, headers: headers);

@@ -7,7 +7,6 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:expandable/expandable.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
@@ -70,6 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Widget> categories = [];
   List<Widget> skillsV1 = [];
   List<Skill> skillSets = [];
+  List<Skill> userSkills = [];
   List<String> tags = [];
 
   List<Map<String, dynamic>> SkillsV3 = [];
@@ -80,91 +80,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       SkillsV3.add({"id": item["id"].toString(), "name": item["name"], "categoryId": item["category_id"].toString()});
     });
   }
-
-  List<String> _car = [];
-
-  List<Map<String, dynamic>> cars = [
-    {
-      'value': 'honda-crv',
-      'title': 'Многообразие, равенство, культурная осведомленность',
-      'brand': 'Honda',
-      'body': 'SUV'
-    },
-    {
-      'value': 'honda-hrv',
-      'title': 'Обучение / Программирование Искусственого интеллекта',
-      'brand': 'Honda',
-      'body': 'SUV'
-    },
-    {
-      'value': 'mercedes-gcl',
-      'title': 'Mercedes-Benz G-class',
-      'brand': 'Mercedes',
-      'body': 'SUV'
-    },
-    {
-      'value': 'mercedes-gle',
-      'title': 'Mercedes-Benz GLE',
-      'brand': 'Mercedes',
-      'body': 'SUV'
-    },
-    {
-      'value': 'mercedes-ecq',
-      'title': 'Mercedes-Benz ECQ',
-      'brand': 'Mercedes',
-      'body': 'SUV'
-    },
-    {
-      'value': 'mercedes-glcc',
-      'title': 'Mercedes-Benz GLC Coupe',
-      'brand': 'Mercedes',
-      'body': 'SUV'
-    },
-    {
-      'value': 'lr-ds',
-      'title': 'Land Rover Discovery Sport',
-      'brand': 'Land Rover',
-      'body': 'SUV'
-    },
-    {
-      'value': 'lr-rre',
-      'title': 'Land Rover Range Rover Evoque',
-      'brand': 'Land Rover',
-      'body': 'SUV'
-    },
-    {
-      'value': 'honda-jazz',
-      'title': 'Кибербезопасность',
-      'brand': 'Honda',
-      'body': 'Hatchback'
-    },
-    {
-      'value': 'honda-jazz',
-      'title': 'Кибербезопасность',
-      'brand': 'Honda',
-      'body': 'Hatchback'
-    },
-    {
-      'value': 'honda-civic',
-      'title': 'Приоритет благополучия (физического / психического / эмоционального / духовного)',
-      'brand': 'Honda',
-      'body': 'Hatchback'
-    },
-    {
-      'value': 'mercedes-ac',
-      'title': 'Mercedes-Benz A-class',
-      'brand': 'Mercedes',
-      'body': 'Hatchback'
-    },
-    {
-      'value': 'hyundai-i30f',
-      'title': 'Hyundai i30 Fastback',
-      'brand': 'Hyundai',
-      'body': 'Hatchback'
-    },
-  ];
-
-
 
   openEducationDialog(context) {
     showDialog(
@@ -865,8 +780,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  openSkillDialog(context, List<String> options, int categoryId) {
-    List<String> listTag = [];
+  /// Skills - Version 2 - Type 1
+  openSkillDialogCategory1(context, List<String> options, List<String> listTag, int categoryId, String categoryName) {
+    // List<String> listTag = [];
 
     showDialog(
         context: context,
@@ -886,7 +802,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         margin: EdgeInsets.only(bottom: 20),
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text('Навыки'.tr().toUpperCase(),
+                          child: Text(categoryName.toUpperCase(),
                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                         ),
                       ),
@@ -895,6 +811,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Column(
                         children: <Widget>[
                           ChipsChoice<String>.multiple(
+                            choiceStyle: C2ChoiceStyle(
+                              margin: EdgeInsets.only(top: 4, bottom: 4),
+                              showCheckmark: false,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            choiceActiveStyle: C2ChoiceStyle(
+                              color: kColorPrimary,
+                            ),
                             padding: EdgeInsets.zero,
                             value: listTag,
                             onChanged: (val) {
@@ -907,10 +831,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             wrapped: true,
                             choiceLabelBuilder: (item) {
-                              return Text(
-                                item.label,
-                                softWrap: true,
-                                maxLines: 6,
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                height: 60,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.label,
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    style: TextStyle(
+                                        fontSize: 15
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                           ),
@@ -938,7 +872,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
                                     SkillCategory skillCategory = new SkillCategory();
-                                    skillCategory.saveUserSkills(listTag, categoryId);
+                                    skillCategory.saveUserSkills(listTag);
                                     Navigator.of(context).pop();
                                   },
                                   text: 'save'.tr(),
@@ -957,6 +891,113 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
+  /// Skills - Version 2 - Type 2
+  openSkillDialogCategory2(context, List<String> options, List<String> listTag, String categoryName) {
+    // List<String> listTag = [];
+
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(categoryName.toUpperCase(),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                    ),
+                  ),
+
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: /// Form
+                    Column(
+                      children: <Widget>[
+                        ChipsChoice<String>.multiple(
+                          choiceStyle: C2ChoiceStyle(
+                            margin: EdgeInsets.only(top: 4, bottom: 4),
+                            showCheckmark: false,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          choiceActiveStyle: C2ChoiceStyle(
+                            color: kColorPrimary,
+                          ),
+                          padding: EdgeInsets.zero,
+                          value: listTag,
+                          onChanged: (val) {
+                            return setState(() => listTag = val);
+                          },
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: options,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                          ),
+                          wrapped: true,
+                          choiceLabelBuilder: (item) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.label,
+                                  softWrap: true,
+                                  maxLines: 4,
+                                  style: TextStyle(
+                                      fontSize: 15
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /// Sign In button
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[200],
+                                textColor: kColorPrimary,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'cancel'.tr(),
+                              ),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: kColorPrimary,
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  SkillCategory skillCategory = new SkillCategory();
+                                  skillCategory.saveUserSkills(listTag);
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'save'.tr(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+  }
+
+  /// Skills - Version 1
   openSkillDialogV1(context) {
     showDialog(
         context: context,
@@ -1012,9 +1053,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   textColor: Colors.white,
                                   onPressed: () {
                                     SkillCategory skillCategory = new SkillCategory();
-                                    print(selectedCategoryIdFromVersion1);
-
-                                    skillCategory.saveUserSkills(tags, selectedCategoryIdFromVersion1);
+                                    skillCategory.saveUserSkills(tags);
                                     setState(() {
                                       tags = [];
                                     });
@@ -1041,15 +1080,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int selectedTest;
 
   getSkillSetCategories() async {
-    List<String> pi = [];
-    var controller = new ExpandableController(
-      initialExpanded: true,
-    );
     var list = await Vacancy.getLists('skillset_category', null);
+
+    List<S2Choice<String>> listSmartSelectDialog = [];
+    List<String> listSmartSelectDialogTag = [];
+
+    List<S2Choice<String>> listSmartSelectBottomSheet = [];
+    List<String> listSmartSelectBottomSheetTag = [];
+
     list.forEach((item) {
+
       List<String> skills = [];
+      List<String> skillTags = [];
+
       item["skills"].forEach((skill) {
+
+        // userSkills.forEach((userSkill) {
+        //   if (userSkill.name == skill) {
+        //     skillTags.add(skill);
+        //   }
+        // });
+
         skills.add(skill);
+
       });
 
       skillsV1.add(
@@ -1087,7 +1140,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           choiceItems: C2Choice.listFrom<String, String>(
                             source: skills,
                             value: (i, v) {
-                              setState(() => selectedCategoryIdFromVersion1 = item["id"]);
                               return v;
                             },
                             label: (i, v) => v,
@@ -1121,65 +1173,371 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }),
       );
 
-      categories.add(
-        Container(
-          margin: EdgeInsets.only(bottom: 20),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 2,
-                child: Container(
-                  margin: EdgeInsets.only(right: 20),
-                  width: 40,
-                  height: 40,
-                  child: Icon(
-                    Boxicons.bx_atom,
-                    size: 25,
-                    color: kColorPrimary,
+      if(item['id'] == 1){
+
+        categories.add(
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20),
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Boxicons.bx_atom,
+                      size: 25,
+                      color: kColorPrimary,
+                    ),
+                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                   ),
-                  decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                 ),
-              ),
-              Flexible(
-                flex: 6,
-                child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                      item['name'].toString(),
-                      style: _textStyle,
-                      textAlign: TextAlign.left,
-                    )),
-              ),
-              Flexible(
-                flex: 3,
-                child: CustomButton(
-                  height: 40.0,
-                  width: 100.0,
-                  padding: EdgeInsets.all(5),
-                  color: kColorPrimary,
-                  textColor: Colors.white,
-                  textSize: 14,
-                  onPressed: () {
-                    List<String> list = [];
-                    int id = item["id"];
-                    skillSets.forEach((item) {
-                      if (item.categoryId == id) {
-                        list.add(item.name);
-                      }
-                    });
-                    print(skillSets);
-                    openSkillDialog(context, list, id);
-                  },
-                  text: 'add'.tr(),
+                Flexible(
+                  flex: 6,
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        item['name'].toString(),
+                        style: _textStyle,
+                        textAlign: TextAlign.left,
+                      )),
                 ),
-              ),
-            ],
+                Flexible(
+                  flex: 3,
+                  child: CustomButton(
+                    height: 40.0,
+                    width: 100.0,
+                    padding: EdgeInsets.all(5),
+                    color: kColorPrimary,
+                    textColor: Colors.white,
+                    textSize: 14,
+                    onPressed: () {
+                      List<String> list = [];
+                      List<String> listTag = [];
+
+                      int id = item["id"];
+                      skillSets.forEach((item) {
+                        if (item.categoryId == id) {
+                          list.add(item.name);
+                        }
+                      });
+                      userSkills.forEach((item) {
+                        if (item.categoryId == id) {
+                          listTag.add(item.name);
+                        }
+                      });
+                      openSkillDialogCategory1(context, list, listTag, id, item["name"].toString());
+                    },
+                    text: 'add'.tr(),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+
+      }
+
+      else if(item["id"] == 2){
+
+        categories.add(
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20),
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Boxicons.bx_atom,
+                      size: 25,
+                      color: kColorPrimary,
+                    ),
+                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+                Flexible(
+                  flex: 6,
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        item['name'].toString(),
+                        style: _textStyle,
+                        textAlign: TextAlign.left,
+                      )),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: CustomButton(
+                    height: 40.0,
+                    width: 100.0,
+                    padding: EdgeInsets.all(5),
+                    color: kColorPrimary,
+                    textColor: Colors.white,
+                    textSize: 14,
+                    onPressed: () {
+                      List<String> list = [];
+                      List<String> listTag = [];
+                      int id = item["id"];
+                      skillSets.forEach((item) {
+                        if (item.categoryId == id) {
+                          list.add(item.name);
+                        }
+                      });
+                      userSkills.forEach((item) {
+                        if (item.categoryId == id) {
+                          listTag.add(item.name);
+                        }
+                      });
+                      openSkillDialogCategory2(context, list, listTag, item["name"].toString());
+                    },
+                    text: 'add'.tr(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+
+      }
+
+      else if(item["id"] == 3){
+
+        int id = item["id"];
+        skillSets.forEach((item) {
+          if (item.categoryId == id) {
+            listSmartSelectDialog.add(S2Choice<String>(value: item.name, title: item.name));
+          }
+        });
+        userSkills.forEach((item) {
+          if (item.categoryId == id) {
+            listSmartSelectDialogTag.add(item.name);
+          }
+        });
+
+        categories.add(
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child:SmartSelect<String>.multiple(
+              title: item["name"].toString(),
+              value: listSmartSelectDialogTag,
+              onChange: (selected) {
+                selected.setState(() {
+                  listSmartSelectDialogTag = selected.value;
+                  if(listSmartSelectDialogTag.length > 0){
+                    SkillCategory skillCategory = new SkillCategory();
+                    skillCategory.saveUserSkills(listSmartSelectDialogTag);
+                  }
+                });
+              },
+              choiceItems: listSmartSelectDialog,
+              modalType: S2ModalType.popupDialog,
+              tileBuilder: (context, state) {
+                return Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Boxicons.bx_atom,
+                          size: 25,
+                          color: kColorPrimary,
+                        ),
+                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            item['name'].toString(),
+                            style: _textStyle,
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: CustomButton(
+                        height: 40.0,
+                        width: 100.0,
+                        padding: EdgeInsets.all(5),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        textSize: 14,
+                        onPressed: state.showModal,
+                        text: 'add'.tr(),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              modalFooterBuilder: (context, state) {
+                return Container(
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.33,
+                        padding: EdgeInsets.all(10),
+                        color: Colors.grey[200],
+                        textColor: kColorPrimary,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'cancel'.tr(),
+                      ),
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.33,
+                        padding: EdgeInsets.all(10),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          state.closeModal();
+                        },
+                        text: 'save'.tr(),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+
+      else{
+
+        int id = item["id"];
+        skillSets.forEach((item) {
+          if (item.categoryId == id) {
+            listSmartSelectBottomSheet.add(S2Choice<String>(value: item.name, title: item.name));
+          }
+        });
+        userSkills.forEach((item) {
+          if (item.categoryId == id) {
+            listSmartSelectBottomSheetTag.add(item.name);
+          }
+        });
+
+        categories.add(
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: SmartSelect<String>.multiple(
+              title: item["name"].toString(),
+              value: listSmartSelectBottomSheetTag,
+              onChange: (selected) {
+                selected.setState(() {
+                  listSmartSelectBottomSheetTag = selected.value;
+                  if(listSmartSelectBottomSheetTag.length > 0){
+                    SkillCategory skillCategory = new SkillCategory();
+                    skillCategory.saveUserSkills(listSmartSelectBottomSheetTag);
+                  }
+                });
+              },
+              choiceItems: listSmartSelectBottomSheet,
+              modalType: S2ModalType.bottomSheet,
+              tileBuilder: (context, state) {
+                return Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Boxicons.bx_atom,
+                          size: 25,
+                          color: kColorPrimary,
+                        ),
+                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            item['name'].toString(),
+                            style: _textStyle,
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: CustomButton(
+                        height: 40.0,
+                        width: 100.0,
+                        padding: EdgeInsets.all(5),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        textSize: 14,
+                        onPressed: state.showModal,
+                        text: 'add'.tr(),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              modalFooterBuilder: (context, state) {
+                return Container(
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.33,
+                        padding: EdgeInsets.all(10),
+                        color: Colors.grey[200],
+                        textColor: kColorPrimary,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'cancel'.tr(),
+                      ),
+                      CustomButton(
+                        width: MediaQuery.of(context).size.width * 0.33,
+                        padding: EdgeInsets.all(10),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          state.closeModal();
+                        },
+                        text: 'save'.tr(),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+
     });
   }
 
@@ -1187,6 +1545,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var list = await Vacancy.getLists('skillset', null);
     list.forEach((item) {
       skillSets.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+  }
+
+  getUserSkills() async {
+    var list = await User.getSkills(Prefs.getString(Prefs.EMAIL));
+    list.forEach((item) {
+      userSkills.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
     });
   }
 
@@ -1199,6 +1564,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     getSkillSets();
+    getUserSkills();
     getS();
     getSkillSetCategories();
     super.initState();
@@ -1246,41 +1612,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : null,
                         ),
                       ),
-                    ),
-
-                    SmartSelect<String>.multiple(
-                      title: 'Car',
-                      value: _car,
-                      onChange: (selected) => setState(() => _car = selected.value),
-                      choiceItems: S2Choice.listFrom<String, Map>(
-                        source: SkillsV3,
-                        value: (index, item) => item['id'],
-                        title: (index, item) => item['name'],
-                        group: (index, item) => item['categoryId'],
-                      ),
-                      choiceTitleBuilder: (context, item, title){
-                        return AutoSizeText(
-                          item.title,
-                          maxLines: 4,
-                          softWrap: true,
-                          group: myGroup,
-                          style: TextStyle(fontSize: 14),
-                        );
-                      },
-                      choiceType: S2ChoiceType.chips,
-                      choiceGrouped: true,
-                      modalFilter: true,
-                      tileBuilder: (context, state) {
-                        return S2Tile.fromState(
-                          state,
-                          isTwoLine: true,
-                          leading: const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              'https://source.unsplash.com/yeVtxxPxzbw/100x100',
-                            ),
-                          ),
-                        );
-                      },
                     ),
 
                     /// Profile details
@@ -1486,9 +1817,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
                                                           child: Column(
                                                             children: [
-                                                              Align(
-                                                                alignment: Alignment.bottomLeft,
-                                                                child: Text("ВЕРСИЯ 1"),
+                                                              Container(
+                                                                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                                                child: Align(
+                                                                  alignment: Alignment.bottomLeft,
+                                                                  child: Text("ВЕРСИЯ 1"),
+                                                                ),
                                                               ),
                                                               Flex(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1522,7 +1856,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           ),
                                                         )
                                                       : Container(),
-                                                  Text("ВЕРСИЯ 2"),
+                                                  Container(
+                                                    margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                                    child: Align(
+                                                      alignment: Alignment.bottomLeft,
+                                                      child: Text("ВЕРСИЯ 2"),
+                                                    ),
+                                                  ),
                                                   Column(
                                                     children: categories,
                                                   ),

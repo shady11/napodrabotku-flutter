@@ -136,7 +136,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                       Navigator.of(context)
                                           .pushNamed(Routes.user_details);
                                     },
-                                    text: 'cv'.tr(),
+                                    text: 'profile'.tr(),
                                   ),
                                 )
                               : Container() : Container(),
@@ -157,7 +157,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                                       });
                                     },
-                                    text: 'profile'.tr(),
+                                    text: 'Аккаунт'.tr(),
                                   ),
                                 )
                               : Container(),
