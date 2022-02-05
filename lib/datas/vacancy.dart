@@ -330,13 +330,19 @@ class Vacancy {
           body: json.encode(body)
       );
 
-      print(utf8.decode(response.bodyBytes));
-      return "OK";
+      var result = json.decode(response.body);
+      print(json.decode(response.body));
+      return fromJsonToId(result as Map).toString();
     } catch (error) {
       return "ERROR";
       throw error;
     }
   }
+
+  static fromJsonToId(Map<String, dynamic> json) {
+    return json["id"];
+  }
+
 
   static Future<String> deleteCompanyVacancy({
     int vacancy_id,

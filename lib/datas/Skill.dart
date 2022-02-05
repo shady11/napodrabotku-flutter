@@ -45,7 +45,7 @@ class SkillCategory {
     }
   }
 
-  Future<String> saveVacancySkills(List<String> list, int categoryId) async {
+  Future<String> saveVacancySkills(List<String> list, int categoryId, String vacancyId) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_VACANCY_SKILL_SAVE);
 
@@ -58,7 +58,7 @@ class SkillCategory {
         uri,
         headers: headers,
         body: json.encode({
-          "vacancy_id": Prefs.getInt(Prefs.USER_ID).toString(),
+          "vacancy_id": vacancyId,
           "vacancy_skills": list,
           "category_id": categoryId,
         }),
