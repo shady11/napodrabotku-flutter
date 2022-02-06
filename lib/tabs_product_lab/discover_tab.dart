@@ -159,7 +159,7 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                               title: Text("vacancy_view".tr()),
                                             ),
                                             body: VacancyView(
-                                              page: "company_view",
+                                              page: "view",
                                               vacancy: data[index],
                                               vacancySkill: vacancySkills,
                                             ),

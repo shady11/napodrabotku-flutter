@@ -81,6 +81,7 @@ class _VacancyViewState extends State<VacancyView> {
               child: Text('okay'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
+                Navigator.of(ctx).pop();
               },
             )
           ],
@@ -548,30 +549,30 @@ class _VacancyViewState extends State<VacancyView> {
                                                 Prefs.getString(Prefs.TOKEN) == null
                                                     ? _showDialog(context, 'sign_in_to_submit'.tr())
                                                     : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                                        if (value) {
-                                                          Vacancy.saveVacancyUser(
-                                                                  vacancy_id: widget.vacancy.id, type: "SUBMITTED")
-                                                              .then((value) {
-                                                            if (value == "OK") {
-                                                              _showDialog1(context, "successfully_submitted".tr());
-                                                              StoreProvider.of<AppState>(context)
-                                                                  .state
-                                                                  .vacancy
-                                                                  .list
-                                                                  .data
-                                                                  .remove(widget.vacancy);
-                                                              StoreProvider.of<AppState>(context)
-                                                                  .dispatch(getSubmittedVacancies());
-                                                              StoreProvider.of<AppState>(context)
-                                                                  .dispatch(getNumberOfSubmittedVacancies());
-                                                            } else {
-                                                              _showDialog(
-                                                                  context, "some_errors_occured_try_again".tr());
-                                                            }
-                                                          });
-                                                        } else {
-                                                          _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                                        }
+                                                        Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
+                                                            .then((value) {
+                                                          if (value == "OK") {
+                                                            _showDialog1(context, "successfully_submitted".tr());
+                                                            StoreProvider.of<AppState>(context)
+                                                                .state
+                                                                .vacancy
+                                                                .list
+                                                                .data
+                                                                .remove(widget.vacancy);
+                                                            StoreProvider.of<AppState>(context)
+                                                                .dispatch(getSubmittedVacancies());
+                                                            StoreProvider.of<AppState>(context)
+                                                                .dispatch(getNumberOfSubmittedVacancies());
+                                                          } else {
+                                                            _showDialog(
+                                                                context, "some_errors_occured_try_again".tr());
+                                                          }
+                                                        });
+                                                        // if (value) {
+                                                        //
+                                                        // } else {
+                                                        //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                                        // }
                                                       });
                                               },
                                               text: 'submit'.tr(),

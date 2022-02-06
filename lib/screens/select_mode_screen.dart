@@ -92,7 +92,7 @@ class _SelectModeState extends State<SelectMode> {
                                   Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
                                   Navigator.of(context).pushNamed(Routes.product_lab_start);
                                 },
-                                text: 'Хочу повысить \nквалификацию',
+                                text: 'Возможности для\nмолодежи',
                               ),
                               SizedBox(
                                 height: 20,
