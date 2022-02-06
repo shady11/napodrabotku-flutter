@@ -1,6 +1,4 @@
-import
-'dart:io';
-
+import'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,7 +7,6 @@ import 'package:ishtapp/components/custom_button.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:path/path.dart';
-
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
@@ -20,6 +17,7 @@ import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+
 enum user_gender { Male, Female }
 
 class EditProfileScreen extends StatefulWidget {
@@ -759,27 +757,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         )
                       : Container(),
                   SizedBox(height: 20),
-                  user_cv == null
-                      ? Container()
-                      : Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'attachment'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                  user_cv == null
-                      ? Container()
-                      : CustomButton(
-                          text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
-                          width: MediaQuery.of(context).size.width * 1,
-                          color: Colors.grey[200],
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            _pickAttachment();
-                          }),
-                  user_cv == null ? Container() : SizedBox(height: 30),
+                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                    ? Column(
+                      children: <Widget>[
+                        user_cv == null
+                            ? Container()
+                            : Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'attachment'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        user_cv == null
+                            ? Container()
+                            : CustomButton(
+                            text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
+                            width: MediaQuery.of(context).size.width * 1,
+                            color: Colors.grey[200],
+                            textColor: kColorPrimary,
+                            onPressed: () {
+                              _pickAttachment();
+                            }),
+                        user_cv == null ? Container() : SizedBox(height: 30),
+                      ],
+                    )
+                    : Container(),
 
                   /// Sign Up button
                   SizedBox(

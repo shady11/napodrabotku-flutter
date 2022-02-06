@@ -98,10 +98,11 @@ class _SelectModeState extends State<SelectMode> {
                                 height: 20,
                               ),
                               CustomButton(
-                                height: 50.0,
+                                height: 70.0,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 padding: EdgeInsets.all(10),
-                                textColor: Colors.white,
+                                color: Colors.white,
+                                textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
                                   Prefs.setString(Prefs.ROUTE, "COMPANY");

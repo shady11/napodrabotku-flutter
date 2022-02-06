@@ -5,8 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:path/path.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
@@ -23,6 +22,8 @@ import 'package:ishtapp/datas/Skill.dart';
 import 'package:ms_accordion/ms_accordion.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import'dart:io';
+import 'package:gx_file_picker/gx_file_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -30,6 +31,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  File attachment;
+  UserCv user_cv;
+
   void handleInitialBuild(ProfileScreenProps props) {
     props.getUserCv();
     props.getUser();
@@ -1562,6 +1567,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     fontWeight: FontWeight.w500,
   );
 
+  void _pickAttachment() async {
+    File file = await FilePicker.getFile(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx'],
+    );
+
+    if (file != null) {
+      if (file != null)
+        user_cv.save(attachment: file);
+      else
+        user_cv.save();
+
+      setState(() {
+        attachment = file;
+      });
+    } else {
+      // User canceled the picker
+    }
+  }
+
   @override
   void initState() {
     getSkillSets();
@@ -1575,6 +1600,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     User user = StoreProvider.of<AppState>(context).state.user.user.data;
     var myGroup = AutoSizeGroup();
+    if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
+      user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
+    }
 
     return StoreConnector<AppState, ProfileScreenProps>(
         converter: (store) => mapStateToProps(store),
@@ -1584,6 +1612,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           UserCv data_cv = props.userCvResponse.data;
           bool cv_loading = props.userCvResponse.loading;
           bool user_loading = props.userResponse.loading;
+
+
 
           Widget body;
           if (user_loading) {
@@ -1874,6 +1904,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                     child: Text("empty".tr())),
                                               ),
+
+
+
+                                    user_cv == null
+                                        ? Container()
+                                        : Align(
+                                        widthFactor: 10,
+                                        heightFactor: 1.5,
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          'attachment'.tr(),
+                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                        )),
+                                    user_cv == null
+                                        ? Container()
+                                        : CustomButton(
+                                        text: attachment != null ? basename(attachment.path) : 'upload_file'.tr(),
+                                        width: MediaQuery.of(context).size.width * 1,
+                                        color: Colors.grey[200],
+                                        textColor: kColorPrimary,
+                                        onPressed: () {
+                                          _pickAttachment();
+                                        }),
+                                    user_cv == null ? Container() : SizedBox(height: 30),
+
+
+
+
+
+
+
+
+
+
+
+
+
                                   ],
                                 )
                               : Container(),
