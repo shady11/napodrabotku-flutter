@@ -112,7 +112,7 @@ class _VacancyViewState extends State<VacancyView> {
 
   void vacancySkills() {
     print(data);
-    if (data == null) {
+    if (data == null || data.length == 0) {
       listings.add(Container());
     } else {
       for (var item in data) {
@@ -280,12 +280,12 @@ class _VacancyViewState extends State<VacancyView> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Flexible(
+                                      widget.vacancy.salary != null ? Flexible(
                                           child: Text(
                                         widget.vacancy.salary != null ? widget.vacancy.salary : '',
                                         style:
                                             TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                      )),
+                                      )) : Container(),
                                     ],
                                   ),
                             SizedBox(height: 5),

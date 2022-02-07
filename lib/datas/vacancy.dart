@@ -442,7 +442,8 @@ class VacancyState {
       this.user,
       this.number_of_submiteds,
       this.number_of_likeds,
-      this.inactive_list});
+      this.inactive_list,
+      });
 }
 
 class ListVacancysState {

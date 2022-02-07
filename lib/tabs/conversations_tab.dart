@@ -28,8 +28,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (Prefs.getString(Prefs.TOKEN) == "null" ||
-        Prefs.getString(Prefs.TOKEN) == null) {
+    if (Prefs.getString(Prefs.TOKEN) == "null" || Prefs.getString(Prefs.TOKEN) == null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +47,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                 color: kColorPrimary,
                 onPressed: () {
                   Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.pushNamed(context, Routes.start);
+                  Navigator.pushNamed(context, Routes.select_mode);
                 })
           ],
         ),
@@ -80,14 +79,12 @@ class _ConversationsTabState extends State<ConversationsTab> {
                       Expanded(
                           child: ListView.separated(
                         shrinkWrap: true,
-                        separatorBuilder: (context, index) =>
-                            Divider(height: 10),
+                        separatorBuilder: (context, index) => Divider(height: 10),
                         itemCount: data.length,
                         itemBuilder: ((context, index) {
                           /// Get user object
                           return Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 0),
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
 //                color: !_isReadNotifDemo[index]
 //                    ? kColorPrimary.withAlpha(40)
 //                    : null,
@@ -95,23 +92,14 @@ class _ConversationsTabState extends State<ConversationsTab> {
                               leading: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 backgroundImage: data[index].avatar != null
-                                    ? NetworkImage(
-                                        SERVER_IP + data[index].avatar,
-                                        headers: {
-                                            "Authorization":
-                                                Prefs.getString(Prefs.TOKEN)
-                                          })
-                                    : AssetImage(
-                                        'assets/images/default-user.jpg'),
+                                    ? NetworkImage(SERVER_IP + data[index].avatar,
+                                        headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
+                                    : AssetImage('assets/images/default-user.jpg'),
                               ),
-                              title: Text(data[index].name,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.black)),
+                              title: Text(data[index].name, style: TextStyle(fontSize: 18, color: Colors.black)),
                               subtitle: Text(data[index].last_message),
                               trailing: data[index].num_of_unreads > 0
-                                  ? Badge(
-                                      text:
-                                          data[index].num_of_unreads.toString())
+                                  ? Badge(text: data[index].num_of_unreads.toString())
                                   : null,
                               onTap: () {
                                 /// Go to chat screen
@@ -127,20 +115,33 @@ class _ConversationsTabState extends State<ConversationsTab> {
                       )),
                     ],
                   )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.width * 0.1),
-                        child: Text(
-                          "chat_function_is_not_available".tr(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: kColorPrimary, fontSize: 20),
-                        ),
+                : Prefs.getString(Prefs.ROUTE) == "COMPANY"
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+                            child: Text(
+                              "Пусто".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: kColorPrimary, fontSize: 20),
+                            ),
+                          )
+                        ],
                       )
-                    ],
-                  );
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+                            child: Text(
+                              "chat_function_is_not_available".tr(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: kColorPrimary, fontSize: 20),
+                            ),
+                          )
+                        ],
+                      );
           }
 
           return body;
