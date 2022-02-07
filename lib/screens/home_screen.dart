@@ -1098,7 +1098,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     color: kColorPrimaryDark,
                                                     onPressed: () => openSkillDialog(context, true),
                                                     child: Text(
-                                                      "Требуется до",
+                                                      "Требуется",
                                                       style: TextStyle(fontSize: 16, color: Colors.white),
                                                     )),
 
