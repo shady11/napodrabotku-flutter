@@ -860,8 +860,8 @@ class UserFullInfo {
   List<UserCourse> user_courses;
   String opportunity;
   String jobSphere;
-  List skills;
-  List skills2;
+  List<dynamic> skills;
+  List<dynamic> skills2;
 
   UserFullInfo(
       {this.id,
@@ -903,10 +903,17 @@ class UserFullInfo {
         user_experiences: experiencesToList(json['experiences']),
         opportunity: json["opportunity"],
         jobSphere: json["job_sphere"],
-        skills: json["skills"],
-        skills2: json["skills2"],
+        skills: skillsToList(json["skills"]),
+        skills2: skillsToList(json["skills2"]),
       );
 
+  static List<dynamic> skillsToList(var j) {
+    List<dynamic> result = [];
+    for (var i in j) {
+      result.add(i);
+    }
+    return result;
+  }
   static List<UserExperience> experiencesToList(var j) {
     List<UserExperience> result = new List<UserExperience>();
     for (var i in j) {

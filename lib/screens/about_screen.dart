@@ -179,6 +179,38 @@ class AboutScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: kColorDark),
                       ),
                     ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(right: 20),
+                                child: SizedBox(
+                                  height: 20,
+                                  child: Image.asset('assets/images/partners/techaim.png'),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(right: 20),
+                                child: SizedBox(
+                                  height: 60,
+                                  child: Image.asset('assets/images/partners/htpkr.png'),
+                                ),
+                              ),
+                              Container(
+                                child: SizedBox(
+                                  height: 50,
+                                  child: Image.asset('assets/images/partners/unicef.png'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
         ),

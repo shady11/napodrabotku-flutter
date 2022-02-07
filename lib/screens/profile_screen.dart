@@ -1212,8 +1212,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _pickAttachment() async {
     File file = await FilePicker.getFile(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
+      // allowedExtensions: ['pdf', 'doc', 'docx'],
     );
+
+    // print('size' + file.length().toString());
 
     if (file != null) {
       if (file != null)

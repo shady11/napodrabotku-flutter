@@ -36,6 +36,7 @@ class ProfileInfoScreen extends StatefulWidget {
 }
 
 class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
+
   void handleInitialBuild(ProfileFullInfoScreenProps props) {
     props.getUserFullInfo(widget.user_id);
   }
@@ -1013,6 +1014,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
 
           Widget body;
           if (user_loading) {
+
             body = Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
@@ -1021,6 +1023,38 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
               ),
             );
           } else {
+
+            List<Widget> skills = [];
+            List<Widget> skills2 = [];
+
+            for (var item in data.skills) {
+
+              skills.add(Container(
+                padding: EdgeInsets.only(bottom: 10),
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                  child: Text(item.toString(), style: TextStyle(fontSize: 16, color: Colors.black87)),
+                ),
+                // Text(item.name, textAlign: TextAlign.left),
+              ));
+            }
+            for (var item in data.skills2) {
+              skills2.add(Container(
+                padding: EdgeInsets.only(bottom: 10),
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                  child: Text(item.toString(), style: TextStyle(fontSize: 16, color: Colors.black87)),
+                ),
+                // Text(item.name, textAlign: TextAlign.left),
+              ));
+            }
+
             body = Scaffold(
               appBar: AppBar(
                 title: Text("profile".tr()),
@@ -1179,6 +1213,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                     Flexible(
                                       child: Text(data.opportunity,
                                           softWrap: true,
+                                          textAlign: TextAlign.right,
                                           style: TextStyle(
                                               fontSize: 16, color: kColorDark)),
                                     ),
@@ -1402,6 +1437,69 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                                         0, 15, 0, 15),
                                                     child: Text("empty".tr())),
                                               ),
+
+                                        /// skills
+                                        Container(
+                                          margin:
+                                          EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  'Навыки (Я умею)'
+                                                      .tr()
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                      FontWeight.w700,
+                                                      color: kColorDarkBlue)),
+                                            ],
+                                          ),
+                                        ),
+                                        data.skills.length > 0
+                                            ? Column(children: skills)
+                                            : Container(
+                                          child: Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 15, 0, 15),
+                                              child: Text("empty".tr())),
+                                        ),
+
+
+                                        /// skills 2
+                                        Container(
+                                          margin:
+                                          EdgeInsets.fromLTRB(0, 30, 0, 20),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  'Навыки (Я хочу развить)'
+                                                      .tr()
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                      FontWeight.w700,
+                                                      color: kColorDarkBlue)),
+                                            ],
+                                          ),
+                                        ),
+                                        data.skills2.length > 0
+                                            ? Column(children: skills2)
+                                            : Container(
+                                          child: Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 15, 0, 15),
+                                              child: Text("empty".tr())),
+                                        ),
                                       ],
                                     )
                                   : Center(
