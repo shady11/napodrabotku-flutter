@@ -20,7 +20,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 
 class ProfileTab extends StatefulWidget {
-
   @override
   _ProfileTabState createState() => _ProfileTabState();
 }
@@ -30,8 +29,7 @@ class _ProfileTabState extends State<ProfileTab> {
   int counter = 0;
 
   void handleInitialBuild(ProfileScreenProps props) {
-    if (Prefs.getString(Prefs.TOKEN) == "null" ||
-        Prefs.getString(Prefs.TOKEN) == null) {
+    if (Prefs.getString(Prefs.TOKEN) == "null" || Prefs.getString(Prefs.TOKEN) == null) {
     } else {
       props.getUser();
       props.getUserCv();
@@ -76,34 +74,23 @@ class _ProfileTabState extends State<ProfileTab> {
                       Center(
                         child: Container(
                           padding: const EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                           child: CircleAvatar(
                             backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                             radius: 60,
-                            backgroundImage:
-                            Prefs.getString(Prefs.PROFILEIMAGE) != null
-                                    ? NetworkImage(
-                                        SERVER_IP +
-                                            Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
-                                        headers: {
-                                            "Authorization":
-                                                Prefs.getString(Prefs.TOKEN)
-                                          })
-                                    : null,
+                            backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
+                                ? NetworkImage(
+                                    SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
+                                    headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
+                                : null,
                           ),
                         ),
                       ),
                       SizedBox(height: 15),
                       Center(
                         child: Text(
-                          Prefs.getString(Prefs.TOKEN) != null
-                              ? Prefs.getString(Prefs.EMAIL)
-                              : 'guest_user'.tr(),
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                          Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.EMAIL) : 'guest_user'.tr(),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       ),
                       SizedBox(height: 15),
@@ -122,7 +109,9 @@ class _ProfileTabState extends State<ProfileTab> {
 
                       /// Buttons
                       Row(
-                        mainAxisAlignment: Prefs.getString(Prefs.USER_TYPE) == "USER" ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                        mainAxisAlignment: Prefs.getString(Prefs.USER_TYPE) == "USER"
+                            ? MainAxisAlignment.spaceEvenly
+                            : MainAxisAlignment.center,
                         children: [
                           Prefs.getString(Prefs.TOKEN) != null
                               ? Prefs.getString(Prefs.USER_TYPE) == "USER" ?
@@ -150,12 +139,9 @@ class _ProfileTabState extends State<ProfileTab> {
                                     onPressed: () async {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                            builder: (context) => EditProfileScreen()),
-                                        );
-                                      setState(() {
-
-                                      });
+                                        MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                                      );
+                                      setState(() {});
                                     },
                                     text: 'Настройки'.tr(),
                                   ),
@@ -180,36 +166,21 @@ class _ProfileTabState extends State<ProfileTab> {
                                 size: 25,
                                 color: kColorPrimary,
                               ),
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF2F2F5),
-                                  borderRadius: BorderRadius.circular(10)),
+                              decoration:
+                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                             ),
                             title: Text(
-                                Prefs.getString(Prefs.USER_TYPE) == 'USER'
-                                    ? "matches".tr()
-                                    : 'active_vacancies'.tr(),
+                                Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "matches".tr() : 'active_vacancies'.tr(),
                                 style: _textStyle),
                             trailing: Prefs.getString(Prefs.USER_TYPE) == 'USER'
                                 ? Text(
-                                    StoreProvider.of<AppState>(context)
-                                                .state
-                                                .vacancy
-                                                .number_of_likeds !=
-                                            null
-                                        ? StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_likeds
-                                            .toString()
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds != null
+                                        ? StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()
                                         : '0',
                                     style: TextStyle(color: Colors.grey[400]),
                                   )
                                 : Text(
-                                    StoreProvider.of<AppState>(context)
-                                                .state
-                                                .vacancy
-                                                .number_of_active_vacancies !=
-                                            null
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_active_vacancies != null
                                         ? StoreProvider.of<AppState>(context)
                                             .state
                                             .vacancy
@@ -220,11 +191,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   ),
                             onTap: () {
                               /// Go to profile likes screen ()
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfileLikesScreen()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileLikesScreen()));
                             },
                           ),
                           ListTile(
@@ -236,22 +203,15 @@ class _ProfileTabState extends State<ProfileTab> {
                                 size: 25,
                                 color: kColorPrimary,
                               ),
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF2F2F5),
-                                  borderRadius: BorderRadius.circular(10)),
+                              decoration:
+                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                             ),
                             title: Text(
-                                Prefs.getString(Prefs.USER_TYPE) == 'USER'
-                                    ? "visit".tr()
-                                    : 'inactive_vacancies'.tr(),
+                                Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "visit".tr() : 'inactive_vacancies'.tr(),
                                 style: _textStyle),
                             trailing: Prefs.getString(Prefs.USER_TYPE) == 'USER'
                                 ? Text(
-                                    StoreProvider.of<AppState>(context)
-                                                .state
-                                                .vacancy
-                                                .number_of_submiteds !=
-                                            null
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds != null
                                         ? StoreProvider.of<AppState>(context)
                                             .state
                                             .vacancy
@@ -261,10 +221,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                     style: TextStyle(color: Colors.grey[400]),
                                   )
                                 : Text(
-                                    StoreProvider.of<AppState>(context)
-                                                .state
-                                                .vacancy
-                                                .number_of_inactive_vacancies !=
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_inactive_vacancies !=
                                             null
                                         ? StoreProvider.of<AppState>(context)
                                             .state
@@ -276,11 +233,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   ),
                             onTap: () {
                               /// Go to profile visits screen
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfileVisitsScreen()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileVisitsScreen()));
                             },
                           ),
                         ],
@@ -312,15 +265,16 @@ class _ProfileTabState extends State<ProfileTab> {
                         Navigator.pushNamed(context, Routes.user_policy);
                       },
                     ),
-                    Prefs.getString(Prefs.USER_TYPE) == 'USER' ? ListTile(
-                      title: Text("reset_settings".tr(), style: _textStyle),
-                      onTap: () async {
-                        user = StoreProvider.of<AppState>(context).state.user.user.data;
-                        user.resetSettings(email: user.email);
-                        _showDialog(
-                            context, 'successful_reset'.tr(), false);
-                      },
-                    ) : Container(),
+                    Prefs.getString(Prefs.USER_TYPE) == 'USER'
+                        ? ListTile(
+                            title: Text("reset_settings".tr(), style: _textStyle),
+                            onTap: () async {
+                              user = StoreProvider.of<AppState>(context).state.user.user.data;
+                              user.resetSettings(email: user.email);
+                              _showDialog(context, 'successful_reset'.tr(), false);
+                            },
+                          )
+                        : Container(),
                     Prefs.getString(Prefs.TOKEN) != null
                         ? ListTile(
                             title: Text(
@@ -335,10 +289,8 @@ class _ProfileTabState extends State<ProfileTab> {
                               Prefs.setString(Prefs.USER_TYPE, "USER");
                               Prefs.setString(Prefs.ROUTE, null);
                               Prefs.setInt(Prefs.USER_ID, null);
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.select_mode);
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                              Navigator.pushReplacementNamed(context, Routes.select_mode);
                             },
                           )
                         : ListTile(
@@ -347,10 +299,8 @@ class _ProfileTabState extends State<ProfileTab> {
                               style: TextStyle(fontSize: 18),
                             ),
                             onTap: () async {
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
-                              Navigator.pushReplacementNamed(
-                                  context, Routes.select_mode);
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                              Navigator.pushReplacementNamed(context, Routes.select_mode);
                             },
                           ),
                   ],
@@ -379,8 +329,7 @@ class _ProfileTabState extends State<ProfileTab> {
               child: Text('continue'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
-                if (!error)
-                  Navigator.pushReplacementNamed(context, Routes.home);
+                if (!error) Navigator.pushReplacementNamed(context, Routes.home);
               },
             )
           ],
@@ -415,6 +364,5 @@ ProfileScreenProps mapStateToProps(Store<AppState> store) {
       getUser: () => store.dispatch(getUser()),
       user_cv: store.state.vacancy.user.user_cv,
       getUserCv: () => store.dispatch(getUserCv()),
-      getSubmittedNumber: () =>
-          store.dispatch(getNumberOfSubmittedVacancies()));
+      getSubmittedNumber: () => store.dispatch(getNumberOfSubmittedVacancies()));
 }

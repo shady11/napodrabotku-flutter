@@ -14,6 +14,7 @@ import 'package:ishtapp/widgets/vacancy_view.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ishtapp/datas/Skill.dart';
 
 class ProfileVisitsScreen extends StatelessWidget {
   void handleInitialBuild(VacanciesScreenProps1 props) {
@@ -118,19 +119,34 @@ class ProfileVisitsScreen extends StatelessWidget {
                                   page: 'company_inactive',
                                 ),
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return Scaffold(
-                                      backgroundColor: kColorPrimary,
-                                      appBar: AppBar(
-                                        title: Text("vacancy_view".tr()),
-                                      ),
-                                      body: VacancyView(
-                                        page: "inactive",
-                                        vacancy: vacancy,
-                                      ),
-                                    );
-                                  }));
+
+                                  VacancySkill.getVacancySkills(vacancy.id).then((value) {
+                                    List<VacancySkill> vacancySkills = [];
+
+                                    for (var i in value) {
+                                      vacancySkills.add(new VacancySkill(
+                                        id: i.id,
+                                        name: i.name,
+                                        vacancyId: i.vacancyId,
+                                        isRequired: i.isRequired,
+                                      ));
+                                    }
+
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return Scaffold(
+                                            backgroundColor: kColorPrimary,
+                                            appBar: AppBar(
+                                              title: Text("vacancy_view".tr()),
+                                            ),
+                                            body: VacancyView(
+                                              page: "inactive",
+                                              vacancy: vacancy,
+                                              vacancySkill: vacancySkills,
+                                            ),
+                                          );
+                                        }));
+                                  });
                                 },
                               );
                             }).toList())

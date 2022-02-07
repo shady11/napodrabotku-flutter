@@ -155,63 +155,120 @@ class _ProfileCardState extends State<ProfileCard> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    isProductLabVacancy
-                        ? Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration:
-                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
+                    // isProductLabVacancy
+                    //     ? Flex(
+                    //         direction: Axis.horizontal,
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Flexible(
+                    //             child: Container(
+                    //               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    //               decoration:
+                    //                   BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                    //               child: Text(
+                    //                 widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
+                    //                 style: TextStyle(
+                    //                   color: Colors.black87,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Flexible(
+                    //               child: Text(
+                    //             widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
+                    //             style: TextStyle(
+                    //                 fontSize: 15,
+                    //                 fontWeight: FontWeight.bold,
+                    //                 fontFamily: 'GTEestiProDisplay',
+                    //                 color: kColorPrimary),
+                    //           )),
+                    //         ],
+                    //       )
+                    //     : Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Container(
+                    //             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    //             decoration:
+                    //                 BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                    //             child: Text(
+                    //               widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                    //               style: TextStyle(
+                    //                 color: Colors.black87,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           SizedBox(
+                    //             width: 5,
+                    //           ),
+                    //           Flexible(
+                    //               child: Text(
+                    //             widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                    //             style: TextStyle(
+                    //                 fontSize: 15,
+                    //                 fontWeight: FontWeight.bold,
+                    //                 fontFamily: 'GTEestiProDisplay',
+                    //                 color: kColorPrimary),
+                    //           )),
+                    //         ],
+                    //       ),
+
+                    widget.vacancy.opportunity != null ? Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration:
+                            BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                            child: Text(
+                              widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
+                              style: TextStyle(
+                                color: Colors.black87,
                               ),
-                              Flexible(
-                                  child: Text(
-                                widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                child: Text(
-                                  widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                  child: Text(
-                                widget.vacancy.salary != null ? widget.vacancy.salary : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
+                            ),
                           ),
+                        ),
+                        Flexible(
+                            child: Text(
+                              widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'GTEestiProDisplay',
+                                  color: kColorPrimary),
+                            )),
+                      ],
+                    ) : Container(),
+                    widget.vacancy.type != null ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration:
+                          BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                            style: TextStyle(
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                            child: Text(
+                              widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'GTEestiProDisplay',
+                                  color: kColorPrimary),
+                            )),
+                      ],
+                    ) : Container(),
                     SizedBox(height: 5),
                     isProductLabVacancy
                         ? Flex(

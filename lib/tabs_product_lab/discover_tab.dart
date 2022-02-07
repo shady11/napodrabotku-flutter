@@ -166,20 +166,6 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                           );
                                         }));
                                       });
-
-                                      // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                      //   return Scaffold(
-                                      //     backgroundColor: kColorPrimary,
-                                      //     appBar: AppBar(
-                                      //       title: Text("vacancy_view".tr()),
-                                      //     ),
-                                      //     body: VacancyView(
-                                      //       page: "view",
-                                      //       vacancy: data[index],
-                                      //
-                                      //     ),
-                                      //   );
-                                      // }));
                                     },
                                   ),
                                 ],

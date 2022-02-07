@@ -15,6 +15,7 @@ import 'package:ishtapp/widgets/profile_card.dart';
 import 'package:ishtapp/widgets/submitted_user_card.dart';
 import 'package:ishtapp/widgets/users_grid.dart';
 import 'package:redux/redux.dart';
+import 'package:ishtapp/datas/Skill.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -86,6 +87,7 @@ class _MatchesTabState extends State<MatchesTab> {
                                   user: user, /*page: 'match',*/
                                 ),
                                 onTap: () {
+
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext ctx) => ProfileInfoScreen(user_id: user.id)));
                                 },
@@ -141,18 +143,33 @@ class _MatchesTabState extends State<MatchesTab> {
                                       page: 'match',
                                     ),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                  return Scaffold(
-                                    backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                                    appBar: AppBar(
-                                      title: Text("vacancy_view".tr()),
-                                    ),
-                                    body: VacancyView(
-                                      page: "user_match",
-                                      vacancy: vacancy,
-                                    ),
-                                  );
-                                }));
+
+                                VacancySkill.getVacancySkills(vacancy.id).then((value) {
+                                  List<VacancySkill> vacancySkills = [];
+
+                                  for (var i in value) {
+                                    vacancySkills.add(new VacancySkill(
+                                      id: i.id,
+                                      name: i.name,
+                                      vacancyId: i.vacancyId,
+                                      isRequired: i.isRequired,
+                                    ));
+                                  }
+
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                    return Scaffold(
+                                      backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                      appBar: AppBar(
+                                        title: Text("vacancy_view".tr()),
+                                      ),
+                                      body: VacancyView(
+                                        page: Prefs.getString(Prefs.ROUTE) != 'PRODUCT_LAB' ? "user_match" : "view",
+                                        vacancy: vacancy,
+                                        vacancySkill: vacancySkills,
+                                      ),
+                                    );
+                                  }));
+                                });
                               },
                             );
                           }).toList())

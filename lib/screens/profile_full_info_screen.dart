@@ -1145,7 +1145,45 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                             fontSize: 16, color: kColorDark)),
                                   ],
                                 ),
-
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Отрасль".tr(),
+                                        softWrap: true,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                            height: 2)),
+                                    Text(data.jobSphere,
+                                        softWrap: true,
+                                        style: TextStyle(
+                                            fontSize: 16, color: kColorDark)),
+                                  ],
+                                ),
+                                Divider(),
+                                Flex(
+                                  direction: Axis.horizontal,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text("Возможность".tr(),
+                                          softWrap: true,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey,
+                                              height: 2)),
+                                    ),
+                                    Flexible(
+                                      child: Text(data.opportunity,
+                                          softWrap: true,
+                                          style: TextStyle(
+                                              fontSize: 16, color: kColorDark)),
+                                    ),
+                                  ],
+                                ),
                                 // Divider(),
                                 // Column(
                                 //   children: [
