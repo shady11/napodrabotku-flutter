@@ -1178,133 +1178,141 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (item['id'] == 1) {
         categories.add(
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20),
-                    width: 40,
-                    height: 40,
-                    child: Icon(
-                      Boxicons.bx_atom,
-                      size: 25,
-                      color: kColorPrimary,
+          StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Boxicons.bx_atom,
+                          size: 25,
+                          color: kColorPrimary,
+                        ),
+                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                      ),
                     ),
-                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-                Flexible(
-                  flex: 6,
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        item['name'].toString(),
-                        style: _textStyle,
-                        textAlign: TextAlign.left,
-                      )),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: CustomButton(
-                    height: 40.0,
-                    width: 100.0,
-                    padding: EdgeInsets.all(5),
-                    color: kColorPrimary,
-                    textColor: Colors.white,
-                    textSize: 14,
-                    onPressed: () {
-                      List<String> list = [];
-                      List<String> listTag = [];
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            item['name'].toString(),
+                            style: _textStyle,
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: CustomButton(
+                        height: 40.0,
+                        width: 100.0,
+                        padding: EdgeInsets.all(5),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        textSize: 14,
+                        onPressed: () {
+                          List<String> list = [];
+                          List<String> listTag = [];
 
-                      int id = item["id"];
-                      skillSets.forEach((item) {
-                        if (item.categoryId == id) {
-                          list.add(item.name);
-                        }
-                      });
-                      userSkills.forEach((item) {
-                        if (item.categoryId == id) {
-                          listTag.add(item.name);
-                        }
-                      });
-                      openSkillDialogCategory1(context, list, listTag, id, item["name"].toString());
-                    },
-                    text: 'add'.tr(),
-                  ),
+                          int id = item["id"];
+                          skillSets.forEach((item) {
+                            if (item.categoryId == id) {
+                              list.add(item.name);
+                            }
+                          });
+                          userSkills.forEach((item) {
+                            if (item.categoryId == id) {
+                              listTag.add(item.name);
+                            }
+                          });
+                          openSkillDialogCategory1(context, list, listTag, id, item["name"].toString());
+                        },
+                        text: 'add'.tr(),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
         );
       } else if (item["id"] == 2) {
         categories.add(
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20),
-                    width: 40,
-                    height: 40,
-                    child: Icon(
-                      Boxicons.bx_atom,
-                      size: 25,
-                      color: kColorPrimary,
+          StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Boxicons.bx_atom,
+                          size: 25,
+                          color: kColorPrimary,
+                        ),
+                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                      ),
                     ),
-                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                  ),
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            item['name'].toString(),
+                            style: _textStyle,
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: CustomButton(
+                        height: 40.0,
+                        width: 100.0,
+                        padding: EdgeInsets.all(5),
+                        color: kColorPrimary,
+                        textColor: Colors.white,
+                        textSize: 14,
+                        onPressed: () {
+                          List<String> list = [];
+                          List<String> listTag = [];
+                          int id = item["id"];
+                          skillSets.forEach((item) {
+                            if (item.categoryId == id) {
+                              list.add(item.name);
+                            }
+                          });
+                          userSkills.forEach((item) {
+                            if (item.categoryId == id) {
+                              listTag.add(item.name);
+                            }
+                          });
+                          openSkillDialogCategory2(context, list, listTag, item["name"].toString());
+                        },
+                        text: 'add'.tr(),
+                      ),
+                    ),
+                  ],
                 ),
-                Flexible(
-                  flex: 6,
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        item['name'].toString(),
-                        style: _textStyle,
-                        textAlign: TextAlign.left,
-                      )),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: CustomButton(
-                    height: 40.0,
-                    width: 100.0,
-                    padding: EdgeInsets.all(5),
-                    color: kColorPrimary,
-                    textColor: Colors.white,
-                    textSize: 14,
-                    onPressed: () {
-                      List<String> list = [];
-                      List<String> listTag = [];
-                      int id = item["id"];
-                      skillSets.forEach((item) {
-                        if (item.categoryId == id) {
-                          list.add(item.name);
-                        }
-                      });
-                      userSkills.forEach((item) {
-                        if (item.categoryId == id) {
-                          listTag.add(item.name);
-                        }
-                      });
-                      openSkillDialogCategory2(context, list, listTag, item["name"].toString());
-                    },
-                    text: 'add'.tr(),
-                  ),
-                ),
-              ],
-            ),
+              );
+            }
           ),
         );
       } else if (item["id"] == 3) {
@@ -1903,19 +1911,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         : Column(
                                             children: [
                                               SizedBox(height: 10),
-                                              user_cv.attachment == null
-                                                  ? Container()
-                                                  : CustomButton(
-                                                      text: user_cv.attachment != null
-                                                          ? 'download_file'.tr()
-                                                          : 'file_doesnt_exist'.tr(),
-                                                      width: MediaQuery.of(context).size.width * 1,
-                                                      color: Colors.grey[200],
-                                                      textColor: kColorPrimary,
-                                                      onPressed: () {
-                                                        _launchURL(SERVER_IP + user_cv.attachment);
-                                                      }),
-                                              SizedBox(height: 20),
+                                              // user_cv.attachment == null
+                                              //     ? Container()
+                                              //     : CustomButton(
+                                              //         text: user_cv.attachment != null
+                                              //             ? 'download_file'.tr()
+                                              //             : 'file_doesnt_exist'.tr(),
+                                              //         width: MediaQuery.of(context).size.width * 1,
+                                              //         color: Colors.grey[200],
+                                              //         textColor: kColorPrimary,
+                                              //         onPressed: () {
+                                              //           _launchURL(SERVER_IP + user_cv.attachment);
+                                              //         }),
+                                              // SizedBox(height: 20),
                                               CustomButton(
                                                   text: attachment != null
                                                       ? basename(attachment.path)
