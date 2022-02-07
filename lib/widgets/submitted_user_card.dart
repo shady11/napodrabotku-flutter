@@ -99,14 +99,14 @@ class UserCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user.name,
+                              user.name != null ? user.name : "",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black),
                             ),
                             Text(
-                              user.email,
+                              user.email != null ? user.email : "",
                               style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.normal,
@@ -131,7 +131,7 @@ class UserCard extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: Text(
-                                        user.phone_number,
+                                        user.phone_number != null ? user.phone_number : "",
                                         style: TextStyle(color: Colors.black87),
                                       ),
                                     )
@@ -140,7 +140,7 @@ class UserCard extends StatelessWidget {
                                   ? Container(
                                       child: Flexible(
                                           child: Text(
-                                      user.user_cv_name,
+                                      user.user_cv_name != null ? user.user_cv_name : "",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class UserCard extends StatelessWidget {
 
                     /// User job title
                     Text(
-                      user.vacancy_name,
+                      user.vacancy_name != null ? user.vacancy_name : " ",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

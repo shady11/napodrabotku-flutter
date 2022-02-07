@@ -706,8 +706,10 @@ class UserCv {
 
     request.fields["user_id"] = Prefs.getInt(Prefs.USER_ID).toString();
     request.fields["user_cv_id"] = this.id.toString();
-    request.fields["experience_year"] = this.experience_year.toString();
-    request.fields["job_title"] = this.job_title;
+    request.fields["experience_year"] = this.experience_year != null ? this.experience_year.toString() : " ";
+    request.fields["job_title"] = this.job_title ?? " ";
+    request.fields["is_product_lab_user"] = Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ? "0" : "1";
+
 //    request.fields["user_experiences"] = json.encode(this.user_experiences);
 //    request.fields["user_educations"] = json.encode(this.user_educations);
 //    request.fields["user_courses"] = json.encode(this.user_courses);

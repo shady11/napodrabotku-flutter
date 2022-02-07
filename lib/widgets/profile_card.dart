@@ -34,7 +34,6 @@ class ProfileCard extends StatefulWidget {
   /// Swiper position
   final SwiperPosition position;
 
-
   ProfileCard({
     this.page,
     this.position,
@@ -127,7 +126,9 @@ class _ProfileCardState extends State<ProfileCard> {
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              text: widget.vacancy.company_name != null ? widget.vacancy.company_name.toString() + '\n' : "",
+                              text: widget.vacancy.company_name != null
+                                  ? widget.vacancy.company_name.toString() + '\n'
+                                  : "",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -223,7 +224,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                   decoration:
                                       BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                                   child: Text(
-                                    widget.vacancy.opportunityDuration != null ? widget.vacancy.opportunityDuration.toString() : "",
+                                    widget.vacancy.opportunityDuration != null
+                                        ? widget.vacancy.opportunityDuration.toString()
+                                        : "",
                                     style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
                                   ),
                                 ),
@@ -247,7 +250,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     SizedBox(height: 15),
                     isProductLabVacancy
                         ? Flexible(
-                          child: Text(
+                            child: Text(
                               widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
                               style: TextStyle(
                                   fontSize: 18,
@@ -255,7 +258,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                   fontFamily: 'GTEestiProDisplay',
                                   color: Colors.black),
                             ),
-                        )
+                          )
                         : Text(
                             widget.vacancy.name != null ? widget.vacancy.name : "",
                             style: TextStyle(
@@ -333,29 +336,30 @@ class _ProfileCardState extends State<ProfileCard> {
                                         widget.cardController.triggerRight();
                                       } else if (widget.page == 'match') {
                                         Dialogs.openLoadingDialog(context);
-                                        User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                          if (value) {
-                                            Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
-                                                .then((value) {
-                                              if (value == "OK") {
-                                                Dialogs.showDialogBox(context, "successfully_submitted".tr());
-                                                StoreProvider.of<AppState>(context)
-                                                    .state
-                                                    .vacancy
-                                                    .liked_list
-                                                    .data
-                                                    .remove(widget.vacancy);
-                                                StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                                StoreProvider.of<AppState>(context)
-                                                    .dispatch(getNumberOfLikedVacancies());
-                                              } else {
-                                                Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
-                                              }
-                                            });
+                                        Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
+                                            .then((value) {
+                                          if (value == "OK") {
+                                            Dialogs.showDialogBox(context, "successfully_submitted".tr());
+                                            StoreProvider.of<AppState>(context)
+                                                .state
+                                                .vacancy
+                                                .liked_list
+                                                .data
+                                                .remove(widget.vacancy);
+                                            StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                            StoreProvider.of<AppState>(context)
+                                                .dispatch(getNumberOfLikedVacancies());
                                           } else {
-                                            Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
+                                            Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
                                           }
                                         });
+                                        // User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                        //   if (value) {
+                                        //
+                                        //   } else {
+                                        //     Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
+                                        //   }
+                                        // });
                                       } else if (widget.page == 'company') {
                                         Dialogs.showOnDeactivateDialog(
                                             context, 'deactivate_are_you_sure'.tr(), false, widget.vacancy);
@@ -577,16 +581,15 @@ class ProfileCardProductLab extends StatelessWidget {
                       direction: Axis.horizontal,
                       children: [
                         Flexible(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                            child: Text(
-                              vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
-                              style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                            ),
-                          )
-                        ),
-                      ], 
+                            child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                          child: Text(
+                            vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
+                            style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                          ),
+                        )),
+                      ],
                     ),
                     page == 'discover'
                         ? Expanded(
@@ -657,29 +660,30 @@ class ProfileCardProductLab extends StatelessWidget {
                                         cardController.triggerRight();
                                       } else if (page == 'match') {
                                         Dialogs.openLoadingDialog(context);
-                                        User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                          if (value) {
-                                            Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED")
-                                                .then((value) {
-                                              if (value == "OK") {
-                                                Dialogs.showDialogBox(context, "successfully_submitted".tr());
-                                                StoreProvider.of<AppState>(context)
-                                                    .state
-                                                    .vacancy
-                                                    .liked_list
-                                                    .data
-                                                    .remove(vacancy);
-                                                StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                                StoreProvider.of<AppState>(context)
-                                                    .dispatch(getNumberOfLikedVacancies());
-                                              } else {
-                                                Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
-                                              }
-                                            });
+                                        Vacancy.saveVacancyUser(vacancy_id: vacancy.id, type: "SUBMITTED")
+                                            .then((value) {
+                                          if (value == "OK") {
+                                            Dialogs.showDialogBox(context, "successfully_submitted".tr());
+                                            StoreProvider.of<AppState>(context)
+                                                .state
+                                                .vacancy
+                                                .liked_list
+                                                .data
+                                                .remove(vacancy);
+                                            StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                            StoreProvider.of<AppState>(context)
+                                                .dispatch(getNumberOfLikedVacancies());
                                           } else {
-                                            Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
+                                            Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
                                           }
                                         });
+                                        // User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                        //   if (value) {
+                                        //
+                                        //   } else {
+                                        //     Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
+                                        //   }
+                                        // });
                                       } else if (page == 'company') {
                                         Dialogs.showOnDeactivateDialog(
                                             context, 'deactivate_are_you_sure'.tr(), false, vacancy);

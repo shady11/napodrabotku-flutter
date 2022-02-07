@@ -1103,8 +1103,8 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                             fontSize: 16, color: kColorDark)),
                                   ],
                                 ),
-                                Divider(),
-                                Row(
+                                Prefs.getString(Prefs.ROUTE) != "COMPANY" ? Divider() : Container(),
+                                Prefs.getString(Prefs.ROUTE) != "COMPANY" ? Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -1127,7 +1127,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                               fontSize: 16, color: kColorDark)),
                                     ),
                                   ],
-                                ),
+                                ) : Container(),
                                 Divider(),
                                 Row(
                                   mainAxisAlignment:

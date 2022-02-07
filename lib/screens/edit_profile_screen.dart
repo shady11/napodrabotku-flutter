@@ -1,4 +1,4 @@
-import'dart:io';
+import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -758,32 +758,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       : Container(),
                   SizedBox(height: 20),
                   Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                    ? Column(
-                      children: <Widget>[
-                        user_cv == null
-                            ? Container()
-                            : Align(
-                            widthFactor: 10,
-                            heightFactor: 1.5,
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'attachment'.tr(),
-                              style: TextStyle(fontSize: 16, color: Colors.black),
-                            )),
-                        user_cv == null
-                            ? Container()
-                            : CustomButton(
-                            text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
-                            width: MediaQuery.of(context).size.width * 1,
-                            color: Colors.grey[200],
-                            textColor: kColorPrimary,
-                            onPressed: () {
-                              _pickAttachment();
-                            }),
-                        user_cv == null ? Container() : SizedBox(height: 30),
-                      ],
-                    )
-                    : Container(),
+                      ? Column(
+                          children: <Widget>[
+                            user_cv == null
+                                ? Container()
+                                : Align(
+                                    widthFactor: 10,
+                                    heightFactor: 1.5,
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'attachment'.tr(),
+                                      style: TextStyle(fontSize: 16, color: Colors.black),
+                                    )),
+                            user_cv == null
+                                ? Container()
+                                : CustomButton(
+                                    text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
+                                    width: MediaQuery.of(context).size.width * 1,
+                                    color: Colors.grey[200],
+                                    textColor: kColorPrimary,
+                                    onPressed: () {
+                                      _pickAttachment();
+                                    }),
+                            user_cv == null ? Container() : SizedBox(height: 30),
+                          ],
+                        )
+                      : Container(),
 
                   /// Sign Up button
                   SizedBox(

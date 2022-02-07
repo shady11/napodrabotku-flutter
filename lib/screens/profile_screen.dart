@@ -22,8 +22,9 @@ import 'package:ishtapp/datas/Skill.dart';
 import 'package:ms_accordion/ms_accordion.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import'dart:io';
+import 'dart:io';
 import 'package:gx_file_picker/gx_file_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -31,7 +32,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   File attachment;
   UserCv user_cv;
 
@@ -84,6 +84,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     list.forEach((item) {
       SkillsV3.add({"id": item["id"].toString(), "name": item["name"], "categoryId": item["category_id"].toString()});
     });
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   openEducationDialog(context) {
@@ -845,9 +853,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     item.label,
                                     softWrap: true,
                                     maxLines: 4,
-                                    style: TextStyle(
-                                        fontSize: 15
-                                    ),
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ),
                               );
@@ -916,11 +922,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                     ),
                   ),
-
                   Container(
                     padding: EdgeInsets.all(20),
-                    child: /// Form
-                    Column(
+                    child:
+
+                        /// Form
+                        Column(
                       children: <Widget>[
                         ChipsChoice<String>.multiple(
                           choiceStyle: C2ChoiceStyle(
@@ -952,9 +959,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   item.label,
                                   softWrap: true,
                                   maxLines: 4,
-                                  style: TextStyle(
-                                      fontSize: 15
-                                  ),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                             );
@@ -1094,12 +1099,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     List<String> listSmartSelectBottomSheetTag = [];
 
     list.forEach((item) {
-
       List<String> skills = [];
       List<String> skillTags = [];
 
       item["skills"].forEach((skill) {
-
         // userSkills.forEach((userSkill) {
         //   if (userSkill.name == skill) {
         //     skillTags.add(skill);
@@ -1107,7 +1110,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // });
 
         skills.add(skill);
-
       });
 
       skillsV1.add(
@@ -1120,9 +1122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: const EdgeInsets.all(0),
                 expandedTitleBackgroundColor: Color(0xffF2F2F5),
                 titleBorderRadius: BorderRadius.circular(6),
-                textStyle: TextStyle(
-                  color: kColorWhite
-                ),
+                textStyle: TextStyle(color: kColorWhite),
                 collapsedTitleBackgroundColor: Colors.white10,
                 contentBackgroundColor: Colors.white,
                 contentChild: Column(
@@ -1160,9 +1160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   item.label,
                                   softWrap: true,
                                   maxLines: 4,
-                                  style: TextStyle(
-                                    fontSize: 15
-                                  ),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                             );
@@ -1178,8 +1176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }),
       );
 
-      if(item['id'] == 1){
-
+      if (item['id'] == 1) {
         categories.add(
           Container(
             margin: EdgeInsets.only(bottom: 20),
@@ -1245,11 +1242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         );
-
-      }
-
-      else if(item["id"] == 2){
-
+      } else if (item["id"] == 2) {
         categories.add(
           Container(
             margin: EdgeInsets.only(bottom: 20),
@@ -1314,11 +1307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         );
-
-      }
-
-      else if(item["id"] == 3){
-
+      } else if (item["id"] == 3) {
         int id = item["id"];
         skillSets.forEach((item) {
           if (item.categoryId == id) {
@@ -1335,13 +1324,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         categories.add(
           Container(
             margin: EdgeInsets.only(bottom: 20),
-            child:SmartSelect<String>.multiple(
+            child: SmartSelect<String>.multiple(
               title: item["name"].toString(),
               value: listSmartSelectDialogTag,
               onChange: (selected) {
                 selected.setState(() {
                   listSmartSelectDialogTag = selected.value;
-                  if(listSmartSelectDialogTag.length > 0){
+                  if (listSmartSelectDialogTag.length > 0) {
                     SkillCategory skillCategory = new SkillCategory();
                     skillCategory.saveUserSkills(listSmartSelectDialogTag);
                   }
@@ -1429,10 +1418,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         );
-      }
-
-      else{
-
+      } else {
         int id = item["id"];
         skillSets.forEach((item) {
           if (item.categoryId == id) {
@@ -1454,7 +1440,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onChange: (selected) {
                 selected.setState(() {
                   listSmartSelectBottomSheetTag = selected.value;
-                  if(listSmartSelectBottomSheetTag.length > 0){
+                  if (listSmartSelectBottomSheetTag.length > 0) {
                     SkillCategory skillCategory = new SkillCategory();
                     skillCategory.saveUserSkills(listSmartSelectBottomSheetTag);
                   }
@@ -1543,7 +1529,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         );
       }
-
     });
   }
 
@@ -1612,8 +1597,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           UserCv data_cv = props.userCvResponse.data;
           bool cv_loading = props.userCvResponse.loading;
           bool user_loading = props.userResponse.loading;
-
-
 
           Widget body;
           if (user_loading) {
@@ -1904,43 +1887,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                     child: Text("empty".tr())),
                                               ),
-
-
-
+                                    SizedBox(height: 30),
                                     user_cv == null
                                         ? Container()
                                         : Align(
-                                        widthFactor: 10,
-                                        heightFactor: 1.5,
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          'attachment'.tr(),
-                                          style: TextStyle(fontSize: 16, color: Colors.black),
-                                        )),
+                                            widthFactor: 10,
+                                            heightFactor: 1.5,
+                                            alignment: Alignment.topLeft,
+                                            child: Text('attachment'.tr().toUpperCase(),
+                                                style: TextStyle(
+                                                    fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                                          ),
                                     user_cv == null
                                         ? Container()
-                                        : CustomButton(
-                                        text: attachment != null ? basename(attachment.path) : 'upload_file'.tr(),
-                                        width: MediaQuery.of(context).size.width * 1,
-                                        color: Colors.grey[200],
-                                        textColor: kColorPrimary,
-                                        onPressed: () {
-                                          _pickAttachment();
-                                        }),
+                                        : Column(
+                                            children: [
+                                              SizedBox(height: 10),
+                                              user_cv.attachment == null
+                                                  ? Container()
+                                                  : CustomButton(
+                                                      text: user_cv.attachment != null
+                                                          ? 'download_file'.tr()
+                                                          : 'file_doesnt_exist'.tr(),
+                                                      width: MediaQuery.of(context).size.width * 1,
+                                                      color: Colors.grey[200],
+                                                      textColor: kColorPrimary,
+                                                      onPressed: () {
+                                                        _launchURL(SERVER_IP + user_cv.attachment);
+                                                      }),
+                                              SizedBox(height: 20),
+                                              CustomButton(
+                                                  text: attachment != null
+                                                      ? basename(attachment.path)
+                                                      : 'upload_file'.tr(),
+                                                  width: MediaQuery.of(context).size.width * 1,
+                                                  color: Colors.grey[200],
+                                                  textColor: kColorPrimary,
+                                                  onPressed: () {
+                                                    _pickAttachment();
+                                                  }),
+                                            ],
+                                          ),
                                     user_cv == null ? Container() : SizedBox(height: 30),
-
-
-
-
-
-
-
-
-
-
-
-
-
                                   ],
                                 )
                               : Container(),
