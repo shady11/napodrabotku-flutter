@@ -87,17 +87,10 @@ class Dialogs {
                 Vacancy.deleteCompanyVacancy(
                   vacancy_id: vacancy.id,
                 ).then((value) {
-                  StoreProvider.of<AppState>(context)
-                      .state
-                      .vacancy
-                      .list
-                      .data
-                      .remove(vacancy);
+                  StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
                   // StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
-                  StoreProvider.of<AppState>(context)
-                      .dispatch(getNumberOfActiveVacancies());
-                  StoreProvider.of<AppState>(context)
-                      .dispatch(getNumberOfInactiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfInactiveVacancies());
                   Navigator.of(ctx).pop();
                 });
               },
@@ -109,8 +102,7 @@ class Dialogs {
   }
 
   /// Диалоговое окно Деактивации
-  static showOnDeactivateDialog(
-      context, String message, bool active, Vacancy vacancy) {
+  static showOnDeactivateDialog(context, String message, bool active, Vacancy vacancy) {
     showDialog(
       context: context,
       builder: (ctx) => Center(
@@ -140,28 +132,14 @@ class Dialogs {
                 style: TextStyle(color: kColorPrimary),
               ),
               onPressed: () {
-                Vacancy.activateDeactiveVacancy(
-                        vacancy_id: vacancy.id, active: active)
-                    .then((value) {
+                Vacancy.activateDeactiveVacancy(vacancy_id: vacancy.id, active: active).then((value) {
 //                  StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
-                  StoreProvider.of<AppState>(context)
-                      .dispatch(getNumberOfActiveVacancies());
-                  StoreProvider.of<AppState>(context)
-                      .dispatch(getNumberOfInactiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfActiveVacancies());
+                  StoreProvider.of<AppState>(context).dispatch(getNumberOfInactiveVacancies());
                   if (active)
-                    StoreProvider.of<AppState>(context)
-                        .state
-                        .vacancy
-                        .inactive_list
-                        .data
-                        .remove(vacancy);
+                    StoreProvider.of<AppState>(context).state.vacancy.inactive_list.data.remove(vacancy);
                   else
-                    StoreProvider.of<AppState>(context)
-                        .state
-                        .vacancy
-                        .list
-                        .data
-                        .remove(vacancy);
+                    StoreProvider.of<AppState>(context).state.vacancy.list.data.remove(vacancy);
 //                  Navigator.of(ctx).pop();
                   Navigator.of(ctx).pop();
                 });
@@ -179,8 +157,7 @@ class Dialogs {
         props.addOneToMatches();
       }
       Vacancy.saveVacancyUser(vacancy_id: vacancy_id, type: type).then((value) {
-        StoreProvider.of<AppState>(context)
-            .dispatch(getNumberOfLikedVacancies());
+        StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
       });
       props.listResponse.data.removeLast();
     } else {
@@ -188,18 +165,11 @@ class Dialogs {
     }
     Vacancy.getVacancyByOffset(
             offset: offset,
-            job_type_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
-            region_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.region_ids,
-            schedule_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
-            busyness_ids:
-                StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
-            vacancy_type_ids: StoreProvider.of<AppState>(context)
-                .state
-                .vacancy
-                .vacancy_type_ids,
+            job_type_ids: StoreProvider.of<AppState>(context).state.vacancy.job_type_ids,
+            region_ids: StoreProvider.of<AppState>(context).state.vacancy.region_ids,
+            schedule_ids: StoreProvider.of<AppState>(context).state.vacancy.schedule_ids,
+            busyness_ids: StoreProvider.of<AppState>(context).state.vacancy.busyness_ids,
+            vacancy_type_ids: StoreProvider.of<AppState>(context).state.vacancy.vacancy_type_ids,
             type: StoreProvider.of<AppState>(context).state.vacancy.type)
         .then(
       (value) {
