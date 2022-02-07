@@ -25,7 +25,9 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
             children: <Widget>[
               Align(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  width: MediaQuery.of(context).size.width * 1,
+                  // height: MediaQuery.of(context).size.height * 0.6,
                   child: Image.asset(
                     'assets/images/welcome_product_lab.png',
                     fit: BoxFit.cover,
@@ -35,6 +37,18 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
 
               /// Sign in with Phone Number
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+              Container(
+                child: Text(
+                  'Развивайся и зарабатывай!',
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
+                      color: kColorPrimary
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -50,7 +64,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                   ),
                   CustomButton(
                     padding: EdgeInsets.all(10),
-                    color: kColorPrimary,
+                    color: kColorProductLab,
                     textColor: Colors.white,
                     onPressed: () {
                       Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
@@ -73,6 +87,38 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
                   Navigator.of(context).pushNamed(Routes.product_lab_home);
                 },
               ),
+
+              SizedBox(height: 10),
+
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 20),
+                      child: SizedBox(
+                        height: 15,
+                        child: Image.asset('assets/images/partners/techaim.png'),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 20),
+                      child: SizedBox(
+                        height: 50,
+                        child: Image.asset('assets/images/partners/htpkr.png'),
+                      ),
+                    ),
+                    Container(
+                      child: SizedBox(
+                        height: 40,
+                        child: Image.asset('assets/images/partners/unicef.png'),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+
             ],
           ),
         ),

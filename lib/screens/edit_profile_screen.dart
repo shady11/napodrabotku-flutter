@@ -289,7 +289,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   GestureDetector(
                     child: _imageFile == null
                         ? CircleAvatar(
-                            backgroundColor: kColorPrimary,
+                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                                 ? NetworkImage(
@@ -627,6 +627,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       : Container(),
 
                   /// Выбор Отрасли
+                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ?
                   selectedJobSphere != null
                       ? Align(
                           widthFactor: 10,
@@ -636,8 +637,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             'Отрасль'.tr(),
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ))
-                      : Container(),
-                  selectedJobSphere != null
+                      : Container() : Container(),
+                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ?
+                    selectedJobSphere != null
                       ? DropdownSearch<String>(
                           showSelectedItem: true,
                           items: departments,
@@ -655,7 +657,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               fillColor: Colors.grey[200],
                               contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
                           selectedItem: selectedDepartment)
-                      : Container(),
+                      : Container()
+                    : Container(),
                   SizedBox(height: 20),
 
                   /// Социально-ориентированность
@@ -790,7 +793,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     width: double.maxFinite,
                     child: CustomButton(
                       padding: EdgeInsets.all(15),
-                      color: kColorPrimary,
+                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {

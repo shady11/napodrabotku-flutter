@@ -250,7 +250,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                                   CustomButton(
                                     width: MediaQuery.of(context).size.width * 0.3,
                                     padding: EdgeInsets.all(10),
-                                    color: kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
                                       StoreProvider.of<AppState>(context).dispatch(setFilter(
@@ -433,7 +433,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        backgroundColor: is_profile ? Colors.white : kColorPrimary,
+        backgroundColor: is_profile ? Colors.white : Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
         appBar: is_special
             ? AppBar(
                 automaticallyImplyLeading: false,
@@ -443,7 +443,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                 ),
               )
             : AppBar(
-                backgroundColor: is_profile ? Colors.white : kColorPrimary,
+                backgroundColor: is_profile ? Colors.white : Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                 elevation: 0,
                 toolbarHeight: 80,
                 automaticallyImplyLeading: false,

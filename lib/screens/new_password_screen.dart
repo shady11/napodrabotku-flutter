@@ -132,7 +132,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               CustomButton(
                 padding: EdgeInsets.all(15),
                 width: MediaQuery.of(context).size.width * 0.5,
-                color: kColorPrimary,
+                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                 textColor: Colors.white,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {

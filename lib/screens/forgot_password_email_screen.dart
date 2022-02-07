@@ -122,7 +122,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                 SizedBox(height: 40),
                 CustomButton(
                   padding: EdgeInsets.all(15),
-                  color: kColorPrimary,
+                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                   textColor: Colors.white,
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {

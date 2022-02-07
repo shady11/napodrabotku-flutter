@@ -252,7 +252,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
             GestureDetector(
               child: _imageFile == null
                   ? CircleAvatar(
-                      backgroundColor: kColorPrimary,
+                      backgroundColor: kColorProductLab,
                       radius: 50,
                       child: SvgIcon("assets/icons/camera_icon.svg", width: 40, height: 40, color: Colors.white),
                     )
@@ -482,7 +482,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
                     child: InternationalPhoneNumberInput(
-                      countries: ['KG', 'RU', 'KZ', 'UA'],
+                      countries: ['KG'],
                       onInputChanged: (PhoneNumber number) {
                         print(number.phoneNumber);
                       },
@@ -577,7 +577,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                     child: CustomButton(
                       padding: EdgeInsets.all(10),
                       height: 60.0,
-                      color: kColorPrimary,
+                      color: kColorProductLab,
                       textColor: Colors.white,
                       onPressed: () async {
                         User.checkUsername(_email_controller.text).then((value) {

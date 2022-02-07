@@ -191,7 +191,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     width: double.maxFinite,
                     child: CustomButton(
                       padding: EdgeInsets.all(15),
-                      color: kColorPrimary,
+                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {

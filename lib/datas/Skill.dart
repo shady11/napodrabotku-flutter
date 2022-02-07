@@ -49,7 +49,7 @@ class SkillCategory {
 
   SkillCategory({this.id, this.name, this.skill});
 
-  Future<String> saveUserSkills(List<String> list) async {
+  Future<String> saveUserSkills(List<String> list, int type) async {
 
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_SKILL_SAVE);
@@ -64,7 +64,8 @@ class SkillCategory {
         headers: headers,
         body: json.encode({
           "user_id": Prefs.getInt(Prefs.USER_ID).toString(),
-          "user_skills": list
+          "user_skills": list,
+          "type": type.toString()
         }),
       );
       json.decode(response.body);

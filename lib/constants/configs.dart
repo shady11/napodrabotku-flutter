@@ -1,7 +1,7 @@
-String API_IP = "https://ishtapp.kg/api/";
-// String API_IP = "http://10.0.2.2:8000/api/";
-String SERVER_IP = "https://ishtapp.kg/";
-// String SERVER_IP = "http://10.0.2.2:8000/";
+// String API_IP = "https://ishtapp.kg/api/";
+String API_IP = "http://10.0.2.2:8000/api/";
+// String SERVER_IP = "https://ishtapp.kg/";
+String SERVER_IP = "http://10.0.2.2:8000/";
 String API_GET_USER = "user";
 String API_CHECK_USER_EMAIL = "users/email_check";
 String API_CHECK_USER_CV = "users/user_cv_check";
@@ -55,6 +55,9 @@ String API_COMPANY_VACANCIES = 'company_vacancy';
 String API_COMPANY_INACTIVE_VACANCIES = 'company_inactive_vacancy';
 String API_SUBMITTED_USERS = 'company/submitted_users/';
 String API_USER_FULL_INFO = 'users/full_info/';
+
+String API_SAVE_OPPORTUNITY = 'user/save/opportunity';
+String API_SAVE_JOB_SPHERE = 'user/save/job_sphere';
 
 //chat
 String API_CHAT_LIST = 'chats';

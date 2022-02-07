@@ -293,7 +293,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                   height: MediaQuery.of(context).size.height * 0.07,
                                   padding: EdgeInsets.all(5),
                                   color: Colors.grey[200],
-                                  textColor: kColorPrimary,
+                                  textColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                   onPressed: () async {
                                     if (Prefs.getString(Prefs.TOKEN) == null) {
                                       if (Prefs.getInt(Prefs.OFFSET) > 0 && Prefs.getInt(Prefs.OFFSET) != null) {
@@ -329,7 +329,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                     width: MediaQuery.of(context).size.width * 0.35,
                                     height: MediaQuery.of(context).size.height * 0.07,
                                     padding: EdgeInsets.all(5),
-                                    color: kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () async {
                                       if (widget.page == 'discover') {
@@ -653,7 +653,7 @@ class ProfileCardProductLab extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width * 0.35,
                                     height: MediaQuery.of(context).size.height * 0.07,
                                     padding: EdgeInsets.all(5),
-                                    color: kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () async {
                                       if (page == 'discover') {

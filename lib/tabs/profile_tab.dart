@@ -79,7 +79,7 @@ class _ProfileTabState extends State<ProfileTab> {
                           decoration: BoxDecoration(
                               color: Colors.white, shape: BoxShape.circle),
                           child: CircleAvatar(
-                            backgroundColor: kColorPrimary,
+                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                             radius: 60,
                             backgroundImage:
                             Prefs.getString(Prefs.PROFILEIMAGE) != null
@@ -130,7 +130,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   child: CustomButton(
                                     height: 50.0,
                                     padding: EdgeInsets.all(10),
-                                    color: kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () {
                                       Navigator.of(context)
@@ -157,7 +157,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                                       });
                                     },
-                                    text: 'Аккаунт'.tr(),
+                                    text: 'Настройки'.tr(),
                                   ),
                                 )
                               : Container(),
