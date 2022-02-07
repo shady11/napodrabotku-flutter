@@ -25,7 +25,7 @@ class _ProductLabStartScreenState extends State<ProductLabStart> {
             children: <Widget>[
               Align(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   width: MediaQuery.of(context).size.width * 1,
                   // height: MediaQuery.of(context).size.height * 0.6,
                   child: Image.asset(
