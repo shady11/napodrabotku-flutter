@@ -1254,6 +1254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, props) {
           User data = props.userResponse.data;
           UserCv data_cv = props.userCvResponse.data;
+          user_cv = data_cv;
           bool cv_loading = props.userCvResponse.loading;
           bool user_loading = props.userResponse.loading;
 
@@ -1569,7 +1570,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           //   selectedJobSphere = user.job_sphere;
                                                           // });
 
-                                                          user.saveJobSphere(value);
+                                                          data.saveJobSphere(value);
                                                         },
                                                         dropdownSearchDecoration: InputDecoration(
                                                             border: OutlineInputBorder(
@@ -1616,7 +1617,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           // setState(() {
                                                           //   selectedOpportunity = value;
                                                           // });
-                                                          user.saveOpportunity(value);
+                                                          data.saveOpportunity(value);
                                                         },
                                                         dropdownSearchDecoration: InputDecoration(
                                                             border: OutlineInputBorder(
@@ -1641,7 +1642,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
                                     SizedBox(height: 30),
-                                    user_cv == null
+                                    data_cv == null
                                         ? Container()
                                         : Align(
                                             widthFactor: 10,
@@ -1651,7 +1652,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 style: TextStyle(
                                                     fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                                           ),
-                                    user_cv == null
+                                    data_cv == null
                                         ? Container()
                                         : Column(
                                             children: [
@@ -1681,7 +1682,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   }),
                                             ],
                                           ),
-                                    user_cv == null ? Container() : SizedBox(height: 30),
+                                    data_cv == null ? Container() : SizedBox(height: 30),
                                   ],
                                 )
                               : Container(),

@@ -858,6 +858,10 @@ class UserFullInfo {
   List<UserExperience> user_experiences;
   List<UserEducation> user_educations;
   List<UserCourse> user_courses;
+  String opportunity;
+  String jobSphere;
+  List skills;
+  List skills2;
 
   UserFullInfo(
       {this.id,
@@ -874,7 +878,12 @@ class UserFullInfo {
       this.attachment,
       this.user_experiences,
       this.user_educations,
-      this.user_courses});
+      this.user_courses,
+      this.opportunity,
+      this.jobSphere,
+      this.skills,
+      this.skills2
+      });
 
   factory UserFullInfo.fromJson(Map<String, dynamic> json) => new UserFullInfo(
         id: json["id"],
@@ -892,6 +901,10 @@ class UserFullInfo {
         user_courses: coursesToList(json['courses']),
         user_educations: educationsToList(json['educations']),
         user_experiences: experiencesToList(json['experiences']),
+        opportunity: json["opportunity"],
+        jobSphere: json["job_sphere"],
+        skills: json["skills"],
+        skills2: json["skills2"],
       );
 
   static List<UserExperience> experiencesToList(var j) {

@@ -87,6 +87,7 @@ class _MatchesTabState extends State<MatchesTab> {
                                   user: user, /*page: 'match',*/
                                 ),
                                 onTap: () {
+
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext ctx) => ProfileInfoScreen(user_id: user.id)));
                                 },
