@@ -370,9 +370,9 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               ),
             ),
             onTap: () {
-              // _nextTab(4);
+              _nextTab(4);
               setState(() {
-                // is_profile = true;
+                is_profile = true;
               });
             },
           ),
@@ -390,16 +390,16 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               bgColor: Colors.transparent,
               padding: 12,
               icon: Icon(
-                Boxicons.bx_user,
+                Boxicons.bx_atom,
                 color: kColorPrimary,
                 size: 35,
               ),
             ),
             onTap: () {
-              // _nextTab(4);
-              setState(() {
-                // is_profile = true;
-              });
+              // _nextTab(4, is_profile: true);
+              // setState(() {
+              //   is_profile = true;
+              // });
             },
           ),
         ],
@@ -436,6 +436,8 @@ class _ProductLabHomeState extends State<ProductLabHome> {
         backgroundColor: is_profile ? Colors.white : kColorPrimary,
         appBar: is_special
             ? AppBar(
+                elevation: 0,
+                toolbarHeight: 80,
                 automaticallyImplyLeading: false,
                 title: Container(
                   width: MediaQuery.of(context).size.width * 1.0,
@@ -466,8 +468,9 @@ class _ProductLabHomeState extends State<ProductLabHome> {
             selectedFontSize: _tabCurrentIndex == 4 ? 13 : 14,
             currentIndex: _tabCurrentIndex == 4 ? 0 : _tabCurrentIndex,
             onTap: (index) {
+              print(index);
               _nextTab(index);
-              if (index == 3 || index == 2) {
+              if (index == 3) {
                 setState(() {
                   is_special = true;
                   is_profile = true;
@@ -556,11 +559,11 @@ class _ProductLabHomeState extends State<ProductLabHome> {
               BottomNavigationBarItem(
                   icon: Icon(
                     Boxicons.bx_book,
-                    color: _tabCurrentIndex == 4 ? kColorPrimary : null,
+                    color: _tabCurrentIndex == 3 ? kColorPrimary : null,
                   ),
                   title: Text(
                     "training".tr(),
-                    style: TextStyle(color: _tabCurrentIndex == 4 ? kColorPrimary : Colors.grey),
+                    style: TextStyle(color: _tabCurrentIndex == 3 ? kColorPrimary : Colors.grey),
                   )),
             ],
           ),
