@@ -118,14 +118,28 @@ class _VacancyViewState extends State<VacancyView> {
       for (var item in data) {
         if (item.isRequired) {
           requiredListings.add(Container(
+            padding: EdgeInsets.only(bottom: 10),
             alignment: Alignment.centerLeft,
-            child: Text(item.name, textAlign: TextAlign.left),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                  color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+              child: Text(item.name, style: TextStyle(color: Colors.black87)),
+            ),
+            // Text(item.name, textAlign: TextAlign.left),
           ));
         } else {
           listings.add(
             Container(
+              padding: EdgeInsets.only(bottom: 10),
               alignment: Alignment.centerLeft,
-              child: Text(item.name, textAlign: TextAlign.left),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                    color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                child: Text(item.name, style: TextStyle(color: Colors.black87)),
+              ),
+              // Text(item.name, textAlign: TextAlign.left),
             ),
           );
         }
@@ -463,6 +477,7 @@ class _VacancyViewState extends State<VacancyView> {
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
+                                      SizedBox(height: 10),
                                       requiredListings == null || requiredListings.isEmpty
                                           ? Container(
                                               alignment: Alignment.centerLeft,
@@ -485,6 +500,7 @@ class _VacancyViewState extends State<VacancyView> {
                                           style: TextStyle(fontSize: 16, color: Colors.black),
                                         ),
                                       ),
+                                      SizedBox(height: 10),
                                       listings == null || listings.isEmpty
                                           ? Container(
                                               constraints: BoxConstraints(
