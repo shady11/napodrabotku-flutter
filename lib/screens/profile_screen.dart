@@ -25,6 +25,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:io';
 import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -34,6 +35,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   File attachment;
   UserCv user_cv;
+  User user;
 
   void handleInitialBuild(ProfileScreenProps props) {
     props.getUserCv();
@@ -72,10 +74,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final courseEditFormKey = GlobalKey<FormState>();
 
   List<Widget> categories = [];
+  List<Widget> categories2 = [];
   List<Widget> skillsV1 = [];
   List<Skill> skillSets = [];
   List<Skill> userSkills = [];
+  List<Skill> userSkills2 = [];
   List<String> tags = [];
+
+  List<String> spheres = [];
+  String selectedJobSphere;
+
+  List<String> opportunities = [];
+  String selectedOpportunity;
 
   List<Map<String, dynamic>> SkillsV3 = [];
 
@@ -84,14 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     list.forEach((item) {
       SkillsV3.add({"id": item["id"].toString(), "name": item["name"], "categoryId": item["category_id"].toString()});
     });
-  }
-
-  _launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   openEducationDialog(context) {
@@ -793,116 +795,110 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  /// Skills - Version 2 - Type 1
-  openSkillDialogCategory1(context, List<String> options, List<String> listTag, int categoryId, String categoryName) {
+  /// Skills
+  openSkillDialogCategory(context, List<String> options, List<String> listTag, String categoryName) {
     // List<String> listTag = [];
 
-    showDialog(
+    showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              insetPadding: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-              child: Container(
-                constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(categoryName.toUpperCase(),
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-                        ),
-                      ),
-
-                      /// Form
-                      Column(
-                        children: <Widget>[
-                          ChipsChoice<String>.multiple(
-                            choiceStyle: C2ChoiceStyle(
-                              margin: EdgeInsets.only(top: 4, bottom: 4),
-                              showCheckmark: false,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            choiceActiveStyle: C2ChoiceStyle(
-                              color: kColorPrimary,
-                            ),
-                            padding: EdgeInsets.zero,
-                            value: listTag,
-                            onChanged: (val) {
-                              return setState(() => listTag = val);
-                            },
-                            choiceItems: C2Choice.listFrom<String, String>(
-                              source: options,
-                              value: (i, v) => v,
-                              label: (i, v) => v,
-                            ),
-                            wrapped: true,
-                            choiceLabelBuilder: (item) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.95,
-                                height: 60,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    item.label,
-                                    softWrap: true,
-                                    maxLines: 4,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-
-                          /// Sign In button
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: Colors.grey[200],
-                                  textColor: kColorPrimary,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'cancel'.tr(),
-                                ),
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: kColorPrimary,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    SkillCategory skillCategory = new SkillCategory();
-                                    skillCategory.saveUserSkills(listTag);
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'save'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(categoryName.toUpperCase(),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                    ),
                   ),
-                ),
-              ),
-            );
-          });
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child:
+
+                        /// Form
+                        Column(
+                      children: <Widget>[
+                        ChipsChoice<String>.multiple(
+                          choiceStyle: C2ChoiceStyle(
+                            margin: EdgeInsets.only(top: 4, bottom: 4),
+                            showCheckmark: false,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          choiceActiveStyle: C2ChoiceStyle(
+                            color: kColorPrimary,
+                          ),
+                          padding: EdgeInsets.zero,
+                          value: listTag,
+                          onChanged: (val) {
+                            return setState(() => listTag = val);
+                          },
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: options,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                          ),
+                          wrapped: true,
+                          choiceLabelBuilder: (item) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.label,
+                                  softWrap: true,
+                                  maxLines: 4,
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /// Sign In button
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[200],
+                                textColor: kColorPrimary,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'cancel'.tr(),
+                              ),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  SkillCategory skillCategory = new SkillCategory();
+                                  skillCategory.saveUserSkills(listTag, 1);
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'save'.tr(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
         });
   }
-
-  /// Skills - Version 2 - Type 2
   openSkillDialogCategory2(context, List<String> options, List<String> listTag, String categoryName) {
     // List<String> listTag = [];
 
@@ -985,11 +981,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.33,
                                 padding: EdgeInsets.all(10),
-                                color: kColorPrimary,
+                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                                 textColor: Colors.white,
                                 onPressed: () {
                                   SkillCategory skillCategory = new SkillCategory();
-                                  skillCategory.saveUserSkills(listTag);
+                                  skillCategory.saveUserSkills(listTag, 2);
                                   Navigator.of(context).pop();
                                 },
                                 text: 'save'.tr(),
@@ -1007,84 +1003,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  /// Skills - Version 1
-  openSkillDialogV1(context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            insetPadding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text('Навыки'.tr().toUpperCase(),
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-                      ),
-                    ),
-
-                    /// Form
-                    Form(
-                      key: courseAddFormKey,
-                      child: Column(
-                        children: <Widget>[
-                          Column(
-                            children: skillsV1,
-                          ),
-
-                          /// Sign In button
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: Colors.grey[200],
-                                  textColor: kColorPrimary,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'cancel'.tr(),
-                                ),
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: kColorPrimary,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    SkillCategory skillCategory = new SkillCategory();
-                                    skillCategory.saveUserSkills(tags);
-                                    setState(() {
-                                      tags = [];
-                                    });
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'save'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
   int selectedCategoryIdFromVersion1;
 
   int selectedTest;
@@ -1092,93 +1010,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   getSkillSetCategories() async {
     var list = await Vacancy.getLists('skillset_category', null);
 
-    List<S2Choice<String>> listSmartSelectDialog = [];
-    List<String> listSmartSelectDialogTag = [];
-
-    List<S2Choice<String>> listSmartSelectBottomSheet = [];
-    List<String> listSmartSelectBottomSheetTag = [];
-
     list.forEach((item) {
       List<String> skills = [];
-      List<String> skillTags = [];
 
       item["skills"].forEach((skill) {
-        // userSkills.forEach((userSkill) {
-        //   if (userSkill.name == skill) {
-        //     skillTags.add(skill);
-        //   }
-        // });
 
         skills.add(skill);
       });
 
-      skillsV1.add(
-        StatefulBuilder(builder: (context, setState) {
-          return Column(
-            children: <Widget>[
-              MsAccordion(
-                titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
-                showAccordion: false,
-                margin: const EdgeInsets.all(0),
-                expandedTitleBackgroundColor: Color(0xffF2F2F5),
-                titleBorderRadius: BorderRadius.circular(6),
-                textStyle: TextStyle(color: kColorWhite),
-                collapsedTitleBackgroundColor: Colors.white10,
-                contentBackgroundColor: Colors.white,
-                contentChild: Column(
-                  children: <Widget>[
-                    Wrap(
-                      children: [
-                        ChipsChoice<String>.multiple(
-                          choiceStyle: C2ChoiceStyle(
-                            margin: EdgeInsets.only(top: 4, bottom: 4),
-                            showCheckmark: false,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          choiceActiveStyle: C2ChoiceStyle(
-                            color: kColorPrimary,
-                          ),
-                          mainAxisSize: MainAxisSize.max,
-                          padding: EdgeInsets.zero,
-                          value: tags,
-                          onChanged: (val) => setState(() => tags = val),
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: skills,
-                            value: (i, v) {
-                              return v;
-                            },
-                            label: (i, v) => v,
-                          ),
-                          wrapped: true,
-                          choiceLabelBuilder: (item) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width * 0.95,
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  item.label,
-                                  softWrap: true,
-                                  maxLines: 4,
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        }),
-      );
-
-      if (item['id'] == 1) {
-        categories.add(
-          StatefulBuilder(
+      categories.add(
+        StatefulBuilder(
             builder: (context, setState) {
               return Container(
                 margin: EdgeInsets.only(bottom: 20),
@@ -1217,13 +1058,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 40.0,
                         width: 100.0,
                         padding: EdgeInsets.all(5),
-                        color: kColorPrimary,
+                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                         textColor: Colors.white,
                         textSize: 14,
                         onPressed: () {
                           List<String> list = [];
                           List<String> listTag = [];
-
                           int id = item["id"];
                           skillSets.forEach((item) {
                             if (item.categoryId == id) {
@@ -1235,7 +1075,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               listTag.add(item.name);
                             }
                           });
-                          openSkillDialogCategory1(context, list, listTag, id, item["name"].toString());
+                          openSkillDialogCategory(context, list, listTag, item["name"].toString());
                         },
                         text: 'add'.tr(),
                       ),
@@ -1244,11 +1084,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               );
             }
-          ),
-        );
-      } else if (item["id"] == 2) {
-        categories.add(
-          StatefulBuilder(
+        ),
+      );
+
+      categories2.add(
+        StatefulBuilder(
             builder: (context, setState) {
               return Container(
                 margin: EdgeInsets.only(bottom: 20),
@@ -1287,7 +1127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 40.0,
                         width: 100.0,
                         padding: EdgeInsets.all(5),
-                        color: kColorPrimary,
+                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                         textColor: Colors.white,
                         textSize: 14,
                         onPressed: () {
@@ -1299,7 +1139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               list.add(item.name);
                             }
                           });
-                          userSkills.forEach((item) {
+                          userSkills2.forEach((item) {
                             if (item.categoryId == id) {
                               listTag.add(item.name);
                             }
@@ -1313,230 +1153,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               );
             }
-          ),
-        );
-      } else if (item["id"] == 3) {
-        int id = item["id"];
-        skillSets.forEach((item) {
-          if (item.categoryId == id) {
-            listSmartSelectDialog.add(S2Choice<String>(value: item.name, title: item.name));
-          }
-        });
-        print(listSmartSelectDialog.length);
-        userSkills.forEach((item) {
-          if (item.categoryId == id) {
-            listSmartSelectDialogTag.add(item.name);
-          }
-        });
+        ),
+      );
 
-        categories.add(
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: SmartSelect<String>.multiple(
-              title: item["name"].toString(),
-              value: listSmartSelectDialogTag,
-              onChange: (selected) {
-                selected.setState(() {
-                  listSmartSelectDialogTag = selected.value;
-                  if (listSmartSelectDialogTag.length > 0) {
-                    SkillCategory skillCategory = new SkillCategory();
-                    skillCategory.saveUserSkills(listSmartSelectDialogTag);
-                  }
-                });
-              },
-              choiceItems: listSmartSelectDialog,
-              modalType: S2ModalType.popupDialog,
-              tileBuilder: (context, state) {
-                return Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 20),
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Boxicons.bx_atom,
-                          size: 25,
-                          color: kColorPrimary,
-                        ),
-                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 6,
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Text(
-                            item['name'].toString(),
-                            style: _textStyle,
-                            textAlign: TextAlign.left,
-                          )),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: CustomButton(
-                        height: 40.0,
-                        width: 100.0,
-                        padding: EdgeInsets.all(5),
-                        color: kColorPrimary,
-                        textColor: Colors.white,
-                        textSize: 14,
-                        onPressed: state.showModal,
-                        text: 'add'.tr(),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              modalFooterBuilder: (context, state) {
-                return Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomButton(
-                        width: MediaQuery.of(context).size.width * 0.33,
-                        padding: EdgeInsets.all(10),
-                        color: Colors.grey[200],
-                        textColor: kColorPrimary,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        text: 'cancel'.tr(),
-                      ),
-                      CustomButton(
-                        width: MediaQuery.of(context).size.width * 0.33,
-                        padding: EdgeInsets.all(10),
-                        color: kColorPrimary,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          state.closeModal();
-                        },
-                        text: 'save'.tr(),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      } else {
-        int id = item["id"];
-        skillSets.forEach((item) {
-          if (item.categoryId == id) {
-            listSmartSelectBottomSheet.add(S2Choice<String>(value: item.name, title: item.name));
-          }
-        });
-        userSkills.forEach((item) {
-          if (item.categoryId == id) {
-            listSmartSelectBottomSheetTag.add(item.name);
-          }
-        });
-
-        categories.add(
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: SmartSelect<String>.multiple(
-              title: item["name"].toString(),
-              value: listSmartSelectBottomSheetTag,
-              onChange: (selected) {
-                selected.setState(() {
-                  listSmartSelectBottomSheetTag = selected.value;
-                  if (listSmartSelectBottomSheetTag.length > 0) {
-                    SkillCategory skillCategory = new SkillCategory();
-                    skillCategory.saveUserSkills(listSmartSelectBottomSheetTag);
-                  }
-                });
-              },
-              choiceItems: listSmartSelectBottomSheet,
-              modalType: S2ModalType.bottomSheet,
-              tileBuilder: (context, state) {
-                return Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 20),
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Boxicons.bx_atom,
-                          size: 25,
-                          color: kColorPrimary,
-                        ),
-                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 6,
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Text(
-                            item['name'].toString(),
-                            style: _textStyle,
-                            textAlign: TextAlign.left,
-                          )),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: CustomButton(
-                        height: 40.0,
-                        width: 100.0,
-                        padding: EdgeInsets.all(5),
-                        color: kColorPrimary,
-                        textColor: Colors.white,
-                        textSize: 14,
-                        onPressed: state.showModal,
-                        text: 'add'.tr(),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              modalFooterBuilder: (context, state) {
-                return Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomButton(
-                        width: MediaQuery.of(context).size.width * 0.33,
-                        padding: EdgeInsets.all(10),
-                        color: Colors.grey[200],
-                        textColor: kColorPrimary,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        text: 'cancel'.tr(),
-                      ),
-                      CustomButton(
-                        width: MediaQuery.of(context).size.width * 0.33,
-                        padding: EdgeInsets.all(10),
-                        color: kColorPrimary,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          state.closeModal();
-                        },
-                        text: 'save'.tr(),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      }
     });
   }
 
@@ -1548,9 +1167,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getUserSkills() async {
-    var list = await User.getSkills(Prefs.getString(Prefs.EMAIL));
+    var list = await User.getSkills(Prefs.getString(Prefs.EMAIL), 1);
     list.forEach((item) {
       userSkills.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+
+    var list2 = await User.getSkills(Prefs.getString(Prefs.EMAIL), 2);
+    list2.forEach((item) {
+      userSkills2.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+  }
+
+  getUserSkills2() async {
+    var list = await User.getSkills(Prefs.getString(Prefs.EMAIL), 2);
+    list.forEach((item) {
+      userSkills2.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+  }
+
+  getJobSphere() async {
+    var list = await Vacancy.getLists('job_sphere', null);
+    list.forEach((sphere) {
+      setState(() {
+        spheres.add(sphere['name']);
+      });
+    });
+  }
+
+  getOpportunities() async {
+    var list = await Vacancy.getLists('opportunity', null);
+    list.forEach((opportunity) {
+      setState(() {
+        opportunities.add(opportunity['name']);
+      });
     });
   }
 
@@ -1586,15 +1235,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getUserSkills();
     getS();
     getSkillSetCategories();
+    getJobSphere();
+    getOpportunities();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    User user = StoreProvider.of<AppState>(context).state.user.user.data;
-    var myGroup = AutoSizeGroup();
+
     if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
       user_cv = StoreProvider.of<AppState>(context).state.user.user_cv.data;
+      user = StoreProvider.of<AppState>(context).state.user.user.data;
     }
 
     return StoreConnector<AppState, ProfileScreenProps>(
@@ -1626,7 +1277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                         child: CircleAvatar(
-                          backgroundColor: kColorPrimary,
+                          backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                           radius: 60,
                           backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                               ? NetworkImage(SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE),
@@ -1638,16 +1289,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     /// Profile details
                     Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// Profile bio
-                          Prefs.getString(Prefs.USER_TYPE) == "USER"
-                              ? Center(
-                                  child: Text('cv'.tr(), style: TextStyle(fontSize: 20, color: kColorDark)),
-                                )
-                              : Container(),
+                          // Prefs.getString(Prefs.USER_TYPE) == "USER"
+                          //     ? Center(
+                          //         child: Text('cv'.tr(), style: TextStyle(fontSize: 20, color: kColorDark)),
+                          //       )
+                          //     : Container(),
 
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
@@ -1655,7 +1306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                           ),
                           BasicUserCvInfo(
-                              user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: user),
+                              user_cv: StoreProvider.of<AppState>(context).state.user.user_cv.data, user: data),
 
                           Prefs.getString(Prefs.USER_TYPE) == "USER"
                               ? Column(
@@ -1685,7 +1336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           height: 40.0,
                                                           width: 100.0,
                                                           padding: EdgeInsets.all(5),
-                                                          color: kColorPrimary,
+                                                          color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                                                           textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
@@ -1736,7 +1387,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           height: 40.0,
                                                           width: 100.0,
                                                           padding: EdgeInsets.all(5),
-                                                          color: kColorPrimary,
+                                                          color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                                                           textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
@@ -1792,7 +1443,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           height: 40.0,
                                                           width: 100.0,
                                                           padding: EdgeInsets.all(5),
-                                                          color: kColorPrimary,
+                                                          color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                                                           textColor: Colors.white,
                                                           textSize: 14,
                                                           onPressed: () {
@@ -1808,14 +1459,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     //         fontWeight: FontWeight.w700,
                                                     //         color: kColorDarkBlue)),
                                                   ),
-                                                  StoreProvider.of<AppState>(context)
-                                                              .state
-                                                              .user
-                                                              .user_cv
-                                                              .data
-                                                              .user_courses
-                                                              .length >
-                                                          0
+                                                  StoreProvider.of<AppState>(context).state.user.user_cv.data.user_courses.length > 0
                                                       ? UserCourseInfo(
                                                           user_courses: StoreProvider.of<AppState>(context)
                                                               .state
@@ -1834,43 +1478,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                               child: Text("empty".tr())),
                                                         ),
-                                                  Prefs.getString(Prefs.USER_TYPE) == "USER"
+
+                                                  /// Навыки (Я умею)
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
                                                       ? Container(
                                                           margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
                                                           child: Column(
                                                             children: [
-                                                              Container(
-                                                                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                                                child: Align(
-                                                                  alignment: Alignment.bottomLeft,
-                                                                  child: Text("ВЕРСИЯ 1"),
-                                                                ),
-                                                              ),
                                                               Flex(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                                 direction: Axis.horizontal,
                                                                 children: [
                                                                   Flexible(
-                                                                    child: Text('Навыки'.tr().toUpperCase(),
+                                                                    child: Text('Навыки'.tr().toUpperCase() + ' (Я умею)',
                                                                         style: TextStyle(
                                                                             fontSize: 14,
                                                                             fontWeight: FontWeight.w700,
                                                                             color: kColorDarkBlue)),
-                                                                  ),
-                                                                  Flexible(
-                                                                    child: CustomButton(
-                                                                      height: 40.0,
-                                                                      width: 100.0,
-                                                                      padding: EdgeInsets.all(5),
-                                                                      color: kColorPrimary,
-                                                                      textColor: Colors.white,
-                                                                      textSize: 14,
-                                                                      onPressed: () {
-                                                                        openSkillDialogV1(context);
-                                                                      },
-                                                                      text: 'add'.tr(),
-                                                                    ),
                                                                   ),
                                                                 ],
                                                               ),
@@ -1878,16 +1503,134 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           ),
                                                         )
                                                       : Container(),
-                                                  Container(
-                                                    margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                                    child: Align(
-                                                      alignment: Alignment.bottomLeft,
-                                                      child: Text("ВЕРСИЯ 2"),
-                                                    ),
-                                                  ),
-                                                  Column(
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? Column(
                                                     children: categories,
-                                                  ),
+                                                  ) : Container(),
+
+                                                  /// Навыки (Я хочу развить)
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                      ? Container(
+                                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                                                    child: Column(
+                                                      children: [
+                                                        Flex(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          direction: Axis.horizontal,
+                                                          children: [
+                                                            Flexible(
+                                                              child: Text('Навыки'.tr().toUpperCase() + ' (Я хочу развить)',
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontWeight: FontWeight.w700,
+                                                                      color: kColorDarkBlue)),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                      : Container(),
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? Column(
+                                                    children: categories2,
+                                                  ) : Container(),
+
+                                                  /// Отрасль
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                      ? Container(
+                                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                                                    child: Column(
+                                                      children: [
+                                                        Flex(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          direction: Axis.horizontal,
+                                                          children: [
+                                                            Flexible(
+                                                              child: Text('Отрасль'.tr().toUpperCase(),
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontWeight: FontWeight.w700,
+                                                                      color: kColorDarkBlue)),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                      : Container(),
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?
+                                                  Container(
+                                                    child: DropdownSearch<String>(
+                                                        showSelectedItem: true,
+                                                        items: spheres,
+                                                        onChanged: (value) {
+                                                          // setState(() {
+                                                          //   selectedJobSphere = user.job_sphere;
+                                                          // });
+
+                                                          user.saveJobSphere(value);
+                                                        },
+                                                        dropdownSearchDecoration: InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              borderSide: BorderSide.none,
+                                                            ),
+                                                            filled: true,
+                                                            fillColor: Colors.grey[200],
+                                                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                                                        selectedItem: data.job_sphere
+                                                    ),
+                                                  ) : Container(),
+
+                                                  /// Возможность
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                      ? Container(
+                                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                                                    child: Column(
+                                                      children: [
+                                                        Flex(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          direction: Axis.horizontal,
+                                                          children: [
+                                                            Flexible(
+                                                              child: Text('Возможность'.tr().toUpperCase(),
+                                                                  style: TextStyle(
+                                                                      fontSize: 14,
+                                                                      fontWeight: FontWeight.w700,
+                                                                      color: kColorDarkBlue)),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                      : Container(),
+                                                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?
+                                                  Container(
+                                                    child: DropdownSearch<String>(
+                                                        showSelectedItem: true,
+                                                        items: opportunities,
+                                                        onChanged: (value) {
+                                                          // setState(() {
+                                                          //   selectedOpportunity = value;
+                                                          // });
+                                                          user.saveOpportunity(value);
+                                                        },
+                                                        dropdownSearchDecoration: InputDecoration(
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              borderSide: BorderSide.none,
+                                                            ),
+                                                            filled: true,
+                                                            fillColor: Colors.grey[200],
+                                                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                                                        selectedItem: data.opportunity
+                                                    ),
+                                                  ) : Container(),
+
+
                                                 ],
                                               )
                                             : Center(
@@ -1895,6 +1638,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
                                                     child: Text("empty".tr())),
                                               ),
+
+
                                     SizedBox(height: 30),
                                     user_cv == null
                                         ? Container()

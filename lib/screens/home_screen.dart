@@ -535,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             MultiSelectFormField(
-                              autovalidate: false,
+                              autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'district'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -563,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: false,
+                              autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'job_types'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -590,7 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: false,
+                              autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'vacancy_types'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -617,7 +617,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: false,
+                              autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'busynesses'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -644,7 +644,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: false,
+                              autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'schedules'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -1114,7 +1114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
 
                                             // MultiSelectFormField(
-                                            //   autovalidate: false,
+                                            //   autovalidate: AutovalidateMode.disabled,
                                             //   title: Text(
                                             //     'required_up_to'.tr(),
                                             //     style:
@@ -1141,7 +1141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             //   },
                                             // ),
                                             // MultiSelectFormField(
-                                            //   autovalidate: false,
+                                            //   autovalidate: AutovalidateMode.disabled,
                                             //   title: Text(
                                             //     'can_improve'.tr(),
                                             //     style:

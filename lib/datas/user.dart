@@ -29,6 +29,7 @@ class User {
   String district;
   String job_type;
   String job_sphere;
+  String opportunity;
   String department;
   String social_orientation;
   String contact_person_fullname;
@@ -60,6 +61,7 @@ class User {
     this.contact_person_fullname,
     this.contact_person_position,
     this.department,
+    this.opportunity,
     this.job_sphere,
     this.social_orientation,
     this.address,
@@ -84,6 +86,7 @@ class User {
         district: json['district'],
         job_type: json['job_type'],
         job_sphere: json['job_sphere'],
+        opportunity: json['opportunity'],
         department: json['department'],
         social_orientation: json['social_orientation'],
         contact_person_fullname: json['contact_person_fullname'],
@@ -251,6 +254,7 @@ class User {
         "is_product_lab_user": user.is_product_lab_user,
         "contact_person_fullname": user.contact_person_fullname,
         "contact_person_position": user.contact_person_position,
+        "opportunity": user.opportunity,
         "job_sphere": user.job_sphere,
         "department": user.department,
         "social_orientation": user.social_orientation,
@@ -559,8 +563,8 @@ class User {
   }
 
   /// Skills
-  static Future<List<dynamic>> getSkills(email) async {
-    final url = API_IP + API_GET_USER_SKILLS + '?email=' + email;
+  static Future<List<dynamic>> getSkills(email, int type) async {
+    final url = API_IP + API_GET_USER_SKILLS + '?email=' + email + '&type=' + type.toString();
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.get(url, headers: headers);
@@ -569,6 +573,52 @@ class User {
     } catch (error) {
       throw error;
     }
+  }
+
+  /// Save job sphere
+  void saveJobSphere(value) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_SAVE_JOB_SPHERE);
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    request.fields["id"] = this.id.toString();
+    request.fields["job_sphere"] = value.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        var data = json.decode(value);
+        print(data);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  /// Save opportunity
+  void saveOpportunity(value) async {
+    // string to uri
+    var uri = Uri.parse(API_IP + API_SAVE_OPPORTUNITY);
+
+    // create multipart request
+    var request = new http.MultipartRequest("POST", uri);
+
+    request.fields["id"] = this.id.toString();
+    request.fields["opportunity"] = value.toString();
+
+    // send request to upload image
+    await request.send().then((response) async {
+      // listen for response
+      response.stream.transform(utf8.decoder).listen((value) {
+        var data = json.decode(value);
+        print(data);
+      });
+    }).catchError((e) {
+      print(e);
+    });
   }
 }
 

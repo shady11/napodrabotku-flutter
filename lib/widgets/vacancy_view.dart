@@ -559,7 +559,7 @@ class _VacancyViewState extends State<VacancyView> {
                                             child: CustomButton(
                                               width: MediaQuery.of(context).size.width * 0.35,
                                               padding: EdgeInsets.all(5),
-                                              color: kColorPrimary,
+                                              color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                               textColor: Colors.white,
                                               onPressed: () {
                                                 Prefs.getString(Prefs.TOKEN) == null

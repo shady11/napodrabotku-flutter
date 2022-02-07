@@ -157,7 +157,7 @@ class _MatchesTabState extends State<MatchesTab> {
 
                                   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                     return Scaffold(
-                                      backgroundColor: kColorPrimary,
+                                      backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,,
                                       appBar: AppBar(
                                         title: Text("vacancy_view".tr()),
                                       ),

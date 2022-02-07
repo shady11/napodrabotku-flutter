@@ -76,7 +76,7 @@ class ProfileLikesScreen extends StatelessWidget {
               }
 
               return Scaffold(
-                backgroundColor: kColorPrimary,
+                backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                 appBar: AppBar(
                   title: Text("active_vacancies".tr()),
                 ),
@@ -117,7 +117,7 @@ class ProfileLikesScreen extends StatelessWidget {
               }
 
               return Scaffold(
-                backgroundColor: kColorPrimary,
+                backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                 appBar: AppBar(
                   title: Text("likeds".tr()),
                 ),
