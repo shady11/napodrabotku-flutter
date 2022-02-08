@@ -109,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime currentBackPressTime;
 
   var myGroup = AutoSizeGroup();
+  List<Widget> categories = [];
   List<Widget> skillsV1 = [];
   List<Widget> skillsV2 = [];
   List<String> tags = [];
@@ -118,6 +119,138 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedCategoryIdFromFirstChip;
   int selectedCategoryIdSecondChip;
 
+  List<Skill> skillSets = [];
+  List<String> categorySkills = [];
+
+  List<VacancySkill> vacancyRequiredSkills = [];
+  List<VacancySkill> vacancyCanUpgradeSkills = [];
+
+  final _textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+  );
+
+  getSkillSets() async {
+    var list = await Vacancy.getLists('skillset', null);
+    list.forEach((item) {
+      skillSets.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
+    });
+  }
+
+  getVacancySkills(int vacancyId) async {
+    await VacancySkill.getVacancySkills(vacancyId).then((value) {
+      value.forEach((item) {
+        if(item.isRequired) {
+          vacancyRequiredSkills.add(item);
+        } else {
+          vacancyCanUpgradeSkills.add(item);
+        }
+      });
+    });
+  }
+  openSkillDialogCategory(context, List<String> options, List<String> listTag, String categoryName) {
+    // List<String> listTag = [];
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(categoryName.toUpperCase(),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child:
+
+                    /// Form
+                    Column(
+                      children: <Widget>[
+                        ChipsChoice<String>.multiple(
+                          choiceStyle: C2ChoiceStyle(
+                            margin: EdgeInsets.only(top: 4, bottom: 4),
+                            showCheckmark: false,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          choiceActiveStyle: C2ChoiceStyle(
+                            color: kColorPrimary,
+                          ),
+                          padding: EdgeInsets.zero,
+                          value: listTag,
+                          onChanged: (val) {
+                            return setState(() => listTag = val);
+                          },
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: options,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                          ),
+                          wrapped: true,
+                          choiceLabelBuilder: (item) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 60,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.label,
+                                  softWrap: true,
+                                  maxLines: 4,
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /// Sign In button
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[200],
+                                textColor: kColorPrimary,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'cancel'.tr(),
+                              ),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  // SkillCategory skillCategory = new SkillCategory();
+                                  // skillCategory.saveUserSkills(listTag, 1);
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'save'.tr(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+  }
   getSkillSetCategories() async {
     List<String> pi = [];
 
@@ -127,6 +260,80 @@ class _HomeScreenState extends State<HomeScreen> {
       item["skills"].forEach((skill) {
         skills.add(skill);
       });
+
+      categories.add(
+        StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Boxicons.bx_atom,
+                          size: 25,
+                          color: kColorPrimary,
+                        ),
+                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            item['name'].toString(),
+                            style: _textStyle,
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: CustomButton(
+                        height: 40.0,
+                        width: 100.0,
+                        padding: EdgeInsets.all(5),
+                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                        textColor: Colors.white,
+                        textSize: 14,
+                        onPressed: () {
+                          List<String> list = [];
+                          List<String> listTag = [];
+                          int id = item["id"];
+                          setState(() {
+                            skillSets.forEach((item) {
+                              if (item.categoryId == id) {
+                                list.add(item.name);
+                              }
+                            });
+                          });
+
+                          vacancyRequiredSkills.forEach((item) {
+                            if (item.categoryId == id) {
+                              listTag.add(item.name);
+                            }
+                          });
+                          openSkillDialogCategory(context, list, listTag, item["name"].toString());
+                        },
+                        text: 'add'.tr(),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+        ),
+      );
+
+
 
       skillsV1.add(
         StatefulBuilder(builder: (context, setState) {
@@ -226,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           choiceItems: C2Choice.listFrom<String, String>(
                             source: skills,
                             value: (i, v) {
-                              // setState(() => selectedCategoryIdSecondChip = item["id"]);
+                              setState(() => selectedCategoryIdSecondChip = item["id"]);
                               return v;
                             },
                             label: (i, v) => v,
@@ -261,30 +468,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   openSkillDialog(context, bool isRequired) {
-    showDialog(
+    showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
-            insetPadding: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text('Навыки'.tr().toUpperCase(),
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-                      ),
+          return StatefulBuilder(
+            builder: (context, snapshot) {
+              return ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Навыки'.tr().toUpperCase(),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                     ),
-
-                    /// Form
-                    Form(
+                  ),
+                  /// Form
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Form(
                       key: courseAddFormKey,
                       child: Column(
                         children: <Widget>[
@@ -323,10 +526,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                ],
+              );
+            }
           );
         });
   }
@@ -1112,6 +1315,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               ],
                                             ),
+                                            // Column(
+                                            //   children: categories,
+                                            // )
 
                                             // MultiSelectFormField(
                                             //   autovalidate: AutovalidateMode.disabled,

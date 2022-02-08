@@ -8,14 +8,16 @@ class VacancySkill {
   int id;
   int vacancyId;
   String name;
+  int categoryId;
   bool isRequired;
 
-  VacancySkill({this.id, this.vacancyId, this.name, this.isRequired});
+  VacancySkill({this.id, this.vacancyId, this.name, this.categoryId, this.isRequired});
 
   factory VacancySkill.fromJson(Map<String, dynamic> json) => new VacancySkill(
     id: json["id"],
     vacancyId: json["vacancy_id"],
     name: json["name"],
+    categoryId: json["category_id"],
     isRequired: json["is_required"] == 1,
   );
 
