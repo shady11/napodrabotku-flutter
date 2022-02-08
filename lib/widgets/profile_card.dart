@@ -407,7 +407,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                             StoreProvider.of<AppState>(context)
                                                 .dispatch(getNumberOfLikedVacancies());
                                           } else {
-                                            Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
+                                            Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
                                           }
                                         });
                                         // User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
@@ -731,7 +731,7 @@ class ProfileCardProductLab extends StatelessWidget {
                                             StoreProvider.of<AppState>(context)
                                                 .dispatch(getNumberOfLikedVacancies());
                                           } else {
-                                            Dialogs.showDialogBox(context, "some_errors_occured_try_again".tr());
+                                            Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
                                           }
                                         });
                                         // User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {

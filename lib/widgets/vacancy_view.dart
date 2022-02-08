@@ -581,7 +581,7 @@ class _VacancyViewState extends State<VacancyView> {
                                                                 .dispatch(getNumberOfSubmittedVacancies());
                                                           } else {
                                                             _showDialog(
-                                                                context, "some_errors_occured_try_again".tr());
+                                                                context, "some_error_occurred_try_again".tr());
                                                           }
                                                         });
                                                         // if (value) {

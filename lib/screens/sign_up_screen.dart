@@ -629,92 +629,96 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {
-                        User.checkUsername(_email_controller.text).then((value) {
+                        User.checkUsername(_email_controller.text).then((value) async {
+
                           setState(() {
-                            isUserExists = false;
+                            isUserExists = value;
                           });
+
+                          /// Validate form
+                          if (_formKey.currentState.validate()) {
+                            _openLoadingDialog(context);
+                            final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+                            User user = new User();
+                            user.name = _name_controller.text;
+                            user.phone_number = _phone_number_controller.text;
+                            user.email = _email_controller.text;
+                            user.password = _password_controller.text;
+                            user.birth_date = company == is_company.Company
+                                ? DateTime.now()
+                                : formatter.parse(_birth_date_controller.text);
+                            user.surname = _surnname_controller.text;
+                            user.is_company = company == is_company.Company;
+                            user.is_migrant = is_migrant ? 1 : 0;
+                            user.linkedin = _linkedin_controller.text;
+                            user.gender = gender == user_gender.Male ? 0 : 1;
+                            user.region = selectedRegion;
+                            user.district = selectedDistrict;
+                            user.is_product_lab_user = Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB";
+
+                            var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
+
+                            // create multipart request
+                            var request = new http.MultipartRequest("POST", uri);
+
+                            // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
+                            request.fields["id"] = user.id.toString();
+                            request.fields["password"] = user.password;
+                            request.fields["name"] = user.name;
+                            request.fields["lastname"] = user.surname;
+                            request.fields["email"] = user.email;
+                            request.fields["birth_date"] = formatter.format(user.birth_date);
+                            request.fields["active"] = '1';
+                            request.fields["phone_number"] = user.phone_number;
+                            request.fields["type"] = user.is_company ? 'COMPANY' : 'USER';
+                            request.fields["linkedin"] = user.linkedin;
+                            request.fields["is_migrant"] = user.is_migrant.toString();
+                            request.fields["gender"] = user.gender.toString();
+                            request.fields["region"] = user.region.toString();
+                            request.fields["district"] = user.district.toString();
+                            request.fields["job_type"] = user.job_type.toString();
+                            request.fields["is_product_lab_user"] = user.is_product_lab_user ? "1" : "0";
+
+                            // open a byteStream
+                            if (_imageFile != null) {
+                              var _image = File(_imageFile.path);
+                              var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
+                              // get file length
+                              var length = await _image.length();
+                              // multipart that takes file.. here this "image_file" is a key of the API request
+                              var multipartFile =
+                              new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
+                              // add file to multipart
+                              request.files.add(multipartFile);
+                            }
+                            request.send().then((response) {
+                              print(response);
+                              response.stream.transform(utf8.decoder).listen((value) {
+                                print(value);
+                                var response = json.decode(value);
+                                if (response['status'] == 200) {
+                                  Prefs.setString(Prefs.PASSWORD, user.password);
+                                  Prefs.setString(Prefs.TOKEN, response["token"]);
+                                  Prefs.setString(Prefs.EMAIL, response["email"]);
+                                  Prefs.setInt(Prefs.USER_ID, response["id"]);
+                                  Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
+                                  Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
+                                  _showDialog(context, 'successfull_sign_up'.tr(), false);
+                                } else {
+                                  _showDialog(context, 'some_error_occurred_plese_try_again'.tr(), true);
+                                }
+                              });
+                            }).catchError((e) {
+                              print(e);
+                            });
+                          } else {
+                            return;
+                          }
+
                         });
 
-                        /// Validate form
-                        if (_formKey.currentState.validate()) {
-                          _openLoadingDialog(context);
-                          final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-                          User user = new User();
-                          user.name = _name_controller.text;
-                          user.phone_number = _phone_number_controller.text;
-                          user.email = _email_controller.text;
-                          user.password = _password_controller.text;
-                          user.birth_date = company == is_company.Company
-                              ? DateTime.now()
-                              : formatter.parse(_birth_date_controller.text);
-                          user.surname = _surnname_controller.text;
-                          user.is_company = company == is_company.Company;
-                          user.is_migrant = is_migrant ? 1 : 0;
-                          user.linkedin = _linkedin_controller.text;
-                          user.gender = gender == user_gender.Male ? 0 : 1;
-                          user.region = selectedRegion;
-                          user.district = selectedDistrict;
-                          user.is_product_lab_user = Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB";
-
-                          var uri = Uri.parse(API_IP + API_REGISTER1 + '?lang=' + Prefs.getString(Prefs.LANGUAGE));
-
-                          // create multipart request
-                          var request = new http.MultipartRequest("POST", uri);
-
-                          // if you need more parameters to parse, add those like this. i added "user_id". here this "user_id" is a key of the API request
-                          request.fields["id"] = user.id.toString();
-                          request.fields["password"] = user.password;
-                          request.fields["name"] = user.name;
-                          request.fields["lastname"] = user.surname;
-                          request.fields["email"] = user.email;
-                          request.fields["birth_date"] = formatter.format(user.birth_date);
-                          request.fields["active"] = '1';
-                          request.fields["phone_number"] = user.phone_number;
-                          request.fields["type"] = user.is_company ? 'COMPANY' : 'USER';
-                          request.fields["linkedin"] = user.linkedin;
-                          request.fields["is_migrant"] = user.is_migrant.toString();
-                          request.fields["gender"] = user.gender.toString();
-                          request.fields["region"] = user.region.toString();
-                          request.fields["district"] = user.district.toString();
-                          request.fields["job_type"] = user.job_type.toString();
-                          request.fields["is_product_lab_user"] = user.is_product_lab_user ? "1" : "0";
-
-                          // open a byteStream
-                          if (_imageFile != null) {
-                            var _image = File(_imageFile.path);
-                            var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
-                            // get file length
-                            var length = await _image.length();
-                            // multipart that takes file.. here this "image_file" is a key of the API request
-                            var multipartFile =
-                                new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
-                            // add file to multipart
-                            request.files.add(multipartFile);
-                          }
-                          request.send().then((response) {
-                            print(response);
-                            response.stream.transform(utf8.decoder).listen((value) {
-                              print(value);
-                              var response = json.decode(value);
-                              if (response['status'] == 200) {
-                                Prefs.setString(Prefs.PASSWORD, user.password);
-                                Prefs.setString(Prefs.TOKEN, response["token"]);
-                                Prefs.setString(Prefs.EMAIL, response["email"]);
-                                Prefs.setInt(Prefs.USER_ID, response["id"]);
-                                Prefs.setString(Prefs.USER_TYPE, user.is_company ? 'COMPANY' : 'USER');
-                                Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
-                                _showDialog(context, 'successfull_sign_up'.tr(), false);
-                              } else {
-                                _showDialog(context, 'some_errors_occured_plese_try_again'.tr(), true);
-                              }
-                            });
-                          }).catchError((e) {
-                            print(e);
-                          });
-                        } else {
-                          return;
-                        }
                       },
                       text: 'create'.tr(),
                     ),

@@ -654,7 +654,7 @@ class _ProductLabSignUpState extends State<ProductLabSignUp> {
                                 Prefs.setString(Prefs.PROFILEIMAGE, response["avatar"]);
                                 _showDialog(context, 'successfull_sign_up'.tr(), false);
                               } else {
-                                _showDialog(context, 'some_errors_occured_plese_try_again'.tr(), true);
+                                _showDialog(context, 'some_error_occurred_plese_try_again'.tr(), true);
                               }
                             });
                           }).catchError((e) {
