@@ -47,7 +47,7 @@ dependencies:
   email_validator: '^1.0.5'
   url_launcher: any
   socket_io_client: ^0.9.12
-  gx_file_picker: ^1.9.0+2
+#  gx_file_picker: ^1.9.0+2
   intl_phone_number_input: ^0.6.0
   exif: ^1.0.3
   flutter_exif_rotation: ^0.3.1
@@ -67,6 +67,7 @@ dependencies:
   smart_select: ^4.3.2
 
   auto_size_text: ^2.1.0
+  file_picker: ^2.1.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

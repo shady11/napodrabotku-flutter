@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:path/path.dart';
 
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
@@ -1314,7 +1315,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                 data.attachment == null ? Container() :
                                 CustomButton(
                                     text: data.attachment != null
-                                        ? 'download_file'.tr()
+                                        ? basename(data.attachment).toString()
                                         : 'file_doesnt_exist'.tr(),
                                     width: MediaQuery.of(context).size.width * 1,
                                     color: Colors.grey[200],

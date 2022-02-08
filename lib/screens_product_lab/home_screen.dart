@@ -37,6 +37,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   int _tabCurrentIndex = 0;
   bool is_profile = false;
   bool is_special = false;
+  bool is_chat = false;
   User user;
 
   List<dynamic> opportunityList = [];
@@ -470,11 +471,11 @@ class _ProductLabHomeState extends State<ProductLabHome> {
             onTap: (index) {
               print(index);
               _nextTab(index);
-              if (index == 3) {
+              if (index == 3 || index == 2) {
                 setState(() {
                   is_special = true;
                   is_profile = true;
-                });
+                });;
               } else {
                 setState(() {
                   is_special = false;

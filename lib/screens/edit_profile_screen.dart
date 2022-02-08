@@ -13,7 +13,7 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/utils/constants.dart';
-import 'package:gx_file_picker/gx_file_picker.dart';
+// import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:flutter_guid/flutter_guid.dart';
@@ -150,20 +150,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   int count = 1;
   int counter = 0;
 
-  void _pickAttachment() async {
-    File file = await FilePicker.getFile(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
-    );
-
-    if (file != null) {
-      setState(() {
-        attachment = file;
-      });
-    } else {
-      // User canceled the picker
-    }
-  }
+  // void _pickAttachment() async {
+  //   File file = await FilePicker.getFile(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['pdf', 'doc', 'docx'],
+  //   );
+  //
+  //   if (file != null) {
+  //     setState(() {
+  //       attachment = file;
+  //     });
+  //   } else {
+  //     // User canceled the picker
+  //   }
+  // }
 
   bool is_migrant = false;
 
@@ -264,6 +264,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       selectedJobSphere = user.job_sphere;
       selectedDepartment = user.department;
+      getDepartments(user.job_sphere);
       selectedSocialOrientation = user.social_orientation;
       _fullname_of_contact_person.text = user.contact_person_fullname;
       _position_of_contact_person.text = user.contact_person_position;
@@ -781,7 +782,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     color: Colors.grey[200],
                                     textColor: kColorPrimary,
                                     onPressed: () {
-                                      _pickAttachment();
+                                      // _pickAttachment();
                                     }),
                             user_cv == null ? Container() : SizedBox(height: 30),
                           ],
@@ -823,7 +824,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 Prefs.setString(
                                     Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
                               });
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             });
                           else
                             user.uploadImage2(null);
@@ -837,6 +838,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             else
                               user_cv.save();
                           }
+
+                          Navigator.pop(context);
+
                         } else {
                           return;
                         }

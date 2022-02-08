@@ -23,9 +23,13 @@ import 'package:ms_accordion/ms_accordion.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:io';
-import 'package:gx_file_picker/gx_file_picker.dart';
+// import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+
+import 'package:file_picker/file_picker.dart';
+// import 'package:ishtapp/file/file_service.dart';
+// import 'package:ishtapp/file/util.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -1209,27 +1213,107 @@ class _ProfileScreenState extends State<ProfileScreen> {
     fontWeight: FontWeight.w500,
   );
 
+  bool fileUploading = false;
+
   void _pickAttachment() async {
-    File file = await FilePicker.getFile(
+
+    // File file = await FilePicker.getFile(
+    //   type: FileType.custom,
+    //   allowedExtensions: ['pdf', 'doc', 'docx'],
+    // );
+
+    FilePickerResult result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      // allowedExtensions: ['pdf', 'doc', 'docx'],
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
     );
 
-    // print('size' + file.length().toString());
+    setState(() {
+      fileUploading = true;
+    });
 
-    if (file != null) {
-      if (file != null)
-        user_cv.save(attachment: file);
-      else
+    if(result != null) {
+      File endFile = File(result.paths.first);
+
+      if (endFile != null){
+        if(await user_cv.save(attachment: endFile) == 'OK'){
+          setState(() {
+            fileUploading = false;
+            attachment = endFile;
+          });
+        }
+      } else {
         user_cv.save();
+      }
 
-      setState(() {
-        attachment = file;
-      });
+      print(endFile);
+      // print(file.name);
+      // print(file.bytes);
+      // print(file.size);
+      // print(file.extension);
+      // print(file.path);
     } else {
       // User canceled the picker
     }
+
+    // if (file != null) {
+    //   if (file != null){
+    //     user_cv.save(attachment: file);
+    //     setState(() {
+    //       attachment = file;
+    //     });
+    //   } else {
+    //     user_cv.save();
+    //   }
+    //
+    // } else {
+    //   // User canceled the picker
+    // }
   }
+
+  // double _progressValue = 0;
+  // int _progressPercentValue = 0;
+  //
+  // final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+  // _showSnackBar(String text) {
+  //   final snackBar = SnackBar(content: Text(text));
+  //
+  //   _scaffoldKey.currentState.showSnackBar(snackBar);
+  // }
+  //
+  // void _uploadFile(File file) async {
+  //   if (file == null) {
+  //     _showSnackBar("Select file first");
+  //     return;
+  //   }
+  //
+  //   _setUploadProgress(0, 0);
+  //
+  //   try {
+  //     // var httpResponse = await FileService.fileUpload(
+  //     //     file: file, onUploadProgress: _setUploadProgress);
+  //
+  //     user_cv.save(attachment: file);
+  //     await FileService.fileUploadMultipart(file: file, onUploadProgress: _setUploadProgress);
+  //
+  //     _showSnackBar("File uploaded - ${fileUtil.basename(file.path)}");
+  //   } catch (e) {
+  //     _showSnackBar(e.toString());
+  //   }
+  // }
+  //
+  // void _setUploadProgress(int sentBytes, int totalBytes) {
+  //   double __progressValue = Util.remap(sentBytes.toDouble(), 0, totalBytes.toDouble(), 0, 1);
+  //
+  //   __progressValue = double.parse(__progressValue.toStringAsFixed(2));
+  //
+  //   if (__progressValue != _progressValue)
+  //     setState(() {
+  //       _progressValue = __progressValue;
+  //       _progressPercentValue = (_progressValue * 100.0).toInt();
+  //     });
+  // }
 
   @override
   void initState() {
@@ -1672,16 +1756,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               //           _launchURL(SERVER_IP + user_cv.attachment);
                                               //         }),
                                               // SizedBox(height: 20),
-                                              CustomButton(
+                                              fileUploading
+                                                  ? Container(
+                                                      child: new CircularProgressIndicator(
+                                                        backgroundColor: kColorPrimary.withOpacity(0.2),
+                                                        valueColor:
+                                                          new AlwaysStoppedAnimation<Color>(kColorPrimary)
+                                                      ),
+                                                  )
+                                                  : CustomButton(
                                                   text: attachment != null
                                                       ? basename(attachment.path)
                                                       : 'upload_file'.tr(),
                                                   width: MediaQuery.of(context).size.width * 1,
                                                   color: Colors.grey[200],
                                                   textColor: kColorPrimary,
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     _pickAttachment();
-                                                  }),
+
+                                                    // FilePickerResult result = await FilePicker.platform.pickFiles();
+                                                    //
+                                                    // if(result != null) {
+                                                    //   PlatformFile file = result.files.first;
+                                                    //
+                                                    //   print(file.name);
+                                                    //   print(file.bytes);
+                                                    //   print(file.size);
+                                                    //   print(file.extension);
+                                                    //   print(file.path);
+                                                    // } else {
+                                                    //   // User canceled the picker
+                                                    // }
+                                                  }
+                                                ),
+                                              // Container(
+                                              //     padding: EdgeInsets.only(top: 10),
+                                              //     child: new Column(children: <Widget>[
+                                              //       Text(
+                                              //         '20 %',
+                                              //         style: Theme.of(context).textTheme.display1,
+                                              //       ),
+                                              //     ])),
+                                              // Container(
+                                              //     padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                              //     child: LinearProgressIndicator(value: 10)
+                                              // ),
+
+
                                             ],
                                           ),
                                     data_cv == null ? Container() : SizedBox(height: 30),

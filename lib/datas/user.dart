@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 
+typedef void OnUploadProgressCallback(int sentBytes, int totalBytes);
+
 class User {
   int id;
   String token;
@@ -414,7 +416,7 @@ class User {
         }),
       );
       var body = json.decode(response.body);
-      Prefs.setString(Prefs.TOKEN, body['token']);
+      // Prefs.setString(Prefs.TOKEN, body['token']);
 
       return "OK";
     } catch (error) {
@@ -744,7 +746,7 @@ class UserCv {
         user_experiences: experiencesToList(json['experiences']),
       );
 
-  void save({attachment}) async {
+  Future<String> save({attachment}) async {
     // string to uri
     var uri = Uri.parse(API_IP + API_USER_CV_SAVE);
 
@@ -792,7 +794,10 @@ class UserCv {
       });
     }).catchError((e) {
       print(e);
+      return e;
     });
+
+    return 'OK';
   }
 
   static List<UserExperience> experiencesToList(var j) {

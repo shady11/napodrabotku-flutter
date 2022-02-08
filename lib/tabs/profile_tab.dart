@@ -329,7 +329,11 @@ class _ProfileTabState extends State<ProfileTab> {
               child: Text('continue'.tr()),
               onPressed: () {
                 Navigator.of(ctx).pop();
-                if (!error) Navigator.pushReplacementNamed(context, Routes.home);
+                if (!error){
+                  Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                      ?  Navigator.pushReplacementNamed(context, Routes.product_lab_home)
+                      : Navigator.pushReplacementNamed(context, Routes.home);
+                }
               },
             )
           ],
