@@ -17,6 +17,7 @@ import 'package:ishtapp/utils/constants.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:ishtapp/routes/routes.dart';
 
 enum user_gender { Male, Female }
 
@@ -164,6 +165,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   //     // User canceled the picker
   //   }
   // }
+
+  final _textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+  );
 
   bool is_migrant = false;
 
@@ -791,7 +798,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         )
                       : Container(),
 
-                  /// Sign Up button
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: CustomButton(
+                      padding: EdgeInsets.all(15),
+                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.new_password);
+                      },
+                      text: 'change_password'.tr(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   SizedBox(
                     width: double.maxFinite,
                     child: CustomButton(

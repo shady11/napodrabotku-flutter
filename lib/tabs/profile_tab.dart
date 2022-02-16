@@ -316,12 +316,6 @@ class _ProfileTabState extends State<ProfileTab> {
                       },
                     ),
                     ListTile(
-                      title: Text("change_password".tr(), style: _textStyle),
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.new_password);
-                      },
-                    ),
-                    ListTile(
                       title: Text("privacy_policy".tr(), style: _textStyle),
                       onTap: () async {
                         /// Go to privacy policy
