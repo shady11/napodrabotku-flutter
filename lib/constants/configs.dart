@@ -19,6 +19,7 @@ String API_GET_FILTERS = 'users/filters';
 
 // CV Routes
 String API_USER_CV_SAVE = 'user_cv';
+String API_MESSAGE_CHECK = 'check_for_new_messages';
 
 String API_USER_CV_EXPERIENCE_SAVE = 'user_cv_experience';
 String API_USER_CV_EXPERIENCE_UPDATE = 'user/experience/update/';

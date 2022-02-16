@@ -19,7 +19,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:flutter_guid/flutter_guid.dart';
 import 'package:ishtapp/components/custom_button.dart';
-
+import 'dart:async';
 class ProfileTab extends StatefulWidget {
   @override
   _ProfileTabState createState() => _ProfileTabState();

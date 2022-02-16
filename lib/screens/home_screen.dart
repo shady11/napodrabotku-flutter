@@ -34,6 +34,10 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ishtapp/constants/configs.dart';
+import 'package:http/http.dart' as http;
+import 'package:workmanager/workmanager.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 enum work_mode { isWork, isTraining }
 
@@ -45,8 +49,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AppLifecycleState _appLifecycleState;
-
+  //region Variables
   final _formKey = GlobalKey<FormState>();
   final courseAddFormKey = GlobalKey<FormState>();
   final _vacancyAddFormKey = GlobalKey<FormState>();
@@ -129,6 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<VacancySkill> vacancyRequiredSkills = [];
   List<VacancySkill> vacancyCanUpgradeSkills = [];
+
+  //endregion
 
   final _textStyle = TextStyle(
     color: Colors.black,
@@ -2178,7 +2183,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void startTimerToCheckNewMessages({ Timer timer, Duration duration }) {
+  void startTimerToCheckNewMessages({Timer timer, Duration duration}) {
     timer = Timer.periodic(duration, (Timer t) => checkForNewMessage());
   }
 
@@ -2186,15 +2191,20 @@ class _HomeScreenState extends State<HomeScreen> {
     timer.cancel();
   }
 
-  void checkForNewMessage() async  {
+  void checkForNewMessage() async {
+    FlutterLocalNotificationsPlugin flp = FlutterLocalNotificationsPlugin();
+    var android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOS = IOSInitializationSettings();
+    var initSettings = InitializationSettings(android: android, iOS: iOS);
+    flp.initialize(initSettings, onSelectNotification: selectNotification);
 
-    Map<String, String> headers = {
-      "Content-type": "application/json",
-      "Authorization": Prefs.getString(Prefs.TOKEN)
-    };
+    Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
 
     var uri = Uri.parse(API_IP + API_MESSAGE_CHECK);
-    await http.post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)})).then((value) {
+    var d = Prefs.getString(Prefs.MESSAGEDATE);
+    await http
+        .post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)}))
+        .then((value) {
       print("here================");
       print("periodic working");
 
@@ -2205,23 +2215,45 @@ class _HomeScreenState extends State<HomeScreen> {
       print("convert.is_exist");
       print(convert["is_exist"]);
       print(convert);
-
-      if(convert["is_exist"])
-      {
-        Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
+      print("aaaaeee");
+      print(convert['created_at']);
+      Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
+      if (convert["is_exist"]) {
         setState(() {
           receivedMessageCount = convert["count"];
         });
+        showNotification("HELLOOOOOOO", flp);
       }
 
       return convert;
     });
   }
 
+  Future selectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    print("HHHHHHHHHHHHHHHHHH");
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute<void>(builder: (context) => (payload)),
+    // );
+  }
+
+// flutter local notification setup
+  void showNotification(v, flp) async {
+    var android = AndroidNotificationDetails('channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+        priority: Priority.high, importance: Importance.max);
+    var iOS = IOSNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: iOS);
+    await flp.show(0, 'Virtual intelligent solution', '$v', platform, payload: 'VIS \n $v');
+  }
+
   bool is_special = false;
 
   void handleInitialBuild(VacanciesScreenProps1 props) {
     props.getLikedNumOfVacancies();
+    props.getSubmittedNumOfVacancies();
   }
 
   @override
@@ -2266,6 +2298,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedFontSize: _tabCurrentIndex == 4 ? 13 : 14,
                   currentIndex: _tabCurrentIndex == 4 ? 0 : _tabCurrentIndex,
                   onTap: (index) {
+                    if(index == 1)
+                    {
+                      setState(() {
+                        receivedMessageCount = 0;
+                      });
+                    }
                     _nextTab(index);
                     if (index == 3 || index == 2) {
                       setState(() {
@@ -2309,22 +2347,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Positioned(
                                     top: 0.0,
                                     left: 0.0,
-                                    right: null,
+                                    right: receivedMessageCount > 0 ? null : 0.0,
                                     child: Icon(
                                       Boxicons.bx_folder,
                                       color: _tabCurrentIndex == 1 ? kColorPrimary : null,
                                     ),
                                   ),
-                                  Positioned(
-                                      top: 0.0,
-                                      right: 0.0,
-                                      child: Badge(
-                                        text: StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_likeds
-                                            .toString(),
-                                      )),
+                                  receivedMessageCount > 0
+                                      ? Positioned(
+                                          top: 0.0,
+                                          right: 0.0,
+                                          child: Badge(
+                                            text: receivedMessageCount.toString(),
+                                          ))
+                                      : Container(),
                                 ],
                               ),
                             ),
@@ -2408,10 +2444,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class VacanciesScreenProps1 {
   final Function getLikedNumOfVacancies;
+  final Function getSubmittedNumOfVacancies;
   final int response;
 
   VacanciesScreenProps1({
     this.getLikedNumOfVacancies,
+    this.getSubmittedNumOfVacancies,
     this.response,
   });
 }
@@ -2420,5 +2458,6 @@ VacanciesScreenProps1 mapStateToProps(Store<AppState> store) {
   return VacanciesScreenProps1(
     response: store.state.vacancy.number_of_likeds,
     getLikedNumOfVacancies: () => store.dispatch(getNumberOfLikedVacancies()),
+    getSubmittedNumOfVacancies: () => store.dispatch(getNumberOfSubmittedVacancies()),
   );
 }
