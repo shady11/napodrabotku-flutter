@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'package:appmetrica_sdk/appmetrica_sdk.dart';
-import 'package:ishtapp/datas/vacancy.dart';
 import 'package:flutter/services.dart';
 import 'package:ishtapp/reducer.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,14 +9,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:ishtapp/routes/route_generator.dart';
 import 'package:ishtapp/routes/routes.dart';
-import 'package:ishtapp/screens/start_screen.dart';
 import 'package:ishtapp/utils/themebloc/theme_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'constants/constants.dart';
 import 'datas/app_state.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux_api_middleware/redux_api_middleware.dart';
-import 'datas/app_state.dart';
 import 'datas/logger.dart';
 
 void main() async {

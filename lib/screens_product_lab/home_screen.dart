@@ -20,7 +20,6 @@ import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:ishtapp/datas/vacancy.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/RSAA.dart';
-import 'package:ishtapp/datas/app_state.dart';
 
 class ProductLabHome extends StatefulWidget {
   const ProductLabHome({Key key}) : super(key: key);
@@ -49,6 +48,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   List _opportunity_types = [];
   List _opportunity_durations = [];
   List _internship_languages = [];
+
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();

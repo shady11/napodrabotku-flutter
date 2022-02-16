@@ -25,12 +25,15 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/utils/textFormatter/lengthLimitingTextInputFormatter.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:smart_select/smart_select.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ishtapp/datas/Skill.dart';
 import 'package:ms_accordion/ms_accordion.dart';
-import 'package:smart_select/smart_select.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:async';
+import 'package:ishtapp/datas/notifications.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:ishtapp/constants/configs.dart';
 
 enum work_mode { isWork, isTraining }
 
@@ -42,6 +45,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AppLifecycleState _appLifecycleState;
+
   final _formKey = GlobalKey<FormState>();
   final courseAddFormKey = GlobalKey<FormState>();
   final _vacancyAddFormKey = GlobalKey<FormState>();
@@ -141,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
   getVacancySkills(int vacancyId) async {
     await VacancySkill.getVacancySkills(vacancyId).then((value) {
       value.forEach((item) {
-        if(item.isRequired) {
+        if (item.isRequired) {
           vacancyRequiredSkills.add(item);
         } else {
           vacancyCanUpgradeSkills.add(item);
@@ -149,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
   }
+
   openSkillDialogCategory(context, List<String> options, List<String> listTag, String categoryName) {
     // List<String> listTag = [];
     showModalBottomSheet(
@@ -229,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               CustomButton(
                                 width: MediaQuery.of(context).size.width * 0.33,
                                 padding: EdgeInsets.all(10),
-                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                 textColor: Colors.white,
                                 onPressed: () {
                                   // SkillCategory skillCategory = new SkillCategory();
@@ -250,6 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+
   getSkillSetCategories() async {
     List<String> pi = [];
 
@@ -261,78 +268,74 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       categories.add(
-        StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        margin: EdgeInsets.only(right: 20),
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Boxicons.bx_atom,
-                          size: 25,
-                          color: kColorPrimary,
-                        ),
-                        decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                      ),
+        StatefulBuilder(builder: (context, setState) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20),
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Boxicons.bx_atom,
+                      size: 25,
+                      color: kColorPrimary,
                     ),
-                    Flexible(
-                      flex: 6,
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Text(
-                            item['name'].toString(),
-                            style: _textStyle,
-                            textAlign: TextAlign.left,
-                          )),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: CustomButton(
-                        height: 40.0,
-                        width: 100.0,
-                        padding: EdgeInsets.all(5),
-                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
-                        textColor: Colors.white,
-                        textSize: 14,
-                        onPressed: () {
-                          List<String> list = [];
-                          List<String> listTag = [];
-                          int id = item["id"];
-                          setState(() {
-                            skillSets.forEach((item) {
-                              if (item.categoryId == id) {
-                                list.add(item.name);
-                              }
-                            });
-                          });
-
-                          vacancyRequiredSkills.forEach((item) {
-                            if (item.categoryId == id) {
-                              listTag.add(item.name);
-                            }
-                          });
-                          openSkillDialogCategory(context, list, listTag, item["name"].toString());
-                        },
-                        text: 'add'.tr(),
-                      ),
-                    ),
-                  ],
+                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
+                  ),
                 ),
-              );
-            }
-        ),
+                Flexible(
+                  flex: 6,
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        item['name'].toString(),
+                        style: _textStyle,
+                        textAlign: TextAlign.left,
+                      )),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: CustomButton(
+                    height: 40.0,
+                    width: 100.0,
+                    padding: EdgeInsets.all(5),
+                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                    textColor: Colors.white,
+                    textSize: 14,
+                    onPressed: () {
+                      List<String> list = [];
+                      List<String> listTag = [];
+                      int id = item["id"];
+                      setState(() {
+                        skillSets.forEach((item) {
+                          if (item.categoryId == id) {
+                            list.add(item.name);
+                          }
+                        });
+                      });
+
+                      vacancyRequiredSkills.forEach((item) {
+                        if (item.categoryId == id) {
+                          listTag.add(item.name);
+                        }
+                      });
+                      openSkillDialogCategory(context, list, listTag, item["name"].toString());
+                    },
+                    text: 'add'.tr(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       );
-
-
 
       skillsV1.add(
         StatefulBuilder(builder: (context, setState) {
@@ -470,66 +473,64 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (context, snapshot) {
-              return ListView(
-                shrinkWrap: true,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text('Навыки'.tr().toUpperCase(),
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-                    ),
+          return StatefulBuilder(builder: (context, snapshot) {
+            return ListView(
+              shrinkWrap: true,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text('Навыки'.tr().toUpperCase(),
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                   ),
-                  /// Form
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Form(
-                      key: courseAddFormKey,
-                      child: Column(
-                        children: <Widget>[
-                          Column(
-                            children: isRequired ? skillsV1 : skillsV2,
-                          ),
+                ),
 
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: Colors.grey[200],
-                                  textColor: kColorPrimary,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'cancel'.tr(),
-                                ),
-                                CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.33,
-                                  padding: EdgeInsets.all(10),
-                                  color: kColorPrimary,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  text: 'save'.tr(),
-                                ),
-                              ],
-                            ),
+                /// Form
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Form(
+                    key: courseAddFormKey,
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          children: isRequired ? skillsV1 : skillsV2,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[200],
+                                textColor: kColorPrimary,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'cancel'.tr(),
+                              ),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width * 0.33,
+                                padding: EdgeInsets.all(10),
+                                color: kColorPrimary,
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'save'.tr(),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              );
-            }
-          );
+                ),
+              ],
+            );
+          });
         });
   }
 
@@ -1304,7 +1305,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       "Требуется",
                                                       style: TextStyle(fontSize: 16, color: Colors.white),
                                                     )),
-
                                                 FlatButton(
                                                     color: kColorPrimaryDark,
                                                     onPressed: () => openSkillDialog(context, false),
@@ -1312,7 +1312,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       "Могут развить",
                                                       style: TextStyle(fontSize: 16, color: Colors.white),
                                                     )),
-
                                               ],
                                             ),
                                             // Column(
@@ -1943,8 +1942,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
-                                                skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
-                                                skillCategory.saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
+                                                skillCategory.saveVacancySkills(
+                                                    tags, selectedCategoryIdFromFirstChip, value, true);
+                                                skillCategory
+                                                    .saveVacancySkills(
+                                                        tags2, selectedCategoryIdSecondChip, value, false)
                                                     .then((value) {
                                                   StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                                                   Navigator.of(context).pop();
@@ -2155,6 +2157,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   bool is_profile = false;
+  Timer timer;
+  int receivedMessageCount = 0;
 
   @override
   void initState() {
@@ -2167,6 +2171,51 @@ class _HomeScreenState extends State<HomeScreen> {
     getInternshipLanguages();
     super.initState();
     buildSome(context);
+    if (Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
+      startTimerToCheckNewMessages(timer: timer, duration: Duration(seconds: 10));
+    } else {
+      timer.cancel();
+    }
+  }
+
+  void startTimerToCheckNewMessages({ Timer timer, Duration duration }) {
+    timer = Timer.periodic(duration, (Timer t) => checkForNewMessage());
+  }
+
+  void cancelTimer(Timer timer) {
+    timer.cancel();
+  }
+
+  void checkForNewMessage() async  {
+
+    Map<String, String> headers = {
+      "Content-type": "application/json",
+      "Authorization": Prefs.getString(Prefs.TOKEN)
+    };
+
+    var uri = Uri.parse(API_IP + API_MESSAGE_CHECK);
+    await http.post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)})).then((value) {
+      print("here================");
+      print("periodic working");
+
+      print(DateTime.now());
+      print(value);
+
+      var convert = json.decode(value.body);
+      print("convert.is_exist");
+      print(convert["is_exist"]);
+      print(convert);
+
+      if(convert["is_exist"])
+      {
+        Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
+        setState(() {
+          receivedMessageCount = convert["count"];
+        });
+      }
+
+      return convert;
+    });
   }
 
   bool is_special = false;
@@ -2252,9 +2301,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             )),
                     Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
                         ? BottomNavigationBarItem(
-                            icon: Icon(
-                              Boxicons.bx_folder,
-                              color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                            icon: Container(
+                              width: 50,
+                              height: 30,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0.0,
+                                    left: 0.0,
+                                    right: null,
+                                    child: Icon(
+                                      Boxicons.bx_folder,
+                                      color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 0.0,
+                                      right: 0.0,
+                                      child: Badge(
+                                        text: StoreProvider.of<AppState>(context)
+                                            .state
+                                            .vacancy
+                                            .number_of_likeds
+                                            .toString(),
+                                      )),
+                                ],
+                              ),
                             ),
                             title: Text(
                               "received".tr(),

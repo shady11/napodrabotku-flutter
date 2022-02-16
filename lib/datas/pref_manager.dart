@@ -12,6 +12,7 @@ class Prefs {
   static const String USER_TYPE = 'user_type';
   static const String OFFSET = 'offset';
   static const String ROUTE = 'route';
+  static const String MESSAGEDATE = 'message_date';
 
   static SharedPreferences _prefs;
   static Map<String, dynamic> _memoryPrefs = Map<String, dynamic>();
