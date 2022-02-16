@@ -524,6 +524,22 @@ class User {
     }
   }
 
+  static Future<List<dynamic>> deleteUser() async {
+    var userId = Prefs.getInt(Prefs.USER_ID);
+    final url = API_IP + 'deleteAccount/$userId';
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['message'] == "OK") {}
+    } catch (error) {
+      throw error;
+    }
+  }
+
   /// Filters
   void saveFilters(List regions, List districts, List activities, List types, List busyness, List schedules) async {
     // string to uri

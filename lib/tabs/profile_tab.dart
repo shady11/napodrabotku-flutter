@@ -18,6 +18,7 @@ import 'package:ishtapp/datas/user.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:flutter_guid/flutter_guid.dart';
+import 'package:ishtapp/components/custom_button.dart';
 
 class ProfileTab extends StatefulWidget {
   @override
@@ -42,6 +43,59 @@ class _ProfileTabState extends State<ProfileTab> {
     fontSize: 16.0,
     fontWeight: FontWeight.w500,
   );
+
+  showOnDeleteDialog(context, userId) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Center(
+        heightFactor: 1 / 2,
+        child: AlertDialog(
+          backgroundColor: kColorWhite,
+          title: Text(''),
+          content: Text(
+            "Если вы решили удалить аккаунт, вы потеряете всё – и профиль, и связанные с ним данные!",
+            style: TextStyle(color: kColorPrimary),
+            textAlign: TextAlign.center,
+          ),
+
+          actionsPadding: EdgeInsets.only(left: 5, right: 5, bottom: 10),
+          actions: <Widget>[
+            CustomButton(
+              width: MediaQuery.of(context).size.width * 0.3,
+              padding: EdgeInsets.all(10),
+              color: kColorPrimary,
+              textColor: Colors.white,
+              onPressed: () => Navigator.of(context).pop(),
+              text: 'cancel'.tr(),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              padding: EdgeInsets.all(10),
+              child: FlatButton(
+                child: Text(
+                  'delete'.tr(),
+                  style: TextStyle(color: kColorPrimary),
+                ),
+                onPressed: () {
+                  User.deleteUser().then((value) {
+                    Prefs.setString(Prefs.EMAIL, null);
+                    Prefs.setString(Prefs.PROFILEIMAGE, null);
+                    Prefs.setString(Prefs.PASSWORD, null);
+                    Prefs.setString(Prefs.TOKEN, null);
+                    Prefs.setString(Prefs.USER_TYPE, null);
+                    Prefs.setString(Prefs.ROUTE, null);
+                    Prefs.setInt(Prefs.USER_ID, null);
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pushReplacementNamed(context, Routes.select_mode);
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,6 +327,10 @@ class _ProfileTabState extends State<ProfileTab> {
                         /// Go to privacy policy
                         Navigator.pushNamed(context, Routes.user_policy);
                       },
+                    ),
+                    ListTile(
+                      title: Text("Удалить аккаунт".tr(), style: _textStyle),
+                      onTap: () => showOnDeleteDialog(context, 1),
                     ),
                     Prefs.getString(Prefs.USER_TYPE) == 'USER'
                         ? ListTile(
