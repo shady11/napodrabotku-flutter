@@ -290,7 +290,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   GestureDetector(
                     child: _imageFile == null
                         ? CircleAvatar(
-                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                            backgroundColor:
+                                Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                                 ? NetworkImage(
@@ -628,38 +629,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       : Container(),
 
                   /// Выбор Отрасли
-                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ?
-                  selectedJobSphere != null
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Отрасль'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
-                      : Container() : Container(),
-                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ?
-                    selectedJobSphere != null
-                      ? DropdownSearch<String>(
-                          showSelectedItem: true,
-                          items: departments,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedDepartment = value;
-                            });
-                          },
-                          dropdownSearchDecoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                          selectedItem: selectedDepartment)
-                      : Container()
-                    : Container(),
+                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                      ? selectedJobSphere != null
+                          ? Align(
+                              widthFactor: 10,
+                              heightFactor: 1.5,
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Отрасль'.tr(),
+                                style: TextStyle(fontSize: 16, color: Colors.black),
+                              ))
+                          : Container()
+                      : Container(),
+                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                      ? selectedJobSphere != null
+                          ? DropdownSearch<String>(
+                              showSelectedItem: true,
+                              items: departments,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedDepartment = value;
+                                });
+                              },
+                              dropdownSearchDecoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                              selectedItem: selectedDepartment)
+                          : Container()
+                      : Container(),
                   SizedBox(height: 20),
 
                   /// Социально-ориентированность
@@ -794,7 +796,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     width: double.maxFinite,
                     child: CustomButton(
                       padding: EdgeInsets.all(15),
-                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {

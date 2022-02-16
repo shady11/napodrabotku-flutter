@@ -135,6 +135,8 @@
     "school": "Школа",
     "training": "Обучение",
     "like": "В избранное",
+    "change_password": "Сменить пароль",
+    "reset_password": "Сброс пароля",
     "password_forgot_email": "Сброс пароля",
     "password_email_info_text": "Введите эл. почту для сброса пароля",
     "code": "Код",

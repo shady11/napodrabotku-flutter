@@ -261,15 +261,12 @@ class _ProfileTabState extends State<ProfileTab> {
                         Navigator.pushNamed(context, Routes.about);
                       },
                     ),
-                    Prefs.getString(Prefs.ROUTE) == 'PRODUCT_LAB'
-                        ? ListTile(
-                            title: Text("Сменить пароль".tr(), style: _textStyle),
-                            onTap: () {
-                              /// Go to About us
-                              Navigator.pushNamed(context, Routes.new_password);
-                            },
-                          )
-                        : Container(),
+                    ListTile(
+                      title: Text("change_password".tr(), style: _textStyle),
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.new_password);
+                      },
+                    ),
                     ListTile(
                       title: Text("privacy_policy".tr(), style: _textStyle),
                       onTap: () async {

@@ -133,6 +133,8 @@
     "school": "Мектеп",
     "training": "Окутуу",
     "like": "Танда",
+    "change_password": "Сырсөздү өзгөртүү",
+    "reset_password": "Сырсөз жаңыртуу",
     "password_forgot_email": "Сырсөз жаңыртуу ",
     "password_email_info_text": "Сырсөзүңүздү жаңыртыш үчүн э-дарегиңизди кириңиз",
     "code": "Код",

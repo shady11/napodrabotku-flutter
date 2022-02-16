@@ -56,9 +56,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 obscureText: _obscureText,
                 controller: _password_controller,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   filled: true,
                   fillColor: Colors.grey[200],
@@ -97,9 +95,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 controller: _password_confirm_controller,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   filled: true,
                   fillColor: Colors.grey[200],
@@ -121,8 +117,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   // Basic validation
                   if (name.isEmpty) {
                     return "please_fill_this_field".tr();
-                  } else if (_password_confirm_controller.text !=
-                      _password_controller.text) {
+                  } else if (_password_confirm_controller.text != _password_controller.text) {
                     return "passwords_dont_satisfy".tr();
                   }
                   return null;
@@ -132,18 +127,15 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               CustomButton(
                 padding: EdgeInsets.all(15),
                 width: MediaQuery.of(context).size.width * 0.5,
-                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                 textColor: Colors.white,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    User.resetPassword(
-                            new_password: _password_controller.text,
-                            email: Prefs.getString(Prefs.EMAIL))
+                    User.resetPassword(new_password: _password_controller.text, email: Prefs.getString(Prefs.EMAIL))
                         .then((value) {
                       if (value == "OK") {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        Navigator.pushNamed(context, Routes.signin);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.pushNamed(context, Routes.select_mode);
                       }
                     });
                   } else {
