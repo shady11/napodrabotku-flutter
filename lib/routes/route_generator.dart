@@ -17,6 +17,7 @@ import 'package:ishtapp/screens/validate_code_screen.dart';
 import 'package:ishtapp/screens/forgot_password_email_screen.dart';
 import 'package:ishtapp/screens/new_password_screen.dart';
 import 'package:ishtapp/screens/select_mode_screen.dart';
+import 'package:ishtapp/screens/edit_vacancy.dart';
 import 'package:ishtapp/screens_product_lab/start_screen.dart';
 import 'package:ishtapp/screens_product_lab/home_screen.dart';
 import 'package:ishtapp/screens_product_lab/sign_up_screen.dart';
@@ -82,6 +83,9 @@ class RouteGenerator {
 
       case Routes.product_lab_sign_up:
         return CupertinoPageRoute(builder: (_) => ProductLabSignUp());
+
+      case Routes.edit_vacancy:
+        return CupertinoPageRoute(builder: (_) => EditVacancy());
 
       case Routes.error:
         return _errorRoute();

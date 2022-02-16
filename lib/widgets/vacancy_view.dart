@@ -14,6 +14,7 @@ import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/Skill.dart';
+import 'package:ishtapp/screens/edit_vacancy.dart';
 
 class VacancyView extends StatefulWidget {
   /// User object
@@ -91,7 +92,7 @@ class _VacancyViewState extends State<VacancyView> {
   }
 
   initData() {
-    if(widget.vacancySkill != null) {
+    if (widget.vacancySkill != null) {
       data = widget.vacancySkill;
     } else {
       VacancySkill.getVacancySkills(widget.vacancy.id).then((value) {
@@ -122,11 +123,9 @@ class _VacancyViewState extends State<VacancyView> {
             alignment: Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+              decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
               child: Text(item.name, style: TextStyle(color: Colors.black87)),
             ),
-            // Text(item.name, textAlign: TextAlign.left),
           ));
         } else {
           listings.add(
@@ -135,11 +134,9 @@ class _VacancyViewState extends State<VacancyView> {
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                    color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                 child: Text(item.name, style: TextStyle(color: Colors.black87)),
               ),
-              // Text(item.name, textAlign: TextAlign.left),
             ),
           );
         }
@@ -280,12 +277,14 @@ class _VacancyViewState extends State<VacancyView> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      widget.vacancy.salary != null ? Flexible(
-                                          child: Text(
-                                        widget.vacancy.salary != null ? widget.vacancy.salary : '',
-                                        style:
-                                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                      )) : Container(),
+                                      widget.vacancy.salary != null
+                                          ? Flexible(
+                                              child: Text(
+                                              widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                                              style: TextStyle(
+                                                  fontSize: 20, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                            ))
+                                          : Container(),
                                     ],
                                   ),
                             SizedBox(height: 5),
@@ -457,15 +456,17 @@ class _VacancyViewState extends State<VacancyView> {
                                   )
                                 : Container(),
 
-                            isProductLabVacancy ? Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "Навыки",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                              ),
-                            ) : Container(),
+                            isProductLabVacancy
+                                ? Align(
+                                    widthFactor: 10,
+                                    heightFactor: 1.5,
+                                    alignment: Alignment.topCenter,
+                                    child: Text(
+                                      "Навыки",
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                    ),
+                                  )
+                                : Container(),
 
                             isProductLabVacancy
                                 ? Column(
@@ -551,49 +552,67 @@ class _VacancyViewState extends State<VacancyView> {
                               children: [
                                 widget.page == 'discover'
                                     ? Container()
-                                    : widget.page == 'submitted' ||
-                                            widget.page == 'inactive' ||
-                                            widget.page == 'company_view'
-                                        ? Container()
-                                        : Center(
+                                    : widget.page == 'company_view'
+                                        ? Center(
                                             child: CustomButton(
-                                              width: MediaQuery.of(context).size.width * 0.35,
+                                              width: MediaQuery.of(context).size.width * 0.45,
                                               padding: EdgeInsets.all(5),
-                                              color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                              color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                  ? kColorProductLab
+                                                  : kColorPrimary,
                                               textColor: Colors.white,
-                                              onPressed: () {
-                                                Prefs.getString(Prefs.TOKEN) == null
-                                                    ? _showDialog(context, 'sign_in_to_submit'.tr())
-                                                    : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                                        Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
-                                                            .then((value) {
-                                                          if (value == "OK") {
-                                                            _showDialog1(context, "successfully_submitted".tr());
-                                                            StoreProvider.of<AppState>(context)
-                                                                .state
-                                                                .vacancy
-                                                                .list
-                                                                .data
-                                                                .remove(widget.vacancy);
-                                                            StoreProvider.of<AppState>(context)
-                                                                .dispatch(getSubmittedVacancies());
-                                                            StoreProvider.of<AppState>(context)
-                                                                .dispatch(getNumberOfSubmittedVacancies());
-                                                          } else {
-                                                            _showDialog(
-                                                                context, "some_error_occurred_try_again".tr());
-                                                          }
-                                                        });
-                                                        // if (value) {
-                                                        //
-                                                        // } else {
-                                                        //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                                        // }
-                                                      });
-                                              },
-                                              text: 'submit'.tr(),
+                                              onPressed: () => Navigator.of(context).push(
+                                                  MaterialPageRoute(builder: (BuildContext context) => EditVacancy(
+                                                    vacancy: widget.vacancy,
+                                                    vacancySkill: widget.vacancySkill,
+                                                  ))),
+                                              text: 'edit'.tr(),
                                             ),
-                                          ),
+                                          )
+                                        : widget.page == 'submitted' || widget.page == 'inactive'
+                                            ? Container()
+                                            : Center(
+                                                child: CustomButton(
+                                                  width: MediaQuery.of(context).size.width * 0.35,
+                                                  padding: EdgeInsets.all(5),
+                                                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                      ? kColorProductLab
+                                                      : kColorPrimary,
+                                                  textColor: Colors.white,
+                                                  onPressed: () {
+                                                    Prefs.getString(Prefs.TOKEN) == null
+                                                        ? _showDialog(context, 'sign_in_to_submit'.tr())
+                                                        : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
+                                                            Vacancy.saveVacancyUser(
+                                                                    vacancy_id: widget.vacancy.id, type: "SUBMITTED")
+                                                                .then((value) {
+                                                              if (value == "OK") {
+                                                                _showDialog1(context, "successfully_submitted".tr());
+                                                                StoreProvider.of<AppState>(context)
+                                                                    .state
+                                                                    .vacancy
+                                                                    .list
+                                                                    .data
+                                                                    .remove(widget.vacancy);
+                                                                StoreProvider.of<AppState>(context)
+                                                                    .dispatch(getSubmittedVacancies());
+                                                                StoreProvider.of<AppState>(context)
+                                                                    .dispatch(getNumberOfSubmittedVacancies());
+                                                              } else {
+                                                                _showDialog(
+                                                                    context, "some_errors_occured_try_again".tr());
+                                                              }
+                                                            });
+                                                            // if (value) {
+                                                            //
+                                                            // } else {
+                                                            //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                                            // }
+                                                          });
+                                                  },
+                                                  text: 'submit'.tr(),
+                                                ),
+                                              ),
                               ],
                             ),
                           )
