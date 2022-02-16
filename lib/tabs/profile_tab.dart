@@ -76,7 +76,8 @@ class _ProfileTabState extends State<ProfileTab> {
                           padding: const EdgeInsets.all(3.0),
                           decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                           child: CircleAvatar(
-                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
+                            backgroundColor:
+                                Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                                 ? NetworkImage(
@@ -114,21 +115,23 @@ class _ProfileTabState extends State<ProfileTab> {
                             : MainAxisAlignment.center,
                         children: [
                           Prefs.getString(Prefs.TOKEN) != null
-                              ? Prefs.getString(Prefs.USER_TYPE) == "USER" ?
-                                SizedBox(
-                                  child: CustomButton(
-                                    height: 50.0,
-                                    padding: EdgeInsets.all(10),
-                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
-                                    textColor: Colors.white,
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(Routes.user_details);
-                                    },
-                                    text: 'profile'.tr(),
-                                  ),
-                                )
-                              : Container() : Container(),
+                              ? Prefs.getString(Prefs.USER_TYPE) == "USER"
+                                  ? SizedBox(
+                                      child: CustomButton(
+                                        height: 50.0,
+                                        padding: EdgeInsets.all(10),
+                                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                            ? kColorProductLab
+                                            : kColorPrimary,
+                                        textColor: Colors.white,
+                                        onPressed: () {
+                                          Navigator.of(context).pushNamed(Routes.user_details);
+                                        },
+                                        text: 'profile'.tr(),
+                                      ),
+                                    )
+                                  : Container()
+                              : Container(),
                           Prefs.getString(Prefs.TOKEN) != null
                               ? SizedBox(
                                   child: CustomButton(
@@ -258,6 +261,15 @@ class _ProfileTabState extends State<ProfileTab> {
                         Navigator.pushNamed(context, Routes.about);
                       },
                     ),
+                    Prefs.getString(Prefs.ROUTE) == 'PRODUCT_LAB'
+                        ? ListTile(
+                            title: Text("Сменить пароль".tr(), style: _textStyle),
+                            onTap: () {
+                              /// Go to About us
+                              Navigator.pushNamed(context, Routes.new_password);
+                            },
+                          )
+                        : Container(),
                     ListTile(
                       title: Text("privacy_policy".tr(), style: _textStyle),
                       onTap: () async {
