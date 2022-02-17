@@ -684,6 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController _vacancy_salary_from_controller = TextEditingController();
   TextEditingController _vacancy_salary_to_controller = TextEditingController();
   TextEditingController _vacancy_description_controller = TextEditingController();
+  TextEditingController _vacancy_link_controller = TextEditingController();
   TextEditingController _ageFromController = TextEditingController();
   TextEditingController _ageToController = TextEditingController();
   TextEditingController _contact_person_full_name_controller = TextEditingController();
@@ -1409,7 +1410,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
                                               selectedItem: selectedTypeOfRecommendedLetter,
                                             ),
-                                            SizedBox(height: 20),
                                           ],
                                         )
                                       : Container(),
@@ -1835,9 +1835,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 );
                                               }).toList(),
                                             ),
+                                            SizedBox(height: 20),
                                           ],
                                         )
                                       : Container(),
+
+                                  /// Ссылка на сайт
+                                  Column(
+                                    children: <Widget>[
+                                      Align(
+                                          widthFactor: 10,
+                                          heightFactor: 1.5,
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Ссылка на сайт'.tr(),
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          )),
+                                      TextFormField(
+                                        controller: _vacancy_link_controller,
+                                        focusNode: FocusNode(canRequestFocus: false),
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          filled: true,
+                                          fillColor: Colors.grey[200],
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                    ],
+                                  ),
 
                                   work == work_mode.isWork ? SizedBox(height: 20) : Container(),
                                   work == work_mode.isWork
@@ -1912,6 +1940,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ageFrom: _ageFromController.text,
                                                 ageTo: _ageToController.text,
                                                 isProductLabVacancy: work_mode.isTraining == work,
+                                                vacancyLink: _vacancy_link_controller.text,
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
@@ -1933,6 +1962,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               _vacancy_description_controller = TextEditingController();
                                               _ageFromController = TextEditingController();
                                               _ageToController = TextEditingController();
+                                              _vacancy_link_controller = TextEditingController();
                                               setState(() {
                                                 _schedule_id = null;
                                                 _busyness_id = null;

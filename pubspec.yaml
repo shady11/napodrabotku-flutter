@@ -45,7 +45,7 @@ dependencies:
   web_socket_channel: ^1.2.0
   masked_text: ^0.0.6
   email_validator: '^1.0.5'
-  url_launcher: any
+  url_launcher: ^5.7.2
   socket_io_client: ^0.9.12
 #  gx_file_picker: ^1.9.0+2
   intl_phone_number_input: ^0.6.0

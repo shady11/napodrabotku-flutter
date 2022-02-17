@@ -15,6 +15,7 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:ishtapp/constants/configs.dart';
 import 'package:ishtapp/datas/Skill.dart';
 import 'package:ishtapp/screens/edit_vacancy.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VacancyView extends StatefulWidget {
   /// User object
@@ -149,6 +150,19 @@ class _VacancyViewState extends State<VacancyView> {
     initData();
     vacancySkills();
     super.initState();
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceWebView: true,
+        enableJavaScript: true,
+        forceSafariVC: true,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -456,6 +470,43 @@ class _VacancyViewState extends State<VacancyView> {
                                   )
                                 : Container(),
 
+                            /// Ссылка на сайт
+                            widget.vacancy.vacancyLink != null ? SizedBox(height: 20) : Container(),
+                            widget.vacancy.vacancyLink != null
+                                ? CustomButton(
+                                    width: MediaQuery.of(context).size.width * 0.45,
+                                    padding: EdgeInsets.all(5),
+                                    color: kColorPrimary,
+                                    textColor: Colors.white,
+                                    onPressed: () => _launchURL(widget.vacancy.vacancyLink),
+                                    text: 'Перейти на сайт'.tr(),
+                                  )
+                                : Container(),
+                            SizedBox(height: 20),
+                            // Flex(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   direction: Axis.horizontal,
+                            //   children: [
+                            //     Flexible(
+                            //       child: Text(
+                            //         "Ссылка на сайт",
+                            //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                            //       ),
+                            //     ),
+                            //     Flexible(
+                            //       child: Container(
+                            //         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            //         decoration:
+                            //             BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                            //         child: Text(
+                            //           widget.vacancy.vacancyLink ?? "",
+                            //           style: TextStyle(color: Colors.black87),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+
                             isProductLabVacancy
                                 ? Align(
                                     widthFactor: 10,
@@ -560,11 +611,11 @@ class _VacancyViewState extends State<VacancyView> {
                                                   ? kColorProductLab
                                                   : kColorPrimary,
                                               textColor: Colors.white,
-                                              onPressed: () => Navigator.of(context).push(
-                                                  MaterialPageRoute(builder: (BuildContext context) => EditVacancy(
-                                                    vacancy: widget.vacancy,
-                                                    vacancySkill: widget.vacancySkill,
-                                                  ))),
+                                              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                                                  builder: (BuildContext context) => EditVacancy(
+                                                        vacancy: widget.vacancy,
+                                                        vacancySkill: widget.vacancySkill,
+                                                      ))),
                                               text: 'edit'.tr(),
                                             ),
                                           )
