@@ -92,7 +92,7 @@ class _VacancyViewState extends State<VacancyView> {
   }
 
   initData() {
-    if (widget.vacancySkill != null) {
+    if (widget.vacancySkill != null && widget.vacancySkill.length > 0) {
       data = widget.vacancySkill;
     } else {
       VacancySkill.getVacancySkills(widget.vacancy.id).then((value) {
@@ -524,8 +524,7 @@ class _VacancyViewState extends State<VacancyView> {
 
                             isProductLabVacancy
                                 ? Container()
-                                : Expanded(
-                                    flex: 1,
+                                : Container(
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: RichText(

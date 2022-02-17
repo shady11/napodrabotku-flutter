@@ -213,7 +213,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     //         ],
                     //       ),
 
-                    widget.vacancy.opportunity != null ? Flex(
+                    widget.vacancy.opportunity != null && isProductLabVacancy ? Flex(
                       direction: Axis.horizontal,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
