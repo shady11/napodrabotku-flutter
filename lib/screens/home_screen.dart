@@ -2177,7 +2177,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     buildSome(context);
     if (Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
-      startTimerToCheckNewMessages(timer: timer, duration: Duration(seconds: 10));
+      startTimerToCheckNewMessages(timer: timer, duration: Duration(minutes: 3));
     } else {
       timer.cancel();
     }
@@ -2201,28 +2201,17 @@ class _HomeScreenState extends State<HomeScreen> {
     Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
 
     var uri = Uri.parse(API_IP + API_MESSAGE_CHECK);
-    var d = Prefs.getString(Prefs.MESSAGEDATE);
     await http
         .post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)}))
         .then((value) {
-      print("here================");
-      print("periodic working");
-
-      print(DateTime.now());
-      print(value);
 
       var convert = json.decode(value.body);
-      print("convert.is_exist");
-      print(convert["is_exist"]);
-      print(convert);
-      print("aaaaeee");
-      print(convert['created_at']);
       Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
       if (convert["is_exist"]) {
         setState(() {
           receivedMessageCount = convert["count"];
         });
-        showNotification("HELLOOOOOOO", flp);
+        showNotification("Уведомления", flp);
       }
 
       return convert;
@@ -2246,7 +2235,7 @@ class _HomeScreenState extends State<HomeScreen> {
         priority: Priority.high, importance: Importance.max);
     var iOS = IOSNotificationDetails();
     var platform = NotificationDetails(android: android, iOS: iOS);
-    await flp.show(0, 'Virtual intelligent solution', '$v', platform, payload: 'VIS \n $v');
+    await flp.show(0, 'Посмотрите уведомления от Ishtapp', '$v', platform, payload: 'VIS \n $v');
   }
 
   bool is_special = false;
