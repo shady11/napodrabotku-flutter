@@ -153,15 +153,10 @@ class _VacancyViewState extends State<VacancyView> {
   }
 
   _launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceWebView: true,
-        enableJavaScript: true,
-        forceSafariVC: true,
-      );
-    } else {
-      throw 'Could not launch $url';
+    try {
+      await launch(url);
+    } catch (e) {
+      throw 'Could not launch $url \n Error: $e';
     }
   }
 
