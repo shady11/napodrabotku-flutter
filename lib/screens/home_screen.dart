@@ -1227,6 +1227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: TextFormField(
                                                   controller: _ageFromController,
                                                   keyboardType: TextInputType.number,
+                                                  focusNode: FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
                                                   inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                                   ],
@@ -1264,6 +1265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                                   ],
+                                                  focusNode: FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
                                                   decoration: InputDecoration(
                                                     border: OutlineInputBorder(
                                                         borderRadius: BorderRadius.circular(10),
@@ -1917,10 +1919,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: kColorPrimary,
                                           textColor: Colors.white,
                                           onPressed: () {
+                                            var linkResultSubstring = "";
                                             if (_vacancyAddFormKey.currentState.validate()) {
                                               setState(() {
                                                 loading = true;
                                               });
+
+                                              if(_vacancy_link_controller != null && _vacancy_link_controller.text.isNotEmpty) {
+                                                var vacancySubstring = _vacancy_link_controller.text.substring(0, 4);
+                                                if(vacancySubstring != "http") {
+                                                  linkResultSubstring = 'http://${_vacancy_link_controller.text}';
+                                                } else {
+                                                  linkResultSubstring = _vacancy_link_controller.text;
+                                                }
+                                              } else {
+                                                linkResultSubstring = "";
+                                              }
+
                                               Vacancy company_vacancy = new Vacancy(
                                                 name: _vacancy_name_controller.text,
                                                 salary: _vacancy_salary_controller.text,
@@ -1943,7 +1958,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ageFrom: _ageFromController.text,
                                                 ageTo: _ageToController.text,
                                                 isProductLabVacancy: work_mode.isTraining == work,
-                                                vacancyLink: _vacancy_link_controller.text,
+                                                vacancyLink: linkResultSubstring,
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
@@ -2177,7 +2192,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     buildSome(context);
     if (Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
-      startTimerToCheckNewMessages(timer: timer, duration: Duration(minutes: 3));
+      startTimerToCheckNewMessages(timer: timer, duration: Duration(seconds: 60));
     } else {
       timer.cancel();
     }
@@ -2190,6 +2205,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void cancelTimer(Timer timer) {
     timer.cancel();
   }
+
 
   void checkForNewMessage() async {
     FlutterLocalNotificationsPlugin flp = FlutterLocalNotificationsPlugin();
@@ -2205,7 +2221,9 @@ class _HomeScreenState extends State<HomeScreen> {
         .post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)}))
         .then((value) {
 
+
       var convert = json.decode(value.body);
+      print(convert);
       Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
       if (convert["is_exist"]) {
         setState(() {

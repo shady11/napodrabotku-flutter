@@ -469,12 +469,12 @@ class _VacancyViewState extends State<VacancyView> {
                             widget.vacancy.vacancyLink != null ? SizedBox(height: 20) : Container(),
                             widget.vacancy.vacancyLink != null
                                 ? CustomButton(
-                                    width: MediaQuery.of(context).size.width * 0.45,
+                                    width: MediaQuery.of(context).size.width * 0.65,
                                     padding: EdgeInsets.all(5),
                                     color: kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () => _launchURL(widget.vacancy.vacancyLink),
-                                    text: 'Перейти на сайт'.tr(),
+                                    text: 'Перейти по ссылке'.tr(),
                                   )
                                 : Container(),
                             SizedBox(height: 20),
