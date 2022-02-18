@@ -170,7 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     padding: EdgeInsets.all(20),
                     child:
-
                     /// Form
                     Column(
                       children: <Widget>[
