@@ -2193,8 +2193,6 @@ class _HomeScreenState extends State<HomeScreen> {
     buildSome(context);
     if (Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
       startTimerToCheckNewMessages(timer: timer, duration: Duration(seconds: 60));
-    } else {
-      timer.cancel();
     }
   }
 
@@ -2205,7 +2203,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void cancelTimer(Timer timer) {
     timer.cancel();
   }
-
 
   void checkForNewMessage() async {
     FlutterLocalNotificationsPlugin flp = FlutterLocalNotificationsPlugin();
