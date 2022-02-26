@@ -50,21 +50,21 @@ class ProfileVisitsScreen extends StatelessWidget {
                           children: data.map((vacancy) {
                         return GestureDetector(
                           child: ProfileCard(vacancy: vacancy, page: "submit"),
-                          // onTap: () {
-                          //   Navigator.of(context).push(MaterialPageRoute(
-                          //       builder: (BuildContext context) {
-                          //     return Scaffold(
-                          //       backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                          //       appBar: AppBar(
-                          //         title: Text("vacancy_view".tr()),
-                          //       ),
-                          //       body: VacancyView(
-                          //         page: "submitted",
-                          //         vacancy: vacancy,
-                          //       ),
-                          //     );
-                          //   }));
-                          // },
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return Scaffold(
+                                backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                appBar: AppBar(
+                                  title: Text("vacancy_view".tr()),
+                                ),
+                                body: VacancyView(
+                                  page: "submitted",
+                                  vacancy: vacancy,
+                                ),
+                              );
+                            }));
+                          },
                         );
                       }).toList()),
                     )

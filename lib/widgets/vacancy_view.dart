@@ -612,50 +612,63 @@ class _VacancyViewState extends State<VacancyView> {
                                               text: 'edit'.tr(),
                                             ),
                                           )
-                                        : widget.page == 'submitted' || widget.page == 'inactive'
-                                            ? Container()
-                                            : Center(
-                                                child: CustomButton(
-                                                  width: MediaQuery.of(context).size.width * 0.35,
-                                                  padding: EdgeInsets.all(5),
-                                                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
-                                                      ? kColorProductLab
-                                                      : kColorPrimary,
-                                                  textColor: Colors.white,
-                                                  onPressed: () {
-                                                    Prefs.getString(Prefs.TOKEN) == null
-                                                        ? _showDialog(context, 'sign_in_to_submit'.tr())
-                                                        : User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                                            Vacancy.saveVacancyUser(
-                                                                    vacancy_id: widget.vacancy.id, type: "SUBMITTED")
+                                        : widget.page == 'submitted'
+                                            ? Container(
+                                                child: Text("На рассмотрении",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontFamily: 'GTEestiProDisplay',
+                                                    )),
+                                              )
+                                            : widget.page == 'inactive'
+                                                ? Container()
+                                                : Center(
+                                                    child: CustomButton(
+                                                      width: MediaQuery.of(context).size.width * 0.35,
+                                                      padding: EdgeInsets.all(5),
+                                                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                          ? kColorProductLab
+                                                          : kColorPrimary,
+                                                      textColor: Colors.white,
+                                                      onPressed: () {
+                                                        Prefs.getString(Prefs.TOKEN) == null
+                                                            ? _showDialog(context, 'sign_in_to_submit'.tr())
+                                                            : User.checkUserCv(Prefs.getInt(Prefs.USER_ID))
                                                                 .then((value) {
-                                                              if (value == "OK") {
-                                                                _showDialog1(context, "successfully_submitted".tr());
-                                                                StoreProvider.of<AppState>(context)
-                                                                    .state
-                                                                    .vacancy
-                                                                    .list
-                                                                    .data
-                                                                    .remove(widget.vacancy);
-                                                                StoreProvider.of<AppState>(context)
-                                                                    .dispatch(getSubmittedVacancies());
-                                                                StoreProvider.of<AppState>(context)
-                                                                    .dispatch(getNumberOfSubmittedVacancies());
-                                                              } else {
-                                                                _showDialog(
-                                                                    context, "some_errors_occured_try_again".tr());
-                                                              }
-                                                            });
-                                                            // if (value) {
-                                                            //
-                                                            // } else {
-                                                            //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                                            // }
-                                                          });
-                                                  },
-                                                  text: 'submit'.tr(),
-                                                ),
-                                              ),
+                                                                Vacancy.saveVacancyUser(
+                                                                        vacancy_id: widget.vacancy.id,
+                                                                        type: "SUBMITTED")
+                                                                    .then((value) {
+                                                                  if (value == "OK") {
+                                                                    _showDialog1(
+                                                                        context, "successfully_submitted".tr());
+                                                                    StoreProvider.of<AppState>(context)
+                                                                        .state
+                                                                        .vacancy
+                                                                        .list
+                                                                        .data
+                                                                        .remove(widget.vacancy);
+                                                                    StoreProvider.of<AppState>(context)
+                                                                        .dispatch(getSubmittedVacancies());
+                                                                    StoreProvider.of<AppState>(context)
+                                                                        .dispatch(getNumberOfSubmittedVacancies());
+                                                                  } else {
+                                                                    _showDialog(
+                                                                        context, "some_errors_occured_try_again".tr());
+                                                                  }
+                                                                });
+                                                                // if (value) {
+                                                                //
+                                                                // } else {
+                                                                //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                                                // }
+                                                              });
+                                                      },
+                                                      text: 'submit'.tr(),
+                                                    ),
+                                                  ),
                               ],
                             ),
                           )

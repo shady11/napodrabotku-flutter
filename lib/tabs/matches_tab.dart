@@ -129,7 +129,8 @@ class _MatchesTabState extends State<MatchesTab> {
               body = Column(
                 children: [
                   Expanded(
-                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
+                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data != null &&
+                        StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
                         ? UsersGrid(
                             children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
                             return GestureDetector(
@@ -143,7 +144,6 @@ class _MatchesTabState extends State<MatchesTab> {
                                       page: 'match',
                                     ),
                               onTap: () {
-
                                 VacancySkill.getVacancySkills(vacancy.id).then((value) {
                                   List<VacancySkill> vacancySkills = [];
 

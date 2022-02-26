@@ -281,7 +281,8 @@ class User {
         return "ERROR";
         throw HttpException(responseData['status'].toString());
       } else if (responseData['status'] == 888) {
-        throw HttpException(responseData['status'].toString());
+        return "ERROR";
+        // throw HttpException(responseData['status'].toString());
       } else if (responseData['token'] != null) {
         this.password = password;
         Prefs.setString('password', password);

@@ -1970,7 +1970,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       loading = false;
                                                     });
                                                     Navigator.of(context).pop();
-                                                    Navigator.of(context).pop();
                                                   });
                                                 } else {
                                                   StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());

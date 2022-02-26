@@ -312,8 +312,11 @@ class Vacancy {
       final response = await http.post(url,
           headers: headers,
           body: json.encode({'vacancy_id': vacancy_id, 'type': type}));
-      print(response.body);
-      return "OK";
+      if(response.statusCode == 200) {
+        return "OK";
+      } else {
+        return "ERROR";
+      }
     } catch (error) {
       return "ERROR";
       throw error;
