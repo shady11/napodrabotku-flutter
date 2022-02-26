@@ -321,7 +321,7 @@ class Vacancy {
   }
 
   static Future<String> saveCompanyVacancy({Vacancy vacancy}) async {
-    final url = API_IP + API_VACANCY_SAVE;
+    final url = API_IP + API_VACANCY_SAVE + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

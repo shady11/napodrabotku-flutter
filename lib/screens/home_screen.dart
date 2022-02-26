@@ -1471,7 +1471,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     hint: Text("currency".tr()),
                                                     value: _currency_id,
                                                     onChanged: (int newValue) async {
-                                                      await getDistrictsById(newValue);
                                                       setState(() {
                                                         _currency_id = newValue;
                                                       });
@@ -1494,7 +1493,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     hint: Text("currency".tr()),
                                                     value: _currency_id,
                                                     onChanged: (int newValue) async {
-                                                      await getDistrictsById(newValue);
                                                       setState(() {
                                                         _currency_id = newValue;
                                                       });
@@ -1962,18 +1960,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
-                                                skillCategory.saveVacancySkills(
-                                                    tags, selectedCategoryIdFromFirstChip, value, true);
-                                                skillCategory
-                                                    .saveVacancySkills(
-                                                        tags2, selectedCategoryIdSecondChip, value, false)
-                                                    .then((value) {
+                                                if(work == work_mode.isTraining) {
+                                                  skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
+                                                  skillCategory
+                                                      .saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
+                                                      .then((value) {
+                                                    StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                } else {
                                                   StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                                  setState(() {
+                                                    loading = false;
+                                                  });
                                                   Navigator.of(context).pop();
-                                                });
-                                                setState(() {
-                                                  loading = false;
-                                                });
+                                                }
                                               });
 
                                               _vacancy_name_controller = TextEditingController();

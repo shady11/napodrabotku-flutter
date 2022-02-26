@@ -598,23 +598,20 @@ class _VacancyViewState extends State<VacancyView> {
                                 widget.page == 'discover'
                                     ? Container()
                                     : widget.page == 'company_view'
-                                        ? Container()
-                                // Center(
-                                //             child: CustomButton(
-                                //               width: MediaQuery.of(context).size.width * 0.45,
-                                //               padding: EdgeInsets.all(5),
-                                //               color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
-                                //                   ? kColorProductLab
-                                //                   : kColorPrimary,
-                                //               textColor: Colors.white,
-                                //               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                                //                   builder: (BuildContext context) => EditVacancy(
-                                //                         vacancy: widget.vacancy,
-                                //                         vacancySkill: widget.vacancySkill,
-                                //                       ))),
-                                //               text: 'edit'.tr(),
-                                //             ),
-                                //           )
+                                        ? Center(
+                                            child: CustomButton(
+                                              width: MediaQuery.of(context).size.width * 0.5,
+                                              padding: EdgeInsets.all(5),
+                                              color: kColorPrimary,
+                                              textColor: Colors.white,
+                                              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                                                  builder: (BuildContext context) => EditVacancy(
+                                                        vacancy: widget.vacancy,
+                                                        vacancySkill: widget.vacancySkill,
+                                                      ))),
+                                              text: 'edit'.tr(),
+                                            ),
+                                          )
                                         : widget.page == 'submitted' || widget.page == 'inactive'
                                             ? Container()
                                             : Center(

@@ -15,6 +15,7 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
+
 enum work_mode { work, training }
 
 class EditVacancy extends StatefulWidget {
@@ -71,6 +72,7 @@ class _EditVacancyState extends State<EditVacancy> {
 
   work_mode work;
   bool salary_by_agreement;
+  bool by_agreement = false;
   bool loading = false;
   bool isValid = false;
   bool is_disability_person_vacancy = false;
@@ -135,6 +137,7 @@ class _EditVacancyState extends State<EditVacancy> {
   }
 
   getDistrictsByRegionName(region) async {
+    districtList = [];
     districtList = await Vacancy.getLists('districts', region);
     districtList.forEach((district) {
       setState(() {
@@ -588,10 +591,13 @@ class _EditVacancyState extends State<EditVacancy> {
       }
     });
     await Vacancy.getLists('region', null).then((value) {
+      regionList = value;
       value.forEach((region) {
         regions.add(region["name"]);
       });
     });
+
+    getDistrictsByRegionName(widget.vacancy.region);
   }
 
   //endregion
@@ -606,9 +612,10 @@ class _EditVacancyState extends State<EditVacancy> {
   //endregion
 
   void init() {
+    widget.vacancy.isProductLabVacancy ? work = work_mode.training : work = work_mode.work;
+    // work = work_mode.work;
     //region training init
-    // widget.vacancy.isProductLabVacancy ? work = work_mode.training : work = work_mode.work;
-    work = work_mode.work;
+
     opportunity = widget.vacancy.opportunity;
     opportunityType = widget.vacancy.opportunityType;
     selectedInternshipType = widget.vacancy.internshipLanguage;
@@ -628,6 +635,7 @@ class _EditVacancyState extends State<EditVacancy> {
     _vacancy_description_controller.text = widget.vacancy.description;
 
     salary_by_agreement = widget.vacancy.salary != null;
+    by_agreement = widget.vacancy.salary != null && widget.vacancy.salary.toLowerCase() == 'по договоренности';
 
     selectedRegion = widget.vacancy.region;
     selectedDistrict = widget.vacancy.district;
@@ -638,7 +646,7 @@ class _EditVacancyState extends State<EditVacancy> {
   getVS() {
     var list = widget.vacancySkill;
     list.forEach((item) {
-      if (!item.isRequired)
+      if (item.isRequired)
         tags.add(item.name);
       else
         tags2.add(item.name);
@@ -660,6 +668,12 @@ class _EditVacancyState extends State<EditVacancy> {
     super.initState();
   }
 
+  // getRegionId(String regionName) {
+  //   regions.forEach((item) {
+  //       if(item == )
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -672,12 +686,19 @@ class _EditVacancyState extends State<EditVacancy> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'edit'.tr(),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
-                )),
+            work == work_mode.work
+                ? Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'work'.tr(),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                    ))
+                : Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'improve_qualification'.tr(),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                    )),
             SizedBox(
               height: 20,
             ),
@@ -1043,16 +1064,6 @@ class _EditVacancyState extends State<EditVacancy> {
                                         style: TextStyle(fontSize: 16, color: Colors.black),
                                       )),
                                 ),
-                                Flexible(
-                                  child: Align(
-                                      widthFactor: 10,
-                                      heightFactor: 1.5,
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        widget.vacancy.salary != null ? widget.vacancy.salary : "",
-                                        style: TextStyle(fontSize: 16, color: Colors.black),
-                                      )),
-                                ),
                               ],
                             ),
                             salary_by_agreement
@@ -1060,7 +1071,6 @@ class _EditVacancyState extends State<EditVacancy> {
                                     hint: Text("currency".tr()),
                                     value: _currency_id,
                                     onChanged: (int newValue) async {
-                                      await getDistrictsById(newValue);
                                       setState(() {
                                         _currency_id = newValue;
                                       });
@@ -1083,7 +1093,6 @@ class _EditVacancyState extends State<EditVacancy> {
                                     hint: Text("currency".tr()),
                                     value: _currency_id,
                                     onChanged: (int newValue) async {
-                                      await getDistrictsById(newValue);
                                       setState(() {
                                         _currency_id = newValue;
                                       });
@@ -1110,7 +1119,6 @@ class _EditVacancyState extends State<EditVacancy> {
                                 flex: 1,
                                 child: salary_by_agreement
                                     ? TextFormField(
-                                        enabled: false,
                                         controller: _vacancy_salary_from_controller,
                                         focusNode: FocusNode(canRequestFocus: false),
                                         decoration: InputDecoration(
@@ -1153,7 +1161,6 @@ class _EditVacancyState extends State<EditVacancy> {
                                 flex: 1,
                                 child: salary_by_agreement
                                     ? TextFormField(
-                                        enabled: false,
                                         controller: _vacancy_salary_to_controller,
                                         focusNode: FocusNode(canRequestFocus: false),
                                         decoration: InputDecoration(
@@ -1192,15 +1199,15 @@ class _EditVacancyState extends State<EditVacancy> {
                             CustomButton(
                               width: MediaQuery.of(context).size.width * 1,
                               padding: EdgeInsets.all(10),
-                              color: salary_by_agreement ? kColorPrimary : Colors.grey[200],
-                              textColor: salary_by_agreement ? Colors.white : kColorPrimary,
+                              color: by_agreement ? kColorPrimary : Colors.grey[200],
+                              textColor: by_agreement ? Colors.white : kColorPrimary,
                               onPressed: () {
                                 setState(() {
-                                  salary_by_agreement = !salary_by_agreement;
+                                  by_agreement = !by_agreement;
                                 });
-                                salary_by_agreement
+                                by_agreement
                                     ? _vacancy_salary_controller.text = 'По договоренности'
-                                    : TextEditingController();
+                                    : _vacancy_salary_controller = TextEditingController();
                               },
                               text: 'by_agreement'.tr(),
                             ),
@@ -1260,10 +1267,12 @@ class _EditVacancyState extends State<EditVacancy> {
                               showSelectedItem: true,
                               items: regions,
                               onChanged: (value) {
-                                getDistrictsByRegionName(value);
                                 setState(() {
                                   selectedRegion = value;
+                                  selectedDistrict = "";
+                                  districts = [];
                                 });
+                                getDistrictsByRegionName(value);
                               },
                               dropdownSearchDecoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -1474,9 +1483,21 @@ class _EditVacancyState extends State<EditVacancy> {
                               setState(() {
                                 loading = true;
                               });
+                              regionList.forEach((item) {
+                                if (item['name'] == selectedRegion) {
+                                  _region_id = item['id'];
+                                }
+                              });
+
+                              districtList.forEach((item) {
+                                if (item['name'] == selectedDistrict) {
+                                  _district_id = item['id'];
+                                }
+                              });
+
                               Vacancy company_vacancy = new Vacancy(
+                                id: widget.vacancy.id,
                                 name: _vacancy_name_controller.text,
-                                salary: _vacancy_salary_controller.text,
                                 salary_from: _vacancy_salary_from_controller.text,
                                 salary_to: _vacancy_salary_to_controller.text,
                                 is_disability_person_vacancy: is_disability_person_vacancy ? 1 : 0,
@@ -1499,17 +1520,25 @@ class _EditVacancyState extends State<EditVacancy> {
                               );
                               SkillCategory skillCategory = new SkillCategory();
                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
-                                skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
-                                skillCategory
-                                    .saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
-                                    .then((value) {
+                                if (work == work_mode.training) {
+                                  skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
+                                  skillCategory
+                                      .saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
+                                      .then((value) {
+                                    StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                  });
+                                } else {
                                   StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
+                                  setState(() {
+                                    loading = false;
+                                  });
                                   Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                });
-                                setState(() {
-                                  loading = false;
-                                });
+                                }
                               });
 
                               _vacancy_name_controller = TextEditingController();
