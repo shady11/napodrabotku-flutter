@@ -17,6 +17,9 @@ String API_REGISTER = 'users/update';
 String API_SAVE_FILTER = 'users/filters';
 String API_GET_FILTERS = 'users/filters';
 
+String API_SET_RECRUIT = 'set_recruit';
+String API_GET_RECRUIT = 'get_recruit';
+
 // CV Routes
 String API_USER_CV_SAVE = 'user_cv';
 String API_MESSAGE_CHECK = 'check_for_new_messages';

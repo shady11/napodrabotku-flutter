@@ -40,6 +40,7 @@ class _VacancyViewState extends State<VacancyView> {
   List<Widget> requiredListings = [];
 
   var data = [];
+  int recruited = 0;
 
   void _showDialog(context, String message) {
     showDialog(
@@ -90,6 +91,13 @@ class _VacancyViewState extends State<VacancyView> {
         ),
       ),
     );
+  }
+
+  void getRecruit() async {
+    User user = new User();
+    user.getRecruit(widget.vacancy.id).then((value) => setState(() {
+          recruited = value;
+        }));
   }
 
   initData() {
@@ -147,6 +155,7 @@ class _VacancyViewState extends State<VacancyView> {
 
   @override
   void initState() {
+    getRecruit();
     initData();
     vacancySkills();
     super.initState();
@@ -614,13 +623,25 @@ class _VacancyViewState extends State<VacancyView> {
                                           )
                                         : widget.page == 'submitted'
                                             ? Container(
-                                                child: Text("На рассмотрении",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontFamily: 'GTEestiProDisplay',
-                                                    )),
+                                                width: MediaQuery.of(context).size.width * 0.7,
+                                                padding: EdgeInsets.all(5),
+                                                margin: EdgeInsets.symmetric(vertical: 10),
+                                                decoration: BoxDecoration(
+                                                    color: kColorDarkBlue, borderRadius: BorderRadius.circular(12)),
+                                                child: Center(
+                                                  child: Text(
+                                                      recruited == 0
+                                                          ? "На рассмотрении"
+                                                          : recruited == 1
+                                                              ? "Одобрено"
+                                                              : "Попробуйте еще раз",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.bold,
+                                                      )),
+                                                ),
                                               )
                                             : widget.page == 'inactive'
                                                 ? Container()

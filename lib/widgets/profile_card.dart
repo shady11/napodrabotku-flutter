@@ -213,62 +213,66 @@ class _ProfileCardState extends State<ProfileCard> {
                     //         ],
                     //       ),
 
-                    widget.vacancy.opportunity != null && isProductLabVacancy ? Flex(
-                      direction: Axis.horizontal,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            decoration:
-                            BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                            child: Text(
-                              widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
-                              style: TextStyle(
-                                color: Colors.black87,
+                    widget.vacancy.opportunity != null && isProductLabVacancy
+                        ? Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  decoration:
+                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                            child: Text(
-                              widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: kColorPrimary),
-                            )),
-                      ],
-                    ) : Container(),
-                    widget.vacancy.type != null ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration:
-                          BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                          child: Text(
-                            widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
-                            style: TextStyle(
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                            child: Text(
-                              widget.vacancy.salary != null ? widget.vacancy.salary : '',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: kColorPrimary),
-                            )),
-                      ],
-                    ) : Container(),
+                              Flexible(
+                                  child: Text(
+                                widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'GTEestiProDisplay',
+                                    color: kColorPrimary),
+                              )),
+                            ],
+                          )
+                        : Container(),
+                    widget.vacancy.type != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration:
+                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                child: Text(
+                                  widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Flexible(
+                                  child: Text(
+                                widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'GTEestiProDisplay',
+                                    color: kColorPrimary),
+                              )),
+                            ],
+                          )
+                        : Container(),
                     SizedBox(height: 5),
                     isProductLabVacancy
                         ? Flex(
@@ -350,7 +354,8 @@ class _ProfileCardState extends State<ProfileCard> {
                                   height: MediaQuery.of(context).size.height * 0.07,
                                   padding: EdgeInsets.all(5),
                                   color: Colors.grey[200],
-                                  textColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                  textColor:
+                                      Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                   onPressed: () async {
                                     if (Prefs.getString(Prefs.TOKEN) == null) {
                                       if (Prefs.getInt(Prefs.OFFSET) > 0 && Prefs.getInt(Prefs.OFFSET) != null) {
@@ -386,7 +391,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                     width: MediaQuery.of(context).size.width * 0.35,
                                     height: MediaQuery.of(context).size.height * 0.07,
                                     padding: EdgeInsets.all(5),
-                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                        ? kColorProductLab
+                                        : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () async {
                                       if (widget.page == 'discover') {
@@ -396,6 +403,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                         Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
                                             .then((value) {
                                           if (value == "OK") {
+                                            User user = new User();
                                             Dialogs.showDialogBox(context, "successfully_submitted".tr());
                                             StoreProvider.of<AppState>(context)
                                                 .state
@@ -404,8 +412,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                                 .data
                                                 .remove(widget.vacancy);
                                             StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                            StoreProvider.of<AppState>(context)
-                                                .dispatch(getNumberOfLikedVacancies());
+                                            StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
                                           } else {
                                             Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
                                           }
@@ -710,7 +717,9 @@ class ProfileCardProductLab extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width * 0.35,
                                     height: MediaQuery.of(context).size.height * 0.07,
                                     padding: EdgeInsets.all(5),
-                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                        ? kColorProductLab
+                                        : kColorPrimary,
                                     textColor: Colors.white,
                                     onPressed: () async {
                                       if (page == 'discover') {
@@ -728,8 +737,7 @@ class ProfileCardProductLab extends StatelessWidget {
                                                 .data
                                                 .remove(vacancy);
                                             StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                            StoreProvider.of<AppState>(context)
-                                                .dispatch(getNumberOfLikedVacancies());
+                                            StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
                                           } else {
                                             Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
                                           }

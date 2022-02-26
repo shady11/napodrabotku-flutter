@@ -38,6 +38,8 @@ class User {
   String contact_person_position;
   bool is_product_lab_user;
   String address;
+  int recruited;
+  int userVacancyId;
 
   User({
     this.id,
@@ -67,35 +69,80 @@ class User {
     this.job_sphere,
     this.social_orientation,
     this.address,
+    this.recruited,
+    this.userVacancyId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => new User(
-        id: json["id"],
-        name: json["name"],
-        surname: json["lastname"],
-        image: json['avatar'],
-        email: json['email'],
-        linkedin: json['linkedin'],
-        birth_date: DateTime.parse(json['birth_date']),
-        phone_number: json['phone_number'],
-        vacancy_name: json['vacancy_name'],
-        user_cv_name: json['job_title'],
-        experience_year: json['experience_year'].toString(),
-        is_company: json['type'] == 'COMPANY',
-        is_migrant: json['is_migrant'],
-        gender: json['gender'],
-        region: json['region'],
-        district: json['district'],
-        job_type: json['job_type'],
-        job_sphere: json['job_sphere'],
-        opportunity: json['opportunity'],
-        department: json['department'],
-        social_orientation: json['social_orientation'],
-        contact_person_fullname: json['contact_person_fullname'],
-        contact_person_position: json['contact_person_position'],
-        is_product_lab_user: json['is_product_lab_user'] == 1,
-        address: json['address'],
+      id: json["id"],
+      name: json["name"],
+      surname: json["lastname"],
+      image: json['avatar'],
+      email: json['email'],
+      linkedin: json['linkedin'],
+      birth_date: DateTime.parse(json['birth_date']),
+      phone_number: json['phone_number'],
+      vacancy_name: json['vacancy_name'],
+      user_cv_name: json['job_title'],
+      experience_year: json['experience_year'].toString(),
+      is_company: json['type'] == 'COMPANY',
+      is_migrant: json['is_migrant'],
+      gender: json['gender'],
+      region: json['region'],
+      district: json['district'],
+      job_type: json['job_type'],
+      job_sphere: json['job_sphere'],
+      opportunity: json['opportunity'],
+      department: json['department'],
+      social_orientation: json['social_orientation'],
+      contact_person_fullname: json['contact_person_fullname'],
+      contact_person_position: json['contact_person_position'],
+      is_product_lab_user: json['is_product_lab_user'] == 1,
+      address: json['address'],
+      recruited: json['recruited'],
+      userVacancyId: json['user_vacancy_id']);
+
+  Future<void> setRecruit(int userId, int userVacancyId, int recruited) async {
+    var uri = Uri.parse(API_IP + API_SET_RECRUIT);
+
+    try {
+      Map<String, String> headers = {"Content-type": "application/json", "token": Prefs.getString(Prefs.TOKEN)};
+      final response = await http.post(
+        uri,
+        headers: headers,
+        body: json.encode({
+          'user_id': userId,
+          'user_vacancy_id': userVacancyId,
+          'recruited': recruited,
+        }),
       );
+      final responseData = json.decode(response.body);
+      if (responseData['status'] == 400) {
+        throw HttpException(responseData['status'].toString());
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<int> getRecruit(int vacancyId) async {
+    var uri = Uri.parse(API_IP + API_GET_RECRUIT + '/' + vacancyId.toString());
+    try {
+      Map<String, String> headers = {"Content-type": "application/json", "Authorization": Prefs.getString(Prefs.TOKEN)};
+      final response = await http.get(
+        uri,
+        headers: headers,
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['status'] == 400) {
+        throw HttpException(responseData['status'].toString());
+      } else {
+        return responseData['recruited'];
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
   String uploadImage1(_image) {
     // string to uri
@@ -124,13 +171,11 @@ class User {
 
     // open a byteStream
     if (_image != null) {
-      var stream =
-          new http.ByteStream(DelegatingStream.typed(_image.openRead()));
+      var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
       // get file length
       var length = _image.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
-      var multipartFile = new http.MultipartFile('avatar', stream, length,
-          filename: basename(_image.path));
+      var multipartFile = new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
       // add file to multipart
       request.files.add(multipartFile);
     }
@@ -192,20 +237,17 @@ class User {
 
     // open a byteStream
     if (_image != null) {
-      var stream =
-          new http.ByteStream(DelegatingStream.typed(_image.openRead()));
+      var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
       // get file length
       var length = await _image.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
-      var multipartFile = new http.MultipartFile('avatar', stream, length,
-          filename: basename(_image.path));
+      var multipartFile = new http.MultipartFile('avatar', stream, length, filename: basename(_image.path));
       // add file to multipart
       request.files.add(multipartFile);
     }
 
     // send request to upload image
     await request.send().then((response) async {
-
       // listen for response
       response.stream.transform(utf8.decoder).listen((value) {
         var data = json.decode(value);
@@ -299,9 +341,7 @@ class User {
     }
   }
 
-  static Map<String, dynamic> loginRequestBodyToJson(
-          String email, String password) =>
-      {
+  static Map<String, dynamic> loginRequestBodyToJson(String email, String password) => {
         'email': email,
         'password': password,
       };
@@ -383,8 +423,7 @@ class User {
     }
   }
 
-  static Future<String> resetPassword(
-      {String email, String new_password}) async {
+  static Future<String> resetPassword({String email, String new_password}) async {
     final url = API_IP + API_RESET_PASSWORD;
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
@@ -412,9 +451,7 @@ class User {
       final response = await http.post(
         url,
         headers: headers,
-        body: json.encode({
-          'email': email
-        }),
+        body: json.encode({'email': email}),
       );
       var body = json.decode(response.body);
       // Prefs.setString(Prefs.TOKEN, body['token']);
@@ -448,14 +485,9 @@ class User {
   }
 
   Future<void> setPassword(String password) async {
-    final url = API_IP +
-        'api/change-password/' +
-        Prefs.getInt(Prefs.USER_ID).toString();
+    final url = API_IP + 'api/change-password/' + Prefs.getInt(Prefs.USER_ID).toString();
     try {
-      Map<String, String> headers = {
-        "Content-type": "application/json",
-        "token": Prefs.getString(Prefs.TOKEN)
-      };
+      Map<String, String> headers = {"Content-type": "application/json", "token": Prefs.getString(Prefs.TOKEN)};
       final response = await http.put(
         url,
         headers: headers,
@@ -647,8 +679,7 @@ class UserState {
   UserCvState user_cv;
   UserFullInfoState user_full_info;
 
-  UserState(
-      {this.user, this.user_cv, this.submitted_user_list, this.user_full_info});
+  UserState({this.user, this.user_cv, this.submitted_user_list, this.user_full_info});
 
   factory UserState.initial() => UserState(
         user: UserDetailState.initial(),
@@ -785,13 +816,11 @@ class UserCv {
 
     // open a byteStream
     if (attachment != null) {
-      var stream =
-          new http.ByteStream(DelegatingStream.typed(attachment.openRead()));
+      var stream = new http.ByteStream(DelegatingStream.typed(attachment.openRead()));
       // get file length
       var length = await attachment.length();
       // multipart that takes file.. here this "image_file" is a key of the API request
-      var multipartFile = new http.MultipartFile('attachment', stream, length,
-          filename: basename(attachment.path));
+      var multipartFile = new http.MultipartFile('attachment', stream, length, filename: basename(attachment.path));
       // add file to multipart
       request.files.add(multipartFile);
     }
@@ -904,8 +933,7 @@ class UserFullInfo {
       this.opportunity,
       this.jobSphere,
       this.skills,
-      this.skills2
-      });
+      this.skills2});
 
   factory UserFullInfo.fromJson(Map<String, dynamic> json) => new UserFullInfo(
         id: json["id"],
@@ -936,6 +964,7 @@ class UserFullInfo {
     }
     return result;
   }
+
   static List<UserExperience> experiencesToList(var j) {
     List<UserExperience> result = new List<UserExperience>();
     for (var i in j) {
@@ -992,13 +1021,7 @@ class UserExperience {
   String organization_name;
   String description;
 
-  UserExperience(
-      {this.id,
-      this.job_title,
-      this.start_date,
-      this.end_date,
-      this.organization_name,
-      this.description});
+  UserExperience({this.id, this.job_title, this.start_date, this.end_date, this.organization_name, this.description});
 
   Map toJson() => {
         'id': id.toString(),
@@ -1097,13 +1120,7 @@ class UserEducation {
   String speciality;
   String end_year;
 
-  UserEducation(
-      {this.id,
-      this.type,
-      this.title,
-      this.faculty,
-      this.speciality,
-      this.end_year});
+  UserEducation({this.id, this.type, this.title, this.faculty, this.speciality, this.end_year});
 
   Map toJson() => {
         'id': id,
@@ -1202,12 +1219,7 @@ class UserCourse {
   String duration;
   String end_year;
 
-  UserCourse(
-      {this.id,
-      this.name,
-      this.organization_name,
-      this.duration,
-      this.end_year});
+  UserCourse({this.id, this.name, this.organization_name, this.duration, this.end_year});
 
   Map toJson() => {
         'id': id,

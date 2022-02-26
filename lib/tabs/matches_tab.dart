@@ -87,9 +87,12 @@ class _MatchesTabState extends State<MatchesTab> {
                                   user: user, /*page: 'match',*/
                                 ),
                                 onTap: () {
-
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext ctx) => ProfileInfoScreen(user_id: user.id)));
+                                      builder: (BuildContext ctx) => ProfileInfoScreen(
+                                            user_id: user.id,
+                                            userVacancyId: user.userVacancyId,
+                                            recruited: user.recruited,
+                                          )));
                                 },
                               );
                             }).toList())
@@ -130,15 +133,17 @@ class _MatchesTabState extends State<MatchesTab> {
                 children: [
                   Expanded(
                     child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data != null &&
-                        StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
+                            StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
                         ? UsersGrid(
                             children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
                             return GestureDetector(
                               child: Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                                  ? !vacancy.isProductLabVacancy ? ProfileCard(
-                                    vacancy: vacancy,
-                                    page: 'match',
-                                    ) : Container()
+                                  ? !vacancy.isProductLabVacancy
+                                      ? ProfileCard(
+                                          vacancy: vacancy,
+                                          page: 'match',
+                                        )
+                                      : Container()
                                   : ProfileCardProductLab(
                                       vacancy: vacancy,
                                       page: 'match',
@@ -158,7 +163,9 @@ class _MatchesTabState extends State<MatchesTab> {
 
                                   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                     return Scaffold(
-                                      backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                      backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                          ? kColorProductLab
+                                          : kColorPrimary,
                                       appBar: AppBar(
                                         title: Text("vacancy_view".tr()),
                                       ),

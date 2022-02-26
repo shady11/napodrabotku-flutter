@@ -28,16 +28,24 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'chat_screen.dart';
 
+enum Recruited {
+  pending,
+  accepted,
+  rejected
+}
+
 class ProfileInfoScreen extends StatefulWidget {
   final int user_id;
+  final int recruited;
+  final int userVacancyId;
 
-  const ProfileInfoScreen({Key key, this.user_id});
+  const ProfileInfoScreen({Key key, this.user_id, this.recruited, this.userVacancyId});
+
   @override
   _ProfileInfoScreenState createState() => _ProfileInfoScreenState();
 }
 
 class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
-
   void handleInitialBuild(ProfileFullInfoScreenProps props) {
     props.getUserFullInfo(widget.user_id);
   }
@@ -55,8 +63,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
   TextEditingController end_year_controller = TextEditingController();
 
   TextEditingController name_controller = TextEditingController();
-  TextEditingController course_organization_name_controller =
-      TextEditingController();
+  TextEditingController course_organization_name_controller = TextEditingController();
   TextEditingController duration_controller = TextEditingController();
   TextEditingController course_end_year_controller = TextEditingController();
 
@@ -85,11 +92,9 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -100,10 +105,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_education_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -118,23 +120,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("university".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   controller: title_controller,
                                   enabled: false,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -156,23 +151,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("faculty".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: faculty_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -194,23 +182,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("speciality".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: speciality_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -270,23 +251,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("end_year".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: end_year_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -316,19 +290,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
     job_title_controller.text = userExperience.job_title.toString();
     start_date_controller.text = userExperience.start_date;
     end_date_controller.text = userExperience.end_date;
-    organization_name_controller.text =
-        userExperience.organization_name.toString();
+    organization_name_controller.text = userExperience.organization_name.toString();
     description_controller.text = userExperience.description.toString();
 
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -339,10 +310,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_experience_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -357,23 +325,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("position".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: this.job_title_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -395,18 +356,12 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("start_date".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 Container(
                                   child: CustomButton(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      width:
-                                          MediaQuery.of(context).size.width * 1,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      width: MediaQuery.of(context).size.width * 1,
                                       color: Colors.grey[200],
                                       textColor: kColorPrimary,
                                       textSize: 16,
@@ -425,18 +380,12 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("end_date".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 Container(
                                   child: CustomButton(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      width:
-                                          MediaQuery.of(context).size.width * 1,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      width: MediaQuery.of(context).size.width * 1,
                                       color: Colors.grey[200],
                                       textColor: kColorPrimary,
                                       textSize: 16,
@@ -455,23 +404,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("organization_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: this.organization_name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -493,23 +435,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("description".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: this.description_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -537,8 +472,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
 
   openCourseDialog(context, UserCourse userCourse) {
     name_controller.text = userCourse.name.toString();
-    course_organization_name_controller.text =
-        userCourse.organization_name.toString();
+    course_organization_name_controller.text = userCourse.organization_name.toString();
     duration_controller.text = userCourse.duration.toString();
     course_end_year_controller.text = userCourse.end_year.toString();
 
@@ -546,11 +480,9 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
         context: context,
         builder: (BuildContext context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
             child: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ListView(
@@ -561,10 +493,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('user_course_info'.tr().toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: kColorDarkBlue)),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
                       ),
                     ),
 
@@ -579,23 +508,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("course_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -617,24 +539,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("organization_name".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
-                                  controller:
-                                      course_organization_name_controller,
+                                  controller: course_organization_name_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -656,23 +570,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("duration".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: duration_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -694,23 +601,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               children: [
                                 Container(
                                   child: Text("end_year".tr(),
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey,
-                                          height: 2)),
+                                      softWrap: true, style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
                                 ),
                                 TextFormField(
                                   enabled: false,
                                   controller: course_end_year_controller,
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.always,
+                                        borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
                                     filled: true,
                                     fillColor: Colors.grey[200],
                                   ),
@@ -762,9 +662,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                             size: 32,
                             color: kColorPrimary,
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                         ),
                         Container(
                           child: Flexible(
@@ -772,25 +670,11 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(i.title,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: kColorDark,
-                                        height: 1.4)),
-                                Text(
-                                    i.faculty + ', ' + i.speciality,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4)
-                                ),
+                                    softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
+                                Text(i.faculty + ', ' + i.speciality,
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                 Text(i.end_year,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                               ],
                             ),
                           ),
@@ -851,9 +735,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                             size: 32,
                             color: kColorPrimary,
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                         ),
                         Container(
                           child: Flexible(
@@ -861,23 +743,11 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(i.job_title,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: kColorDark,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
                                 Text(i.organization_name,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                 Text(i.start_date + ' - ' + i.end_date,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                               ],
                             ),
                           ),
@@ -942,9 +812,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                             size: 32,
                             color: kColorPrimary,
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xffF2F2F5),
-                              borderRadius: BorderRadius.circular(10)),
+                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                         ),
                         Container(
                           child: Flexible(
@@ -952,25 +820,11 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(i.name,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: kColorDark,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark, height: 1.4)),
                                 Text(i.organization_name + ', ' + i.duration,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4)),
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                                 Text(i.end_year,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                        height: 1.4
-                                    )
-                                ),
+                                    softWrap: true, style: TextStyle(fontSize: 14, color: Colors.grey, height: 1.4)),
                               ],
                             ),
                           ),
@@ -1015,7 +869,6 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
 
           Widget body;
           if (user_loading) {
-
             body = Scaffold(
               body: Center(
                 child: CircularProgressIndicator(
@@ -1024,19 +877,16 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
               ),
             );
           } else {
-
             List<Widget> skills = [];
             List<Widget> skills2 = [];
 
             for (var item in data.skills) {
-
               skills.add(Container(
                 padding: EdgeInsets.only(bottom: 10),
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                   child: Text(item.toString(), style: TextStyle(fontSize: 16, color: Colors.black87)),
                 ),
                 // Text(item.name, textAlign: TextAlign.left),
@@ -1048,8 +898,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                   child: Text(item.toString(), style: TextStyle(fontSize: 16, color: Colors.black87)),
                 ),
                 // Text(item.name, textAlign: TextAlign.left),
@@ -1060,459 +909,430 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
               appBar: AppBar(
                 title: Text("profile".tr()),
               ),
-              body: SingleChildScrollView(
+              body: Container(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: CircleAvatar(
-                          backgroundColor: kColorPrimary,
-                          radius: 60,
-                          backgroundImage: data.avatar != null
-                              ? NetworkImage(SERVER_IP + data.avatar, headers: {
-                                  "Authorization": Prefs.getString(Prefs.TOKEN)
-                                })
-                              : null,
+                    Expanded(
+                      flex: 6,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                                child: CircleAvatar(
+                                  backgroundColor: kColorPrimary,
+                                  radius: 60,
+                                  backgroundImage: data.avatar != null
+                                      ? NetworkImage(SERVER_IP + data.avatar,
+                                          headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
+                                      : null,
+                                ),
+                              ),
+                            ),
+
+                            /// Profile details
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  /// Profile bio
+                                  Center(
+                                    child: Text('cv'.tr(), style: TextStyle(fontSize: 20, color: kColorDark)),
+                                  ),
+
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                    child: Text('basic_info'.tr().toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("user_surname_name".tr(),
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                            Text(data.name,
+                                                softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark)),
+                                          ],
+                                        ),
+                                        Divider(),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("email".tr(),
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                            Text(data.email,
+                                                softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark)),
+                                          ],
+                                        ),
+                                        Prefs.getString(Prefs.ROUTE) != "COMPANY" ? Divider() : Container(),
+                                        Prefs.getString(Prefs.ROUTE) != "COMPANY"
+                                            ? Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("user_job_title".tr(),
+                                                      softWrap: true,
+                                                      style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Flexible(
+                                                    child: Text(data?.job_title != null ? data?.job_title : '-',
+                                                        softWrap: true,
+                                                        style: TextStyle(fontSize: 16, color: kColorDark)),
+                                                  ),
+                                                ],
+                                              )
+                                            : Container(),
+                                        Divider(),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("user_phone_number".tr(),
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                            Text(data?.phone_number,
+                                                softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark)),
+                                          ],
+                                        ),
+                                        Divider(),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Отрасль".tr(),
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                            Text(data.jobSphere,
+                                                softWrap: true, style: TextStyle(fontSize: 16, color: kColorDark)),
+                                          ],
+                                        ),
+                                        Divider(),
+                                        Flex(
+                                          direction: Axis.horizontal,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                              child: Text("Возможность".tr(),
+                                                  softWrap: true,
+                                                  style: TextStyle(fontSize: 16, color: Colors.grey, height: 2)),
+                                            ),
+                                            Flexible(
+                                              child: Text(data.opportunity,
+                                                  softWrap: true,
+                                                  textAlign: TextAlign.right,
+                                                  style: TextStyle(fontSize: 16, color: kColorDark)),
+                                            ),
+                                          ],
+                                        ),
+                                        // Divider(),
+                                        // Column(
+                                        //   children: [
+                                        //     Row(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.spaceBetween,
+                                        //       children: [
+                                        //         Text("experience_year".tr(),
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: Colors.grey,
+                                        //                 height: 2)),
+                                        //         Text(
+                                        //             data.experience_year != null
+                                        //                 ? data.experience_year
+                                        //                     .toString()
+                                        //                 : '0',
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: kColorDark)),
+                                        //       ],
+                                        //     )
+                                        //   ],
+                                        // ),
+
+                                        // Divider(),
+                                        // Column(
+                                        //   children: [
+                                        //     Row(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.spaceBetween,
+                                        //       children: [
+                                        //         Text("linkedin_profile".tr(),
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: Colors.grey,
+                                        //                 height: 2)),
+                                        //         Text(
+                                        //             data.linkedin != null
+                                        //                 ? data.linkedin
+                                        //                     .toString()
+                                        //                 : '-',
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: kColorDark)),
+                                        //       ],
+                                        //     )
+                                        //   ],
+                                        // ),
+
+                                        // Divider(),
+                                        // Column(
+                                        //   children: [
+                                        //     Row(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.spaceBetween,
+                                        //       children: [
+                                        //         Text("are_you_migrant".tr(),
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: Colors.grey,
+                                        //                 height: 2)),
+                                        //         Text(
+                                        //             data.is_migrant != 0
+                                        //                 ? 'yes'.tr()
+                                        //                 : 'no'.tr(),
+                                        //             softWrap: true,
+                                        //             style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 color: kColorDark)),
+                                        //       ],
+                                        //     )
+                                        //   ],
+                                        // ),
+
+                                        Divider(),
+                                        data.attachment == null
+                                            ? Container()
+                                            : Container(
+                                                margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                                                alignment: Alignment.topLeft,
+                                                child: Text('attachment'.tr().toUpperCase(),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w700,
+                                                        color: kColorDarkBlue)),
+                                              ),
+                                        data.attachment == null
+                                            ? Container()
+                                            : CustomButton(
+                                                text: data.attachment != null
+                                                    ? basename(data.attachment).toString()
+                                                    : 'file_doesnt_exist'.tr(),
+                                                width: MediaQuery.of(context).size.width * 1,
+                                                color: Colors.grey[200],
+                                                textColor: kColorPrimary,
+                                                onPressed: () {
+                                                  _launchURL(SERVER_IP + data.attachment);
+                                                  //            doSome1(user_cv.attachment);
+                                                }),
+                                      ],
+                                    ),
+                                  ),
+
+                                  user_loading
+                                      ? Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
+                                          ),
+                                        )
+                                      : data != null
+                                          ? Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text('user_education_info'.tr().toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: kColorDarkBlue)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                (data.user_educations.length > 0)
+                                                    ? Column(
+                                                        children: buildEducationList(data.user_educations),
+                                                      )
+                                                    : Container(
+                                                        child: Container(
+                                                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                            child: Text("empty".tr())),
+                                                      ),
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text('user_experience_info'.tr().toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: kColorDarkBlue)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                data.user_experiences.length > 0
+                                                    ? Column(
+                                                        children: buildExperienceList(data.user_experiences),
+                                                      )
+                                                    : Container(
+                                                        child: Container(
+                                                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                            child: Text("empty".tr())),
+                                                      ),
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text('user_course_info'.tr().toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: kColorDarkBlue)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                data.user_courses.length > 0
+                                                    ? Column(
+                                                        children: buildCourseList(data.user_courses),
+                                                      )
+                                                    : Container(
+                                                        child: Container(
+                                                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                            child: Text("empty".tr())),
+                                                      ),
+
+                                                /// skills
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text('Навыки (Я умею)'.tr().toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: kColorDarkBlue)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                data.skills.length > 0
+                                                    ? Column(children: skills)
+                                                    : Container(
+                                                        child: Container(
+                                                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                            child: Text("empty".tr())),
+                                                      ),
+
+                                                /// skills 2
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Text('Навыки (Я хочу развить)'.tr().toUpperCase(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: kColorDarkBlue)),
+                                                    ],
+                                                  ),
+                                                ),
+                                                data.skills2.length > 0
+                                                    ? Column(children: skills2)
+                                                    : Container(
+                                                        child: Container(
+                                                            margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                                            child: Text("empty".tr())),
+                                                      ),
+                                              ],
+                                            )
+                                          : Center(
+                                              child: Container(
+                                                  margin: EdgeInsets.fromLTRB(0, 15, 0, 15), child: Text("empty".tr())),
+                                            ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-
-                    /// Profile details
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Profile bio
-                          Center(
-                            child: Text('cv'.tr(),
-                                style:
-                                    TextStyle(fontSize: 20, color: kColorDark)),
-                          ),
-
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                            child: Text('basic_info'.tr().toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    color: kColorDarkBlue)),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("user_surname_name".tr(),
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey,
-                                            height: 2)),
-                                    Text(data.name,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16, color: kColorDark)),
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("email".tr(),
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey,
-                                            height: 2)),
-                                    Text(data.email,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16, color: kColorDark)),
-                                  ],
-                                ),
-                                Prefs.getString(Prefs.ROUTE) != "COMPANY" ? Divider() : Container(),
-                                Prefs.getString(Prefs.ROUTE) != "COMPANY" ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("user_job_title".tr(),
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey,
-                                            height: 2)),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                          data?.job_title != null
-                                              ? data?.job_title
-                                              : '-',
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontSize: 16, color: kColorDark)),
-                                    ),
-                                  ],
-                                ) : Container(),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("user_phone_number".tr(),
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey,
-                                            height: 2)),
-                                    Text(data?.phone_number,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16, color: kColorDark)),
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Отрасль".tr(),
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey,
-                                            height: 2)),
-                                    Text(data.jobSphere,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontSize: 16, color: kColorDark)),
-                                  ],
-                                ),
-                                Divider(),
-                                Flex(
-                                  direction: Axis.horizontal,
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text("Возможность".tr(),
-                                          softWrap: true,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.grey,
-                                              height: 2)),
-                                    ),
-                                    Flexible(
-                                      child: Text(data.opportunity,
-                                          softWrap: true,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                              fontSize: 16, color: kColorDark)),
-                                    ),
-                                  ],
-                                ),
-                                // Divider(),
-                                // Column(
-                                //   children: [
-                                //     Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("experience_year".tr(),
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: Colors.grey,
-                                //                 height: 2)),
-                                //         Text(
-                                //             data.experience_year != null
-                                //                 ? data.experience_year
-                                //                     .toString()
-                                //                 : '0',
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: kColorDark)),
-                                //       ],
-                                //     )
-                                //   ],
-                                // ),
-
-                                // Divider(),
-                                // Column(
-                                //   children: [
-                                //     Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("linkedin_profile".tr(),
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: Colors.grey,
-                                //                 height: 2)),
-                                //         Text(
-                                //             data.linkedin != null
-                                //                 ? data.linkedin
-                                //                     .toString()
-                                //                 : '-',
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: kColorDark)),
-                                //       ],
-                                //     )
-                                //   ],
-                                // ),
-
-                                // Divider(),
-                                // Column(
-                                //   children: [
-                                //     Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("are_you_migrant".tr(),
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: Colors.grey,
-                                //                 height: 2)),
-                                //         Text(
-                                //             data.is_migrant != 0
-                                //                 ? 'yes'.tr()
-                                //                 : 'no'.tr(),
-                                //             softWrap: true,
-                                //             style: TextStyle(
-                                //                 fontSize: 16,
-                                //                 color: kColorDark)),
-                                //       ],
-                                //     )
-                                //   ],
-                                // ),
-
-                                Divider(),
-                                data.attachment == null
-                                    ? Container()
-                                    : Container(
-                                  margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
-                                  alignment: Alignment.topLeft,
-                                  child: Text('attachment'.tr().toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: kColorDarkBlue)),
-                                ),
-                                data.attachment == null ? Container() :
+                    Expanded(
+                      flex: 1,
+                      child: widget.recruited == 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
                                 CustomButton(
-                                    text: data.attachment != null
-                                        ? basename(data.attachment).toString()
-                                        : 'file_doesnt_exist'.tr(),
-                                    width: MediaQuery.of(context).size.width * 1,
-                                    color: Colors.grey[200],
-                                    textColor: kColorPrimary,
-                                    onPressed: () {
-                                      _launchURL(SERVER_IP + data.attachment);
-                                      //            doSome1(user_cv.attachment);
-                                    }
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  padding: EdgeInsets.all(5),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    User user = new User();
+                                    user
+                                        .setRecruit(widget.user_id, widget.userVacancyId, Recruited.rejected.index)
+                                        .then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getSubmittedUsers());
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  text: 'Отказать'.tr(),
+                                ),
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  padding: EdgeInsets.all(5),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    User user = new User();
+                                    user
+                                        .setRecruit(widget.user_id, widget.userVacancyId, Recruited.accepted.index)
+                                        .then((value) {
+                                      StoreProvider.of<AppState>(context).dispatch(getSubmittedUsers());
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  text: 'Принять'.tr(),
                                 ),
                               ],
-                            ),
-                          ),
-
-                          user_loading
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            kColorPrimary),
-                                  ),
-                                )
-                              : data != null
-                                  ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 20, 0, 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  'user_education_info'
-                                                      .tr()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: kColorDarkBlue)),
-                                            ],
-                                          ),
-                                        ),
-                                        (data.user_educations.length > 0)
-                                            ? Column(
-                                                children: buildEducationList(
-                                                    data.user_educations),
-                                              )
-                                            : Container(
-                                                child: Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 15, 0, 15),
-                                                    child: Text("empty".tr())),
-                                              ),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 30, 0, 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  'user_experience_info'
-                                                      .tr()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: kColorDarkBlue)),
-                                            ],
-                                          ),
-                                        ),
-                                        data.user_experiences.length > 0
-                                            ? Column(
-                                                children: buildExperienceList(
-                                                    data.user_experiences),
-                                              )
-                                            : Container(
-                                                child: Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 15, 0, 15),
-                                                    child: Text("empty".tr())),
-                                              ),
-                                        Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 30, 0, 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  'user_course_info'
-                                                      .tr()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: kColorDarkBlue)),
-                                            ],
-                                          ),
-                                        ),
-                                        data.user_courses.length > 0
-                                            ? Column(
-                                                children: buildCourseList(
-                                                    data.user_courses),
-                                              )
-                                            : Container(
-                                                child: Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 15, 0, 15),
-                                                    child: Text("empty".tr())),
-                                              ),
-
-                                        /// skills
-                                        Container(
-                                          margin:
-                                          EdgeInsets.fromLTRB(0, 30, 0, 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  'Навыки (Я умею)'
-                                                      .tr()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                      FontWeight.w700,
-                                                      color: kColorDarkBlue)),
-                                            ],
-                                          ),
-                                        ),
-                                        data.skills.length > 0
-                                            ? Column(children: skills)
-                                            : Container(
-                                          child: Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  0, 15, 0, 15),
-                                              child: Text("empty".tr())),
-                                        ),
-
-
-                                        /// skills 2
-                                        Container(
-                                          margin:
-                                          EdgeInsets.fromLTRB(0, 30, 0, 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  'Навыки (Я хочу развить)'
-                                                      .tr()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                      FontWeight.w700,
-                                                      color: kColorDarkBlue)),
-                                            ],
-                                          ),
-                                        ),
-                                        data.skills2.length > 0
-                                            ? Column(children: skills2)
-                                            : Container(
-                                          child: Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  0, 15, 0, 15),
-                                              child: Text("empty".tr())),
-                                        ),
-                                      ],
-                                    )
-                                  : Center(
-                                      child: Container(
-                                          margin:
-                                              EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                          child: Text("empty".tr()
-                                          )
-                                      ),
-                                    ),
-                        ],
-                      ),
+                            )
+                          : widget.recruited == 1
+                              ? Container()
+                              : Container(
+                                  width: MediaQuery.of(context).size.width * 0.7,
+                                  padding: EdgeInsets.all(5),
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  decoration:
+                                      BoxDecoration(color: Color(0xffC5CAE9), borderRadius: BorderRadius.circular(12)),
+                                  child: Center(
+                                      child: Text("Отказано", style: TextStyle(fontSize: 18, color: Colors.white))),
+                                ),
                     ),
                   ],
                 ),
