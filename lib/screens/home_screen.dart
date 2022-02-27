@@ -2212,12 +2212,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     buildSome(context);
     if (Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
-      startTimerToCheckNewMessages(timer: timer, duration: Duration(seconds: 60));
+      startTimerToCheckNewMessages(timer: timer, duration: Duration(minutes: 10));
     }
   }
 
   void startTimerToCheckNewMessages({Timer timer, Duration duration}) {
     timer = Timer.periodic(duration, (Timer t) => checkForNewMessage());
+    if(Prefs.getString(Prefs.ROUTE) != "COMPANY") {
+      if(timer.isActive) {
+        cancelTimer(timer);
+      }
+    }
   }
 
   void cancelTimer(Timer timer) {
