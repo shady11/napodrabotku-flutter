@@ -1302,7 +1302,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                       Navigator.of(context).pop();
                                     });
                                   },
-                                  text: 'Отказать'.tr(),
+                                  text: 'Отклонить'.tr(),
                                 ),
                                 CustomButton(
                                   width: MediaQuery.of(context).size.width * 0.4,
@@ -1318,7 +1318,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                                       Navigator.of(context).pop();
                                     });
                                   },
-                                  text: 'Принять'.tr(),
+                                  text: 'Одобрить'.tr(),
                                 ),
                               ],
                             )

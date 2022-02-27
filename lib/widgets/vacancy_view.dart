@@ -504,6 +504,33 @@ class _VacancyViewState extends State<VacancyView> {
                                   )
                                 : Container(),
 
+                            SizedBox(height: 10),
+                            isProductLabVacancy
+                                ? Flex(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              direction: Axis.horizontal,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Дедлайн заявки",
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(widget.vacancy.deadline != null ? widget.vacancy.deadline : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                                : Container(),
+
                             /// Ссылка на сайт
                             widget.vacancy.vacancyLink != null ? SizedBox(height: 20) : Container(),
                             widget.vacancy.vacancyLink != null
