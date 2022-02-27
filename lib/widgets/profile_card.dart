@@ -332,6 +332,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     widget.page == 'discover'
                         ? Expanded(
                             child: RichText(
+                              overflow: TextOverflow.ellipsis,
                               text: TextSpan(
                                   text: widget.vacancy.description != null ? widget.vacancy.description : "",
                                   style: TextStyle(
