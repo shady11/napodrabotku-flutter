@@ -34,6 +34,7 @@ class Vacancy {
   String typeOfRecommendedLetter;
   bool isProductLabVacancy;
   String vacancyLink;
+  String deadline;
 
   Vacancy({
     this.id,
@@ -63,7 +64,8 @@ class Vacancy {
     this.ageTo,
     this.typeOfRecommendedLetter,
     this.isProductLabVacancy,
-    this.vacancyLink
+    this.vacancyLink,
+    this.deadline,
   });
 
   static Future<List<dynamic>> getLists(String model, String region) async {
@@ -157,9 +159,11 @@ class Vacancy {
         typeOfRecommendedLetter: json['recommendation_letter_type'],
         isProductLabVacancy: json['is_product_lab_vacancy'] == 1,
         vacancyLink: json['vacancy_link'],
+        deadline: json['deadline']
       );
 
   static Map<String, dynamic> vacancyToJsonMap(Vacancy vacancy) => {
+        'id': vacancy.id,
         'company_id': Prefs.getInt(Prefs.USER_ID).toString(),
         'name': vacancy.name,
         'salary': vacancy.salary,
@@ -183,6 +187,7 @@ class Vacancy {
         'type_of_recommended_letter': vacancy.typeOfRecommendedLetter,
         'is_product_lab_vacancy': vacancy.isProductLabVacancy,
         'vacancy_link': vacancy.vacancyLink,
+        'deadline': vacancy.deadline,
   };
 
   static List<Vacancy> getListOfVacancies() {

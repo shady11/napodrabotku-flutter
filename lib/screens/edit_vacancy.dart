@@ -15,6 +15,8 @@ import 'package:ishtapp/datas/pref_manager.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
+import 'package:ishtapp/datas/pref_manager.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 enum work_mode { work, training }
 
@@ -94,6 +96,25 @@ class _EditVacancyState extends State<EditVacancy> {
   TextEditingController _vacancy_salary_to_controller = TextEditingController();
   TextEditingController _vacancy_salary_controller = TextEditingController();
   TextEditingController _vacancy_description_controller = TextEditingController();
+
+  String deadline;
+  final DateFormat formatter = DateFormat('dd-MM-yyyy');
+
+  void _showDataPicker(context) {
+    DatePicker.showDatePicker(context,
+        locale: LocaleType.ru,
+        minTime: DateTime.now(),
+        theme: DatePickerTheme(
+          headerColor: kColorPrimary,
+          cancelStyle: const TextStyle(color: Colors.white, fontSize: 18),
+          doneStyle: const TextStyle(color: Colors.white, fontSize: 18),
+        ), onConfirm: (date) {
+      print(date);
+      setState(() {
+        deadline = formatter.format(date);
+      });
+    });
+  }
 
   //region Methods
   getOpportunities() async {
@@ -596,6 +617,7 @@ class _EditVacancyState extends State<EditVacancy> {
         regions.add(region["name"]);
       });
     });
+    var d = widget.vacancy.region;
 
     getDistrictsByRegionName(widget.vacancy.region);
   }
@@ -1287,7 +1309,7 @@ class _EditVacancyState extends State<EditVacancy> {
                           ],
                         )
                       : Container(),
-                  SizedBox(height: 20),
+                  work == work_mode.work ? SizedBox(height: 20) : Container(),
 
                   /// Район
                   work == work_mode.work
@@ -1432,6 +1454,22 @@ class _EditVacancyState extends State<EditVacancy> {
                         )
                       : Container(),
 
+                  Prefs.getString(Prefs.ROUTE) == 'COMPANY'
+                      ? Column(
+                          children: <Widget>[
+                            FlatButton(
+                              color: kColorPrimaryDark,
+                              onPressed: () => _showDataPicker(context),
+                              child: Text(
+                                'Укажите дату дедлайна',
+                                style: TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(height: 20)
+                          ],
+                        )
+                      : Container(),
+
                   work == work_mode.work ? SizedBox(height: 20) : Container(),
                   work == work_mode.work
                       ? CheckboxListTile(
@@ -1517,6 +1555,7 @@ class _EditVacancyState extends State<EditVacancy> {
                                 ageFrom: _ageFromController.text,
                                 ageTo: _ageToController.text,
                                 isProductLabVacancy: work_mode.training == work,
+                                deadline: deadline,
                               );
                               SkillCategory skillCategory = new SkillCategory();
                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {

@@ -29,15 +29,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:ishtapp/datas/Skill.dart';
 import 'package:ms_accordion/ms_accordion.dart';
 import 'dart:async';
-import 'package:ishtapp/datas/notifications.dart';
-import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ishtapp/constants/configs.dart';
-import 'package:http/http.dart' as http;
-import 'package:workmanager/workmanager.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 enum work_mode { isWork, isTraining }
 
@@ -181,8 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     padding: EdgeInsets.all(20),
                     child:
-                    /// Form
-                    Column(
+
+                        /// Form
+                        Column(
                       children: <Widget>[
                         ChipsChoice<String>.multiple(
                           choiceStyle: C2ChoiceStyle(
@@ -707,6 +704,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   User user;
 
+  String deadline;
+  final DateFormat formatter = DateFormat('dd-MM-yyyy');
+
+  void _showDataPicker(context) {
+    DatePicker.showDatePicker(context,
+        locale: LocaleType.ru,
+        minTime: DateTime.now(),
+        theme: DatePickerTheme(
+          headerColor: kColorPrimary,
+          cancelStyle: const TextStyle(color: Colors.white, fontSize: 18),
+          doneStyle: const TextStyle(color: Colors.white, fontSize: 18),
+        ), onConfirm: (date) {
+      print(date);
+      setState(() {
+        deadline = formatter.format(date);
+      });
+    });
+  }
+
   Future<void> openFilterDialog(context) async {
     user = StoreProvider.of<AppState>(context).state.user.user.data;
 
@@ -1227,7 +1243,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: TextFormField(
                                                   controller: _ageFromController,
                                                   keyboardType: TextInputType.number,
-                                                  focusNode: FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
+                                                  focusNode:
+                                                      FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
                                                   inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                                   ],
@@ -1265,7 +1282,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                                                   ],
-                                                  focusNode: FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
+                                                  focusNode:
+                                                      FocusNode(canRequestFocus: false, descendantsAreFocusable: false),
                                                   decoration: InputDecoration(
                                                     border: OutlineInputBorder(
                                                         borderRadius: BorderRadius.circular(10),
@@ -1859,8 +1877,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         focusNode: FocusNode(canRequestFocus: false),
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: BorderSide.none),
+                                              borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                                           floatingLabelBehavior: FloatingLabelBehavior.always,
                                           filled: true,
                                           fillColor: Colors.grey[200],
@@ -1870,7 +1887,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
 
-                                  work == work_mode.isWork ? SizedBox(height: 20) : Container(),
+                                  /// Дедлайн завки
+                                  work == work_mode.isTraining
+                                      ? Column(
+                                          children: <Widget>[
+                                            FlatButton(
+                                              color: kColorPrimaryDark,
+                                              onPressed: () => _showDataPicker(context),
+                                              child: Text('Укажите дату дедлайна заявки',
+                                                style: TextStyle(fontSize: 16, color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : Container(),
+
+                                  work == work_mode.isTraining ? SizedBox(height: 20) : Container(),
+
                                   work == work_mode.isWork
                                       ? CheckboxListTile(
                                           contentPadding: EdgeInsets.zero,
@@ -1923,9 +1956,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 loading = true;
                                               });
 
-                                              if(_vacancy_link_controller != null && _vacancy_link_controller.text.isNotEmpty) {
+                                              if (_vacancy_link_controller != null &&
+                                                  _vacancy_link_controller.text.isNotEmpty) {
                                                 var vacancySubstring = _vacancy_link_controller.text.substring(0, 4);
-                                                if(vacancySubstring != "http") {
+                                                if (vacancySubstring != "http") {
                                                   linkResultSubstring = 'http://${_vacancy_link_controller.text}';
                                                 } else {
                                                   linkResultSubstring = _vacancy_link_controller.text;
@@ -1957,13 +1991,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ageTo: _ageToController.text,
                                                 isProductLabVacancy: work_mode.isTraining == work,
                                                 vacancyLink: linkResultSubstring,
+                                                deadline: deadline,
                                               );
                                               SkillCategory skillCategory = new SkillCategory();
                                               Vacancy.saveCompanyVacancy(vacancy: company_vacancy).then((value) {
-                                                if(work == work_mode.isTraining) {
-                                                  skillCategory.saveVacancySkills(tags, selectedCategoryIdFromFirstChip, value, true);
+                                                if (work == work_mode.isTraining) {
+                                                  skillCategory.saveVacancySkills(
+                                                      tags, selectedCategoryIdFromFirstChip, value, true);
                                                   skillCategory
-                                                      .saveVacancySkills(tags2, selectedCategoryIdSecondChip, value, false)
+                                                      .saveVacancySkills(
+                                                          tags2, selectedCategoryIdSecondChip, value, false)
                                                       .then((value) {
                                                     StoreProvider.of<AppState>(context).dispatch(getCompanyVacancies());
                                                     setState(() {
@@ -1989,6 +2026,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               _ageToController = TextEditingController();
                                               _vacancy_link_controller = TextEditingController();
                                               setState(() {
+                                                deadline = null;
                                                 _schedule_id = null;
                                                 _busyness_id = null;
                                                 _job_type_id = null;
@@ -2221,8 +2259,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await http
         .post(uri, headers: headers, body: json.encode({"created_message_date": Prefs.getString(Prefs.MESSAGEDATE)}))
         .then((value) {
-
-
       var convert = json.decode(value.body);
       print(convert);
       Prefs.setString(Prefs.MESSAGEDATE, convert['created_at']);
@@ -2306,8 +2342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedFontSize: _tabCurrentIndex == 4 ? 13 : 14,
                   currentIndex: _tabCurrentIndex == 4 ? 0 : _tabCurrentIndex,
                   onTap: (index) {
-                    if(index == 1)
-                    {
+                    if (index == 1) {
                       setState(() {
                         receivedMessageCount = 0;
                       });

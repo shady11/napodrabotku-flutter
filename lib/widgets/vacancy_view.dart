@@ -155,7 +155,9 @@ class _VacancyViewState extends State<VacancyView> {
 
   @override
   void initState() {
-    getRecruit();
+    if(widget.page == 'view') {
+      getRecruit();
+    }
     initData();
     vacancySkills();
     super.initState();
@@ -634,7 +636,7 @@ class _VacancyViewState extends State<VacancyView> {
                                                           ? "На рассмотрении"
                                                           : recruited == 1
                                                               ? "Одобрено"
-                                                              : "Попробуйте еще раз",
+                                                              : "Попробуйте в следующий раз",
                                                       textAlign: TextAlign.center,
                                                       style: TextStyle(
                                                         color: Colors.white,
