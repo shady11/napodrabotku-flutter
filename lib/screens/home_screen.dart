@@ -1617,9 +1617,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         )
                                       : Container(),
 
-                                  work == work_mode.isTraining
-                                      ? Container()
-                                      : Column(
+
+                                   ///Description
+                                   Column(
                                           children: <Widget>[
                                             SizedBox(height: 20),
                                             Align(

@@ -730,6 +730,41 @@ class _EditVacancyState extends State<EditVacancy> {
               key: _vacancyEditFormKey,
               child: Column(
                 children: <Widget>[
+                  /// Название возможности
+                  work == work_mode.training
+                      ? Column(
+                    children: [
+                      Align(
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Название возможности'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )),
+                      TextFormField(
+                        controller: _vacancy_name_controller,
+                        focusNode: FocusNode(canRequestFocus: false),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                        ),
+                        validator: (name) {
+                          if (name.isEmpty) {
+                            return "please_fill_this_field".tr();
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20)
+                    ],
+                  )
+                      : Container(),
+
                   /// Выбор возможностей
                   work == work_mode.training
                       ? Column(
@@ -1453,6 +1488,40 @@ class _EditVacancyState extends State<EditVacancy> {
                           ],
                         )
                       : Container(),
+
+                  Prefs.getString(Prefs.ROUTE) == 'COMPANY' && widget.vacancy.isProductLabVacancy
+                      ? Column(
+                    children: <Widget>[
+                      Align(
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Дополнительная информация'.tr(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )),
+                      TextFormField(
+                        controller: _vacancy_description_controller,
+                        maxLines: 5,
+                        focusNode: FocusNode(canRequestFocus: false),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                        ),
+                        validator: (name) {
+                          if (name.isEmpty) {
+                            return "please_fill_this_field".tr();
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20)
+                    ],
+                  )
+                      : SizedBox(),
 
                   Prefs.getString(Prefs.ROUTE) == 'COMPANY'
                       ? Column(

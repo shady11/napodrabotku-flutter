@@ -448,6 +448,7 @@ class _VacancyViewState extends State<VacancyView> {
                                     ),
                                   )
                                 : SizedBox(),
+
                             isProductLabVacancy
                                 ? Flex(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -530,6 +531,31 @@ class _VacancyViewState extends State<VacancyView> {
                               ],
                             )
                                 : Container(),
+
+                            SizedBox(height: 10),
+                            widget.page != 'discover' && widget.vacancy.isProductLabVacancy ? Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Дополнительная информация:",
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: RichText(
+                                    text: TextSpan(
+                                        text: widget.vacancy.description != null ? widget.vacancy.description : "",
+                                        style: TextStyle(
+                                            fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                  ),
+                                ),
+                              ],
+                            ) : SizedBox(),
 
                             /// Ссылка на сайт
                             widget.vacancy.vacancyLink != null ? SizedBox(height: 20) : Container(),
