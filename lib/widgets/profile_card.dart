@@ -309,26 +309,33 @@ class _ProfileCardState extends State<ProfileCard> {
                             ],
                           ),
                     SizedBox(height: 15),
-                    isProductLabVacancy
-                        ? Flexible(
-                            child: Text(
-                              widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: Colors.black),
-                            ),
-                          )
-                        : Text(
-                            widget.vacancy.name != null ? widget.vacancy.name : "",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'GTEestiProDisplay',
-                                color: Colors.black),
-                          ),
-                    SizedBox(height: 10),
+                    Text(
+                      widget.vacancy.name != null ? widget.vacancy.name : "",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'GTEestiProDisplay',
+                          color: Colors.black),
+                    ),
+                    // isProductLabVacancy
+                    //     ? Flexible(
+                    //         child: Text(
+                    //           widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
+                    //           style: TextStyle(
+                    //               fontSize: 18,
+                    //               fontWeight: FontWeight.bold,
+                    //               fontFamily: 'GTEestiProDisplay',
+                    //               color: Colors.black),
+                    //         ),
+                    //       )
+                    //     : Text(
+                    //         widget.vacancy.name != null ? widget.vacancy.name : "",
+                    //         style: TextStyle(
+                    //             fontSize: 18,
+                    //             fontWeight: FontWeight.bold,
+                    //             fontFamily: 'GTEestiProDisplay',
+                    //             color: Colors.black),
+                    //       ),
                     widget.page == 'discover'
                         ? Expanded(
                             child: RichText(

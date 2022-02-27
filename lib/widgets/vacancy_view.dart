@@ -155,7 +155,7 @@ class _VacancyViewState extends State<VacancyView> {
 
   @override
   void initState() {
-    if(widget.page == 'view') {
+    if(widget.page == 'submitted') {
       getRecruit();
     }
     initData();
@@ -255,6 +255,34 @@ class _VacancyViewState extends State<VacancyView> {
                             ),
 
                             SizedBox(height: 20),
+                            isProductLabVacancy
+                                ? Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Название возможности",
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                    child: Text(
+                                      widget.vacancy.name != null
+                                          ? widget.vacancy.name
+                                          : "",
+                                      style: TextStyle(color: Colors.black87),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                                : Container(),
                             isProductLabVacancy
                                 ? Flex(
                                     direction: Axis.horizontal,

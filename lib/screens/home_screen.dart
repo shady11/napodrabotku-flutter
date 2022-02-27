@@ -1070,6 +1070,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               key: _vacancyAddFormKey,
                               child: Column(
                                 children: <Widget>[
+                                  /// Название возможности
+                                  work == work_mode.isTraining
+                                      ? Column(
+                                    children: [
+                                      Align(
+                                          widthFactor: 10,
+                                          heightFactor: 1.5,
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Название возможности'.tr(),
+                                            style: TextStyle(fontSize: 16, color: Colors.black),
+                                          )),
+                                      TextFormField(
+                                        controller: _vacancy_name_controller,
+                                        focusNode: FocusNode(canRequestFocus: false),
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide.none),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          filled: true,
+                                          fillColor: Colors.grey[200],
+                                        ),
+                                        validator: (name) {
+                                          if (name.isEmpty) {
+                                            return "please_fill_this_field".tr();
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      SizedBox(height: 20)
+                                    ],
+                                  )
+                                      : Container(),
+
                                   /// Выбор возможностей
                                   work == work_mode.isTraining
                                       ? Column(
@@ -1339,64 +1374,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     )),
                                               ],
                                             ),
-                                            // Column(
-                                            //   children: categories,
-                                            // )
-
-                                            // MultiSelectFormField(
-                                            //   autovalidate: AutovalidateMode.disabled,
-                                            //   title: Text(
-                                            //     'required_up_to'.tr(),
-                                            //     style:
-                                            //     TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                            //   ),
-                                            //   validator: (value) {
-                                            //     if (value == null || value.length == 0) {
-                                            //       return 'select_one_or_more'.tr();
-                                            //     }
-                                            //   },
-                                            //   dataSource: skillList,
-                                            //   textField: 'name',
-                                            //   valueField: 'id',
-                                            //   okButtonLabel: 'ok'.tr(),
-                                            //   cancelButtonLabel: 'cancel'.tr(),
-                                            //   // required: true,
-                                            //   hintWidget: Text('select_one_or_more'.tr()),
-                                            //   initialValue: skills,
-                                            //   onSaved: (value) {
-                                            //     if (value == null) return;
-                                            //     setState(() {
-                                            //       skills = value;
-                                            //     });
-                                            //   },
-                                            // ),
-                                            // MultiSelectFormField(
-                                            //   autovalidate: AutovalidateMode.disabled,
-                                            //   title: Text(
-                                            //     'can_improve'.tr(),
-                                            //     style:
-                                            //     TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                            //   ),
-                                            //   validator: (value) {
-                                            //     if (value == null || value.length == 0) {
-                                            //       return 'select_one_or_more'.tr();
-                                            //     }
-                                            //   },
-                                            //   dataSource: skillList,
-                                            //   textField: 'name',
-                                            //   valueField: 'id',
-                                            //   okButtonLabel: 'ok'.tr(),
-                                            //   cancelButtonLabel: 'cancel'.tr(),
-                                            //   // required: true,
-                                            //   hintWidget: Text('select_one_or_more'.tr()),
-                                            //   initialValue: skills,
-                                            //   onSaved: (value) {
-                                            //     if (value == null) return;
-                                            //     setState(() {
-                                            //       skills = value;
-                                            //     });
-                                            //   },
-                                            // ),
                                           ],
                                         )
                                       : Container(),
@@ -1894,7 +1871,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             FlatButton(
                                               color: kColorPrimaryDark,
                                               onPressed: () => _showDataPicker(context),
-                                              child: Text('Укажите дату дедлайна заявки',
+                                              child: Text(
+                                                'Укажите дату дедлайна заявки',
                                                 style: TextStyle(fontSize: 16, color: Colors.white),
                                               ),
                                             ),
