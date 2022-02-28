@@ -73,7 +73,7 @@ class _SelectModeState extends State<SelectMode> {
                                 textColor: kColorBlue,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
-                                  Prefs.setString(Prefs.ROUTE, "WORKER");
+                                  Prefs.setString(Prefs.ROUTE, "USER");
                                   Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Ищу работу',

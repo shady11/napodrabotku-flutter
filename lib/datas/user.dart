@@ -481,7 +481,7 @@ class User {
   }
 
   Future<String> login(String email, String password) async {
-    return _authenticate(email, password);
+    return _authenticate(email.trim(), password);
   }
 
   Future<void> setPassword(String password) async {

@@ -416,6 +416,10 @@ class _ProductLabHomeState extends State<ProductLabHome> {
   }
 
   void _nextTab(int tabIndex, {is_profile = false}) {
+    if(tabIndex == 0) {
+      StoreProvider.of<AppState>(context)
+          .dispatch(getNumOfLikedVacancyRequest());
+    }
     // Update tab index
     setState(() => _tabCurrentIndex = tabIndex);
     setState(() => is_profile = true);
@@ -475,7 +479,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                 setState(() {
                   is_special = true;
                   is_profile = true;
-                });;
+                });
               } else {
                 setState(() {
                   is_special = false;

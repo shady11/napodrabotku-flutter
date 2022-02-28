@@ -83,6 +83,10 @@ class _VacancyViewState extends State<VacancyView> {
             FlatButton(
               child: Text('okay'.tr()),
               onPressed: () {
+                StoreProvider.of<AppState>(context)
+                    .dispatch(getSubmittedVacancies());
+                StoreProvider.of<AppState>(context)
+                    .dispatch(getNumberOfSubmittedVacancies());
                 Navigator.of(ctx).pop();
                 Navigator.of(ctx).pop();
               },
@@ -155,7 +159,7 @@ class _VacancyViewState extends State<VacancyView> {
 
   @override
   void initState() {
-    if(widget.page == 'submitted') {
+    if (widget.page == 'submitted') {
       getRecruit();
     }
     initData();
@@ -257,31 +261,29 @@ class _VacancyViewState extends State<VacancyView> {
                             SizedBox(height: 20),
                             isProductLabVacancy
                                 ? Flex(
-                              direction: Axis.horizontal,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Название возможности",
-                                    style: TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(
-                                      widget.vacancy.name != null
-                                          ? widget.vacancy.name
-                                          : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Название возможности",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.name != null ? widget.vacancy.name : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
                             isProductLabVacancy
                                 ? Flex(
@@ -437,6 +439,20 @@ class _VacancyViewState extends State<VacancyView> {
                                   ),
                             SizedBox(height: 10),
 
+                            Prefs.getString(Prefs.ROUTE) == 'USER' ? Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    widget.vacancy.name != null ? widget.vacancy.name : "",
+                                    style: TextStyle(
+                                        fontFamily: 'GTEestiProDisplay',
+                                        fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ) : Container(),
+
                             /// Uer job title
                             widget.page == 'discover'
                                 ? Expanded(
@@ -477,7 +493,7 @@ class _VacancyViewState extends State<VacancyView> {
                                     ],
                                   )
                                 : Container(),
-                            SizedBox(height: 10),
+                            Prefs.getString(Prefs.ROUTE) == 'USER' ? SizedBox() : SizedBox(height: 10),
                             isProductLabVacancy
                                 ? Flex(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -505,57 +521,61 @@ class _VacancyViewState extends State<VacancyView> {
                                   )
                                 : Container(),
 
-                            SizedBox(height: 10),
+                            Prefs.getString(Prefs.ROUTE) == 'USER' ? SizedBox() : SizedBox(height: 10),
                             isProductLabVacancy
                                 ? Flex(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              direction: Axis.horizontal,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Дедлайн заявки",
-                                    style: TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                    child: Text(widget.vacancy.deadline != null ? widget.vacancy.deadline : "",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Дедлайн заявки",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                          child: Text(
+                                            widget.vacancy.deadline != null ? widget.vacancy.deadline : "",
+                                            style: TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 : Container(),
 
-                            SizedBox(height: 10),
-                            widget.page != 'discover' && widget.vacancy.isProductLabVacancy ? Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Дополнительная информация:",
-                                    style: TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: RichText(
-                                    text: TextSpan(
-                                        text: widget.vacancy.description != null ? widget.vacancy.description : "",
-                                        style: TextStyle(
-                                            fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
-                                  ),
-                                ),
-                              ],
-                            ) : SizedBox(),
+                            Prefs.getString(Prefs.ROUTE) == 'USER' ? SizedBox() : SizedBox(height: 10),
+                            widget.page != 'discover' && widget.vacancy.isProductLabVacancy
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Дополнительная информация:",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.bold, color: kColorPrimary),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: RichText(
+                                          text: TextSpan(
+                                              text:
+                                                  widget.vacancy.description != null ? widget.vacancy.description : "",
+                                              style: TextStyle(
+                                                  fontSize: 15, fontWeight: FontWeight.normal, color: Colors.black45)),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
 
                             /// Ссылка на сайт
                             widget.vacancy.vacancyLink != null ? SizedBox(height: 20) : Container(),
@@ -739,36 +759,35 @@ class _VacancyViewState extends State<VacancyView> {
                                                       onPressed: () {
                                                         Prefs.getString(Prefs.TOKEN) == null
                                                             ? _showDialog(context, 'sign_in_to_submit'.tr())
-                                                            : User.checkUserCv(Prefs.getInt(Prefs.USER_ID))
+                                                            : Vacancy.saveVacancyUser(
+                                                                    vacancy_id: widget.vacancy.id, type: "SUBMITTED")
                                                                 .then((value) {
-                                                                Vacancy.saveVacancyUser(
-                                                                        vacancy_id: widget.vacancy.id,
-                                                                        type: "SUBMITTED")
-                                                                    .then((value) {
-                                                                  if (value == "OK") {
-                                                                    _showDialog1(
-                                                                        context, "successfully_submitted".tr());
-                                                                    StoreProvider.of<AppState>(context)
-                                                                        .state
-                                                                        .vacancy
-                                                                        .list
-                                                                        .data
-                                                                        .remove(widget.vacancy);
-                                                                    StoreProvider.of<AppState>(context)
-                                                                        .dispatch(getSubmittedVacancies());
-                                                                    StoreProvider.of<AppState>(context)
-                                                                        .dispatch(getNumberOfSubmittedVacancies());
-                                                                  } else {
-                                                                    _showDialog(
-                                                                        context, "some_errors_occured_try_again".tr());
-                                                                  }
-                                                                });
-                                                                // if (value) {
-                                                                //
-                                                                // } else {
-                                                                //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
-                                                                // }
+                                                                if (value == "OK") {
+                                                                  _showDialog1(context, "successfully_submitted".tr());
+                                                                  StoreProvider.of<AppState>(context)
+                                                                      .state
+                                                                      .vacancy
+                                                                      .list
+                                                                      .data
+                                                                      .remove(widget.vacancy);
+                                                                  StoreProvider.of<AppState>(context)
+                                                                      .dispatch(getSubmittedVacancies());
+                                                                  StoreProvider.of<AppState>(context)
+                                                                      .dispatch(getNumberOfSubmittedVacancies());
+                                                                } else {
+                                                                  _showDialog(
+                                                                      context, "some_errors_occured_try_again".tr());
+                                                                }
                                                               });
+                                                        // User.checkUserCv(Prefs.getInt(Prefs.USER_ID))
+                                                        //         .then((value) {
+
+                                                        // if (value) {
+                                                        //
+                                                        // } else {
+                                                        //   _showDialog(context, "please_fill_user_cv_to_submit".tr());
+                                                        // }
+                                                        // });
                                                       },
                                                       text: 'submit'.tr(),
                                                     ),

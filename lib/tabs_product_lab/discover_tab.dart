@@ -82,6 +82,8 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
     });
   }
 
+  bool load = false;
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, VacanciesScreenProps>(
@@ -138,8 +140,10 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                       index: index,
                                       cardController: cardController,
                                     ),
-                                    onTap: () {
-
+                                    onTap: () async {
+                                      setState(() {
+                                        load = true;
+                                      });
                                       VacancySkill.getVacancySkills(data[index].id).then((value) {
                                         List<VacancySkill> vacancySkills = [];
 
@@ -152,9 +156,15 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
                                           ));
                                         }
 
+                                        setState(() {
+                                          load = false;
+                                        });
+
                                         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                           return Scaffold(
-                                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                                ? kColorProductLab
+                                                : kColorPrimary,
                                             appBar: AppBar(
                                               title: Text("vacancy_view".tr()),
                                             ),
@@ -198,62 +208,76 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
 
         return Stack(children: [
           body,
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: Align(
-              alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
-              widthFactor: MediaQuery.of(context).size.width * 1,
-              heightFactor: MediaQuery.of(context).size.height * 0.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
-                      Prefs.setInt(Prefs.OFFSET, 0);
-                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
-                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                    },
-                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+          load
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(kColorPrimary),
                   ),
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
-                      Prefs.setInt(Prefs.OFFSET, 0);
-                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
-                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                    },
-                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all'.tr() : 'week'.tr(),
+                )
+              : Container(
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Align(
+                    alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
+                    widthFactor: MediaQuery.of(context).size.width * 1,
+                    heightFactor: MediaQuery.of(context).size.height * 0.4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomButton(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          padding: EdgeInsets.all(2),
+                          color: Colors.white,
+                          textColor: kColorPrimary,
+                          onPressed: () {
+                            Prefs.setInt(Prefs.OFFSET, 0);
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
+                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                          },
+                          text:
+                              StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                        ),
+                        CustomButton(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          padding: EdgeInsets.all(2),
+                          color: Colors.white,
+                          textColor: kColorPrimary,
+                          onPressed: () {
+                            Prefs.setInt(Prefs.OFFSET, 0);
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type:
+                                    StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
+                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                          },
+                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
+                              ? 'all'.tr()
+                              : 'week'.tr(),
+                        ),
+                        CustomButton(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          padding: EdgeInsets.all(2),
+                          color: Colors.white,
+                          textColor: kColorPrimary,
+                          onPressed: () {
+                            Prefs.setInt(Prefs.OFFSET, 0);
+                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                                    ? 'all'
+                                    : 'month'));
+                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                            //                      Navigator.of(context).popAndPushNamed(Routes.signup);
+                            setState(() {
+                              button == 3 ? button = 0 : button = 3;
+                            });
+                          },
+                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
+                              ? 'all'.tr()
+                              : 'month'.tr(),
+                        ),
+                      ],
+                    ),
                   ),
-                  CustomButton(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    padding: EdgeInsets.all(2),
-                    color: Colors.white,
-                    textColor: kColorPrimary,
-                    onPressed: () {
-                      Prefs.setInt(Prefs.OFFSET, 0);
-                      StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                          type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all' : 'month'));
-                      StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                      //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                      setState(() {
-                        button == 3 ? button = 0 : button = 3;
-                      });
-                    },
-                    text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all'.tr() : 'month'.tr(),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ]);
       },
     );

@@ -175,7 +175,12 @@ class _MatchesTabState extends State<MatchesTab> {
                                         vacancySkill: vacancySkills,
                                       ),
                                     );
-                                  }));
+                                  })).then((value)
+                                  {
+                                    handleInitialBuild(props);
+                                    StoreProvider.of<AppState>(context)
+                                        .dispatch(getNumOfLikedVacancyRequest());
+                                  });
                                 });
                               },
                             );

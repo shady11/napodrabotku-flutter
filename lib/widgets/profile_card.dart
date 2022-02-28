@@ -311,31 +311,13 @@ class _ProfileCardState extends State<ProfileCard> {
                     SizedBox(height: 15),
                     Text(
                       widget.vacancy.name != null ? widget.vacancy.name : "",
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'GTEestiProDisplay',
                           color: Colors.black),
                     ),
-                    // isProductLabVacancy
-                    //     ? Flexible(
-                    //         child: Text(
-                    //           widget.vacancy.internshipLanguage != null ? widget.vacancy.internshipLanguage : "",
-                    //           style: TextStyle(
-                    //               fontSize: 18,
-                    //               fontWeight: FontWeight.bold,
-                    //               fontFamily: 'GTEestiProDisplay',
-                    //               color: Colors.black),
-                    //         ),
-                    //       )
-                    //     : Text(
-                    //         widget.vacancy.name != null ? widget.vacancy.name : "",
-                    //         style: TextStyle(
-                    //             fontSize: 18,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontFamily: 'GTEestiProDisplay',
-                    //             color: Colors.black),
-                    //       ),
                     widget.page == 'discover'
                         ? Expanded(
                             child: RichText(
@@ -350,6 +332,9 @@ class _ProfileCardState extends State<ProfileCard> {
                             ),
                           )
                         : SizedBox(),
+                    widget.page == 'submit'
+                        ? SizedBox()
+                        : SizedBox(height: 20),
                     Container(
                       width: double.maxFinite,
                       child: Row(
@@ -649,20 +634,17 @@ class ProfileCardProductLab extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 5),
-                    Flex(
-                      direction: Axis.horizontal,
-                      children: [
-                        Flexible(
-                            child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                          child: Text(
-                            vacancy.internshipLanguage != null ? vacancy.internshipLanguage : "",
-                            style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                          ),
-                        )),
-                      ],
-                    ),
+                    isProductLabVacancy && vacancy.name != null
+                        ? Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                            child: Text(
+                              vacancy.name != null ? vacancy.name : "",
+                              style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                            ),
+                          )
+                        : SizedBox(),
+                    SizedBox(height: 5),
                     page == 'discover'
                         ? Expanded(
                             child: RichText(
