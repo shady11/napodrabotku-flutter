@@ -68,6 +68,20 @@ class Vacancy {
     this.deadline,
   });
 
+  static void deactivateVacancyWithOverDeadline() async {
+    String url = API_IP + API_DEACTIVATE + '?lang=' + Prefs.getString(Prefs.LANGUAGE);
+
+    try {
+      Map<String, String> headers = {"Content-type": "application/json", 'Authorization': Prefs.getString(Prefs.PASSWORD)};
+      var response = await http.put(url, headers: headers);
+
+      var result = json.encode(response.body);
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static Future<List<dynamic>> getLists(String model, String region) async {
 
     String url = '';

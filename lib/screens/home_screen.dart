@@ -137,549 +137,556 @@ class _HomeScreenState extends State<HomeScreen> {
     fontWeight: FontWeight.w500,
   );
 
-  getSkillSets() async {
-    var list = await Vacancy.getLists('skillset', null);
-    list.forEach((item) {
-      skillSets.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
-    });
-  }
-
-  getVacancySkills(int vacancyId) async {
-    await VacancySkill.getVacancySkills(vacancyId).then((value) {
-      value.forEach((item) {
-        if (item.isRequired) {
-          vacancyRequiredSkills.add(item);
-        } else {
-          vacancyCanUpgradeSkills.add(item);
-        }
+  //region Methods
+    getSkillSets() async {
+      var list = await Vacancy.getLists('skillset', null);
+      list.forEach((item) {
+        skillSets.add(Skill(id: item["id"], name: item["name"], categoryId: item["category_id"]));
       });
-    });
-  }
+    }
 
-  openSkillDialogCategory(context, List<String> options, List<String> listTag, String categoryName) {
-    // List<String> listTag = [];
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(categoryName.toUpperCase(),
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+    getVacancySkills(int vacancyId) async {
+      await VacancySkill.getVacancySkills(vacancyId).then((value) {
+        value.forEach((item) {
+          if (item.isRequired) {
+            vacancyRequiredSkills.add(item);
+          } else {
+            vacancyCanUpgradeSkills.add(item);
+          }
+        });
+      });
+    }
+
+    openSkillDialogCategory(context, List<String> options, List<String> listTag, String categoryName) {
+      // List<String> listTag = [];
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (context, setState) {
+                return ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(categoryName.toUpperCase(),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child:
+
+                      /// Form
+                      Column(
+                        children: <Widget>[
+                          ChipsChoice<String>.multiple(
+                            choiceStyle: C2ChoiceStyle(
+                              margin: EdgeInsets.only(top: 4, bottom: 4),
+                              showCheckmark: false,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            choiceActiveStyle: C2ChoiceStyle(
+                              color: kColorPrimary,
+                            ),
+                            padding: EdgeInsets.zero,
+                            value: listTag,
+                            onChanged: (val) {
+                              return setState(() => listTag = val);
+                            },
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: options,
+                              value: (i, v) => v,
+                              label: (i, v) => v,
+                            ),
+                            wrapped: true,
+                            choiceLabelBuilder: (item) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                height: 60,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.label,
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+
+                          /// Sign In button
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.grey[200],
+                                  textColor: kColorPrimary,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'cancel'.tr(),
+                                ),
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    // SkillCategory skillCategory = new SkillCategory();
+                                    // skillCategory.saveUserSkills(listTag, 1);
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'save'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          });
+    }
+
+    getSkillSetCategories() async {
+      List<String> pi = [];
+
+      var list = await Vacancy.getLists('skillset_category', null);
+      list.forEach((item) {
+        List<String> skills = [];
+        item["skills"].forEach((skill) {
+          skills.add(skill);
+        });
+
+        categories.add(
+          StatefulBuilder(builder: (context, setState) {
+            return Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 20),
+                      width: 40,
+                      height: 40,
+                      child: Icon(
+                        Boxicons.bx_atom,
+                        size: 25,
+                        color: kColorPrimary,
+                      ),
+                      decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child:
+                  Flexible(
+                    flex: 6,
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          item['name'].toString(),
+                          style: _textStyle,
+                          textAlign: TextAlign.left,
+                        )),
+                  ),
+                  Flexible(
+                    flex: 3,
+                    child: CustomButton(
+                      height: 40.0,
+                      width: 100.0,
+                      padding: EdgeInsets.all(5),
+                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                      textColor: Colors.white,
+                      textSize: 14,
+                      onPressed: () {
+                        List<String> list = [];
+                        List<String> listTag = [];
+                        int id = item["id"];
+                        setState(() {
+                          skillSets.forEach((item) {
+                            if (item.categoryId == id) {
+                              list.add(item.name);
+                            }
+                          });
+                        });
 
-                        /// Form
-                        Column(
-                      children: <Widget>[
-                        ChipsChoice<String>.multiple(
-                          choiceStyle: C2ChoiceStyle(
-                            margin: EdgeInsets.only(top: 4, bottom: 4),
-                            showCheckmark: false,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          choiceActiveStyle: C2ChoiceStyle(
-                            color: kColorPrimary,
-                          ),
-                          padding: EdgeInsets.zero,
-                          value: listTag,
-                          onChanged: (val) {
-                            return setState(() => listTag = val);
-                          },
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: options,
-                            value: (i, v) => v,
-                            label: (i, v) => v,
-                          ),
-                          wrapped: true,
-                          choiceLabelBuilder: (item) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width * 0.95,
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  item.label,
-                                  softWrap: true,
-                                  maxLines: 4,
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        /// Sign In button
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.33,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.grey[200],
-                                textColor: kColorPrimary,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                text: 'cancel'.tr(),
-                              ),
-                              CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.33,
-                                padding: EdgeInsets.all(10),
-                                color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  // SkillCategory skillCategory = new SkillCategory();
-                                  // skillCategory.saveUserSkills(listTag, 1);
-                                  Navigator.of(context).pop();
-                                },
-                                text: 'save'.tr(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        vacancyRequiredSkills.forEach((item) {
+                          if (item.categoryId == id) {
+                            listTag.add(item.name);
+                          }
+                        });
+                        openSkillDialogCategory(context, list, listTag, item["name"].toString());
+                      },
+                      text: 'add'.tr(),
                     ),
                   ),
                 ],
-              );
-            },
-          );
-        });
-  }
-
-  getSkillSetCategories() async {
-    List<String> pi = [];
-
-    var list = await Vacancy.getLists('skillset_category', null);
-    list.forEach((item) {
-      List<String> skills = [];
-      item["skills"].forEach((skill) {
-        skills.add(skill);
-      });
-
-      categories.add(
-        StatefulBuilder(builder: (context, setState) {
-          return Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20),
-                    width: 40,
-                    height: 40,
-                    child: Icon(
-                      Boxicons.bx_atom,
-                      size: 25,
-                      color: kColorPrimary,
-                    ),
-                    decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                  ),
-                ),
-                Flexible(
-                  flex: 6,
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        item['name'].toString(),
-                        style: _textStyle,
-                        textAlign: TextAlign.left,
-                      )),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: CustomButton(
-                    height: 40.0,
-                    width: 100.0,
-                    padding: EdgeInsets.all(5),
-                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                    textColor: Colors.white,
-                    textSize: 14,
-                    onPressed: () {
-                      List<String> list = [];
-                      List<String> listTag = [];
-                      int id = item["id"];
-                      setState(() {
-                        skillSets.forEach((item) {
-                          if (item.categoryId == id) {
-                            list.add(item.name);
-                          }
-                        });
-                      });
-
-                      vacancyRequiredSkills.forEach((item) {
-                        if (item.categoryId == id) {
-                          listTag.add(item.name);
-                        }
-                      });
-                      openSkillDialogCategory(context, list, listTag, item["name"].toString());
-                    },
-                    text: 'add'.tr(),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-      );
-
-      skillsV1.add(
-        StatefulBuilder(builder: (context, setState) {
-          return Column(
-            children: <Widget>[
-              MsAccordion(
-                titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
-                showAccordion: false,
-                margin: const EdgeInsets.all(0),
-                expandedTitleBackgroundColor: Color(0xffF2F2F5),
-                titleBorderRadius: BorderRadius.circular(6),
-                textStyle: TextStyle(color: kColorWhite),
-                collapsedTitleBackgroundColor: Colors.white10,
-                contentBackgroundColor: Colors.white,
-                contentChild: Column(
-                  children: <Widget>[
-                    Wrap(
-                      children: [
-                        ChipsChoice<String>.multiple(
-                          choiceStyle: C2ChoiceStyle(
-                            margin: EdgeInsets.only(top: 4, bottom: 4),
-                            showCheckmark: false,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          choiceActiveStyle: C2ChoiceStyle(
-                            color: kColorPrimary,
-                          ),
-                          mainAxisSize: MainAxisSize.max,
-                          padding: EdgeInsets.zero,
-                          value: tags,
-                          onChanged: (val) => setState(() => tags = val),
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: skills,
-                            value: (i, v) {
-                              setState(() => selectedCategoryIdFromFirstChip = item["id"]);
-                              return v;
-                            },
-                            label: (i, v) => v,
-                          ),
-                          wrapped: true,
-                          choiceLabelBuilder: (item) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width * 0.95,
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  item.label,
-                                  softWrap: true,
-                                  maxLines: 4,
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
               ),
-            ],
-          );
-        }),
-      );
+            );
+          }),
+        );
 
-      skillsV2.add(
-        StatefulBuilder(builder: (context, setState) {
-          return Column(
-            children: <Widget>[
-              MsAccordion(
-                titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
-                showAccordion: false,
-                margin: const EdgeInsets.all(0),
-                expandedTitleBackgroundColor: Color(0xffF2F2F5),
-                titleBorderRadius: BorderRadius.circular(6),
-                textStyle: TextStyle(color: kColorWhite),
-                collapsedTitleBackgroundColor: Colors.white10,
-                contentBackgroundColor: Colors.white,
-                contentChild: Column(
-                  children: <Widget>[
-                    Wrap(
-                      children: [
-                        ChipsChoice<String>.multiple(
-                          choiceStyle: C2ChoiceStyle(
-                            margin: EdgeInsets.only(top: 4, bottom: 4),
-                            showCheckmark: false,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          choiceActiveStyle: C2ChoiceStyle(
-                            color: kColorPrimary,
-                          ),
-                          mainAxisSize: MainAxisSize.max,
-                          padding: EdgeInsets.zero,
-                          value: tags2,
-                          onChanged: (val) => setState(() => tags2 = val),
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: skills,
-                            value: (i, v) {
-                              setState(() => selectedCategoryIdSecondChip = item["id"]);
-                              return v;
-                            },
-                            label: (i, v) => v,
-                          ),
-                          wrapped: true,
-                          choiceLabelBuilder: (item) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width * 0.95,
-                              height: 60,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  item.label,
-                                  softWrap: true,
-                                  maxLines: 4,
-                                  style: TextStyle(fontSize: 15),
+        skillsV1.add(
+          StatefulBuilder(builder: (context, setState) {
+            return Column(
+              children: <Widget>[
+                MsAccordion(
+                  titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
+                  showAccordion: false,
+                  margin: const EdgeInsets.all(0),
+                  expandedTitleBackgroundColor: Color(0xffF2F2F5),
+                  titleBorderRadius: BorderRadius.circular(6),
+                  textStyle: TextStyle(color: kColorWhite),
+                  collapsedTitleBackgroundColor: Colors.white10,
+                  contentBackgroundColor: Colors.white,
+                  contentChild: Column(
+                    children: <Widget>[
+                      Wrap(
+                        children: [
+                          ChipsChoice<String>.multiple(
+                            choiceStyle: C2ChoiceStyle(
+                              margin: EdgeInsets.only(top: 4, bottom: 4),
+                              showCheckmark: false,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            choiceActiveStyle: C2ChoiceStyle(
+                              color: kColorPrimary,
+                            ),
+                            mainAxisSize: MainAxisSize.max,
+                            padding: EdgeInsets.zero,
+                            value: tags,
+                            onChanged: (val) => setState(() => tags = val),
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: skills,
+                              value: (i, v) {
+                                setState(() => selectedCategoryIdFromFirstChip = item["id"]);
+                                return v;
+                              },
+                              label: (i, v) => v,
+                            ),
+                            wrapped: true,
+                            choiceLabelBuilder: (item) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                height: 60,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.label,
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        }),
-      );
-    });
-  }
-
-  openSkillDialog(context, bool isRequired) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, snapshot) {
-            return ListView(
-              shrinkWrap: true,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text('Навыки'.tr().toUpperCase(),
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
-                  ),
-                ),
-
-                /// Form
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Form(
-                    key: courseAddFormKey,
-                    child: Column(
-                      children: <Widget>[
-                        Column(
-                          children: isRequired ? skillsV1 : skillsV2,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.33,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.grey[200],
-                                textColor: kColorPrimary,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                text: 'cancel'.tr(),
-                              ),
-                              CustomButton(
-                                width: MediaQuery.of(context).size.width * 0.33,
-                                padding: EdgeInsets.all(10),
-                                color: kColorPrimary,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                text: 'save'.tr(),
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ],
             );
-          });
-        });
-  }
+          }),
+        );
 
-  Future<bool> onWillPop() {
-    DateTime now = DateTime.now();
-    if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
-      return Future.value(false);
+        skillsV2.add(
+          StatefulBuilder(builder: (context, setState) {
+            return Column(
+              children: <Widget>[
+                MsAccordion(
+                  titleChild: Text(item["name"], style: TextStyle(fontSize: 18)),
+                  showAccordion: false,
+                  margin: const EdgeInsets.all(0),
+                  expandedTitleBackgroundColor: Color(0xffF2F2F5),
+                  titleBorderRadius: BorderRadius.circular(6),
+                  textStyle: TextStyle(color: kColorWhite),
+                  collapsedTitleBackgroundColor: Colors.white10,
+                  contentBackgroundColor: Colors.white,
+                  contentChild: Column(
+                    children: <Widget>[
+                      Wrap(
+                        children: [
+                          ChipsChoice<String>.multiple(
+                            choiceStyle: C2ChoiceStyle(
+                              margin: EdgeInsets.only(top: 4, bottom: 4),
+                              showCheckmark: false,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            choiceActiveStyle: C2ChoiceStyle(
+                              color: kColorPrimary,
+                            ),
+                            mainAxisSize: MainAxisSize.max,
+                            padding: EdgeInsets.zero,
+                            value: tags2,
+                            onChanged: (val) => setState(() => tags2 = val),
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: skills,
+                              value: (i, v) {
+                                setState(() => selectedCategoryIdSecondChip = item["id"]);
+                                return v;
+                              },
+                              label: (i, v) => v,
+                            ),
+                            wrapped: true,
+                            choiceLabelBuilder: (item) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.95,
+                                height: 60,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    item.label,
+                                    softWrap: true,
+                                    maxLines: 4,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }),
+        );
+      });
     }
-    return Future.value(true);
-  }
 
-  getSkills() {
-    setState(() {
-      this.skillList = [
-        {'id': 1, 'name': "Ученые и исследователи экологического топлива"},
-        {
-          'id': 2,
-          'name': "Анализ жизненного цикла: стоимость, социальные и экологические аспекты",
-        },
-        {
-          'id': 3,
-          'name': "Сотрудничество (онлайн и офлайн)",
-        },
-        {
-          'id': 4,
-          'name':
-              "Менеджер по вопросам обеспечения бесперебойного функционирования: восстановление операций/работы после сбоя",
-        },
-        {
-          'id': 5,
-          'name': "Мета-программирование",
-        },
-        {
-          'id': 6,
-          'name': "Навыки AR / VR / MR (использование / дизайн / инжинерия)",
-        },
-        {
-          'id': 7,
-          'name': "Проектирование систем блокчейн",
-        },
-        {
-          'id': 8,
-          'name': "Дизайн и интеграция робототехники",
-        },
-        {
-          'id': 9,
-          'name': "Роли в квантовых вычислениях",
-        },
-      ];
-    });
-  }
+    openSkillDialog(context, bool isRequired) {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, snapshot) {
+              return ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text('Навыки'.tr().toUpperCase(),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: kColorDarkBlue)),
+                    ),
+                  ),
 
-  getLists() async {
-    jobTypeList = await Vacancy.getLists('job_type', null);
-    vacancyTypeList = await Vacancy.getLists('vacancy_type', null);
-    busynessList = await Vacancy.getLists('busyness', null);
-    scheduleList = await Vacancy.getLists('schedule', null);
-    districtList = await Vacancy.getLists('districts', null);
-    currencyList = await Vacancy.getLists('currencies', null);
-    await Vacancy.getLists('region', null).then((value) {
-      value.forEach((region) {
-        regions.add(region["name"]);
-      });
-    });
-  }
+                  /// Form
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Form(
+                      key: courseAddFormKey,
+                      child: Column(
+                        children: <Widget>[
+                          Column(
+                            children: isRequired ? skillsV1 : skillsV2,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.grey[200],
+                                  textColor: kColorPrimary,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'cancel'.tr(),
+                                ),
+                                CustomButton(
+                                  width: MediaQuery.of(context).size.width * 0.33,
+                                  padding: EdgeInsets.all(10),
+                                  color: kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'save'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            });
+          });
+    }
 
-  getFilters(id) async {
-    _job_types = await User.getFilters('activities', id);
-    _vacancy_types = await User.getFilters('types', id);
-    _busynesses = await User.getFilters('busyness', id);
-    _schedules = await User.getFilters('schedules', id);
-    _regions = await User.getFilters('regions', id);
-    // _districts = await User.getFilters('districts', id);
-  }
-
-  getDistrictsById(region) async {
-    this.districtList = await Vacancy.getDistrictsById('districts', region);
-  }
-
-  getDistrictsByRegionName(region) async {
-    districtList = await Vacancy.getLists('districts', region);
-    districtList.forEach((district) {
-      setState(() {
-        districts.add(district['name']);
-      });
-    });
-  }
-
-  getOpportunities() async {
-    var list = await Vacancy.getLists('opportunity', null);
-    list.forEach((item) {
-      setState(() {
-        opportunities.add(item["name"]);
-      });
-    });
-  }
-
-  getOpportunityTypes() async {
-    var list = await Vacancy.getLists('opportunity_type', null);
-    list.forEach((item) {
-      setState(() {
-        opportunityTypes.add(item["name"]);
-      });
-    });
-  }
-
-  getOpportunityDurations() async {
-    var list = await Vacancy.getLists('opportunity_duration', null);
-    list.forEach((item) {
-      setState(() {
-        opportunityDurations.add(item["name"]);
-      });
-    });
-  }
-
-  getInternshipLanguages() async {
-    var list = await Vacancy.getLists('intership_language', null);
-    list.forEach((item) {
-      setState(() {
-        internshipLanguageTypes.add(item["name"]);
-      });
-    });
-  }
-
-  getRecommendationLetterType() async {
-    var list = await Vacancy.getLists('recommendation_letter_type', null);
-    list.forEach((item) {
-      setState(() {
-        typeOfRecommendedLetters.add(item["name"]);
-      });
-    });
-  }
-
-  selectDepartments(String jobType) {
-    setState(() {
-      selectedDepartment = null;
-    });
-    spheres.forEach((item) {
-      if (item["jobType"] == jobType) {
-        setState(() {
-          departments = item["departments"];
-        });
+    Future<bool> onWillPop() {
+      DateTime now = DateTime.now();
+      if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+        currentBackPressTime = now;
+        Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
+        return Future.value(false);
       }
-    });
-  }
+      return Future.value(true);
+    }
+
+    getSkills() {
+      setState(() {
+        this.skillList = [
+          {'id': 1, 'name': "Ученые и исследователи экологического топлива"},
+          {
+            'id': 2,
+            'name': "Анализ жизненного цикла: стоимость, социальные и экологические аспекты",
+          },
+          {
+            'id': 3,
+            'name': "Сотрудничество (онлайн и офлайн)",
+          },
+          {
+            'id': 4,
+            'name':
+            "Менеджер по вопросам обеспечения бесперебойного функционирования: восстановление операций/работы после сбоя",
+          },
+          {
+            'id': 5,
+            'name': "Мета-программирование",
+          },
+          {
+            'id': 6,
+            'name': "Навыки AR / VR / MR (использование / дизайн / инжинерия)",
+          },
+          {
+            'id': 7,
+            'name': "Проектирование систем блокчейн",
+          },
+          {
+            'id': 8,
+            'name': "Дизайн и интеграция робототехники",
+          },
+          {
+            'id': 9,
+            'name': "Роли в квантовых вычислениях",
+          },
+        ];
+      });
+    }
+
+    getLists() async {
+      jobTypeList = await Vacancy.getLists('job_type', null);
+      vacancyTypeList = await Vacancy.getLists('vacancy_type', null);
+      busynessList = await Vacancy.getLists('busyness', null);
+      scheduleList = await Vacancy.getLists('schedule', null);
+      districtList = await Vacancy.getLists('districts', null);
+      currencyList = await Vacancy.getLists('currencies', null);
+      await Vacancy.getLists('region', null).then((value) {
+        value.forEach((region) {
+          regions.add(region["name"]);
+        });
+      });
+    }
+
+    getFilters(id) async {
+      _job_types = await User.getFilters('activities', id);
+      _vacancy_types = await User.getFilters('types', id);
+      _busynesses = await User.getFilters('busyness', id);
+      _schedules = await User.getFilters('schedules', id);
+      _regions = await User.getFilters('regions', id);
+      // _districts = await User.getFilters('districts', id);
+    }
+
+    getDistrictsById(region) async {
+      this.districtList = await Vacancy.getDistrictsById('districts', region);
+    }
+
+    getDistrictsByRegionName(region) async {
+      districtList = await Vacancy.getLists('districts', region);
+      districtList.forEach((district) {
+        setState(() {
+          districts.add(district['name']);
+        });
+      });
+    }
+
+    getOpportunities() async {
+      var list = await Vacancy.getLists('opportunity', null);
+      list.forEach((item) {
+        setState(() {
+          opportunities.add(item["name"]);
+        });
+      });
+    }
+
+    getOpportunityTypes() async {
+      var list = await Vacancy.getLists('opportunity_type', null);
+      list.forEach((item) {
+        setState(() {
+          opportunityTypes.add(item["name"]);
+        });
+      });
+    }
+
+    getOpportunityDurations() async {
+      var list = await Vacancy.getLists('opportunity_duration', null);
+      list.forEach((item) {
+        setState(() {
+          opportunityDurations.add(item["name"]);
+        });
+      });
+    }
+
+    getInternshipLanguages() async {
+      var list = await Vacancy.getLists('intership_language', null);
+      list.forEach((item) {
+        setState(() {
+          internshipLanguageTypes.add(item["name"]);
+        });
+      });
+    }
+
+    getRecommendationLetterType() async {
+      var list = await Vacancy.getLists('recommendation_letter_type', null);
+      list.forEach((item) {
+        setState(() {
+          typeOfRecommendedLetters.add(item["name"]);
+        });
+      });
+    }
+
+    selectDepartments(String jobType) {
+      setState(() {
+        selectedDepartment = null;
+      });
+      spheres.forEach((item) {
+        if (item["jobType"] == jobType) {
+          setState(() {
+            departments = item["departments"];
+          });
+        }
+      });
+    }
+
+    void _deactivateVacancyWithOverDeadline() async {
+      Vacancy.deactivateVacancyWithOverDeadline();
+    }
+
+  //endregion
 
   TextEditingController _vacancy_name_controller = TextEditingController();
   TextEditingController _vacancy_salary_controller = TextEditingController();
@@ -2202,6 +2209,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    if(Prefs.getString(Prefs.ROUTE) == 'COMPANY') {
+      _deactivateVacancyWithOverDeadline();
+    }
     getSkillSetCategories();
     getLists();
     getOpportunities();
