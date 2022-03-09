@@ -59,6 +59,7 @@ String API_COMPANY_VACANCIES = 'company_vacancy';
 String API_COMPANY_INACTIVE_VACANCIES = 'company_inactive_vacancy';
 String API_SUBMITTED_USERS = 'company/submitted_users/';
 String API_USER_FULL_INFO = 'users/full_info/';
+String API_DEACTIVATE = 'deactivateVacancyWithOveredDeadline';
 
 String API_SAVE_OPPORTUNITY = 'user/save/opportunity';
 String API_SAVE_JOB_SPHERE = 'user/save/job_sphere';
