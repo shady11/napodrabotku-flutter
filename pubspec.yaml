@@ -115,6 +115,7 @@ flutter:
     - assets/languages/
     - assets/images/demo_users/
     - assets/images/partners/
+    - assets/images/youtube/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

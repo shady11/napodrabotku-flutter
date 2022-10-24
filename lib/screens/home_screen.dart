@@ -541,7 +541,8 @@ class _HomeScreenState extends State<HomeScreen> {
       DateTime now = DateTime.now();
       if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
         currentBackPressTime = now;
-        Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
+        // Fluttertoast.showToast(context, msg: 'click_once_to_exit'.tr());
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('click_once_to_exit'.tr())));
         return Future.value(false);
       }
       return Future.value(true);

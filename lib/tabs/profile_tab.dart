@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ishtapp/components/custom_button.dart';
-
 import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/screens/profile_likes_screen.dart';
 import 'package:ishtapp/screens/profile_visits_screen.dart';
@@ -14,12 +13,9 @@ import 'package:redux/redux.dart';
 import 'package:ishtapp/datas/RSAA.dart';
 import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
-
 import 'package:flutter_redux/flutter_redux.dart';
-
 import 'package:flutter_guid/flutter_guid.dart';
-import 'package:ishtapp/components/custom_button.dart';
-import 'dart:async';
+
 class ProfileTab extends StatefulWidget {
   @override
   _ProfileTabState createState() => _ProfileTabState();
