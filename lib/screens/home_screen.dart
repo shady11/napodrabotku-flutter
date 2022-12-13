@@ -8,7 +8,6 @@ import 'package:ishtapp/datas/app_state.dart';
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/tabs/school_tab.dart';
 import 'package:multiselect_formfield/multiselect_formfield.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -768,7 +767,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'district'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -796,7 +795,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'job_types'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -823,7 +822,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'vacancy_types'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -850,7 +849,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'busynesses'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -877,7 +876,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 //                          SizedBox(height: 20),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'schedules'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),

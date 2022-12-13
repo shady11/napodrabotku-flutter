@@ -111,7 +111,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                         child: Column(
                           children: <Widget>[
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'opportunity'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -139,7 +139,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                               },
                             ),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'opportunity_type'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -165,7 +165,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                               },
                             ),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'opportunity_duration'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
@@ -191,7 +191,7 @@ class _ProductLabHomeState extends State<ProductLabHome> {
                               },
                             ),
                             MultiSelectFormField(
-                              autovalidate: AutovalidateMode.disabled,
+                              // autovalidate: AutovalidateMode.disabled,
                               title: Text(
                                 'internship_language'.tr(),
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),

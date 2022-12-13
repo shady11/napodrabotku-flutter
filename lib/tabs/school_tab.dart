@@ -13,13 +13,17 @@ class SchoolTab extends StatefulWidget {
 class _SchoolTabState extends State<SchoolTab> {
   List<String> videosList = [];
   List<String> titles = [
-    'searching_work'.tr(),
+    (Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB")
+        ? 'searching_work'.tr()
+        : 'startup_lab'.tr(),
+    'online_training_courses'.tr(),
     'artificial_intelligence'.tr(),
     'machine_learning'.tr(),
     'neural_networks'.tr(),
     'data_science'.tr(),
     'cyber_security'.tr(),
-    'software_design'.tr()
+    'software_design'.tr(),
+    'links_for_courses'.tr(),
   ];
 
   @override
@@ -30,44 +34,52 @@ class _SchoolTabState extends State<SchoolTab> {
       if (Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB") {
         videosList = [
           'assets/images/youtube/ishtapp-ru.jpg',
+          'assets/images/youtube/online_courses.jpg',
           'assets/images/youtube/intelligence_agent.jpg',
           'assets/images/youtube/machine.jpeg',
           'assets/images/youtube/neiron.jpg',
           'assets/images/youtube/information.jpeg',
           'assets/images/youtube/cyber.jpeg',
           'assets/images/youtube/program.jpeg',
+          'assets/images/youtube/courses.jpg',
         ];
       } else {
         videosList = [
           'assets/images/youtube/laboratory-ru.jpg',
+          'assets/images/youtube/online_courses.jpg',
           'assets/images/youtube/intelligence_agent.jpg',
           'assets/images/youtube/machine.jpeg',
           'assets/images/youtube/neiron.jpg',
           'assets/images/youtube/information.jpeg',
           'assets/images/youtube/cyber.jpeg',
           'assets/images/youtube/program.jpeg',
+          'assets/images/youtube/courses.jpg',
         ];
       }
     } else {
       if (Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB") {
         videosList = [
           'assets/images/youtube/ishtapp.jpg',
+          'assets/images/youtube/online_courses.jpg',
           'assets/images/youtube/intelligence_agent.jpg',
           'assets/images/youtube/machine.jpeg',
           'assets/images/youtube/neiron.jpg',
           'assets/images/youtube/information.jpeg',
           'assets/images/youtube/cyber.jpeg',
           'assets/images/youtube/program.jpeg',
+          'assets/images/youtube/courses.jpg',
         ];
       } else {
         videosList = [
           'assets/images/youtube/laboratory.jpg',
+          'assets/images/youtube/online_courses.jpg',
           'assets/images/youtube/intelligence_agent.jpg',
           'assets/images/youtube/machine.jpeg',
           'assets/images/youtube/neiron.jpg',
           'assets/images/youtube/information.jpeg',
           'assets/images/youtube/cyber.jpeg',
           'assets/images/youtube/program.jpeg',
+          'assets/images/youtube/courses.jpg',
         ];
       }
     }
@@ -139,28 +151,33 @@ class _SchoolTabState extends State<SchoolTab> {
                           ),*/
                         ),
                         Positioned(
-                            left: 10,
-                            bottom: 10,
-                            right: 10,
-                            child: index >= 1
-                                ? Text(
-                                    titles[index],
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.orange,
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                          offset: Offset(1.0, 1.0),
-                                          blurRadius: 2.0,
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
-                                      ],
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 8, bottom: 8, top: 6),
+                              color: Colors.black.withOpacity(0.5),
+                              child: Text(
+                                titles[index],
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.orange,
+                                  shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 2.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
                                     ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    softWrap: false,
-                                  )
-                                : Text('')),
+                                  ],
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                softWrap: false,
+                              ),
+                            )),
                       ],
                     ),
                   ),
