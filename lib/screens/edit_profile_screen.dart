@@ -297,8 +297,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   GestureDetector(
                     child: _imageFile == null
                         ? CircleAvatar(
-                            backgroundColor:
-                                Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                            backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                             radius: 60,
                             backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
                                 ? NetworkImage(
@@ -307,7 +306,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 : null,
                           )
                         : CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
+                            backgroundColor: kColorPrimary,
                             radius: 50,
                             backgroundImage: Image.file(
                               File(_imageFile.path),
@@ -318,94 +317,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _showPicker(context);
                     },
                   ),
-                  SizedBox(height: 10),
-                  Text("profile_photo".tr(), textAlign: TextAlign.center),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: Text(
+                      "profile_photo".tr().toString().toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
             SizedBox(height: 20),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20),
+            Container(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20),
 
-                  /// Название компании
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'company_name'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: _name_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                // Basic validation
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Контактный телефон
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'phone_number'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    controller: _phone_number_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                    validator: (name) {
-                      // Basic validation
-//                      if (name.isEmpty) {
-//                        return "please_fill_this_field".tr();
-//                      }
-                      return null;
-                    },
-                  ),
-
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? Column(
-                          children: [
-                            SizedBox(height: 20),
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'surname'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                          ],
-                        )
-                      : Container(),
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? TextFormField(
+                    /// Название компании
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'company_name'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        TextFormField(
                           controller: _name_controller,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -421,457 +366,522 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             }
                             return null;
                           },
-                        )
-                      : Container(),
-                  SizedBox(height: 20),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
 
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'email'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    enabled: false,
-                    controller: _email_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                    ),
-                    validator: (name) {
-                      // Basic validation
+                    /// Контактный телефон
+                    Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'phone_number'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )),
+                    TextFormField(
+                      controller: _phone_number_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                      ),
+                      validator: (name) {
+                        // Basic validation
 //                      if (name.isEmpty) {
 //                        return "please_fill_this_field".tr();
 //                      }
-                      return null;
-                    },
-                    style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
-                  ),
-                  SizedBox(height: 20),
-
-                  /// Область
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'region'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  DropdownSearch<String>(
-                      showSelectedItem: true,
-                      items: items,
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedRegion = value;
-                          getDistricts(value);
-                          selectedDistrict = '';
-                        });
+                        return null;
                       },
-                      dropdownSearchDecoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                      selectedItem: selectedRegion),
-                  SizedBox(height: 20),
-
-                  /// Регион
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'district'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  DropdownSearch<String>(
-                      showSelectedItem: true,
-                      items: districts,
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedDistrict = value;
-                        });
-                      },
-                      dropdownSearchDecoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                      selectedItem: selectedDistrict),
-                  SizedBox(height: 20),
-
-                  /// Адрес компании/организации
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Адрес компании'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              enabled: true,
-                              controller: _address_of_company,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// ФИО Контактного лица
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'ФИО Контактного лица'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              enabled: true,
-                              controller: _fullname_of_contact_person,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Должность контактного лица
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Должность контактного лица'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              enabled: true,
-                              controller: _position_of_contact_person,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
-                            ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Выбор сферы деятельности
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Сфера деятельности'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            DropdownSearch<String>(
-                                showSelectedItem: true,
-                                items: spheres,
-                                onChanged: (value) {
-                                  getDepartments(value);
-                                  setState(() {
-                                    selectedJobSphere = value;
-                                  });
-                                },
-                                dropdownSearchDecoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.grey[200],
-                                    contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                                selectedItem: selectedJobSphere),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  /// Выбор Отрасли
-                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                      ? selectedJobSphere != null
-                          ? Align(
-                              widthFactor: 10,
-                              heightFactor: 1.5,
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Отрасль'.tr(),
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              ))
-                          : Container()
-                      : Container(),
-                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                      ? selectedJobSphere != null
-                          ? DropdownSearch<String>(
-                              showSelectedItem: true,
-                              items: departments,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedDepartment = value;
-                                });
-                              },
-                              dropdownSearchDecoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                              selectedItem: selectedDepartment)
-                          : Container()
-                      : Container(),
-                  SizedBox(height: 20),
-
-                  /// Социально-ориентированность
-                  Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Социально-ориентированность'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            DropdownSearch<String>(
-                                showSelectedItem: true,
-                                items: socialOrientations,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedSocialOrientation = value;
-                                  });
-                                },
-                                dropdownSearchDecoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.grey[200],
-                                    contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                                selectedItem: selectedSocialOrientation),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
-
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'birth_date'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
-                      : Container(),
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? CustomButton(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          width: MediaQuery.of(context).size.width * 1,
-                          height: 60.0,
-                          color: Colors.grey[100],
-                          textColor: kColorPrimary.withOpacity(0.6),
-                          textSize: 16,
-                          fontWeight: FontWeight.w400,
-                          textAlign: TextAlign.right,
-                          text: _birth_date_controller.text,
-                          onPressed: null)
-                      : Container(),
-                  SizedBox(height: 20),
-
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'gender'.tr() + '  ',
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ))
-                      : Container(),
-                  Prefs.getString(Prefs.USER_TYPE) == "USER"
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Radio(
-                              value: user_gender.Male,
-                              groupValue: gender,
-                              activeColor: Colors.grey,
-                              onChanged: (user_gender value) {
-                                setState(() {
-                                  gender = value;
-                                });
-                              },
-                            ),
-                            Text('male'.tr(), style: TextStyle(color: Colors.black)),
-                            Radio(
-                              value: user_gender.Female,
-                              groupValue: gender,
-                              activeColor: Colors.grey,
-                              onChanged: (user_gender value) {
-                                setState(() {
-                                  gender = value;
-                                });
-                              },
-                            ),
-                            Text('female'.tr(), style: TextStyle(color: Colors.black)),
-                          ],
-                        )
-                      : Container(),
-                  SizedBox(height: 20),
-                  Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                      ? Column(
-                          children: <Widget>[
-                            user_cv == null
-                                ? Container()
-                                : Align(
-                                    widthFactor: 10,
-                                    heightFactor: 1.5,
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      'attachment'.tr(),
-                                      style: TextStyle(fontSize: 16, color: Colors.black),
-                                    )),
-                            user_cv == null
-                                ? Container()
-                                : CustomButton(
-                                    text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
-                                    width: MediaQuery.of(context).size.width * 1,
-                                    color: Colors.grey[200],
-                                    textColor: kColorPrimary,
-                                    onPressed: () {
-                                      // _pickAttachment();
-                                    }),
-                            user_cv == null ? Container() : SizedBox(height: 30),
-                          ],
-                        )
-                      : Container(),
-
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: CustomButton(
-                      padding: EdgeInsets.all(15),
-                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        Navigator.pushNamed(context, Routes.new_password);
-                      },
-                      text: 'change_password'.tr(),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.maxFinite,
-                    child: CustomButton(
-                      padding: EdgeInsets.all(15),
-                      color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                      textColor: Colors.white,
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                          user.email = _email_controller.text;
-                          user.phone_number = _phone_number_controller.text;
-                          user.birth_date = formatter.parse(_birth_date_controller.text);
-                          user.linkedin = _linkedin_controller.text;
 
-                          user.name = _name_controller.text;
-                          user.surname = _surnname_controller.text;
-                          user.is_migrant = is_migrant ? 1 : 0;
-                          user.gender = gender == user_gender.Male ? 0 : 1;
-                          user.region = selectedRegion;
-                          user.district = selectedDistrict;
-                          user.contact_person_fullname = _fullname_of_contact_person.text;
-                          user.contact_person_position = _position_of_contact_person.text;
-                          user.job_sphere = selectedJobSphere;
-                          user.department = selectedDepartment;
-                          user.social_orientation = selectedSocialOrientation;
-                          user.address = _address_of_company.text;
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'surname'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                      ],
+                    )
+                        : Container(),
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? TextFormField(
+                      controller: _name_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                      ),
+                      validator: (name) {
+                        // Basic validation
+                        if (name.isEmpty) {
+                          return "please_fill_this_field".tr();
+                        }
+                        return null;
+                      },
+                    )
+                        : Container(),
+                    SizedBox(height: 20),
 
-                          if (_imageFile != null && _imageFile.path != null)
-                            user.uploadImage2(File(_imageFile.path)).then((value) {
-                              StoreProvider.of<AppState>(context).dispatch(getUser());
+                    Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'email'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )),
+                    TextFormField(
+                      enabled: false,
+                      controller: _email_controller,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                      ),
+                      validator: (name) {
+                        // Basic validation
+//                      if (name.isEmpty) {
+//                        return "please_fill_this_field".tr();
+//                      }
+                        return null;
+                      },
+                      style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
+                    ),
+                    SizedBox(height: 20),
+
+                    /// Область
+                    Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'region'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )),
+                    DropdownSearch<String>(
+                        showSelectedItem: true,
+                        items: items,
+                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRegion = value;
+                            getDistricts(value);
+                            selectedDistrict = '';
+                          });
+                        },
+                        dropdownSearchDecoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                        selectedItem: selectedRegion),
+                    SizedBox(height: 20),
+
+                    /// Регион
+                    Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'district'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        )),
+                    DropdownSearch<String>(
+                        showSelectedItem: true,
+                        items: districts,
+                        popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDistrict = value;
+                          });
+                        },
+                        dropdownSearchDecoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                        selectedItem: selectedDistrict),
+                    SizedBox(height: 20),
+
+                    /// Адрес компании/организации
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Адрес компании'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        TextFormField(
+                          enabled: true,
+                          controller: _address_of_company,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                          style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
+
+                    /// ФИО Контактного лица
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'ФИО Контактного лица'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        TextFormField(
+                          enabled: true,
+                          controller: _fullname_of_contact_person,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                          style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
+
+                    /// Должность контактного лица
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Должность контактного лица'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        TextFormField(
+                          enabled: true,
+                          controller: _position_of_contact_person,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                          ),
+                          style: TextStyle(color: kColorPrimary.withOpacity(0.6)),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
+
+                    /// Выбор сферы деятельности
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Сфера деятельности'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        DropdownSearch<String>(
+                            showSelectedItem: true,
+                            items: spheres,
+                            onChanged: (value) {
+                              getDepartments(value);
                               setState(() {
-                                Prefs.setString(
-                                    Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
+                                selectedJobSphere = value;
                               });
-                              // Navigator.pop(context);
+                            },
+                            dropdownSearchDecoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                            selectedItem: selectedJobSphere),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
+
+                    /// Выбор Отрасли
+                    Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                        ? selectedJobSphere != null
+                        ? Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Отрасль'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ))
+                        : Container()
+                        : Container(),
+                    Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                        ? selectedJobSphere != null
+                        ? DropdownSearch<String>(
+                        showSelectedItem: true,
+                        items: departments,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDepartment = value;
+                          });
+                        },
+                        dropdownSearchDecoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                        selectedItem: selectedDepartment)
+                        : Container()
+                        : Container(),
+                    SizedBox(height: 20),
+
+                    /// Социально-ориентированность
+                    Prefs.getString(Prefs.USER_TYPE) == "COMPANY"
+                        ? Column(
+                      children: <Widget>[
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Социально-ориентированность'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        DropdownSearch<String>(
+                            showSelectedItem: true,
+                            items: socialOrientations,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedSocialOrientation = value;
+                              });
+                            },
+                            dropdownSearchDecoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                            selectedItem: selectedSocialOrientation),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                        : Container(),
+
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'birth_date'.tr(),
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ))
+                        : Container(),
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? CustomButton(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        width: MediaQuery.of(context).size.width * 1,
+                        height: 60.0,
+                        color: Colors.grey[100],
+                        textColor: kColorPrimary.withOpacity(0.6),
+                        textSize: 16,
+                        fontWeight: FontWeight.w400,
+                        textAlign: TextAlign.right,
+                        text: _birth_date_controller.text,
+                        onPressed: null)
+                        : Container(),
+                    SizedBox(height: 20),
+
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? Align(
+                        widthFactor: 10,
+                        heightFactor: 1.5,
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'gender'.tr() + '  ',
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ))
+                        : Container(),
+                    Prefs.getString(Prefs.USER_TYPE) == "USER"
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Radio(
+                          value: user_gender.Male,
+                          groupValue: gender,
+                          activeColor: Colors.grey,
+                          onChanged: (user_gender value) {
+                            setState(() {
+                              gender = value;
                             });
-                          else
-                            user.uploadImage2(null);
+                          },
+                        ),
+                        Text('male'.tr(), style: TextStyle(color: Colors.black)),
+                        Radio(
+                          value: user_gender.Female,
+                          groupValue: gender,
+                          activeColor: Colors.grey,
+                          onChanged: (user_gender value) {
+                            setState(() {
+                              gender = value;
+                            });
+                          },
+                        ),
+                        Text('female'.tr(), style: TextStyle(color: Colors.black)),
+                      ],
+                    )
+                        : Container(),
+                    SizedBox(height: 20),
+                    Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
+                        ? Column(
+                      children: <Widget>[
+                        user_cv == null
+                            ? Container()
+                            : Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'attachment'.tr(),
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            )),
+                        user_cv == null
+                            ? Container()
+                            : CustomButton(
+                            text: attachment != null ? basename(attachment.path) : 'upload_new_file'.tr(),
+                            width: MediaQuery.of(context).size.width * 1,
+                            color: Colors.grey[200],
+                            textColor: kColorPrimary,
+                            onPressed: () {
+                              // _pickAttachment();
+                            }),
+                        user_cv == null ? Container() : SizedBox(height: 30),
+                      ],
+                    )
+                        : Container(),
 
-                          if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
-                            // user_cv.experience_year = int.parse(experience_year_controller.text);
-                            // user_cv.job_title = title_controller.text;
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: CustomButton(
+                        padding: EdgeInsets.all(15),
+                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.new_password);
+                        },
+                        text: 'change_password'.tr(),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: CustomButton(
+                        padding: EdgeInsets.all(15),
+                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                            user.email = _email_controller.text;
+                            user.phone_number = _phone_number_controller.text;
+                            user.birth_date = formatter.parse(_birth_date_controller.text);
+                            user.linkedin = _linkedin_controller.text;
 
-                            if (attachment != null)
-                              user_cv.save(attachment: attachment);
+                            user.name = _name_controller.text;
+                            user.surname = _surnname_controller.text;
+                            user.is_migrant = is_migrant ? 1 : 0;
+                            user.gender = gender == user_gender.Male ? 0 : 1;
+                            user.region = selectedRegion;
+                            user.district = selectedDistrict;
+                            user.contact_person_fullname = _fullname_of_contact_person.text;
+                            user.contact_person_position = _position_of_contact_person.text;
+                            user.job_sphere = selectedJobSphere;
+                            user.department = selectedDepartment;
+                            user.social_orientation = selectedSocialOrientation;
+                            user.address = _address_of_company.text;
+
+                            if (_imageFile != null && _imageFile.path != null)
+                              user.uploadImage2(File(_imageFile.path)).then((value) {
+                                StoreProvider.of<AppState>(context).dispatch(getUser());
+                                setState(() {
+                                  Prefs.setString(
+                                      Prefs.PROFILEIMAGE, StoreProvider.of<AppState>(context).state.user.user.data.image);
+                                });
+                                // Navigator.pop(context);
+                              });
                             else
-                              user_cv.save();
+                              user.uploadImage2(null);
+
+                            if (Prefs.getString(Prefs.USER_TYPE) == 'USER') {
+                              // user_cv.experience_year = int.parse(experience_year_controller.text);
+                              // user_cv.job_title = title_controller.text;
+
+                              if (attachment != null)
+                                user_cv.save(attachment: attachment);
+                              else
+                                user_cv.save();
+                            }
+
+                            Navigator.pop(context);
+
+                          } else {
+                            return;
                           }
 
-                          Navigator.pop(context);
-
-                        } else {
-                          return;
-                        }
-
-                        /// Remove previous screens
-                      },
-                      text: 'save'.tr(),
+                          /// Remove previous screens
+                        },
+                        text: 'save'.tr(),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 20),

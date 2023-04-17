@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final Function onPressed;
   final double elevation;
   final int borderRadius;
+  final BorderSide borderSide;
   final MainAxisAlignment mainAxisAlignment;
   final EdgeInsets padding;
   final double textSize;
@@ -23,6 +24,7 @@ class CustomButton extends StatelessWidget {
     @required this.onPressed,
     this.elevation,
     this.borderRadius,
+    this.borderSide,
     this.mainAxisAlignment,
     this.padding,
     this.textSize,
@@ -37,27 +39,32 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? MediaQuery.of(context).size.width * 0.4,
-      height: height ?? 50.0,
+      height: height ?? 48.0,
       child: RawMaterialButton(
         onPressed: onPressed,
         elevation: elevation ?? 0,
         fillColor:color ?? kColorBlue,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 10)),
+            borderRadius: BorderRadius.circular(borderRadius ?? 4),
+            side: borderSide ?? BorderSide(
+              color: Colors.transparent,
+              width: 2.0
+            )
+        ),
         child: Padding(
-          padding: padding ?? const EdgeInsets.only(top: 9, bottom: 10, left: 16, right: 16),
+          padding: padding ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 36),
           child: Row(
-            mainAxisAlignment: mainAxisAlignment != null ? mainAxisAlignment : MainAxisAlignment.center,
+            mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 text,
                 style: Theme.of(context).textTheme.button.copyWith(
                     color: textColor ?? Colors.white,
-                    fontSize: textSize ?? Theme.of(context).textTheme.button.fontSize,
-                    fontWeight: fontWeight ?? fontWeight,
-                    fontFamily: 'GTEestiProDisplay'),
-                textAlign: textAlign ?? textAlign,
+                    fontSize: 16,
+                    fontWeight: fontWeight ?? FontWeight.w700,
+                    fontFamily: 'Manrope'
+                ),
+                textAlign: textAlign ?? TextAlign.center,
               ),
             ],
           ),

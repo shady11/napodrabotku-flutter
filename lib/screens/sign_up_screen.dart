@@ -224,23 +224,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: Text("sign_up_title".tr()),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text("create_account".tr(),
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
+            Container(
+              margin: EdgeInsets.only(bottom: 40),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "create_account".tr(),
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: kColorDark,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                ),
+              ),
             ),
-            SizedBox(height: 20),
 
             /// Profile photo
             GestureDetector(
               child: _imageFile == null
                   ? CircleAvatar(
-                      backgroundColor: kColorPrimary,
+                      backgroundColor: kColorGray,
                       radius: 50,
-                      child: SvgIcon("assets/icons/camera_icon.svg", width: 40, height: 40, color: Colors.white),
+                      child: SvgIcon(
+                          "assets/icons/camera_icon.svg",
+                          width: 40,
+                          height: 40,
+                          color: kColorSecondary
+                      ),
                     )
                   : CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColor,
@@ -264,37 +277,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 children: <Widget>[
                   /// Название организации
-                  company == is_company.Company
-                      ? Column(
-                          children: <Widget>[
-                            Align(
-                                widthFactor: 10,
-                                heightFactor: 1.5,
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'organization_name'.tr(),
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )),
-                            TextFormField(
-                              controller: _name_controller,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                              ),
-                              validator: (name) {
-                                if (name.isEmpty) {
-                                  return "please_fill_this_field".tr();
-                                }
-                                return null;
-                              },
+                  company == is_company.Company ?
+                  Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      Align(
+                          widthFactor: 10,
+                          heightFactor: 1.5,
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'organization_name'.tr().toString().toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700
                             ),
-                            SizedBox(height: 20),
-                          ],
-                        )
-                      : Container(),
+                          )
+                      ),
+                      TextFormField(
+                        controller: _name_controller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                        ),
+                        validator: (name) {
+                          if (name.isEmpty) {
+                            return "please_fill_this_field".tr();
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ) :
+                  Container(),
 
                   /// Контакный Телефон
                   Align(
@@ -302,11 +321,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        company == is_company.Company ? 'Контактный телефон'.tr() : 'phone_number'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
+                        company == is_company.Company ? 'Контактный телефон'.tr().toString().toUpperCase() : 'phone_number'.tr().toString().toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700
+                        ),
+                      )
+                  ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: EdgeInsets.only(bottom: 16),
                     child: InternationalPhoneNumberInput(
                       countries: ['KG', 'RU', 'KZ', 'UA'],
                       onInputChanged: (PhoneNumber number) {
@@ -326,11 +350,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       formatInput: false,
                       keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                       inputDecoration: InputDecoration(
-                        border:
-                            OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey[200],
+                                width: 2.0
+                            )
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         filled: true,
-                        fillColor: Colors.grey[200],
+                        fillColor: kColorWhite,
                       ),
                       locale: 'ru',
                       onSaved: (PhoneNumber number) {
@@ -340,142 +370,218 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
 
                   /// Электронный адрес
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'email'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    controller: _email_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                    onChanged: (value) {
-                      isValid = EmailValidator.validate(_email_controller.text);
-                    },
-                    validator: (name) {
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      } else if (!isValid) {
-                        return "please_write_valid_email".tr();
-                      } else if (isUserExists) {
-                        return "this_email_already_registered".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-
-                  /// Пароль
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'password'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    obscureText: _obscureText,
-                    controller: _password_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    ),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-
-                  /// Подверждение пароли
-                  Align(
-                      widthFactor: 10,
-                      heightFactor: 1.5,
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'password_confirm'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    controller: _password_confirm_controller,
-                    obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    ),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      } else if (_password_confirm_controller.text != _password_controller.text) {
-                        return "passwords_dont_satisfy".tr();
-                      }
-                      return null;
-                    },
-                  ),
-
-                  /// ФИО user
-                  company == is_company.Company
-                      ? Container()
-                      : Align(
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
                           widthFactor: 10,
                           heightFactor: 1.5,
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'name'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                  company == is_company.Company
-                      ? Container()
-                      : TextFormField(
-                          controller: _name_controller,
+                            'email'.tr().toString().toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700
+                            ),
+                          ),
+                        ),
+                        TextFormField(
+                          controller: _email_controller,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey[200],
+                                    width: 2.0
+                                )
+                            ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             filled: true,
-                            fillColor: Colors.grey[200],
+                            fillColor: kColorWhite,
+                          ),
+                          onChanged: (value) {
+                            isValid = EmailValidator.validate(_email_controller.text);
+                          },
+                          validator: (name) {
+                            if (name.isEmpty) {
+                              return "please_fill_this_field".tr();
+                            } else if (!isValid) {
+                              return "please_write_valid_email".tr();
+                            } else if (isUserExists) {
+                              return "this_email_already_registered".tr();
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// Пароль
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'password'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                              ),
+                            )
+                        ),
+                        TextFormField(
+                          obscureText: _obscureText,
+                          controller: _password_controller,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey[200],
+                                    width: 2.0
+                                )
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: kColorWhite,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: kColorSecondary,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                          ),
+                          validator: (password) {
+                            // Basic validation
+                            if (password.isEmpty) {
+                              return "please_fill_this_field".tr();
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// Подверждение пароли
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'password_confirm'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                              ),
+                            )
+                        ),
+                        TextFormField(
+                          controller: _password_confirm_controller,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey[200],
+                                    width: 2.0
+                                )
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: kColorWhite,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: kColorSecondary,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                          ),
+                          validator: (name) {
+                            // Basic validation
+                            if (name.isEmpty) {
+                              return "please_fill_this_field".tr();
+                            } else if (_password_confirm_controller.text != _password_controller.text) {
+                              return "passwords_dont_satisfy".tr();
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// ФИО user
+                  company == is_company.Company ?
+                  Container() :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'name'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                              ),
+                            )
+                        ),
+                        TextFormField(
+                          controller: _name_controller,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey[200],
+                                    width: 2.0
+                                )
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: kColorWhite,
                           ),
                           validator: (name) {
                             // Basic validation
@@ -485,55 +591,81 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return null;
                           },
                         ),
+                      ],
+                    ),
+                  ),
 
                   /// Область видна только для User
-                  company == is_company.Company
-                      ? Container()
-                      : Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'region'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                  company == is_company.Company
-                      ? Container()
-                      : DropdownSearch<String>(
-                          showSelectedItem: true,
-                          items: items,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRegion = value;
-                              getDistricts(value);
-                            });
-                          },
-                          dropdownSearchDecoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
+                  company == is_company.Company ?
+                  Container() :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'region'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
                               ),
+                            )
+                        ),
+                        DropdownSearch<String>(
+                            showSelectedItem: true,
+                            items: items,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedRegion = value;
+                                getDistricts(value);
+                              });
+                            },
+                            dropdownSearchDecoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey[200],
+                                      width: 2.0
+                                  )
+                              ),
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
                               filled: true,
-                              fillColor: Colors.grey[200],
-                              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
-                          selectedItem: selectedRegion),
-
-                  SizedBox(height: 20),
+                              fillColor: kColorWhite,
+                            ),
+                            selectedItem: selectedRegion
+                        ),
+                      ],
+                    ),
+                  ),
 
                   /// Район виден только для User
-                  company == is_company.Company
-                      ? Container()
-                      : Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'district'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                  company == is_company.Company
-                      ? Container()
-                      : DropdownSearch<String>(
+                  company == is_company.Company ?
+                  Container() :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'district'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                              ),
+                            )
+                        ),
+                        DropdownSearch<String>(
                           showSelectedItem: true,
                           items: districts,
                           onChanged: (value) {
@@ -542,61 +674,97 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           },
                           dropdownSearchDecoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 12)),
+                            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey[200],
+                                    width: 2.0
+                                )
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            filled: true,
+                            fillColor: kColorWhite,
+                          ),
                           selectedItem: selectedDistrict,
                         ),
+                      ],
+                    ),
+                  ),
 
                   /// Дата рождения
-                  company == is_company.Company
-                      ? Container()
-                      : Align(
-                          widthFactor: 10,
-                          heightFactor: 1.5,
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'birth_date'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                  company == is_company.Company
-                      ? Container()
-                      : CustomButton(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          width: MediaQuery.of(context).size.width * 1,
-                          color: Colors.grey[200],
-                          textColor: kColorPrimary,
-                          textSize: 16,
-                          height: 60.0,
-                          fontWeight: FontWeight.w400,
-                          textAlign: TextAlign.right,
-                          text: _birth_date_controller.text,
-                          onPressed: () {
-                            _showDataPicker(context);
-                          }),
+                  company == is_company.Company ?
+                  Container() :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Align(
+                            widthFactor: 10,
+                            heightFactor: 1.5,
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'birth_date'.tr().toString().toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                              ),
+                            )
+                        ),
+                        CustomButton(
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            borderSide: BorderSide(
+                                color: Colors.grey[200],
+                                width: 2.0
+                            ),
+                            color: kColorWhite,
+                            textColor: kColorPrimary,
+                            textAlign: TextAlign.left,
+                            fontWeight: FontWeight.w400,
+                            text: _birth_date_controller.text,
+                            onPressed: () {
+                              _showDataPicker(context);
+                            }
+                        ),
+                      ],
+                    ),
+                  ),
 
                   /// Пол
-                  company == is_company.Company
-                      ? Container()
-                      : Row(children: [
-                          Text(
-                            'gender'.tr(),
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )
-                        ]),
-                  company == is_company.Company
-                      ? Container()
-                      : Row(
+                  company == is_company.Company ?
+                  Container() :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 40),
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                                widthFactor: 10,
+                                heightFactor: 1.5,
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'gender'.tr().toString().toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700
+                                  ),
+                                )
+                            ),
+                          ],
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Radio(
                               value: user_gender.Male,
                               groupValue: gender,
-                              activeColor: Colors.grey,
+                              activeColor: kColorPrimary,
                               onChanged: (user_gender value) {
                                 setState(() {
                                   gender = value;
@@ -607,7 +775,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Radio(
                               value: user_gender.Female,
                               groupValue: gender,
-                              activeColor: Colors.grey,
+                              activeColor: kColorPrimary,
                               onChanged: (user_gender value) {
                                 setState(() {
                                   gender = value;
@@ -617,15 +785,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Text('female'.tr(), style: TextStyle(color: Colors.black)),
                           ],
                         ),
-
-                  SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
 
                   /// Sign Up button
                   SizedBox(
                     width: double.maxFinite,
                     child: CustomButton(
-                      padding: EdgeInsets.all(10),
-                      height: 60.0,
                       color: kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () async {

@@ -70,42 +70,54 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
         title: Text("password_forgot_email".tr()),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                Center(
+                Container(
+                  margin: EdgeInsets.only(bottom: 40),
+                  child: Align(
+                    alignment: Alignment.topLeft,
                     child: Text(
-                  'password_email_info_text'.tr(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: kColorPrimary,
-                    fontWeight: FontWeight.w700,
-//                        fontStyle: FontStyle.italic
+                      "password_email_info_text".tr(),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: kColorDark,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
                   ),
-                )),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                ),
                 Align(
                     widthFactor: 10,
                     heightFactor: 1.5,
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'email'.tr(),
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    )),
+                      'email'.tr().toString().toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700
+                      ),
+                    )
+                ),
                 TextFormField(
                   controller: _email_controller,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    border: OutlineInputBorder(),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.grey[200],
+                            width: 2.0
+                        )
+                    ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: kColorWhite,
                   ),
                   onChanged: (value) {
                     isValid = EmailValidator.validate(value);
@@ -119,9 +131,8 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 30),
                 CustomButton(
-                  padding: EdgeInsets.all(15),
                   color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                   textColor: Colors.white,
                   onPressed: () async {

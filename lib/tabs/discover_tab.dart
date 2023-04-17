@@ -90,8 +90,9 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-        ? StoreConnector<AppState, CompanyVacanciesScreenProps>(
+    return Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
+
+    StoreConnector<AppState, CompanyVacanciesScreenProps>(
             converter: (store) => mapStateToVacancyProps(store),
             onInitialBuild: (props) => this.handleInitialBuildOfCompanyVacancy(props),
             builder: (context, props) {
@@ -164,206 +165,289 @@ class _DiscoverTabState extends State<DiscoverTab> with SingleTickerProviderStat
 
               return body;
             },
-          )
-        : StoreConnector<AppState, VacanciesScreenProps>(
-            converter: (store) => mapStateToProps(store),
-            onInitialBuild: (props) => this.handleInitialBuild(props),
-            builder: (context, props) {
-              List<Vacancy> data = props.listResponse.data;
-              bool loading = props.listResponse.loading;
+          ) :
 
-              Widget body;
-              if (loading) {
-                body = Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                );
-              } else {
-                var _index = 0;
-                body = data != null && data.isNotEmpty
-                    ? Center(
-                        child: Container(
-                          height: MediaQuery.of(context).size.width * 25,
-                          child: TinderSwapCard(
-                            orientation: AmassOrientation.BOTTOM,
-                            totalNum: data.length,
-                            stackNum: 5,
-                            swipeEdge: 5.0,
-                            maxWidth: MediaQuery.of(context).size.width * 0.97,
-                            maxHeight: MediaQuery.of(context).size.width * 0.97,
-                            minWidth: MediaQuery.of(context).size.width * 0.9,
-                            minHeight: MediaQuery.of(context).size.width * 0.96,
-                            cardController: cardController,
-                            cardBuilder: (context, index) {
-                              _index = index;
-                              return data != null && data.isNotEmpty
-                                  ? Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                                          child: Center(
-                                            child: Text(
-                                              "vacancies_empty".tr(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(color: Colors.white, fontSize: 20),
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          child: ProfileCard(
-                                            props: props,
-                                            page: 'discover',
-                                            vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[index],
-                                            index: index,
-                                            cardController: cardController,
-                                          ),
-                                          onTap: () {
-                                            VacancySkill.getVacancySkills(StoreProvider.of<AppState>(context)
-                                                    .state
-                                                    .vacancy
-                                                    .list
-                                                    .data[index]
-                                                    .id)
-                                                .then((value) {
-                                              List<VacancySkill> vacancySkills = [];
+    StoreConnector<AppState, VacanciesScreenProps>(
+      converter: (store) => mapStateToProps(store),
+      onInitialBuild: (props) => this.handleInitialBuild(props),
+      builder: (context, props) {
+        List<Vacancy> data = props.listResponse.data;
+        bool loading = props.listResponse.loading;
 
-                                              for (var i in value) {
-                                                vacancySkills.add(new VacancySkill(
-                                                  id: i.id,
-                                                  name: i.name,
-                                                  vacancyId: i.vacancyId,
-                                                  isRequired: i.isRequired,
-                                                ));
-                                              }
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                                                return Scaffold(
-                                                  backgroundColor: kColorPrimary,
-                                                  appBar: AppBar(
-                                                    title: Text("vacancy_view".tr()),
-                                                  ),
-                                                  body: VacancyView(
-                                                    page: "view",
-                                                    vacancy: StoreProvider.of<AppState>(context)
-                                                        .state
-                                                        .vacancy
-                                                        .list
-                                                        .data[index],
-                                                    vacancySkill: vacancySkills,
-                                                  ),
-                                                );
-                                              }));
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  : Container();
-                            },
-                            swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
-                              if (orientation.index == CardSwipeOrientation.LEFT.index) {
-                                print('Left');
-                                removeCards(
-                                    props: props,
-                                    type: "DISLIKED",
-                                    vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                                    context: context);
-                              }
-
-                              if (orientation.index == CardSwipeOrientation.RIGHT.index) {
-                                print('Right');
-                                removeCards(
-                                    props: props,
-                                    type: "LIKED",
-                                    vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
-                                    context: context);
-                              }
-                            },
-                          ),
-                        ),
-                      )
-                    : Container(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        child: Center(
-                          child: Text(
-                            "vacancies_empty".tr(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
-                      );
-              }
-
-              return Stack(children: [
-                body,
+        Widget body;
+        if (loading) {
+          body = Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
+        } else {
+          var _index = 0;
+          body = data != null && data.isNotEmpty ?
+          Container(
+            // color: kColorProductLab,
+            padding: EdgeInsets.only(bottom: 10),
+            child: TinderSwapCard(
+              orientation: AmassOrientation.BOTTOM,
+              totalNum: data.length,
+              swipeUp: false,
+              stackNum: 4,
+              swipeEdge: 5.0,
+              maxWidth: MediaQuery.of(context).size.width * 0.96,
+              maxHeight: MediaQuery.of(context).size.width * 0.85,
+              minWidth: MediaQuery.of(context).size.width * 0.72,
+              minHeight: MediaQuery.of(context).size.width * 0.82,
+              cardController: cardController,
+              cardBuilder: (context, index) {
+                _index = index;
+                return data != null && data.isNotEmpty ?
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  child: Align(
-                    alignment: Alignment.lerp(new Alignment(-1.0, -1.0), new Alignment(1, -1.0), 10),
-                    widthFactor: MediaQuery.of(context).size.width * 1,
-                    heightFactor: MediaQuery.of(context).size.height * 0.4,
-                    child: Row(
+                  child: Stack(
+                    children: <Widget>[
+                      GestureDetector(
+                        child: ProfileCard(
+                          props: props,
+                          page: 'discover',
+                          vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[index],
+                          index: index,
+                          cardController: cardController,
+                        ),
+                        onTap: () {
+                          VacancySkill.getVacancySkills(StoreProvider.of<AppState>(context).state.vacancy.list.data[index].id).then((value) {
+                            List<VacancySkill> vacancySkills = [];
+
+                            for (var i in value) {
+                              vacancySkills.add(new VacancySkill(
+                                id: i.id,
+                                name: i.name,
+                                vacancyId: i.vacancyId,
+                                isRequired: i.isRequired,
+                              ));
+                            }
+                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                              return Scaffold(
+                                backgroundColor: kColorPrimary,
+                                appBar: AppBar(
+                                  title: Text("vacancy_view".tr()),
+                                ),
+                                body: VacancyView(
+                                  page: "view",
+                                  vacancy: StoreProvider.of<AppState>(context).state.vacancy.list.data[index],
+                                  vacancySkill: vacancySkills,
+                                ),
+                              );
+                            }));
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ) : Container();
+              },
+              swipeCompleteCallback: (CardSwipeOrientation orientation, int index) {
+                if (orientation.index == CardSwipeOrientation.LEFT.index) {
+                  print('Left');
+                  removeCards(
+                      props: props,
+                      type: "DISLIKED",
+                      vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                      context: context);
+                }
+
+                if (orientation.index == CardSwipeOrientation.RIGHT.index) {
+                  print('Right');
+                  removeCards(
+                      props: props,
+                      type: "LIKED",
+                      vacancy_id: StoreProvider.of<AppState>(context).state.vacancy.list.data[_index].id,
+                      context: context);
+                }
+              },
+            ),
+          )  :
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: Text(
+                "vacancies_empty".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          );
+        }
+
+        return Container(
+          child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    // color: kColorGray,
+                    child: Flex(
+                      direction: Axis.vertical,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                          },
-                          text:
-                              StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            // color: kColorGray,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Flex(
+                              direction: Axis.vertical,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flex(
+                                  direction: Axis.horizontal,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        child: CustomButton(
+                                          padding: EdgeInsets.all(0),
+                                          height: 40.0,
+                                          color: Colors.white,
+                                          textColor: kColorPrimary,
+                                          onPressed: () {
+                                            Prefs.setInt(Prefs.OFFSET, 0);
+                                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
+                                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                          },
+                                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all'.tr() : 'day'.tr(),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        child: CustomButton(
+                                          padding: EdgeInsets.all(0),
+                                          height: 40.0,
+                                          color: Colors.white,
+                                          textColor: kColorPrimary,
+                                          onPressed: () {
+                                            Prefs.setInt(Prefs.OFFSET, 0);
+                                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week')
+                                            );
+                                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                          },
+                                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all'.tr() : 'week'.tr(),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        child: CustomButton(
+                                          padding: EdgeInsets.all(0),
+                                          height: 40.0,
+                                          color: Colors.white,
+                                          textColor: kColorPrimary,
+                                          onPressed: () {
+                                            Prefs.setInt(Prefs.OFFSET, 0);
+                                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all' : 'month'));
+                                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                            setState(() {
+                                              button == 3 ? button = 0 : button = 3;
+                                            });
+                                          },
+                                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month' ? 'all'.tr() : 'month'.tr(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type:
-                                    StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                          },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'week'
-                              ? 'all'.tr()
-                              : 'week'.tr(),
-                        ),
-                        CustomButton(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          padding: EdgeInsets.all(2),
-                          color: Colors.white,
-                          textColor: kColorPrimary,
-                          onPressed: () {
-                            Prefs.setInt(Prefs.OFFSET, 0);
-                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
-                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                                    ? 'all'
-                                    : 'month'));
-                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
-                            //                      Navigator.of(context).popAndPushNamed(Routes.signup);
-                            setState(() {
-                              button == 3 ? button = 0 : button = 3;
-                            });
-                          },
-                          text: StoreProvider.of<AppState>(context).state.vacancy.type == 'month'
-                              ? 'all'.tr()
-                              : 'month'.tr(),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            // color: kColorProductLab,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Flex(
+                              direction: Axis.vertical,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flex(
+                                  direction: Axis.horizontal,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Flexible(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        child: CustomButton(
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(0),
+                                          color: Colors.white,
+                                          textColor: kColorPrimary,
+                                          onPressed: () {
+                                            Prefs.setInt(Prefs.OFFSET, 0);
+                                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'day' ? 'all' : 'day'));
+                                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                          },
+                                          text: 'Списком',
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 5),
+                                        child: CustomButton(
+                                          borderSide: BorderSide(
+                                              color: kColorWhite,
+                                              width: 2.0
+                                          ),
+                                          height: 40.0,
+                                          padding: EdgeInsets.all(0),
+                                          color: Colors.transparent,
+                                          textColor: kColorWhite,
+                                          onPressed: () {
+                                            Prefs.setInt(Prefs.OFFSET, 0);
+                                            StoreProvider.of<AppState>(context).dispatch(setTimeFilter(
+                                                type: StoreProvider.of<AppState>(context).state.vacancy.type == 'week' ? 'all' : 'week')
+                                            );
+                                            StoreProvider.of<AppState>(context).dispatch(getVacancies());
+                                          },
+                                          text: 'На карте',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ]);
-            },
-          );
+                Flexible(
+                  flex: 4,
+                  child: Container(
+                    // color: kColorSecondary,
+                    child: body,
+                  ),
+                )
+              ]
+          ),
+        );
+      },
+    );
   }
 }
 

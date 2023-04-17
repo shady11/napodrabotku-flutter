@@ -42,7 +42,7 @@ class _SelectModeState extends State<SelectMode> {
                 ),
                 child: IntrinsicHeight(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 38),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -50,13 +50,14 @@ class _SelectModeState extends State<SelectMode> {
                           child: SizedBox(height: 60),
                         ),
                         Align(
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.topCenter,
                           child: Text(
                             "select_mode".tr(),
                             style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -66,11 +67,8 @@ class _SelectModeState extends State<SelectMode> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CustomButton(
-                                height: 50.0,
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                textColor: kColorBlue,
+                                color: kColorWhite,
+                                textColor: kColorPrimary,
                                 textAlign: TextAlign.center,
                                 onPressed: () {
                                   Prefs.setString(Prefs.ROUTE, "USER");
@@ -82,33 +80,16 @@ class _SelectModeState extends State<SelectMode> {
                                 height: 20,
                               ),
                               CustomButton(
-                                height: 70.0,
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                textColor: kColorBlue,
-                                textAlign: TextAlign.center,
+                                color: kColorWhite,
+                                textColor: kColorPrimary,
                                 onPressed: () {
-                                  Prefs.setString(Prefs.ROUTE, "PRODUCT_LAB");
-                                  Navigator.of(context).pushNamed(Routes.product_lab_start);
-                                },
-                                text: 'Возможности для\nмолодежи',
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              CustomButton(
-                                height: 70.0,
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                textColor: kColorBlue,
-                                textAlign: TextAlign.center,
-                                onPressed: () {
-                                  Prefs.setString(Prefs.ROUTE, "COMPANY");
+                                  Prefs.setString(Prefs.ROUTE, "USER");
                                   Navigator.of(context).pushNamed(Routes.start);
                                 },
                                 text: 'Вход для компании',
+                              ),
+                              SizedBox(
+                                height: 20,
                               ),
                             ],
                           ),

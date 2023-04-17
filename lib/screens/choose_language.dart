@@ -21,37 +21,27 @@ class ChooseLanguageScreen extends StatelessWidget {
               ),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 38),
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                         child: SizedBox(
                           height: 60,
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          'ishtapp',
-                          style: TextStyle(
-                              fontSize: 40,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.italic),
+                      Align(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Image.asset(
+                            'assets/images/logo_white.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          'Колдонмонун тилин тандаңыз',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
                       ),
                       SizedBox(
                         height: 10,

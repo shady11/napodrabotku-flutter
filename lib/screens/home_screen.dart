@@ -2070,46 +2070,62 @@ class _HomeScreenState extends State<HomeScreen> {
 
   buildSome(BuildContext context) {
     app_bar_titles = [
-      Row(
+      Flex(
+        direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            'ishtapp'.tr(),
-            style:
-                TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.w700, fontStyle: FontStyle.italic),
-          ),
-          GestureDetector(
-            child: CircleButton(
-                bgColor: Colors.transparent,
-                padding: 12,
-                icon: Icon(
-                  Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ? Boxicons.bxs_plus_square : Boxicons.bx_filter,
-                  color: Colors.white,
-                  size: 35,
-                )),
-            onTap: () async {
-              Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-                  ? await openVacancyForm(context)
-                  : await openFilterDialog(context);
-            },
-          ),
-          GestureDetector(
-            child: CircleButton(
-              bgColor: Colors.transparent,
-              padding: 12,
-              icon: Icon(
-                Boxicons.bx_user,
-                color: Colors.white,
-                size: 35,
+          Flexible(
+            flex: 2,
+            child: Align(
+              child: Container(
+                // height: 20.0,
+                child: Image.asset(
+                  'assets/images/logo_white.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            onTap: () {
-              _nextTab(4);
-              setState(() {
-                is_profile = true;
-              });
-            },
+          ),
+          Flexible(
+            flex: 1,
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                GestureDetector(
+                  child: CircleButton(
+                      bgColor: Colors.transparent,
+                      padding: 12,
+                      icon: Icon(
+                        Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ? Boxicons.bxs_plus_square : Boxicons.bx_filter,
+                        color: Colors.white,
+                        size: 35,
+                      )),
+                  onTap: () async {
+                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
+                        ? await openVacancyForm(context)
+                        : await openFilterDialog(context);
+                  },
+                ),
+                GestureDetector(
+                  child: CircleButton(
+                    bgColor: Colors.transparent,
+                    padding: 12,
+                    icon: Icon(
+                      Boxicons.bx_user,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                  ),
+                  onTap: () {
+                    _nextTab(4);
+                    setState(() {
+                      is_profile = true;
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -2323,10 +2339,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     actions: [],
                   ),
             bottomNavigationBar: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
-              ),
               child: BottomNavigationBar(
                   iconSize: 25,
                   type: BottomNavigationBarType.fixed,
@@ -2354,17 +2366,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   },
                   items: [
-                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-                        ? BottomNavigationBarItem(
+                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
+                    BottomNavigationBarItem(
                             icon: Icon(
                               Boxicons.bx_home,
-                              color: _tabCurrentIndex == 0 ? kColorPrimary : null,
+                              color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey,
                             ),
                             title: Text(
                               "home".tr(),
-                              style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : null),
-                            ))
-                        : BottomNavigationBarItem(
+                              style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey),
+                            )
+                    ) :
+                    BottomNavigationBarItem(
                             icon: Icon(
                               Boxicons.bx_search,
                               color: _tabCurrentIndex == 0 ? kColorPrimary : null,
@@ -2372,9 +2385,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: Text(
                               "search".tr(),
                               style: TextStyle(color: _tabCurrentIndex == 0 ? kColorPrimary : Colors.grey),
-                            )),
-                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY'
-                        ? BottomNavigationBarItem(
+                            )
+                    ),
+
+                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
+                    BottomNavigationBarItem(
                             icon: Container(
                               width: 50,
                               height: 30,
@@ -2386,7 +2401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     right: receivedMessageCount > 0 ? null : 0.0,
                                     child: Icon(
                                       Boxicons.bx_folder,
-                                      color: _tabCurrentIndex == 1 ? kColorPrimary : null,
+                                      color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey,
                                     ),
                                   ),
                                   receivedMessageCount > 0
@@ -2403,76 +2418,114 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: Text(
                               "received".tr(),
                               style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
-                            ))
-                        : BottomNavigationBarItem(
-                            icon: Container(
-                              width: 50,
-                              height: 30,
-                              child: Stack(children: [
-                                Positioned(
-                                  top: -1.0,
-                                  left: 0.0,
-                                  right: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
-                                      ? 0.0
-                                      : null,
-                                  child: Icon(
-                                    Boxicons.bx_like,
-                                    color: _tabCurrentIndex == 1 ? kColorPrimary : null,
-                                  ),
-                                ),
-                                StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
-                                    ? Container()
-                                    : Positioned(
-                                        top: 0.0,
-                                        right: 0.0,
-                                        child: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds > 0
-                                            ? Badge(
-                                                text: StoreProvider.of<AppState>(context)
-                                                    .state
-                                                    .vacancy
-                                                    .number_of_likeds
-                                                    .toString())
-                                            : Container(),
-                                      ),
-                              ]),
-                            ),
+                            )
+                    ) :
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Boxicons.bx_heart,
+                          color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey,
+                        ),
+                            // icon: Container(
+                            //   width: 50,
+                            //   height: 30,
+                            //   child: Stack(children: [
+                            //     Positioned(
+                            //       top: 0.0,
+                            //       left: 0.0,
+                            //       right: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
+                            //           ? 0.0
+                            //           : null,
+                            //       child: Icon(
+                            //         Boxicons.bx_heart,
+                            //         color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey,
+                            //       ),
+                            //     ),
+                            //     StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds == null
+                            //         ? Container()
+                            //         : Positioned(
+                            //             top: 0.0,
+                            //             right: 0.0,
+                            //             child: StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds > 0
+                            //                 ? Badge(
+                            //                     text: StoreProvider.of<AppState>(context)
+                            //                         .state
+                            //                         .vacancy
+                            //                         .number_of_likeds
+                            //                         .toString())
+                            //                 : Container(),
+                            //           ),
+                            //   ]),
+                            // ),
                             title: Text(
                               "matches".tr(),
-                              style: TextStyle(color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey),
-                            )),
+                              style: TextStyle(
+                                  color: _tabCurrentIndex == 1 ? kColorPrimary : Colors.grey
+                              ),
+                            )
+                    ),
+
+                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
                     BottomNavigationBarItem(
                         icon: Icon(
                           Boxicons.bx_comment_detail,
-                          color: _tabCurrentIndex == 2 ? kColorPrimary : null,
+                          color: _tabCurrentIndex == 2 ? kColorPrimary : Colors.grey,
                         ),
                         title: Text(
                           "chat".tr(),
                           style: TextStyle(color: _tabCurrentIndex == 2 ? kColorPrimary : Colors.grey),
-                        )),
+                        )
+                    ):
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Boxicons.bx_file,
+                          color: _tabCurrentIndex == 2 ? kColorPrimary : Colors.grey,
+                        ),
+                        title: Text(
+                          "Мои отклики".tr(),
+                          style: TextStyle(color: _tabCurrentIndex == 2 ? kColorPrimary : Colors.grey),
+                        )
+                    ),
+
+                    Prefs.getString(Prefs.USER_TYPE) == 'COMPANY' ?
                     BottomNavigationBarItem(
                         icon: Icon(
                           Boxicons.bx_book,
-                          color: _tabCurrentIndex == 3 ? kColorPrimary : null,
+                          color: _tabCurrentIndex == 3 ? kColorPrimary : Colors.grey,
                         ),
                         title: Text(
                           "training".tr(),
                           style: TextStyle(color: _tabCurrentIndex == 3 ? kColorPrimary : Colors.grey),
-                        )),
+                        )
+                    ) :
+                    BottomNavigationBarItem(
+                        icon: Icon(
+                          Boxicons.bx_comment_detail,
+                          color: _tabCurrentIndex == 3 ? kColorPrimary : Colors.grey,
+                        ),
+                        title: Text(
+                          "chat".tr(),
+                          style: TextStyle(color: _tabCurrentIndex == 3 ? kColorPrimary : Colors.grey),
+                        )
+                    ),
                   ]),
             ),
+
             body: WillPopScope(
-                child: PageView(
-                  controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    DiscoverTab(),
-                    MatchesTab(),
-                    ConversationsTab(),
-                    SchoolTab(),
-                    ProfileTab(),
-                  ],
+                child: Container(
+                  child: PageView(
+                    controller: _pageController,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      DiscoverTab(),
+                      MatchesTab(),
+                      ConversationsTab(),
+                      SchoolTab(),
+                      ProfileTab(),
+                    ],
+                  ),
                 ),
-                onWillPop: onWillPop),
+                onWillPop: onWillPop
+            ),
           );
         });
   }

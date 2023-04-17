@@ -25,10 +25,10 @@ final appThemeData = {
       ),
       textTheme: TextTheme(
         headline6: TextStyle(
-          color: kColorDarkBlue,
-          fontFamily: 'GTEestiProDisplay',
+          color: kColorDark,
+          fontFamily: 'Manrope',
           fontSize: 16,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
         ),
       ),
     ),
@@ -44,7 +44,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'GTEestiProDisplay',
+    fontFamily: 'Manrope',
     cardTheme: CardTheme(
       elevation: 0,
       color: Color(0xffEBF2F5),
@@ -79,7 +79,7 @@ final appThemeData = {
       textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
-          fontFamily: 'GTEestiProDisplay',
+          fontFamily: 'Manrope',
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -100,7 +100,7 @@ final appThemeData = {
     iconTheme: IconThemeData(
       color: kColorPrimary,
     ),
-    fontFamily: 'GTEestiProDisplay',
+    fontFamily: 'Manrope',
     cardTheme: CardTheme(
       elevation: 2,
       shape: RoundedRectangleBorder(

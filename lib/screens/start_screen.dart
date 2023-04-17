@@ -80,136 +80,100 @@ class _StartScreenState extends State<StartScreen> {
 //               ),
 //             ),
         body: Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              color: kColorDark,
+              image: DecorationImage(
+                  image: AssetImage("assets/images/main_bg.jpg"),
+                  colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.28), BlendMode.modulate,),
+                  fit: BoxFit.cover
+              )
+          ),
+          child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Align(
+              Flexible(
+                flex: 4,
+                fit: FlexFit.tight,
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: Image.asset(
-                    'assets/images/welcome.png',
-                    fit: BoxFit.cover,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/logo_white.png',
+                        fit: BoxFit.cover,
+                        height: 64.0,
+                      ),
+                    ],
                   ),
                 ),
               ),
 
               /// Sign in with Phone Number
-              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomButton(
-                    padding: EdgeInsets.all(10),
-                    color: Color(0xffF2F2F5),
-                    textColor: kColorBlue,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.signup);
-                    },
-                    text: 'sign_up'.tr(),
-                  ),
-                  CustomButton(
-                    padding: EdgeInsets.all(10),
-                    color: kColorPrimary,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.signin);
-                    },
-                    text: 'sign_in'.tr(),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 10),
-
-              mode == "COMPANY"
-                  ? Container()
-                  : InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text('guest'.tr(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
-                      ),
-                      onTap: () {
-                        if (mode == "PRODUCT_LAB")
-                          Navigator.of(context).pushNamed(Routes.product_lab_home);
-                        else
-                          Navigator.of(context).pushNamed(Routes.home);
-                      },
-                    ),
-
-              SizedBox(height: 10),
-
-              mode != "COMPANY"
-                  ? Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+              Flexible(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 10),
-                            child: SizedBox(
-                              height: 60,
-                              child: Image.asset('assets/images/partners/japan.png'),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: CustomButton(
+                                color: kColorWhite,
+                                textColor: kColorPrimary,
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(Routes.signup);
+                                },
+                                text: 'sign_up'.tr(),
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(right: 10),
-                            child: SizedBox(
-                              height: 60,
-                              child: Image.asset('assets/images/partners/giz.gif'),
-                            ),
-                          ),
-                          Container(
-                            child: SizedBox(
-                              height: 60,
-                              child: Image.asset('assets/images/partners/undp.png'),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: CustomButton(
+                                color: kColorPrimary,
+                                textColor: kColorWhite,
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(Routes.signin);
+                                },
+                                text: 'sign_in'.tr(),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    )
-                  : Container(),
+                    ),
 
-              /// Social login
-              /*Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// Login with google
-            GestureDetector(
-              child: CircleButton(
-                bgColor: Colors.white,
-                padding: 13,
-                icon: Icon(Boxicons.bxl_google)
-//                    icon: SvgPicture.asset("assets/icons/google_icon.svg",
-//                        width: 20, height: 20, color: kColorPrimary,),
+                    mode == "COMPANY" ?
+                    Container() :
+                    Container(
+                      child: InkWell(
+                        child: Text('guest'.tr(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: kColorWhite,
+                                fontSize: 16)
+                        ),
+                        onTap: () {
+                          if (mode == "PRODUCT_LAB")
+                            Navigator.of(context).pushNamed(Routes.product_lab_home);
+                          else
+                            Navigator.of(context).pushNamed(Routes.home);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              onTap: () {
-                  /// Go to sing up screen - for demo
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => SignUpScreen()));
-              },
-            ),
-            SizedBox(
-              width: 30,
-            ),
-            /// Login with facebook
-            GestureDetector(
-              child: CircleButton(
-                bgColor: Colors.white,
-                padding: 13,
-                icon: Icon(Boxicons.bxl_facebook_circle)
-//                    icon: SvgIcon("assets/icons/facebook_icon.svg",
-//                        width: 20, height: 20,
-//                        color: kColorPrimary),
-              ),
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(Routes.signup);
-              },
-            ),
-          ],
-        ),*/
             ],
           ),
         ),

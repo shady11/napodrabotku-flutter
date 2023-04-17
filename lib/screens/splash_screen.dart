@@ -71,13 +71,22 @@ class _SplashScreenState extends State<SplashScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            'ishtapp',
-                            style: TextStyle(
-                                fontSize: 40,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.italic),
+                          // Text(
+                          //   'ishtapp',
+                          //   style: TextStyle(
+                          //       fontSize: 40,
+                          //       color: Colors.white,
+                          //       fontWeight: FontWeight.w700,
+                          //       fontStyle: FontStyle.italic),
+                          // ),
+                          Align(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: Image.asset(
+                                'assets/images/logo_white.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ],
                       ),

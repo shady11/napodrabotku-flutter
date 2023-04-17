@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:ishtapp/datas/user.dart';
 import 'package:ishtapp/routes/routes.dart';
 import 'package:ishtapp/utils/constants.dart';
 import 'package:ishtapp/components/custom_button.dart';
 import 'package:ishtapp/datas/pref_manager.dart';
+
+enum is_company { Company, User }
 
 class SignInScreen extends StatefulWidget {
 
@@ -21,7 +24,13 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _username_controller = TextEditingController();
   final _password_controller = TextEditingController();
+  final _phone_number_controller = TextEditingController();
   bool _obscureText = true;
+
+  is_company company = is_company.User;
+
+  String initialCountry = 'KG';
+  PhoneNumber number = PhoneNumber(isoCode: 'KG');
 
   void _show_hide_password() {
     setState(() {
@@ -32,13 +41,15 @@ class _SignInScreenState extends State<SignInScreen> {
   void _showDialog(context, String message) {
     showDialog(
       context: context,
-      builder: (ctx) => Center(
+      builder: (ctx) => Container(
+        padding: EdgeInsets.all(20),
         child: AlertDialog(
           title: Text(''),
           content: Text(message),
           actions: <Widget>[
-            FlatButton(
-              child: Text('ok'.tr()),
+            CustomButton(
+              height: 40.0,
+              text: 'ok'.tr(),
               onPressed: () {
                 Navigator.of(ctx).pop();
                 Navigator.of(ctx).pop();
@@ -71,6 +82,18 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  setMode() {
+    setState(() {
+      company = Prefs.getString(Prefs.ROUTE) == "COMPANY" ? is_company.Company : is_company.User;
+    });
+  }
+
+  @override
+  void initState() {
+    setMode();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,21 +101,23 @@ class _SignInScreenState extends State<SignInScreen> {
         title: Text("sign_in_title".tr()),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "sign_in".tr(),
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
+            Container(
+              margin: EdgeInsets.only(bottom: 40),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "sign_in".tr(),
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: kColorDark,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                ),
               ),
             ),
-            SizedBox(height: 40),
 
             /// Form
             Form(
@@ -100,80 +125,190 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Align(
-                    widthFactor: 10,
-                    heightFactor: 1.5,
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'email'.tr(),
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _username_controller,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.grey[200]),
-                    validator: (name) {
-                      // Basic validation
-                      if (name.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
+                  company == is_company.Company ?
+                  /// Контакный Телефон
                   Align(
                       widthFactor: 10,
                       heightFactor: 1.5,
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'password'.tr(),
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      )),
-                  TextFormField(
-                    obscureText: _obscureText,
-                    controller: _password_controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.grey,
+                        company == is_company.Company ? 'Контактный телефон'.tr().toString().toUpperCase() : 'phone_number'.tr().toString().toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700
                         ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
+                      )
+                  ) :
+                  /// Электронный адрес
+                  Align(
+                    widthFactor: 10,
+                    heightFactor: 1.5,
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'email'.tr().toString().toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700
                       ),
                     ),
-                    validator: (password) {
-                      // Basic validation
-                      if (password.isEmpty) {
-                        return "please_fill_this_field".tr();
-                      }
+                  ),
+
+                  company == is_company.Company ?
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: InternationalPhoneNumberInput(
+                      countries: ['KG', 'RU', 'KZ', 'UA'],
+                      onInputChanged: (PhoneNumber number) {
+                        print(number.phoneNumber);
+                      },
+                      onInputValidated: (bool value) {
+                        print(value);
+                      },
+                      selectorConfig: SelectorConfig(
+                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      ),
+                      ignoreBlank: true,
+                      autoValidateMode: AutovalidateMode.disabled,
+                      selectorTextStyle: TextStyle(color: Colors.black),
+                      initialValue: number,
+                      textFieldController: _phone_number_controller,
+                      formatInput: false,
+                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                      inputDecoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey[200],
+                                width: 2.0
+                            )
+                        ),
+                        errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: kColorPrimary,
+                                width: 2.0
+                            )
+                        ),
+                        errorStyle: TextStyle(
+                            color: kColorPrimary,
+                            fontWeight: FontWeight.w500
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: kColorWhite,
+                      ),
+                      locale: 'ru',
+                      onSaved: (PhoneNumber number) {
+                        print('On Saved: $number');
+                      },
+                    ),
+                  ) :
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: TextFormField(
+                      controller: _username_controller,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey[200],
+                                width: 2.0
+                            )
+                        ),
+                        errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: kColorPrimary,
+                                width: 2.0
+                            )
+                        ),
+                        errorStyle: TextStyle(
+                            color: kColorPrimary,
+                            fontWeight: FontWeight.w500
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: kColorWhite,
+                      ),
+                      validator: (name) {
+                        // Basic validation
+                        if (name.isEmpty) {
+                          return "please_fill_this_field".tr();
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  Align(
+                      widthFactor: 10,
+                      heightFactor: 1.5,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'password'.tr().toString().toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                          fontWeight: FontWeight.w700
+                        ),
+                      )
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: TextFormField(
+                      obscureText: _obscureText,
+                      controller: _password_controller,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        border: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey[200],
+                                width: 2.0
+                            )
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: true,
+                        fillColor: kColorWhite,
+                        errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: kColorPrimary,
+                                width: 2.0
+                            )
+                        ),
+                        errorStyle: TextStyle(
+                          color: kColorPrimary,
+                          fontWeight: FontWeight.w500
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: kColorSecondary,
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (password) {
+                        // Basic validation
+                        if (password.isEmpty) {
+                          return "please_fill_this_field".tr();
+                        }
 //                      else if (password.length <5) {
 //                        return "password_must_at_least_5_chars".tr();
 //                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
+                        return null;
+                      },
+                    ),
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
@@ -181,7 +316,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       onTap: () {
                         Navigator.pushNamed(context, Routes.forgot_password);
                       },
-                      child: Text('forgot_password'.tr()),
+                      child: Text(
+                        'forgot_password'.tr(),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: kColorDark,
+                            fontWeight: FontWeight.w500
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -190,7 +332,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(
                     width: double.maxFinite,
                     child: CustomButton(
-                      padding: EdgeInsets.all(15),
                       color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ?  kColorProductLab : kColorPrimary,
                       textColor: Colors.white,
                       onPressed: () {
@@ -199,10 +340,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                           /// Remove previous screens
                           User user = new User();
-                          user
-                              .login(_username_controller.text,
-                                  _password_controller.text)
-                              .then((value) {
+                          user.login(_username_controller.text,_password_controller.text).then((value) {
                             if(value == "OK") {
                               if(Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB") {
                                 Navigator.of(context).popUntil((route) => route.isFirst);
@@ -222,54 +360,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: 'sign_in'.tr(),
                     ),
                   ),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
-                  // Text("sign_in_with_social_apps".tr(),
-                  //     textAlign: TextAlign.center,
-                  //     style: TextStyle(fontSize: 16, color: Colors.black45)),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                  /// Social login
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       /// Login with google
-//                       GestureDetector(
-//                         child: CircleButton(
-//                             bgColor: Colors.white,
-//                             padding: 13,
-//                             icon: Icon(Boxicons.bxl_google)
-// //                    icon: SvgPicture.asset("assets/icons/google_icon.svg",
-// //                        width: 20, height: 20, color: kColorPrimary,),
-//                             ),
-//                         onTap: () {
-//                           /// Go to sing up screen - for demo
-//                           Navigator.pushNamed(context, Routes.signup);
-//                         },
-//                       ),
-//                       SizedBox(
-//                         width: 30,
-//                       ),
-
-//                       /// Login with facebook
-//                       GestureDetector(
-//                         child: CircleButton(
-//                             bgColor: Colors.white,
-//                             padding: 13,
-//                             icon: Icon(Boxicons.bxl_facebook_circle)
-// //                    icon: SvgIcon("assets/icons/facebook_icon.svg",
-// //                        width: 20, height: 20,
-// //                        color: kColorPrimary),
-//                             ),
-//                         onTap: () {
-//                           Navigator.of(context).pushNamed(Routes.signup);
-//                         },
-//                       ),
-//                     ],
-//                   ),
                 ],
               ),
             ),

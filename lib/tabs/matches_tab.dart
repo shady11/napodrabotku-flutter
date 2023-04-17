@@ -129,70 +129,84 @@ class _MatchesTabState extends State<MatchesTab> {
                 ),
               );
             } else {
-              body = Column(
-                children: [
-                  Expanded(
-                    child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data != null &&
-                            StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0
-                        ? UsersGrid(
+              body = Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Flex(
+                  direction: Axis.vertical,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        child: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data != null &&
+                            StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.length != 0  ?
+                        UsersGrid(
                             children: StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.map((vacancy) {
-                            return GestureDetector(
-                              child: Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB"
-                                  ? !vacancy.isProductLabVacancy
-                                      ? ProfileCard(
-                                          vacancy: vacancy,
-                                          page: 'match',
-                                        )
-                                      : Container()
-                                  : ProfileCardProductLab(
+                              return GestureDetector(
+                                child: Container(
+                                    margin: EdgeInsets.only(bottom: 20),
+                                    child: Prefs.getString(Prefs.ROUTE) != "PRODUCT_LAB" ?
+                                    !vacancy.isProductLabVacancy ?
+                                    ProfileCard(
+                                      vacancy: vacancy,
+                                      page: 'match',
+                                    ) :
+                                    Container() :
+                                    ProfileCardProductLab(
                                       vacancy: vacancy,
                                       page: 'match',
                                     ),
-                              onTap: () {
-                                VacancySkill.getVacancySkills(vacancy.id).then((value) {
-                                  List<VacancySkill> vacancySkills = [];
+                                ),
+                                onTap: () {
+                                  VacancySkill.getVacancySkills(vacancy.id).then((value) {
+                                    List<VacancySkill> vacancySkills = [];
 
-                                  for (var i in value) {
-                                    vacancySkills.add(new VacancySkill(
-                                      id: i.id,
-                                      name: i.name,
-                                      vacancyId: i.vacancyId,
-                                      isRequired: i.isRequired,
-                                    ));
-                                  }
+                                    for (var i in value) {
+                                      vacancySkills.add(new VacancySkill(
+                                        id: i.id,
+                                        name: i.name,
+                                        vacancyId: i.vacancyId,
+                                        isRequired: i.isRequired,
+                                      ));
+                                    }
 
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                    return Scaffold(
-                                      backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
-                                          ? kColorProductLab
-                                          : kColorPrimary,
-                                      appBar: AppBar(
-                                        title: Text("vacancy_view".tr()),
-                                      ),
-                                      body: VacancyView(
-                                        page: Prefs.getString(Prefs.ROUTE) != 'PRODUCT_LAB' ? "user_match" : "view",
-                                        vacancy: vacancy,
-                                        vacancySkill: vacancySkills,
-                                      ),
-                                    );
-                                  })).then((value)
-                                  {
-                                    handleInitialBuild(props);
-                                    StoreProvider.of<AppState>(context)
-                                        .dispatch(getNumOfLikedVacancyRequest());
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                      return Scaffold(
+                                        backgroundColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                            ? kColorProductLab
+                                            : kColorPrimary,
+                                        appBar: AppBar(
+                                          title: Text("vacancy_view".tr()),
+                                        ),
+                                        body: VacancyView(
+                                          page: Prefs.getString(Prefs.ROUTE) != 'PRODUCT_LAB' ? "user_match" : "view",
+                                          vacancy: vacancy,
+                                          vacancySkill: vacancySkills,
+                                        ),
+                                      );
+                                    })).then((value)
+                                    {
+                                      handleInitialBuild(props);
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getNumOfLikedVacancyRequest());
+                                    });
                                   });
-                                });
-                              },
-                            );
-                          }).toList())
-                        : Center(
-                            child: Text(
-                              'empty'.tr(),
-                              style: TextStyle(color: Colors.white),
+                                },
+                              );
+                            }).toList()
+                        ) :
+                        Center(
+                          child: Text(
+                            'empty'.tr(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white
                             ),
                           ),
-                  ),
-                ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
 

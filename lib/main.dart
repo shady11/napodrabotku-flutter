@@ -1,4 +1,3 @@
-import 'package:appmetrica_sdk/appmetrica_sdk.dart';
 import 'package:flutter/services.dart';
 import 'package:ishtapp/reducer.dart';
 import 'package:redux/redux.dart';
@@ -20,8 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Initializing the AppMetrica SDK.
-  await AppmetricaSdk()
-      .activate(apiKey: '082bf9ad-5946-46d0-9e51-d6588c68bc1f');
+  // await AppmetricaSdk().activate(apiKey: '082bf9ad-5946-46d0-9e51-d6588c68bc1f');
 
   runApp(
     EasyLocalization(

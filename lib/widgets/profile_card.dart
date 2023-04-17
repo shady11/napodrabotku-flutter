@@ -83,9 +83,8 @@ class _ProfileCardState extends State<ProfileCard> {
   Widget build(BuildContext context) {
     bool isProductLabVacancy = widget.vacancy.isProductLabVacancy == null ? false : widget.vacancy.isProductLabVacancy;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.62,
       child: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(0),
         child: Stack(
           children: [
             Card(
@@ -93,262 +92,301 @@ class _ProfileCardState extends State<ProfileCard> {
               elevation: 4.0,
               color: Colors.white,
               margin: EdgeInsets.all(0),
-              shape: defaultCardBorder(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
               child: Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                padding: const EdgeInsets.all(0),
+                child: Flex(
+                  direction: Axis.vertical,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: widget.vacancy.company_logo != null
-                                ? Image.network(
+
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        color: kColorGray,
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                child: Flex(
+                                  direction: Axis.horizontal,
+                                  children: [
+                                    Flexible(
+                                      child: Container(
+                                        // color: kColorDark,
+                                        child: RichText(
+                                          text: TextSpan(
+                                            text: widget.vacancy.name != null
+                                                ? widget.vacancy.name.toString() + '\n'
+                                                : "",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: 'Manrope',
+                                                color: kColorDark
+                                            ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text: widget.vacancy.region != null ? widget.vacancy.region : '',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Manrope',
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: kColorSecondary
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: widget.vacancy.company_logo != null
+                                      ? Image.network(
                                     SERVER_IP + widget.vacancy.company_logo + "?token=${Guid.newGuid}",
                                     headers: {"Authorization": Prefs.getString(Prefs.TOKEN)},
-                                    width: 70,
-                                    height: 70,
+                                    width: 60,
+                                    height: 60,
                                   )
-                                : Image.asset(
+                                      : Image.asset(
                                     'assets/images/default-user.jpg',
                                     fit: BoxFit.cover,
-                                    width: 70,
-                                    height: 70,
+                                    width: 60,
+                                    height: 60,
                                   ),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: RichText(
-                            text: TextSpan(
-                              text: widget.vacancy.company_name != null
-                                  ? widget.vacancy.company_name.toString() + '\n'
-                                  : "",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: widget.vacancy.region != null ? widget.vacancy.region : '',
-                                    style: TextStyle(
-                                        fontFamily: 'GTEestiProDisplay',
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black45)),
-                              ],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        widget.vacancy.is_disability_person_vacancy == 1
-                            ? Icon(
-                                Icons.accessible,
-                                size: 20,
-                              )
-                            : Container(),
-                      ],
+                      ),
                     ),
-                    SizedBox(height: 20),
-                    // isProductLabVacancy
-                    //     ? Flex(
-                    //         direction: Axis.horizontal,
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           Flexible(
-                    //             child: Container(
-                    //               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    //               decoration:
-                    //                   BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                    //               child: Text(
-                    //                 widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
-                    //                 style: TextStyle(
-                    //                   color: Colors.black87,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           Flexible(
-                    //               child: Text(
-                    //             widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
-                    //             style: TextStyle(
-                    //                 fontSize: 15,
-                    //                 fontWeight: FontWeight.bold,
-                    //                 fontFamily: 'GTEestiProDisplay',
-                    //                 color: kColorPrimary),
-                    //           )),
-                    //         ],
-                    //       )
-                    //     : Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           Container(
-                    //             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    //             decoration:
-                    //                 BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                    //             child: Text(
-                    //               widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
-                    //               style: TextStyle(
-                    //                 color: Colors.black87,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             width: 5,
-                    //           ),
-                    //           Flexible(
-                    //               child: Text(
-                    //             widget.vacancy.salary != null ? widget.vacancy.salary : '',
-                    //             style: TextStyle(
-                    //                 fontSize: 15,
-                    //                 fontWeight: FontWeight.bold,
-                    //                 fontFamily: 'GTEestiProDisplay',
-                    //                 color: kColorPrimary),
-                    //           )),
-                    //         ],
-                    //       ),
 
-                    widget.vacancy.opportunity != null && isProductLabVacancy
-                        ? Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration:
-                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                  child: Text(
-                                widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
-                          )
-                        : Container(),
-                    widget.vacancy.type != null
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
+                    /// Product Lab
+                    widget.vacancy.opportunity != null && isProductLabVacancy ?
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        color: kColorDark,
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                                decoration: BoxDecoration(
+                                    color: kColorPrimary,
+                                    borderRadius: BorderRadius.circular(4)
+                                ),
                                 child: Text(
-                                  widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                                  widget.vacancy.opportunity != null ? widget.vacancy.opportunity.toString() : "",
                                   style: TextStyle(
-                                    color: Colors.black87,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: kColorWhite,
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                  child: Text(
-                                widget.vacancy.salary != null ? widget.vacancy.salary : '',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'GTEestiProDisplay',
-                                    color: kColorPrimary),
-                              )),
-                            ],
-                          )
-                        : Container(),
-                    SizedBox(height: 5),
-                    isProductLabVacancy
-                        ? Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration:
-                                      BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    widget.vacancy.opportunityDuration != null
-                                        ? widget.vacancy.opportunityDuration.toString()
-                                        : "",
-                                    style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                decoration:
-                                    BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
+                            ),
+                            Flexible(
                                 child: Text(
-                                  widget.vacancy.schedule != null ? widget.vacancy.schedule.toString() : "",
-                                  style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
-                                ),
-                              ),
-                            ],
-                          ),
-                    SizedBox(height: 15),
-                    Text(
-                      widget.vacancy.name != null ? widget.vacancy.name : "",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'GTEestiProDisplay',
-                          color: Colors.black),
-                    ),
-                    widget.page == 'discover'
-                        ? Expanded(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
-                                  text: widget.vacancy.description != null ? widget.vacancy.description : "",
+                                  widget.vacancy.opportunityType != null ? widget.vacancy.opportunityType : '',
                                   style: TextStyle(
                                       fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: 'GTEestiProDisplay',
-                                      color: Colors.black45)),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Manrope',
+                                      color: kColorPrimary
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ) : Container(),
+
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            /// Labels
+                            Flexible(
+                              child: Container(
+                                child: Flex(
+                                  direction: Axis.vertical,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    widget.vacancy.type != null ?
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      decoration: BoxDecoration(
+                                          color: kColorPrimary,
+                                          borderRadius: BorderRadius.circular(4)
+                                      ),
+                                      child: Text(
+                                        widget.vacancy.type != null ? widget.vacancy.type.toString() : "",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: kColorWhite,
+                                        ),
+                                      ),
+                                    ) : Container(),
+
+                                    isProductLabVacancy ?
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      margin: EdgeInsets.only(top: 5),
+                                      decoration: BoxDecoration(
+                                          color: kColorPrimary,
+                                          borderRadius: BorderRadius.circular(4)
+                                      ),
+                                      child: Text(
+                                        widget.vacancy.opportunityDuration != null
+                                            ? widget.vacancy.opportunityDuration.toString()
+                                            : "",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Manrope',
+                                            color: kColorWhite
+                                        ),
+                                      ),
+                                    ) :
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      margin: EdgeInsets.only(top: 5),
+                                      decoration: BoxDecoration(
+                                          color: kColorPrimary,
+                                          borderRadius: BorderRadius.circular(4)
+                                      ),
+                                      child: Text(
+                                        widget.vacancy.schedule != null ? widget.vacancy.schedule.toString() : "",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Manrope',
+                                            color: kColorWhite
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
                             ),
-                          )
-                        : SizedBox(),
-                    widget.page == 'submit'
-                        ? SizedBox()
-                        : SizedBox(height: 20),
-                    Container(
-                      width: double.maxFinite,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          widget.page == 'submit'
-                              ? Container()
-                              : CustomButton(
-                                  width: MediaQuery.of(context).size.width * 0.35,
-                                  height: MediaQuery.of(context).size.height * 0.07,
-                                  padding: EdgeInsets.all(5),
-                                  color: Colors.grey[200],
-                                  textColor:
-                                      Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+
+                            /// Salary
+                            Flexible(
+                                child: Text(
+                                  widget.vacancy.salary != null ? widget.vacancy.salary : '',
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Manrope',
+                                    color: kColorPrimary,
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    /// Company Name & Description
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Flex(
+                          direction: Axis.vertical,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                child: Text(
+                                  widget.vacancy.company_name != null ? widget.vacancy.company_name : "",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Manrope',
+                                      color: kColorSecondary),
+                                ),
+                              ),
+                            ),
+
+                            widget.page == 'discover' || widget.page == 'match' ?
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                      text: widget.vacancy.description != null ? widget.vacancy.description : "",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                          fontFamily: 'Manrope',
+                                          color: kColorSecondary
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ) : Container(),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            widget.page == 'submit' ? Container() :
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                child: CustomButton(
+                                  borderSide: BorderSide(
+                                      color: kColorPrimary,
+                                      width: 2.0
+                                  ),
+                                  padding: EdgeInsets.all(0),
+                                  color: Colors.transparent,
+                                  textColor: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
                                   onPressed: () async {
                                     if (Prefs.getString(Prefs.TOKEN) == null) {
                                       if (Prefs.getInt(Prefs.OFFSET) > 0 && Prefs.getInt(Prefs.OFFSET) != null) {
@@ -377,78 +415,64 @@ class _ProfileCardState extends State<ProfileCard> {
                                   },
                                   text: widget.page == 'discover' ? 'skip'.tr() : 'delete'.tr(),
                                 ),
-                          Prefs.getString(Prefs.TOKEN) != null
-                              ? Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: CustomButton(
-                                    width: MediaQuery.of(context).size.width * 0.35,
-                                    height: MediaQuery.of(context).size.height * 0.07,
-                                    padding: EdgeInsets.all(5),
-                                    color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
-                                        ? kColorProductLab
-                                        : kColorPrimary,
-                                    textColor: Colors.white,
-                                    onPressed: () async {
-                                      if (widget.page == 'discover') {
-                                        widget.cardController.triggerRight();
-                                      } else if (widget.page == 'match') {
-                                        Dialogs.openLoadingDialog(context);
-                                        Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
-                                            .then((value) {
-                                          if (value == "OK") {
-                                            User user = new User();
-                                            Dialogs.showDialogBox(context, "successfully_submitted".tr());
-                                            StoreProvider.of<AppState>(context)
-                                                .state
-                                                .vacancy
-                                                .liked_list
-                                                .data
-                                                .remove(widget.vacancy);
-                                            StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
-                                            StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
-                                          } else {
-                                            Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
-                                          }
-                                        });
-                                        // User.checkUserCv(Prefs.getInt(Prefs.USER_ID)).then((value) {
-                                        //   if (value) {
-                                        //
-                                        //   } else {
-                                        //     Dialogs.showDialogBox(context, "please_fill_user_cv_to_submit".tr());
-                                        //   }
-                                        // });
-                                      } else if (widget.page == 'company') {
-                                        Dialogs.showOnDeactivateDialog(
-                                            context, 'deactivate_are_you_sure'.tr(), false, widget.vacancy);
-                                      } else if (widget.page == 'company_inactive') {
-                                        Dialogs.showOnDeactivateDialog(
-                                            context, 'activate_are_you_sure'.tr(), true, widget.vacancy);
-                                      } else if (widget.page == 'submit') {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                          return ChatScreen(
-                                            user_id: widget.vacancy.company,
-                                            name: widget.vacancy.company_name,
-                                            avatar: widget.vacancy.company_logo,
-                                          );
-                                        }));
-                                      }
-                                    },
-                                    text: widget.page == 'discover'
-                                        ? 'like'.tr()
-                                        : (widget.page == 'company'
-                                            ? 'deactivate'.tr()
-                                            : widget.page == 'company_inactive'
-                                                ? 'activate'.tr()
-                                                : widget.page == 'submit'
-                                                    ? 'write_to'.tr()
-                                                    : 'submit'.tr()),
+                              ),
+                            ),
+
+                            Prefs.getString(Prefs.TOKEN) != null ?
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 5),
+                                child: CustomButton(
+                                  padding: EdgeInsets.all(0),
+                                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () async {
+                                    if (widget.page == 'discover') {
+                                      widget.cardController.triggerRight();
+                                    } else if (widget.page == 'match') {
+                                      Dialogs.openLoadingDialog(context);
+                                      Vacancy.saveVacancyUser(vacancy_id: widget.vacancy.id, type: "SUBMITTED")
+                                          .then((value) {
+                                        if (value == "OK") {
+                                          User user = new User();
+                                          Dialogs.showDialogBox(context, "successfully_submitted".tr());
+                                          StoreProvider.of<AppState>(context).state.vacancy.liked_list.data.remove(widget.vacancy);
+                                          StoreProvider.of<AppState>(context).dispatch(getLikedVacancies());
+                                          StoreProvider.of<AppState>(context).dispatch(getNumberOfLikedVacancies());
+                                        } else {
+                                          Dialogs.showDialogBox(context, "some_error_occurred_try_again".tr());
+                                        }
+                                      });
+                                    } else if (widget.page == 'company') {
+                                      Dialogs.showOnDeactivateDialog(context, 'deactivate_are_you_sure'.tr(), false, widget.vacancy);
+                                    } else if (widget.page == 'company_inactive') {
+                                      Dialogs.showOnDeactivateDialog(context, 'activate_are_you_sure'.tr(), true, widget.vacancy);
+                                    } else if (widget.page == 'submit') {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (BuildContext context) {
+                                            return ChatScreen(
+                                              user_id: widget.vacancy.company,
+                                              name: widget.vacancy.company_name,
+                                              avatar: widget.vacancy.company_logo,
+                                            );
+                                          })
+                                      );
+                                    }
+                                  },
+
+                                  text: widget.page == 'discover' ? 'like'.tr() :
+                                  (
+                                      widget.page == 'company' ? 'deactivate'.tr() :
+                                      widget.page == 'company_inactive' ? 'activate'.tr() :
+                                      widget.page == 'submit' ? 'write_to'.tr() : 'submit'.tr()
                                   ),
-                                )
-                              : Container(),
-                        ],
+                                ),
+                              ),
+                            ) : Container(),
+                          ],
+                        ),
                       ),
                     ),
-                    this.widget.page == 'discover' ? SizedBox(height: 0) : Container(width: 0, height: 0),
                   ],
                 ),
               ),
@@ -563,16 +587,19 @@ class ProfileCardProductLab extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  fontFamily: 'GTEestiProDisplay',
-                                  color: Colors.black),
+                                  fontFamily: 'Manrope',
+                                  color: Colors.black
+                              ),
                               children: <TextSpan>[
                                 TextSpan(
                                     text: vacancy.region != null ? vacancy.region : '',
                                     style: TextStyle(
-                                        fontFamily: 'GTEestiProDisplay',
+                                        fontFamily: 'Manrope',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black45)),
+                                        color: Colors.black45
+                                    )
+                                ),
                               ],
                             ),
                           ),
@@ -611,7 +638,7 @@ class ProfileCardProductLab extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'GTEestiProDisplay',
+                              fontFamily: 'Manrope',
                               color: kColorPrimary),
                         )),
                       ],
@@ -627,7 +654,7 @@ class ProfileCardProductLab extends StatelessWidget {
                             decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                             child: Text(
                               vacancy.opportunityDuration != null ? vacancy.opportunityDuration.toString() : "",
-                              style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                              style: TextStyle(fontFamily: 'Manrope', color: Colors.black87),
                             ),
                           ),
                         ),
@@ -640,7 +667,7 @@ class ProfileCardProductLab extends StatelessWidget {
                             decoration: BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(8)),
                             child: Text(
                               vacancy.name != null ? vacancy.name : "",
-                              style: TextStyle(fontFamily: 'GTEestiProDisplay', color: Colors.black87),
+                              style: TextStyle(fontFamily: 'Manrope', color: Colors.black87),
                             ),
                           )
                         : SizedBox(),
@@ -653,7 +680,7 @@ class ProfileCardProductLab extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal,
-                                      fontFamily: 'GTEestiProDisplay',
+                                      fontFamily: 'Manrope',
                                       color: Colors.black45)),
                             ),
                           )

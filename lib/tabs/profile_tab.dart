@@ -35,9 +35,15 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   final _textStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 16.0,
-    fontWeight: FontWeight.w500,
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: kColorDark
+  );
+
+  final _textStyle2 = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      color: kColorPrimary
   );
 
   showOnDeleteDialog(context, userId) {
@@ -109,258 +115,342 @@ class _ProfileTabState extends State<ProfileTab> {
           );
         } else {
           body = SingleChildScrollView(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 /// Basic profile info
                 Container(
-                  padding: const EdgeInsets.all(10.0),
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       /// Profile image
-                      Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                          child: CircleAvatar(
-                            backgroundColor:
-                                Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
-                            radius: 60,
-                            backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
-                                ? NetworkImage(
-                                    SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
-                                    headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
-                                : null,
-                          ),
+                      Container(
+                        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                        child: CircleAvatar(
+                          backgroundColor:
+                          Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB" ? kColorProductLab : kColorPrimary,
+                          radius: 60,
+                          backgroundImage: Prefs.getString(Prefs.PROFILEIMAGE) != null
+                              ? NetworkImage(
+                              SERVER_IP + Prefs.getString(Prefs.PROFILEIMAGE) + "?token=${Guid.newGuid}",
+                              headers: {"Authorization": Prefs.getString(Prefs.TOKEN)})
+                              : null,
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Center(
+
+                      Container(
+                        margin: EdgeInsets.only(top: 15),
                         child: Text(
                           Prefs.getString(Prefs.TOKEN) != null ? Prefs.getString(Prefs.EMAIL) : 'guest_user'.tr(),
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black
+                          ),
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          /// Profile details
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 15),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
 
                       /// Buttons
-                      Row(
-                        mainAxisAlignment: Prefs.getString(Prefs.USER_TYPE) == "USER"
-                            ? MainAxisAlignment.spaceEvenly
-                            : MainAxisAlignment.center,
-                        children: [
-                          Prefs.getString(Prefs.TOKEN) != null
-                              ? Prefs.getString(Prefs.USER_TYPE) == "USER"
-                                  ? SizedBox(
-                                      child: CustomButton(
-                                        height: 50.0,
-                                        padding: EdgeInsets.all(10),
-                                        color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
-                                            ? kColorProductLab
-                                            : kColorPrimary,
-                                        textColor: Colors.white,
-                                        onPressed: () {
-                                          Navigator.of(context).pushNamed(Routes.user_details);
-                                        },
-                                        text: 'profile'.tr(),
-                                      ),
-                                    )
-                                  : Container()
-                              : Container(),
-                          Prefs.getString(Prefs.TOKEN) != null
-                              ? SizedBox(
-                                  child: CustomButton(
-                                    height: 50.0,
-                                    padding: EdgeInsets.all(10),
-                                    color: Color(0xffF2F2F5),
-                                    textColor: kColorPrimary,
-                                    onPressed: () async {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => EditProfileScreen()),
-                                      );
-                                      setState(() {});
-                                    },
-                                    text: 'Настройки'.tr(),
+                      Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Prefs.getString(Prefs.TOKEN) != null
+                                ? Prefs.getString(Prefs.USER_TYPE) == "USER"
+                                ? Flexible(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10),
+                                child: CustomButton(
+                                  padding: EdgeInsets.all(0),
+                                  color: Prefs.getString(Prefs.ROUTE) == "PRODUCT_LAB"
+                                      ? kColorProductLab
+                                      : kColorPrimary,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(Routes.user_details);
+                                  },
+                                  text: 'profile'.tr(),
+                                ),
+                              ),
+                            )
+                                : Container()
+                                : Container(),
+                            Prefs.getString(Prefs.TOKEN) != null
+                                ? Flexible(
+                              child: Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: CustomButton(
+                                  borderSide: BorderSide(
+                                      color: kColorPrimary,
+                                      width: 2.0
                                   ),
-                                )
-                              : Container(),
-                        ],
+                                  padding: EdgeInsets.all(0),
+                                  color: Colors.transparent,
+                                  textColor: kColorPrimary,
+                                  onPressed: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                                    );
+                                    setState(() {});
+                                  },
+                                  text: 'Настройки'.tr(),
+                                ),
+                              ),
+                            )
+                                : Container(),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
 
                 /// Profile Statistics Card
-                Prefs.getString(Prefs.TOKEN) != null
-                    ? Column(
-                        children: [
-                          ListTile(
-                            leading: Container(
-                              width: 40,
-                              height: 40,
-                              child: Icon(
-                                Boxicons.bx_like,
-                                size: 25,
-                                color: kColorPrimary,
+                Prefs.getString(Prefs.TOKEN) != null ?
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(
+                                          Boxicons.bx_like,
+                                          size: 25,
+                                          color: kColorPrimary,
+                                        ),
+                                        decoration:
+                                        BoxDecoration(
+                                            color: kColorGray,
+                                            borderRadius: BorderRadius.circular(4)
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                            Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "matches".tr() : 'active_vacancies'.tr(),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: kColorDark
+                                            )
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
-                              decoration:
-                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                            ),
-                            title: Text(
-                                Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "matches".tr() : 'active_vacancies'.tr(),
-                                style: _textStyle),
-                            trailing: Prefs.getString(Prefs.USER_TYPE) == 'USER'
-                                ? Text(
-                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds != null
-                                        ? StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString()
-                                        : '0',
-                                    style: TextStyle(color: Colors.grey[400]),
+                              Flexible(
+                                child: Container(
+                                  child: Prefs.getString(Prefs.USER_TYPE) == 'USER' ?
+                                  Text(
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds != null ?
+                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_likeds.toString() : '0',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: kColorDark
+                                    ),
                                   )
-                                : Text(
+                                      : Text(
                                     StoreProvider.of<AppState>(context).state.vacancy.number_of_active_vacancies != null
                                         ? StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_active_vacancies
-                                            .toString()
+                                        .state
+                                        .vacancy
+                                        .number_of_active_vacancies
+                                        .toString()
                                         : '0',
                                     style: TextStyle(color: Colors.grey[400]),
                                   ),
-                            onTap: () {
-                              /// Go to profile likes screen ()
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileLikesScreen()));
-                            },
-                          ),
-                          ListTile(
-                            leading: Container(
-                              width: 40,
-                              height: 40,
-                              child: Icon(
-                                Boxicons.bx_file,
-                                size: 25,
-                                color: kColorPrimary,
+                                ),
                               ),
-                              decoration:
-                                  BoxDecoration(color: Color(0xffF2F2F5), borderRadius: BorderRadius.circular(10)),
-                            ),
-                            title: Text(
-                                Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "visit".tr() : 'inactive_vacancies'.tr(),
-                                style: _textStyle),
-                            trailing: Prefs.getString(Prefs.USER_TYPE) == 'USER'
-                                ? Text(
-                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_submiteds != null
-                                        ? StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_submiteds
-                                            .toString()
-                                        : '0',
-                                    style: TextStyle(color: Colors.grey[400]),
-                                  )
-                                : Text(
-                                    StoreProvider.of<AppState>(context).state.vacancy.number_of_inactive_vacancies !=
-                                            null
-                                        ? StoreProvider.of<AppState>(context)
-                                            .state
-                                            .vacancy
-                                            .number_of_inactive_vacancies
-                                            .toString()
-                                        : '0',
-                                    style: TextStyle(color: Colors.grey[400]),
-                                  ),
-                            onTap: () {
-                              /// Go to profile visits screen
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileVisitsScreen()));
-                            },
+                            ],
                           ),
-                        ],
-                      )
-                    : Container(),
-                SizedBox(height: 20),
+                        ),
+                        onTap: () {
+                          /// Go to profile likes screen
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileLikesScreen()));
+                        },
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 15),
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(
+                                          Boxicons.bx_book,
+                                          size: 25,
+                                          color: kColorPrimary,
+                                        ),
+                                        decoration:
+                                        BoxDecoration(
+                                            color: kColorGray,
+                                            borderRadius: BorderRadius.circular(4)
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                            Prefs.getString(Prefs.USER_TYPE) == 'USER' ? "training".tr() : 'active_vacancies'.tr(),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: kColorDark
+                                            )
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          /// Go to profile visits screen
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileVisitsScreen()));
+                        },
+                      ),
+                    ],
+                  ),
+                ) : Container(),
 
                 /// App Section Card
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text("language".tr(), style: _textStyle),
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.change_language);
-                      },
-                    ),
-                    ListTile(
-                      title: Text("about_app".tr(), style: _textStyle),
-                      onTap: () {
-                        /// Go to About us
-                        Navigator.pushNamed(context, Routes.about);
-                      },
-                    ),
-                    ListTile(
-                      title: Text("privacy_policy".tr(), style: _textStyle),
-                      onTap: () async {
-                        /// Go to privacy policy
-                        Navigator.pushNamed(context, Routes.user_policy);
-                      },
-                    ),
-                    ListTile(
-                      title: Text("Удалить аккаунт".tr(), style: _textStyle),
-                      onTap: () => showOnDeleteDialog(context, 1),
-                    ),
-                    Prefs.getString(Prefs.USER_TYPE) == 'USER'
-                        ? ListTile(
-                            title: Text("reset_settings".tr(), style: _textStyle),
-                            onTap: () async {
-                              user = StoreProvider.of<AppState>(context).state.user.user.data;
-                              user.resetSettings(email: user.email);
-                              _showDialog(context, 'successful_reset'.tr(), false);
-                            },
-                          )
-                        : Container(),
-                    Prefs.getString(Prefs.TOKEN) != null
-                        ? ListTile(
-                            title: Text(
-                              "logout".tr(),
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            onTap: () async {
-                              Prefs.setString(Prefs.EMAIL, null);
-                              Prefs.setString(Prefs.PROFILEIMAGE, null);
-                              Prefs.setString(Prefs.PASSWORD, null);
-                              Prefs.setString(Prefs.TOKEN, null);
-                              Prefs.setString(Prefs.USER_TYPE, "USER");
-                              Prefs.setString(Prefs.ROUTE, null);
-                              Prefs.setInt(Prefs.USER_ID, null);
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.pushReplacementNamed(context, Routes.select_mode);
-                            },
-                          )
-                        : ListTile(
-                            title: Text(
-                              "sign_in".tr(),
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            onTap: () async {
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.pushReplacementNamed(context, Routes.select_mode);
-                            },
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          child: Text(
+                              "language".tr(),
+                              style: _textStyle
                           ),
-                  ],
+                        ),
+                        onTap: () {
+                          /// Go to language switcher
+                          Navigator.pushNamed(context, Routes.change_language);
+                        },
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text(
+                              "about_app".tr(),
+                              style: _textStyle
+                          ),
+                        ),
+                        onTap: () {
+                          /// Go to About us
+                          Navigator.pushNamed(context, Routes.about);
+                        },
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text(
+                              "privacy_policy".tr(),
+                              style: _textStyle
+                          ),
+                        ),
+                        onTap: () {
+                          /// Go to privacy policy
+                          Navigator.pushNamed(context, Routes.user_policy);
+                        },
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text(
+                              "Удалить аккаунт".tr(),
+                              style: _textStyle
+                          ),
+                        ),
+                        onTap: () => showOnDeleteDialog(context, 1),
+                      ),
+
+                      Prefs.getString(Prefs.USER_TYPE) == 'USER' ?
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 30),
+                          child: Text(
+                              "reset_settings".tr(),
+                              style: _textStyle
+                          ),
+                        ),
+                        onTap: () async {
+                          user = StoreProvider.of<AppState>(context).state.user.user.data;
+                          user.resetSettings(email: user.email);
+                          _showDialog(context, 'successful_reset'.tr(), false);
+                        },
+                      ) : Container(),
+
+                      Prefs.getString(Prefs.TOKEN) != null ?
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 30),
+                          child: Text(
+                              "logout".tr(),
+                              style: _textStyle2
+                          ),
+                        ),
+                        onTap: () async {
+                          Prefs.setString(Prefs.EMAIL, null);
+                          Prefs.setString(Prefs.PROFILEIMAGE, null);
+                          Prefs.setString(Prefs.PASSWORD, null);
+                          Prefs.setString(Prefs.TOKEN, null);
+                          Prefs.setString(Prefs.USER_TYPE, "USER");
+                          Prefs.setString(Prefs.ROUTE, null);
+                          Prefs.setInt(Prefs.USER_ID, null);
+                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.pushReplacementNamed(context, Routes.select_mode);
+                        },
+                      ) :
+                      GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 30),
+                          child: Text(
+                              "sign_in".tr(),
+                              style: _textStyle2
+                          ),
+                        ),
+                        onTap: () async {
+                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.pushReplacementNamed(context, Routes.select_mode);
+                        },
+                      ),
+
+                    ],
+                  ),
                 ),
               ],
             ),
